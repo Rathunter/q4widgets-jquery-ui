@@ -169,7 +169,7 @@
                     $elem.append(Mustache.to_html(o.template, tplData));
 
                     // Fire the complete callback.
-                    if (o.complete !== null) {
+                    if (typeof o.complete === 'function') {
                         o.complete();
                     }
                 });

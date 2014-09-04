@@ -28,11 +28,28 @@
             reportSubType: [],
             /**
              * @cfg
+             * A moment.js format string with which to display report and document dates.
+             */
+            dateFormat: 'MM/DD/YYYY',
+            /**
+             * @cfg
+             * A map of short names for each report subtype.
+             */
+            shortTypes: {
+                'Annual Report': 'Annual',
+                'Supplemental Report': 'Supplemental',
+                'First Quarter': 'Q1',
+                'Second Quarter': 'Q2',
+                'Third Quarter': 'Q3',
+                'Fourth Quarter': 'Q4'
+            },
+            /**
+             * @cfg
              * A mustache.js template for the financial report list.
              * Use {{#years}} to loop through report years.
              * Use {{#reports}} to loop through reports.
              * Reports have these tags:
-             *   {{repDate}}, {{repTitle}}, {{repType}}, {{repYear}}
+             *   {{repDate}}, {{repShortType}}, {{repTitle}}, {{repType}}, {{repYear}}
              * Within a report, use {{#docs}} to loop through documents.
              * Documents have these tags:
              *   {{docCategory}}, {{docSize}}, {{docThumbUrl}}, {{docTitle}}, {{docType}}, {{docUrl}}
@@ -42,21 +59,30 @@
                     '{{#years}}<li>{{year}}</li>{{/years}}' +
                 '</ul>' +
                 '{{#reports}}' +
-                '<div class="report">' +
-                    '<h3>{{repTitle}}</h3>' +
+                '<div class="report" data-year="{{repYear}}">' +
+                    '<h3 class="repTitle">{{repTitle}}</h3>' +
+                    '<span class="repShortType">{{repShortType}}</span>' +
+                    '<img class="repCover" src="{{repCoverUrl}}">' +
                     '<ul class="docs">' +
                         '{{#docs}}' +
-                        '<li>' +
+                        '<li data-category="{{docCategory}}">' +
                             '<a href="{{docUrl}}" target="_blank">' +
+                                '<span class="docDate">{{repDate}}</span>' +
                                 '<span class="docTitle">{{docTitle}}</span>' +
                                 '<span class="docIcon {{docType}}"></span>' +
+                                '<span class="docSize">{{docSize}}</span>' +
                             '</a>' +
                         '</li>' +
                         '{{/docs}}' +
                     '</ul>' +
                 '</div>' +
                 '{{/reports}}'
-            )
+            ),
+            /**
+            * @cfg
+            * A callback function that is called when rendering is completed.
+            */
+            complete: null
         },
 
         fetchFinancials: function() {
@@ -71,13 +97,13 @@
                         Signature: GetSignature()
                     },
                     year: o.year,
-                    reportSubType: o.reportSubType
+                    reportSubTypeList: o.reportSubType
                 };
 
             $.ajax({
                 type: 'POST',
                 url: '/Services/FinancialReportService.svc/GetFinancialReportList',
-                data: JSON2.stringify(params),
+                data: JSON.stringify(params),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function(data) {
@@ -103,7 +129,9 @@
                 if (o.year == -1 || o.year == report.ReportYear) {
                     var tplReport = {
                         docs: [],
-                        repDate: report.ReportDate,
+                        repCoverUrl: report.CoverImagePath,
+                        repDate: moment(report.ReportDate, 'MM/DD/YYYY HH:mm:ss').format(o.dateFormat),
+                        repShortType: o.shortTypes[report.ReportSubType],
                         repTitle: report.ReportTitle,
                         repType: report.ReportSubType,
                         repYear: report.ReportYear
@@ -124,13 +152,17 @@
                 }
             });
 
+            years.sort(function(a, b) { return b - a }); // descending
             $.each(years, function(i, year) {
                 tplData.years.push({year: year});
             });
 
-            console.log(tplData);
-
             _.element.append(Mustache.to_html(o.template, tplData));
+
+            // Fire the complete callback.
+            if (typeof o.complete === 'function') {
+                o.complete();
+            }
         },
 
         _create: function() {
@@ -140,7 +172,8 @@
             
             $.when(
                 $.getScript('//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'),
-                $.getScript('//cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js')
+                $.getScript('//cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js'),
+                $.getScript('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js')
             ).done(function() {
                 _.fetchFinancials();
             });

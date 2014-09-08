@@ -25,7 +25,7 @@
              *   First Quarter, Second Quarter, Third Quarter, Fourth Quarter.
              * Use an empty list to display all (default).
              */
-            reportSubType: [],
+            reportTypes: [],
             /**
              * @cfg
              * A moment.js format string with which to display report and document dates.
@@ -97,7 +97,7 @@
                         Signature: GetSignature()
                     },
                     year: o.year,
-                    reportSubTypeList: o.reportSubType
+                    reportSubTypeList: o.reportSubTypes
                 };
 
             $.ajax({
@@ -121,12 +121,14 @@
                     reports: []
                 };
 
+            // Loop through documents for the selected year(s).
             $.each(data.GetFinancialReportListResult, function(i, report) {
-                if ($.inArray(report.ReportYear, years) == -1) {
-                    years.push(report.ReportYear);
-                }
+                if (o.year == -1 || report.ReportYear == o.year) {
+                    // Add this year to the years array if it's not there already.
+                    if ($.inArray(report.ReportYear, years) == -1) {
+                        years.push(report.ReportYear);
+                    }
 
-                if (o.year == -1 || o.year == report.ReportYear) {
                     var tplReport = {
                         docs: [],
                         repCoverUrl: report.CoverImagePath,
@@ -152,11 +154,13 @@
                 }
             });
 
-            years.sort(function(a, b) { return b - a }); // descending
+            // Sort the years in descending order.
+            years.sort(function(a, b) { return b - a });
             $.each(years, function(i, year) {
                 tplData.years.push({year: year});
             });
 
+            // Render the template and append it to the element.
             _.element.append(Mustache.to_html(o.template, tplData));
 
             // Fire the complete callback.

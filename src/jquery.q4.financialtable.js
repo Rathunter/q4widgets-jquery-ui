@@ -22,15 +22,17 @@
              * A list of document categories that will appear as rows in the table.
              * title: The title to display for that row.
              * reportType: A filter list of financial report subtypes (optional).
-             * text: The text to use for the link. This can optionally include the following codes:
+             * text: The text to use for the link (default blank). This can optionally include the following codes:
              *   {{year}}: the fiscal year of the report.
              *   {{shortType}}: the short name of the report subtype (e.g. Q1, Q2, Annual).
+             * 
              */
             categories: [
                 {
                     title: 'Quarterly Report',
                     reportType: ['First Quarter', 'Second Quarter', 'Third Quarter', 'Fourth Quarter'],
-                    text: '{{shortType}}'
+                    text: '{{shortType}}',
+                    cssClass: 'quarterly'
                 },
                 {
                     title: '10-K',
@@ -59,6 +61,12 @@
             /**
              * @cfg
              * A mustache.js template for the financial report list.
+             * Use {{#years}} to loop through document years.
+             * Use {{#categories}} to loop through document categories.
+             * Categories have these tags: {{catTitle}}, {{catClass}}
+             * Within a category, use {{#catYears}} to loop through years.
+             * Within a year, use {{#docs}} to loop through documents.
+             * Documents have these tags: {{docText}}, {{docType}}, {{docUrl}}
              */
             template: (
                 '<ul class="ftHeader">' +
@@ -66,7 +74,7 @@
                     '{{#years}}<li>{{year}}</li>{{/years}}' +
                 '</ul>' +
                 '{{#categories}}' +
-                '<ul class="ftRow">' +
+                '<ul class="ftRow {{catClass}}">' +
                     '<li>{{catTitle}}</li>' +
                     '{{#catYears}}' +
                     '<li>' +
@@ -114,7 +122,7 @@
             var _ = this,
                 o = _.options,
                 years = [],
-                categories = {},
+                documents = {},
                 tplData = {
                     years: [],
                     categories: []
@@ -133,15 +141,15 @@
                 years = years.slice(0, o.columns);
             }
 
-            // Create a temporary data object indexed by category and year.
+            // Create a document object indexed by category and year.
             $.each(o.categories, function(i, cat) {
-                categories[cat.title] = {};
+                documents[cat.title] = {};
                 $.each(years, function(i, year) {
-                    categories[cat.title][year] = [];
+                    documents[cat.title][year] = [];
                 });
             });
 
-            // Loop through all documents and add them to the data object.
+            // Loop through all documents for the selected years, and add them to the data object.
             $.each(data.GetFinancialReportListResult, function(i, report) {
                 if ($.inArray(report.ReportYear, years) == -1) return true;
 
@@ -152,10 +160,11 @@
                         if (cat.hasOwnProperty('reportType') && cat.reportType.length && cat.reportType != report.ReportSubType) return true;
 
                         // Add the document to the data object in the correct category and year.
-                        categories[cat.title][report.ReportYear].push({
-                            docText: cat.text
+                        documents[cat.title][report.ReportYear].push({
+                            docText: cat.hasOwnProperty('text') ? cat.text
                                 .replace('{{year}}', report.ReportYear)
-                                .replace('{{shortType}}', o.shortTypes[report.ReportSubType]),
+                                .replace('{{shortType}}', o.shortTypes[report.ReportSubType])
+                                : '',
                             docType: doc.DocumentFileType,
                             docUrl: doc.DocumentPath
                         });
@@ -167,25 +176,26 @@
             $.each(years, function(i, year) {
                 tplData.years.push({year: year});
             });
-            $.each(categories, function(catTitle, catYears) {
-                tplCat = {
-                    catTitle: catTitle,
+
+            $.each(o.categories, function(i, cat) {
+                var tplCat = {
+                    catTitle: cat.title,
+                    catClass: cat.hasOwnProperty('cssClass') ? cat.cssClass : '',
                     catYears: []
                 };
-
                 $.each(years, function(i, year) {
-                    if (catYears.hasOwnProperty(year)) {
+                    if (documents[cat.title].hasOwnProperty(year)) {
                         // Push the documents in reverse (i.e. ascending) order.
-                        catYears[year].reverse();
-                        tplCat.catYears.push({'docs': catYears[year]});
+                        documents[cat.title][year].reverse();
+                        tplCat.catYears.push({'docs': documents[cat.title][year]});
                     } else {
                         tplCat.catYears.push({'docs': []});
                     }
                 });
-
                 tplData.categories.push(tplCat);
             });
 
+            // Render the template and append it to the element.
             _.element.append(Mustache.to_html(o.template, tplData));
 
             // Fire the complete callback.

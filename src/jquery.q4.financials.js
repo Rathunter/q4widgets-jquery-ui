@@ -176,7 +176,6 @@
             
             $.when(
                 $.getScript('//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'),
-                $.getScript('//cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js'),
                 $.getScript('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js')
             ).done(function() {
                 _.fetchFinancials();

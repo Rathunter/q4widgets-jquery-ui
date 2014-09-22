@@ -7,6 +7,8 @@
  *     });
  *
  * @docauthor marcusk@q4websystems.com
+ *
+ * requires: Moment.js, Mustache.js
  */
 (function($) {
     $.widget('q4.financials', {
@@ -97,7 +99,7 @@
                         Signature: GetSignature()
                     },
                     year: o.year,
-                    reportSubTypeList: o.reportSubTypes
+                    reportSubTypeList: o.reportTypes
                 };
 
             $.ajax({
@@ -172,14 +174,7 @@
         _create: function() {
             $.ajaxSetup({cache: true});
 
-            var _ = this;
-            
-            $.when(
-                $.getScript('//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'),
-                $.getScript('//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js')
-            ).done(function() {
-                _.fetchFinancials();
-            });
+            this.fetchFinancials();
         }
     });
 })(jQuery);

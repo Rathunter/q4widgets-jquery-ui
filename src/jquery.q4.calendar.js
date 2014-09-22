@@ -10,6 +10,8 @@
  *      });
  *
  * @docauthor jasonm@q4websystems.com
+ * 
+ * requires: CLNDR.js, Moment.js, Underscore.js
  */
 (function($) {
     $.widget("q4.calendar", {

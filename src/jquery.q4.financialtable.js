@@ -7,6 +7,8 @@
  *     });
  *
  * @docauthor marcusk@q4websystems.com
+ *
+ * requires: Mustache.js
  */
 (function($) {
     $.widget('q4.financialTable', {
@@ -207,14 +209,7 @@
         _create: function() {
             $.ajaxSetup({cache: true});
 
-            var _ = this;
-            
-            $.when(
-                $.getScript('//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js'),
-                $.getScript('//cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js')
-            ).done(function() {
-                _.fetchFinancials();
-            });
+            this.fetchFinancials();
         }
     });
 })(jQuery);

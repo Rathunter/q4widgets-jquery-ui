@@ -11,6 +11,8 @@
  *     });
  *
  * @docauthor marcusk@q4websystems.com
+ *
+ * requires: Mustache.js
  */
 (function($) {
     $.widget('q4.flickrGallery', {
@@ -179,13 +181,7 @@
         _create: function() {
             $.ajaxSetup({cache: true});
 
-            var _ = this;
-            
-            $.when(
-                $.getScript("//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js")
-            ).done(function() {
-                _.drawGallery();
-            });
+            this.drawGallery();
         }
     });
 })(jQuery);

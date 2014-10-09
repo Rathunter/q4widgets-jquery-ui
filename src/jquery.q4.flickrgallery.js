@@ -1,73 +1,69 @@
 /**
  * @class q4.flickrGallery
- *     @example
- *     $("#gallery").flickrGallery({
- *         apiKey: 'abcdef1234567890',
- *         userId: '12345678@N01',
- *         perPage: 100,
- *         thumbSize: 'Thumbnail',
- *         photoSize: 'Large',
- *         albums: ['First Photo Album', 'Second Photo Album']
- *     });
+ * Example Config:
+ *
+ *      $("#gallery").flickrGallery({
+ *          apiKey: 'abcdef1234567890',
+ *          userId: '11111111@N01',
+ *          perPage: 100,
+ *          thumbSize: 'Thumbnail',
+ *          photoSize: 'Large',
+ *          albums: ['First Photo Album', 'Second Photo Album']
+ *      });
  *
  * @docauthor marcusk@q4websystems.com
- *
- * requires: Mustache.js
  */
 (function($) {
     $.widget('q4.flickrGallery', {
         options: {
             /**
-             * @cfg
-             * Flickr API key.
-             */
+            * @cfg
+            * Flickr API key.
+            */
             apiKey: '',
             /**
-             * @cfg
-             * Flickr user ID.
-             */
+            * @cfg
+            * Flickr user ID.
+            */
             userId: '',
             /**
-             * @cfg
-             * List of photo album names. If the list is empty, return all photo albums.
-             */
+            * @cfg
+            * List of photo album names. If the list is empty, return all photo albums.
+            */
             albums: [],
             /**
-             * @cfg
-             * Number of photos to return. The maximum is 500.
-             */
+            * @cfg
+            * Number of photos to return. The maximum is 500.
+            */
             perPage: 500,
             /**
-             * @cfg
-             * The size of image to use for each thumbnail. Sizes are as follows:
-             * Square:        75 x 75
-             * LargeSquare:  150 x 150
-             * Thumbnail:    100 x 75
-             * Small:        240 x 180
-             * Small320:     320 x 240
-             * Medium:       500 x 375
-             * Medium640:    640 x 480
-             * Medium800:    800 x 600
-             * Large:       1024 x 768
-             * Original:    2400 x 1800
-             */
+            * @cfg
+            * The size of image to use for each thumbnail. Sizes are as follows:
+            * Square:        75 x 75
+            * LargeSquare:  150 x 150
+            * Thumbnail:    100 x 75
+            * Small:        240 x 180
+            * Small320:     320 x 240
+            * Medium:       500 x 375
+            * Medium640:    640 x 480
+            * Medium800:    800 x 600
+            * Large:       1024 x 768
+            * Original:    2400 x 1800
+            */
             thumbSize: 'Square',
             /**
-             * @cfg
-             * The size of image to use for each photo when clicked.
-             * Size values are the same as in the thumbSize option.
-             */
+            * @cfg
+            * The size of image to use for each photo when clicked.
+            * Size values are the same as in the thumbSize option.
+            */
             photoSize: 'Medium',
             /**
-             * @cfg
-             * A mustache.js template for all photo albums.
-             * Use {{#albums}} to loop through albums.
-             * Albums have these tags:
-             *   {{albumTitle}}, {{albumDesc}}, {{photoCount}}
-             * Within an album, use {{#photos}} to loop through photos.
-             * Photos have these tags:
-             *   {{photoTitle}}, {{photoDesc}}, {{photoIndex}}, {{thumbUrl}}, {{photoUrl}}, {{hiresUrl}}
-             */
+            * @cfg
+            * A mustache.js template for a single photo album.
+            * The album template can include these tags: {{albumTitle}}, {{albumDesc}}, {{photoCount}}
+            * Use {{#photos}} to loop through each photo.
+            * The photo loop can use these tags: {{photoTitle}}, {{photoDesc}}, {{photoIndex}}, {{thumbUrl}}, {{photoUrl}}, {{hiresUrl}}
+            */
             template: (
                 '{{#albums}}' +
                     '<h3>{{albumTitle}}</h3>' +
@@ -170,8 +166,8 @@
                 $.when.apply(this, apiCalls).done(function() {
                     $elem.append(Mustache.to_html(o.template, tplData));
 
-                    // Fire the complete callback.
-                    if (typeof o.complete === 'function') {
+                    // fire complete callback
+                    if (o.complete !== null) {
                         o.complete();
                     }
                 });
@@ -179,9 +175,22 @@
         },
 
         _create: function() {
-            $.ajaxSetup({cache: true});
+            $.ajaxSetup({ cache: true });
 
-            this.drawGallery();
+            var inst = this;
+            
+            $.when(
+                $.getScript("//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js")
+            ).done(function() {
+                inst.loaded = true;
+                inst.drawGallery();
+            });
+        },
+
+        _init: function() {
+            if (this.loaded) {
+                this.drawGallery();
+            }
         }
     });
 })(jQuery);

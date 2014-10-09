@@ -158,12 +158,12 @@
                 $.each(report.Documents, function(i, doc) {
                     $.each(o.categories, function(i, cat) {
                         // Skip categories that don't match this document.
-                        if (cat.hasOwnProperty('category') && cat.category.length && cat.category != doc.DocumentCategory) return true;
-                        if (cat.hasOwnProperty('reportType') && cat.reportType.length && cat.reportType != report.ReportSubType) return true;
+                        if ('category' in cat && cat.category.length && cat.category != doc.DocumentCategory) return true;
+                        if ('reportType' in cat && cat.reportType.length && cat.reportType != report.ReportSubType) return true;
 
                         // Add the document to the data object in the correct category and year.
                         documents[cat.title][report.ReportYear].push({
-                            docText: cat.hasOwnProperty('text') ? cat.text
+                            docText: 'text' in cat ? cat.text
                                 .replace('{{year}}', report.ReportYear)
                                 .replace('{{shortType}}', o.shortTypes[report.ReportSubType])
                                 : '',
@@ -182,7 +182,7 @@
             $.each(o.categories, function(i, cat) {
                 var tplCat = {
                     catTitle: cat.title,
-                    catClass: cat.hasOwnProperty('cssClass') ? cat.cssClass : '',
+                    catClass: 'cssClass' in cat ? cat.cssClass : '',
                     catYears: []
                 };
                 $.each(years, function(i, year) {

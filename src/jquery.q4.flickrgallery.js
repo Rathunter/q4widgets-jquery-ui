@@ -164,7 +164,7 @@
 
                 // When all the API calls have finished, append their results in order.
                 $.when.apply(this, apiCalls).done(function() {
-                    $elem.append(Mustache.to_html(o.template, tplData));
+                    $elem.append(Mustache.render(o.template, tplData));
 
                     // fire complete callback
                     if (o.complete !== null) {

@@ -16,7 +16,9 @@
                             cssClass: 'blue',
                             text: 'This is the second thing.'
                         }
-                    ],
+                    ]
+                },
+                {
                     heading: '2000s',
                     cssClass: 'red',
                     items: [
@@ -84,8 +86,14 @@
             // render mustache.js templates
             $nav.html(Mustache.render(o.navTemplate, {groups: groups}));
             $main.html(Mustache.render(o.mainTemplate, {items: items}));
+        },
 
-            var $groups = $(o.navSelector, $nav),
+        initCarousels: function () {
+            var _ = this,
+                o = _.options,
+                $nav = $(o.navContainer, _.element),
+                $main = $(o.mainContainer, _.element),
+                $groups = $(o.navSelector, $nav),
                 $items = $(o.mainSelector, $main);
 
             if (o.navCarousel) {
@@ -105,49 +113,66 @@
                             targetGroup = $items.eq(currentItem).data('group');
 
                         if (currentGroup != targetGroup) {
-                            // update the active nav group
-                            var $targetGroup = $groups.eq(targetGroup);
-                            $groups.removeClass('active');
-                            $targetGroup.addClass('active');
-
-                            if (o.navCarousel) {
-                                // if the new group is not currently visible,
-                                // scroll the nav either left or right
-                                if (targetGroup < $('.slick-active', $nav).first().index())
-                                    $nav.slickGoTo(targetGroup);
-                                else if (targetGroup > $('.slick-active', $nav).last().index())
-                                    $nav.slickGoTo(targetGroup - $nav.slickGetOption('slidesToShow') + 1)
-                            }
-
-                            // fire nav callback
-                            if (typeof o.afterNavChange == 'function')
-                                o.afterNavChange.call(this, $nav, targetGroup);
+                            _.setActiveGroup(targetGroup);
                         }
 
                         // fire main callback
-                        if (typeof o.afterMainChange == 'function')
+                        if (typeof o.afterMainChange === 'function') {
                             o.afterMainChange.call(this, $main, currentItem);
+                        }
                     }
                 };
                 $main.slick($.extend({}, mainDefaults, o.mainOptions));
 
                 // init navbar
                 $groups.click(function () {
+                    if ($(this).hasClass('active')) return;
+
+                    _.setActiveGroup($groups.index($(this)));
+
                     var targetSlide = $items.filter('[data-group=' + $groups.index($(this)) + ']').first().index(),
                         lastSlide = $items.length - $main.slickGetOption('slidesToShow');
                     $main.slickGoTo(Math.min(targetSlide, lastSlide));
                 });
             }
 
-            // fire complete callbask
-            if (typeof o.complete == 'function') {
-                o.complete(this);
+            _.setActiveGroup(0);
+        },
+
+        setActiveGroup: function (targetGroup) {
+            var o = this.options,
+                $nav = $(o.navContainer, this.element),
+                $groups = $(o.navSelector, $nav).removeClass('active'),
+                $targetGroup = $groups.eq(targetGroup).addClass('active');
+
+            if (o.navCarousel) {
+                // if the new group is not currently visible,
+                // scroll the nav either left or right
+                if (targetGroup < $('.slick-active', $nav).first().index()) {
+                    $nav.slickGoTo(targetGroup);
+                } else if (targetGroup > $('.slick-active', $nav).last().index()) {
+                    $nav.slickGoTo(targetGroup - $nav.slickGetOption('slidesToShow') + 1);
+                }
+            }
+
+            // fire nav callback
+            if (typeof o.afterNavChange === 'function') {
+                o.afterNavChange.call(this, $nav, targetGroup);
             }
         },
 
         _create: function () {
+            var o = this.options;
+
             $.ajaxSetup({cache: true});
+
             this.drawTimeline();
+            this.initCarousels();
+
+            // fire complete callbask
+            if (typeof o.complete === 'function') {
+                o.complete.call(this);
+            }
         }
     });
 })(jQuery);

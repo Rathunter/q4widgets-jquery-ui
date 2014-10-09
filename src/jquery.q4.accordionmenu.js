@@ -189,7 +189,7 @@
             });
 
             // render template
-            $e.html(Mustache.to_html(o.template, o.content, {
+            $e.html(Mustache.render(o.template, o.content, {
                 menuItems: o.menuItemTemplate,
                 bodyItems: o.bodyItemTemplate,
                 sectionTrigger: o.sectionExpandTrigger,

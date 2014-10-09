@@ -198,7 +198,7 @@
             });
 
             // Render the template and append it to the element.
-            _.element.append(Mustache.to_html(o.template, tplData));
+            _.element.append(Mustache.render(o.template, tplData));
 
             // Fire the complete callback.
             if (typeof o.complete === 'function') {

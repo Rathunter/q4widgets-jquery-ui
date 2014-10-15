@@ -5,90 +5,111 @@
             feedUrl: '/',
             /* The number of items to display per page, or 0 for unlimited. */
             perPage: 0,
+            /* Whether to sort the documents by year. */
+            sortByYear: true,
             /* A Moment.js date format string. */
             dateFormat: 'MM/DD/YYYY',
+            /* An overall template for the timeline. */
+            template: (
+                '<ul class="categories"></ul>' +
+                '<input type="text" name="tags" class="tags">' +
+                '<select class="years"></select>' +
+                '<ul class="documents"></ul>' +
+                '<ul class="pager"></ul>'
+            ),
+            /* An HTML string to display while loading. */
+            loadingTemplate: 'loading...',
+            /* An HTML string to display the number of documents found. */
+            docsFoundTemplate: 'Showing {{pageCount}} of {{total}} documents.',
+            /* An HTML string to display when no documents are found. */
+            noDocsTemplate: 'No documents found. Please try broadening your search.',
 
             /* An array of categories. Categories can be either
-             * endpoint strings, or objects with these properties:
-             *   title: The title to display (optional).
-             *   endpoint: The API endpoint to fetch from.
+             * content types, or {name, contentType} objects.
+             * Content types must match the ones defined in this.contentTypes
              */
             categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
+            /* The type of input to use for categories. Options: select, trigger */
+            catInput: 'trigger',
             /* A selector for the category container. */
             catContainer: '.categories',
-            /* Whether to treat the category container as a select box. */
-            catIsSelect: false,
-            /* A selector for each category trigger (ignored if catIsSelect). */
+            /* A selector for each category trigger (if catInput is 'trigger'). */
             catTrigger: '> *',
             /* A template for each category trigger. */
-            catTemplate: '<li>{{title}}</li>',
+            catTemplate: '<li>{{name}}</li>',
 
-            /* An array of tags to filter by (ignored unless tagIsSelect). */
+            /* An array of preset tags to filter by
+             * (if tagInput is 'select' or 'trigger').
+             * Tags can be either strings, or {name, value} objects.
+             */
             tags: [],
+            /* The type of input to use for tags. Options: select, text, trigger */
+            tagInput: 'text',
             /* A selector for the tag container. */
             tagContainer: '.tags',
-            /* Whether to treat the tag container as a select box. */
-            tagIsSelect: true,
-            /* A selector for each tag trigger (ignored if tagIsSelect). */
+            /* A selector for each tag trigger (if tagInput is 'trigger'). */
             tagTrigger: '> *',
-            /* A template for each tag trigger. */
-            tagTemplate: '<option>{{tag}}</option>',
+            /* A template for each tag (if tagInput is 'select' or 'trigger'). */
+            tagTemplate: '<span>{{name}}</span>',
 
+            /* The type of input to use for years. Options: select, trigger */
+            yearInput: 'select',
             /* A selector for the year container. */
             yearContainer: '.years',
-            /* Whether to treat the year container as a select box. */
-            yearIsSelect: true,
-            /* A selector for each year trigger (ignored if yearIsSelect). */
+            /* A selector for each year trigger (if yearInput is 'trigger'). */
             yearTrigger: '> *',
-            /* A template for each year trigger. */
+            /* A template for each year. */
             yearTemplate: '<option>{{year}}</option>',
 
             /* A selector for the document list. */
             docContainer: '.documents',
-            /* A template for the header of a list of single-document items. */
-            docHeaderTemplate: (
-                '<div class="header single">' +
+            /* A template for a list of single documents. */
+            singleDocTemplate: (
+                '<h3 class="docheader single">' +
                     '<span class="title">Title</span>' +
                     '<span class="date">Date</span>' +
                     '<span class="type">Type</span>' +
                     '<span class="size">Size</span>' +
-                '</div>'
-            ),
-            /* A template for the header of a list of multiple-document items. */
-            multiHeaderTemplate: (
-                '<div class="header multi">' +
-                    '<span class="title">Title</span>' +
-                    '<span class="date">Date</span>' +
-                    '<span class="type">Type</span>' +
-                    '<span class="size">Size</span>' +
-                '</div>'
-            ),
-            /* A template for single-document items in the list. */
-            docTemplate: (
-                '<li class="single"><a href="{{url}}" target="_blank">' +
-                    '<span class="title">{{title}}</span>' +
-                    '<span class="date">{{date}}</span>' +
-                    '<span class="type">{{type}}</span>' +
-                    '<span class="size">{{size}}</span>' +
-                '</a></li>'
-            ),
-            /* A template for multiple-document items in the list. */
-            multiTemplate: (
-                '<li class="multi">' +
-                    '<span class="trigger">' +
+                '</h3>' +
+                '<ul class="doclist">' +
+                    '{{#docs}}' +
+                    '<li class="single"><a href="{{url}}" target="_blank">' +
                         '<span class="title">{{title}}</span>' +
                         '<span class="date">{{date}}</span>' +
-                    '</span>' +
-                    '<ul class="docs">' +
-                        '{{#docs}}' +
-                        '<li><a href="{{url}}" target="_blank">' +
+                        '<span class="type">{{type}}</span>' +
+                        '<span class="size">{{size}}</span>' +
+                    '</a></li>' +
+                    '{{/docs}}' +
+                '</ul>'
+            ),
+            /* A template for a list of documents with sub-documents. */
+            multiDocTemplate: (
+                '<h3 class="docheader multi">' +
+                    '<span class="title">Title</span>' +
+                    '<span class="date">Date</span>' +
+                    '<span class="type">Type</span>' +
+                    '<span class="size">Size</span>' +
+                '</h3>' +
+                '<ul class="doclist">' +
+                    '{{#docs}}' +
+                    '<li class="multi">' +
+                        '<span class="trigger">' +
                             '<span class="title">{{title}}</span>' +
-                            '<span class="date"></span>' +
-                            '<span class="type">{{type}}</span>' +
-                            '<span class="size">{{size}}</span>' +
-                        '{{/docs}}' +
-                    '</ul>' +
-                '</li>'
+                            '<span class="date">{{date}}</span>' +
+                        '</span>' +
+                        '<ul class="docs">' +
+                            '{{#subdocs}}' +
+                            '<li><a href="{{url}}" target="_blank">' +
+                                '<span class="title">{{title}}</span>' +
+                                '<span class="date"></span>' +
+                                '<span class="type">{{type}}</span>' +
+                                '<span class="size">{{size}}</span>' +
+                            '</a></li>' +
+                            '{{/subdocs}}' +
+                        '</ul>' +
+                    '</li>' +
+                    '{{/docs}}' +
+                '</ul>'
             ),
 
             /* A selector for the overall container for the accordion effect on multiple-document items. */
@@ -103,7 +124,7 @@
             /* A selector for each pager link. */
             pagerTrigger: '> *',
             /* A template for individual pager links. */
-            pagerTemplate: '<li>{{label}}</li>',
+            pagerTemplate: '<li>{{page}}</li>',
             /* A list of four labels for first, previous, next, and last pager items. */
             pagerLabels: {
                 first: '«',
@@ -118,7 +139,7 @@
 
         contentTypes: {
             contentAssets: {
-                title: 'Downloads',
+                name: 'Downloads',
                 multiple: false,
                 parse: function (item, o) {
                     return {
@@ -132,7 +153,7 @@
             },
 
             events: {
-                title: 'Events',
+                name: 'Events',
                 multiple: true,
                 parse: function (item, o) {
                     if (!item.EventPresentation.length && !item.Attachments.length) return;
@@ -157,13 +178,13 @@
                     return {
                         title: item.Title,
                         date: moment(item.StartDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
-                        docs: docs
+                        subdocs: docs
                     };
                 }
             },
 
             financialReports: {
-                title: 'Financial Reports',
+                name: 'Financial Reports',
                 multiple: true,
                 parse: function (item, o) {
                     if (!item.Documents.length) return;
@@ -180,13 +201,13 @@
                     return {
                         title: item.ReportTitle,
                         date: moment(item.ReportDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
-                        docs: docs
+                        subdocs: docs
                     };
                 }
             },
 
             presentations: {
-                title: 'Presentations',
+                name: 'Presentations',
                 multiple: false,
                 parse: function (item, o) {
                     return {
@@ -200,7 +221,7 @@
             },
 
             pressReleases: {
-                title: 'Press Releases',
+                name: 'Press Releases',
                 multiple: false,
                 parse: function (item, o) {
                     if (!('DocumentPath' in item) || !item.DocumentPath.length) return;
@@ -219,39 +240,35 @@
             var _ = this,
                 $e = _.element,
                 o = _.options,
-                endpoint = $e.data('cat'),
+                cat = $e.data('cat'),
                 opts = {
                     tag: $e.data('tag'),
                     year: $e.data('year'),
                     skip: (page - 1) * o.perPage,
                     limit: o.perPage
                 },
-                $docs = $(o.docContainer, $e).html('loading...');
+                $docs = $(o.docContainer, $e).html(o.loadingTemplate);
 
-            $.getJSON(o.feedUrl + endpoint + '?callback=?', opts, function (data) {
-                // render header
-                if (_.contentTypes[endpoint].multiple) {
-                    itemTemplate = o.multiTemplate;
-                    headerTemplate = o.multiHeaderTemplate;
-                } else {
-                    itemTemplate = o.docTemplate;
-                    headerTemplate = o.docHeaderTemplate;
-                }
-                $docs.html(Mustache.render(headerTemplate, {}));
-
-                // render documents
+            $.getJSON(o.feedUrl + cat + '?callback=?', opts, function (data) {
+                var template = _.contentTypes[cat].multiple ? o.multiDocTemplate : o.singleDocTemplate,
+                    docs = [];
                 $.each(data, function (i, item) {
-                    var itemData = _.contentTypes[endpoint].parse(item.Q4Dto, o);
-                    if (itemData) $docs.append(Mustache.render(itemTemplate, itemData));
+                    var itemData = _.contentTypes[cat].parse(item.Q4Dto, o);
+                    if (itemData) docs.push(itemData);
                 });
+                $docs.html(Mustache.render(template, {docs: docs}));
             });
+        },
+
+        showYear: function (year) {
+            // filter by years: not implemented yet
         },
 
         updateFilter: function (values) {
             var _ = this,
                 $e = _.element,
                 o = _.options,
-                $docs = $(o.docContainer, $e).html('loading...'),
+                $docs = $(o.docContainer, $e).html(o.loadingTemplate),
                 $pager = $(o.pagerContainer, $e).empty();
 
             // update and store the current filter values in the widget element
@@ -264,8 +281,27 @@
             }
             $.getJSON(o.feedUrl + $e.data('cat') + '/count?callback=?', countOpts, function (data) {
                 if (!data.total) {
-                    $docs.html('No documents found. Please try broadening your search.');
+                    $docs.html(o.noDocsTemplate);
                     return;
+                }
+
+                var years = [2014, 2013, 2012]; // obviously this is temporary!
+
+                var $years = $(o.yearContainer, $e).empty();
+                
+                // render years
+                if (o.sortByYear && $years.length) {
+                    $years.pager({
+                        pages: years,
+                        showFirstLast: false,
+                        showPrevNext: false,
+                        trigger: o.yearTrigger,
+                        template: o.yearTemplate.replace('{{year}}', '{{label}}'),
+                        labels: o.pagerLabels,
+                        beforeChange: function (pager, year) {
+                            _.showYear(year);
+                        }
+                    });
                 }
 
                 // show the first page, and initialize pager if possible
@@ -274,7 +310,7 @@
                         count: data.total,
                         perPage: o.perPage,
                         trigger: o.pagerTrigger,
-                        template: o.pagerTemplate,
+                        template: o.pagerTemplate.replace('{{page}}', '{{label}}'),
                         labels: o.pagerLabels,
                         beforeChange: function (pager, page) {
                             _.showPage(page);
@@ -293,29 +329,37 @@
             // need to set these in a slightly unusual way because of the variable selectors
             var handlers = {};
 
-            function addFilterEvent(key, container, isSelect, trigger) {
-                if (isSelect) {
-                    // add handler for changing a filter selectbox
+            function addFilterEvent(key, container, input, trigger) {
+                if (input == 'select' || input == 'text') {
+                    // add handler for changing a form input
                     handlers['change ' + container] = function (e) {
-                        values = {};
-                        values[key] = $(e.target).val();
-                        this.updateFilter(values);
+                        if (key == 'year') {
+                            this.showYear($(e.target).val());
+                        } else {
+                            values = {};
+                            values[key] = $(e.target).val();
+                            this.updateFilter(values);
+                        }
                     }
-                } else {
+                } else if (input == 'trigger') {
                     // add handler for clicking a filter trigger
                     handlers['click ' + container + ' ' + trigger] = function (e) {
                         $(container + ' ' + trigger, $e).removeClass('active');
                         $(e.target).addClass('active');
 
-                        values = {};
-                        values[key] = $(e.target).data(key);
-                        this.updateFilter(values);
+                        if (key == 'year') {
+                            this.showYear($(e.target).data('year'));
+                        } else {
+                            values = {};
+                            values[key] = $(e.target).data(key);
+                            this.updateFilter(values);
+                        }
                     }
                 }
             }
-            addFilterEvent('cat', o.catContainer, o.catIsSelect, o.catTrigger);
-            addFilterEvent('tag', o.tagContainer, o.tagIsSelect, o.tagTrigger);
-            addFilterEvent('year', o.yearContainer, o.yearIsSelect, o.yearTrigger);
+            addFilterEvent('cat', o.catContainer, o.catInput, o.catTrigger);
+            addFilterEvent('tag', o.tagContainer, o.tagInput, o.tagTrigger);
+            addFilterEvent('year', o.yearContainer, o.yearInput, o.yearTrigger);
 
             // add handler for clicking an accordion trigger
             handlers['click ' + o.docContainer + ' ' + o.accordionContainer + ' ' + o.accordionTrigger] = function (e) {
@@ -328,17 +372,46 @@
         _drawLibrary: function () {
             var _ = this,
                 $e = _.element,
-                o = _.options;
+                o = _.options,
+                $cats, $tags;
 
-            var $cats = $(o.catContainer, $e).empty();
+            // render template
+            $e.html(Mustache.render(o.template));
+
+            // revert invalid options to defaults
+            if (o.catInput != 'select' && o.catInput != 'trigger') o.catInput = 'trigger';
+            if (o.tagInput != 'select' && o.tagInput != 'trigger' && o.tagInput != 'text') o.tagInput = 'text';
+            if (o.yearInput != 'select' && o.yearInput != 'trigger') o.yearInput = 'select';
+
+            // display category options - passed as either strings or objects
+            $cats = $(o.catContainer, $e);
             $.each(o.categories, function (i, cat) {
-                // categories can be passed as either strings or objects
-                if (typeof cat == 'string' && cat in _.contentTypes) {
-                    $(Mustache.render(o.catTemplate, {title: _.contentTypes[cat].title})).data('cat', cat).appendTo($cats);
+                if (typeof cat === 'string' && cat in _.contentTypes) {
+                    $(Mustache.render(o.catTemplate, {
+                        name: _.contentTypes[cat].name,
+                        value: cat
+                    })).data('cat', cat).appendTo($cats);
+                } else if (typeof cat === 'object' && 'contentType' in cat && cat.contentType in _.contentTypes) {
+                    $(Mustache.render(o.catTemplate, {
+                        name: ('name' in cat ? cat.name : _.contentTypes[cat.contentType].name),
+                        value: cat.contentType
+                    })).data('cat', cat.contentType).appendTo($cats);
                 }
-                else if (typeof cat == 'object' && cat.endpoint in _.contentTypes) {
-                    var title = ('title' in cat ? cat.title : _.contentTypes[cat.endpoint].title);
-                    $(Mustache.render(o.catTemplate, {title: title})).data('cat', cat.endpoint).appendTo($cats);
+            });
+
+            // display preset tag options - passed as either strings or objects
+            $tags = $(o.tagContainer, $e);
+            $.each(o.tags, function (i, tag) {
+                if (typeof tag == 'string') {
+                    $(Mustache.render(o.tagTemplate, {
+                        name: tag, 
+                        value: tag
+                    })).data('tag', tag).appendTo($tags);
+                } else if (typeof tag == 'object' && 'value' in tag) {
+                    $(Mustache.render(o.tagTemplate, {
+                        name: ('name' in tag ? tag.name : tag.value), 
+                        value: tag
+                    })).data('tag', tag).appendTo($tags);
                 }
             });
 

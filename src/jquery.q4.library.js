@@ -12,7 +12,7 @@
             /* An overall template for the timeline. */
             template: (
                 '<ul class="categories"></ul>' +
-                '<input type="text" name="tags" class="tags">' +
+                '<ul class="tags"></ul>' +
                 '<select class="years"></select>' +
                 '<ul class="documents"></ul>' +
                 '<ul class="pager"></ul>'
@@ -29,37 +29,58 @@
              * Content types must match the ones defined in this.contentTypes
              */
             categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
-            /* The type of input to use for categories. Options: select, trigger */
-            catInput: 'trigger',
-            /* A selector for the category container. */
-            catContainer: '.categories',
-            /* A selector for each category trigger (if catInput is 'trigger'). */
-            catTrigger: '> *',
-            /* A template for each category trigger. */
-            catTemplate: '<li>{{name}}</li>',
+            /* Category options. */
+            catOptions: {
+                /* A selector for the container. */
+                container: '.categories',
+                /* The type of input to use. */
+                input: 'trigger',
+                /* A template for each trigger or select option. */
+                template: '<li>{{name}}</li>',
+                /* A selector for each trigger. */
+                trigger: '> *',
+                /* Whether to allow multiple triggers to be selected at once. */
+                allowMulti: false,
+                /* Whether to allow no triggers to be selected. */
+                allowNone: false
+            },
 
             /* An array of preset tags to filter by
              * (if tagInput is 'select' or 'trigger').
              * Tags can be either strings, or {name, value} objects.
              */
             tags: [],
-            /* The type of input to use for tags. Options: select, text, trigger */
-            tagInput: 'text',
-            /* A selector for the tag container. */
-            tagContainer: '.tags',
-            /* A selector for each tag trigger (if tagInput is 'trigger'). */
-            tagTrigger: '> *',
-            /* A template for each tag (if tagInput is 'select' or 'trigger'). */
-            tagTemplate: '<span>{{name}}</span>',
+            /* Tag options. */
+            tagOptions: {
+                /* A selector for the container. */
+                container: '.tags',
+                /* The type of input to use. */
+                input: 'trigger',
+                /* A template for each trigger or select option. */
+                template: '<li>{{name}}</li>',
+                /* A selector for each trigger. */
+                trigger: '> *',
+                /* Whether to allow multiple triggers to be selected at once. */
+                allowMulti: true,
+                /* Whether to allow no triggers to be selected. */
+                allowNone: true
+            },
 
-            /* The type of input to use for years. Options: select, trigger */
-            yearInput: 'select',
-            /* A selector for the year container. */
-            yearContainer: '.years',
-            /* A selector for each year trigger (if yearInput is 'trigger'). */
-            yearTrigger: '> *',
-            /* A template for each year. */
-            yearTemplate: '<option>{{year}}</option>',
+            /* Year options. */
+            yearOptions: {
+                /* A selector for the container. */
+                container: '.years',
+                /* The type of input to use. */
+                input: 'select',
+                /* A template for each trigger or select option. */
+                template: '<option>{{year}}</option>',
+                /* A selector for each trigger. */
+                trigger: '> *',
+                /* Whether to allow multiple triggers to be selected at once. */
+                allowMulti: false,
+                /* Whether to allow no triggers to be selected. */
+                allowNone: false
+            },
 
             /* A selector for the document list. */
             docContainer: '.documents',
@@ -93,10 +114,10 @@
                 '<ul class="doclist">' +
                     '{{#docs}}' +
                     '<li class="multi">' +
-                        '<span class="trigger">' +
+                        '<div class="trigger">' +
                             '<span class="title">{{title}}</span>' +
                             '<span class="date">{{date}}</span>' +
-                        '</span>' +
+                        '</div>' +
                         '<ul class="docs">' +
                             '{{#subdocs}}' +
                             '<li><a href="{{url}}" target="_blank">' +
@@ -249,6 +270,7 @@
                 },
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate);
 
+            // get this page of records for current filter options
             $.getJSON(o.feedUrl + cat + '?callback=?', opts, function (data) {
                 var template = _.contentTypes[cat].multiple ? o.multiDocTemplate : o.singleDocTemplate,
                     docs = [];
@@ -271,10 +293,10 @@
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate),
                 $pager = $(o.pagerContainer, $e).empty();
 
-            // update and store the current filter values in the widget element
+            // update and store the current filter options in the widget element
             $e.data(values);
 
-            // get page count
+            // fetch filter options and get page count
             var countOpts = {
                 tag: $e.data('tag'),
                 year: $e.data('year')
@@ -287,7 +309,7 @@
 
                 var years = [2014, 2013, 2012]; // obviously this is temporary!
 
-                var $years = $(o.yearContainer, $e).empty();
+                var $years = $(o.yearOptions.container, $e).empty();
                 
                 // render years
                 if (o.sortByYear && $years.length) {
@@ -295,8 +317,8 @@
                         pages: years,
                         showFirstLast: false,
                         showPrevNext: false,
-                        trigger: o.yearTrigger,
-                        template: o.yearTemplate.replace('{{year}}', '{{label}}'),
+                        trigger: o.yearOptions.trigger,
+                        template: o.yearOptions.template.replace('{{year}}', '{{label}}'),
                         labels: o.pagerLabels,
                         beforeChange: function (pager, year) {
                             _.showYear(year);
@@ -329,10 +351,10 @@
             // need to set these in a slightly unusual way because of the variable selectors
             var handlers = {};
 
-            function addFilterEvent(key, container, input, trigger) {
-                if (input == 'select' || input == 'text') {
+            function addFilterEvent(key, opts) {
+                if (opts.input == 'select' || opts.input == 'text') {
                     // add handler for changing a form input
-                    handlers['change ' + container] = function (e) {
+                    handlers['change ' + opts.container] = function (e) {
                         if (key == 'year') {
                             this.showYear($(e.target).val());
                         } else {
@@ -341,25 +363,42 @@
                             this.updateFilter(values);
                         }
                     }
-                } else if (input == 'trigger') {
+
+                } else if (opts.input == 'trigger') {
                     // add handler for clicking a filter trigger
-                    handlers['click ' + container + ' ' + trigger] = function (e) {
-                        $(container + ' ' + trigger, $e).removeClass('active');
-                        $(e.target).addClass('active');
+                    handlers['click ' + opts.container + ' ' + opts.trigger] = function (e) {
+                        var $triggers = $(opts.container + ' ' + opts.trigger, $e);
+
+                        if (!opts.allowNone && $(e.target).hasClass('active') && $triggers.filter('.active').length == 1) {
+                            // at least one trigger must be active at a time
+                            return;
+                        }
+                        if (!opts.allowMulti) {
+                            // only one trigger can to be active at a time
+                            $triggers.removeClass('active');
+                        }
+                        $(e.target).toggleClass('active');
+
+                        // get values of all active triggers
+                        var active = [];
+                        $triggers.filter('.active').each(function () {
+                            active.push($(this).data(key));
+                        });
 
                         if (key == 'year') {
                             this.showYear($(e.target).data('year'));
                         } else {
                             values = {};
-                            values[key] = $(e.target).data(key);
+                            // concatenate multiple values and add to filter
+                            values[key] = active.join('|');
                             this.updateFilter(values);
                         }
                     }
                 }
             }
-            addFilterEvent('cat', o.catContainer, o.catInput, o.catTrigger);
-            addFilterEvent('tag', o.tagContainer, o.tagInput, o.tagTrigger);
-            addFilterEvent('year', o.yearContainer, o.yearInput, o.yearTrigger);
+            addFilterEvent('cat', o.catOptions);
+            addFilterEvent('tag', o.tagOptions);
+            addFilterEvent('year', o.yearOptions);
 
             // add handler for clicking an accordion trigger
             handlers['click ' + o.docContainer + ' ' + o.accordionContainer + ' ' + o.accordionTrigger] = function (e) {
@@ -378,21 +417,24 @@
             // render template
             $e.html(Mustache.render(o.template));
 
-            // revert invalid options to defaults
-            if (o.catInput != 'select' && o.catInput != 'trigger') o.catInput = 'trigger';
-            if (o.tagInput != 'select' && o.tagInput != 'trigger' && o.tagInput != 'text') o.tagInput = 'text';
-            if (o.yearInput != 'select' && o.yearInput != 'trigger') o.yearInput = 'select';
+            // revert invalid input options to default
+            var inputTypes = ['select', 'trigger', 'text'];
+            $.each([o.catOptions, o.tagOptions, o.yearOptions], function (i, opts) {
+                if (!$.inArray(opts.input, inputTypes)) {
+                    opts.input = 'trigger';
+                };
+            });
 
             // display category options - passed as either strings or objects
-            $cats = $(o.catContainer, $e);
+            $cats = $(o.catOptions.container, $e);
             $.each(o.categories, function (i, cat) {
                 if (typeof cat === 'string' && cat in _.contentTypes) {
-                    $(Mustache.render(o.catTemplate, {
+                    $(Mustache.render(o.catOptions.template, {
                         name: _.contentTypes[cat].name,
                         value: cat
                     })).data('cat', cat).appendTo($cats);
                 } else if (typeof cat === 'object' && 'contentType' in cat && cat.contentType in _.contentTypes) {
-                    $(Mustache.render(o.catTemplate, {
+                    $(Mustache.render(o.catOptions.template, {
                         name: ('name' in cat ? cat.name : _.contentTypes[cat.contentType].name),
                         value: cat.contentType
                     })).data('cat', cat.contentType).appendTo($cats);
@@ -400,24 +442,25 @@
             });
 
             // display preset tag options - passed as either strings or objects
-            $tags = $(o.tagContainer, $e);
+            $tags = $(o.tagOptions.container, $e);
             $.each(o.tags, function (i, tag) {
                 if (typeof tag == 'string') {
-                    $(Mustache.render(o.tagTemplate, {
+                    $(Mustache.render(o.tagOptions.template, {
                         name: tag, 
                         value: tag
                     })).data('tag', tag).appendTo($tags);
                 } else if (typeof tag == 'object' && 'value' in tag) {
-                    $(Mustache.render(o.tagTemplate, {
-                        name: ('name' in tag ? tag.name : tag.value), 
-                        value: tag
-                    })).data('tag', tag).appendTo($tags);
+                    // TODO: support multiple values passed as an array
+                    $(Mustache.render(o.tagOptions.template, {
+                        name: 'name' in tag ? tag.name : tag.value, 
+                        value: tag.value
+                    })).data('tag', tag.value).appendTo($tags);
                 }
             });
 
             _._bindEvents();
 
-            $(o.catTrigger, $cats).first().click();
+            $(o.catOptions.trigger, $cats).first().click();
         },
 
         _create: function () {

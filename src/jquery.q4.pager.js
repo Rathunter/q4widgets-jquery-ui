@@ -42,7 +42,7 @@
             if (typeof o.beforeChange == 'function') o.beforeChange(this, page);
 
             // abort if page doesn't exist
-            if (!$.inArray(page, this.pages)) return;
+            if ($.inArray(page, this.pages) == -1) return;
 
             var index = this.pages.indexOf(page),
                 last = this.pages.length - 1;
@@ -84,7 +84,7 @@
                 // initialize pages from a fixed list
                 this.pages = o.pages;
                 pageCount = this.pages.length;
-                if (o.startPage && $.inArray(o.startPage, this.pages)) startPage = o.startPage;
+                if (o.startPage && $.inArray(o.startPage, this.pages) > -1) startPage = o.startPage;
 
             } else {
                 // initialize pages by number of items

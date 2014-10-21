@@ -18,7 +18,7 @@
             /* A selector for each trigger. */
             trigger: '> *',
             /* A template for each trigger. */
-            template: '<span>{{label}}</span>',
+            template: '<span>{{page}}</span>',
             /* The text to display for first/last/previous/next page triggers. */
             labels: {
                 first: '«',
@@ -34,12 +34,9 @@
 
         pages: [],
 
-        changePage: function (page) {
+        setPage: function (page) {
             var $e = this.element,
                 o = this.options;
-
-            // fire before callback
-            if (typeof o.beforeChange == 'function') o.beforeChange(this, page);
 
             // abort if page doesn't exist
             if ($.inArray(page, this.pages) == -1) return;
@@ -57,6 +54,16 @@
             $('.pager-page', $e).removeClass('pager-active').filter(function () {
                 return $(this).data('page') == page;
             }).addClass('pager-active');
+        },
+
+        changePage: function (page) {
+            var o = this.options;
+
+            // fire before callback
+            if (typeof o.beforeChange == 'function') o.beforeChange(this, page);
+
+            // set the actual page
+            this.setPage(page);
 
             // fire after callback
             if (typeof o.afterChange == 'function') o.afterChange(this, page);
@@ -97,19 +104,19 @@
             }
 
             // draw pager
-            if (o.showFirstLast) $(Mustache.render(o.template, {label: o.labels.first})).addClass('pager-first').data('page', 1).appendTo($e);
-            if (o.showPrevNext) $(Mustache.render(o.template, {label: o.labels.prev})).addClass('pager-prev pager-disabled').appendTo($e);
+            if (o.showFirstLast) $(Mustache.render(o.template, {page: o.labels.first})).addClass('pager-first').data('page', 1).appendTo($e);
+            if (o.showPrevNext) $(Mustache.render(o.template, {page: o.labels.prev})).addClass('pager-prev pager-disabled').appendTo($e);
             $.each(this.pages, function (index, page) {
-                $(Mustache.render(o.template, {label: page})).addClass('pager-page').data('page', page).appendTo($e);
+                $(Mustache.render(o.template, {page: page})).addClass('pager-page').data('page', page).appendTo($e);
             });
-            if (o.showPrevNext) $(Mustache.render(o.template, {label: o.labels.next})).addClass('pager-next pager-disabled').appendTo($e);
-            if (o.showFirstLast) $(Mustache.render(o.template, {label: o.labels.last})).addClass('pager-last').data('page', pageCount).appendTo($e);
+            if (o.showPrevNext) $(Mustache.render(o.template, {page: o.labels.next})).addClass('pager-next pager-disabled').appendTo($e);
+            if (o.showFirstLast) $(Mustache.render(o.template, {page: o.labels.last})).addClass('pager-last').data('page', pageCount).appendTo($e);
 
             // disable page trigger if there is only one page
             if (pageCount == 1) $('.pager-page', $e).addClass('pager-disabled');
 
             // go to start page if possible
-            if (startPage !== null) this.changePage(startPage);
+            if (startPage !== null) this.setPage(startPage);
         },
 
         _init: function () {

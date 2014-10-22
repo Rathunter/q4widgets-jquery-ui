@@ -318,7 +318,7 @@
             });
         },
 
-        countDocuments: function () {
+        countAndLoadDocuments: function () {
             var _ = this,
                 $e = this.element,
                 o = this.options,
@@ -326,13 +326,15 @@
                     tag: $e.data('tag'),
                     year: $e.data('year')
                 },
-                $docs = $(o.docContainer, $e).html(o.loadingTemplate);
+                $docs = $(o.docContainer, $e).html(o.loadingTemplate),
+                $docsfound = $(o.docsFoundContainer, $e).empty(),
+                $pager = $(o.pagerContainer, $e).empty();
 
             // fetch filter options and get page count
             $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
                 $e.data('total', data.total);
                 if (!data.total) {
-                    $docs.html(o.noDocsTemplate);
+                    $docsfound.html(o.noDocsTemplate);
                     return;
                 }
 
@@ -353,7 +355,6 @@
                 }
                 
                 // render pager, if applicable
-                var $pager = $(o.pagerContainer, $e).empty();
                 if ($e.data('perPage') && $pager.length) {
                     $pager.pager({
                         count: data.total,
@@ -424,7 +425,7 @@
                 $e.data(filter, values);
             }
 
-            this.countDocuments();
+            this.countAndLoadDocuments();
         },
 
         _bindEvents: function () {
@@ -475,46 +476,34 @@
             });
 
             // display content type options - passed as either strings or objects
-            var $ctypes = $(o.ctypeOptions.container, $e),
-                ctypes = [];
+            var $ctypes = $(o.ctypeOptions.container, $e);
             $.each(o.contentTypes, function (i, ctype) {
                 if (typeof ctype === 'string' && ctype in _.contentTypes) {
-                    ctypes.push({
-                        name: _.contentTypes[ctype].name,
-                        value: ctype
-                    });
-                } else if (typeof ctype === 'object' && 'contentType' in ctype && ctype.contentType in _.contentTypes) {
-                    ctypes.push({
-                        name: ('name' in ctype ? ctype.name : _.contentTypes[ctype.contentType].name),
-                        value: ctype.contentType
-                    });
+                    ctype = {name: _.contentTypes[ctype].name, contentType: ctype};
                 }
-            });
-            $.each(ctypes, function (i, ctype) {
-                $(Mustache.render(o.ctypeOptions.template, ctype)).data('ctype', ctype.value).appendTo($ctypes);
+                else if (typeof ctype === 'object' && 'contentType' in ctype && ctype.contentType in _.contentTypes) {
+                    if (!('name' in ctype)) ctype.name = _.contentTypes[ctype.contentType].name;
+                }
+                else return true;
+
+                $(Mustache.render(o.ctypeOptions.template, ctype)).data('ctype', ctype.contentType).appendTo($ctypes);
             });
             // start with first content type
-            this._setInput('ctype', ctypes[0].value);
-            $e.data('ctype', ctypes[0].value);
+            this._setInput('ctype', o.contentTypes[0].contentType);
+            $e.data('ctype', o.contentTypes[0].contentType);
 
             // display preset tag options - passed as either strings or objects
-            var $tags = $(o.tagOptions.container, $e),
-                tags = [];
+            var $tags = $(o.tagOptions.container, $e);
             $.each(o.tags, function (i, tag) {
+                // TODO: support multiple tags or tag values passed as an array
                 if (typeof tag === 'string') {
-                    tags.push({
-                        name: tag, 
-                        value: tag
-                    });
-                } else if (typeof tag === 'object' && 'value' in tag) {
-                    // TODO: support multiple values passed as an array
-                    tags.push({
-                        name: 'name' in tag ? tag.name : tag.value, 
-                        value: tag.value
-                    });
+                    tag = {name: tag, value: tag};
                 }
-            });
-            $.each(tags, function (i, tag) {
+                else if (typeof tag === 'object' && 'value' in tag) {
+                    if (!('name' in tag)) tag.name = tag.value;
+                }
+                else return true;
+
                 $(Mustache.render(o.tagOptions.template, tag)).data('tag', tag.value).appendTo($tags);
             });
 
@@ -534,10 +523,6 @@
                 _._setInput('perPage', perPage[0]);
                 $e.data('perPage', perPage[0]);
             }
-
-            this._bindEvents();
-
-            this.countDocuments();
         },
 
         _create: function () {
@@ -553,6 +538,8 @@
             };
 
             this._drawLibrary();
+            this._bindEvents();
+            this.countAndLoadDocuments();
         }
     });
 })(jQuery);

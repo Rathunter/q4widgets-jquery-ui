@@ -280,183 +280,21 @@
             }
         },
 
-        loadDocuments: function () {
-            var _ = this,
-                $e = _.element,
-                o = _.options,
-                ctype = $e.data('ctype'),
-                opts = {
-                    tag: $e.data('tag'),
-                    year: $e.data('year'),
-                    skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
-                    limit: $e.data('perPage') || 0
-                },
-                $docs = $(o.docContainer, $e).html(o.loadingTemplate);
+        _create: function () {
+            var o = this.options;
 
-            // get this page of records for current filter options
-            $.getJSON(o.feedUrl + ctype + '?callback=?', opts, function (data) {
-                var template = _.contentTypes[ctype].multiple ? o.multiDocTemplate : o.singleDocTemplate,
-                    docs = [],
-                    $docsfound = $(o.docsFoundContainer, $e);
+            $.ajaxSetup({cache: true});
 
-                // render document list
-                $.each(data, function (i, item) {
-                    var itemData = _.contentTypes[ctype].parse(item.Q4Dto, o);
-                    if (itemData) docs.push(itemData);
-                });
-                $docs.html(Mustache.render(template, {docs: docs}));
-
-                // render "documents found" message
-                $docsfound.html(Mustache.render(o.docsFoundTemplate, {
-                    docCount: docs.length,
-                    docTotal: $e.data('total'),
-                    docFirst: opts.skip + 1,
-                    docLast: opts.skip + docs.length,
-                    page: $e.data('page'),
-                    pageCount: Math.ceil($e.data('total') / $e.data('perPage'))
-                }));
-            });
-        },
-
-        countAndLoadDocuments: function () {
-            var _ = this,
-                $e = this.element,
-                o = this.options,
-                countOpts = {
-                    tag: $e.data('tag'),
-                    year: $e.data('year')
-                },
-                $docs = $(o.docContainer, $e).html(o.loadingTemplate),
-                $docsfound = $(o.docsFoundContainer, $e).empty(),
-                $pager = $(o.pagerContainer, $e).empty();
-
-            // fetch filter options and get page count
-            $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
-                $e.data('total', data.total);
-                if (!data.total) {
-                    $docsfound.html(o.noDocsTemplate);
-                    return;
-                }
-
-                // if we are loading fresh data, redraw the years filter
-                if (!$e.data('year')) {
-                    // obviously this next line is temporary!
-                    // the list of years should be retrieved from the API
-                    $e.data('years', [2014, 2013, 2012]);
-                    if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
-
-                    // render years, if applicable
-                    var $years = $(o.yearOptions.container, $e).empty();
-                    if (o.sortByYear && $years.length) {
-                        $.each($e.data('years'), function (i, year) {
-                            $(Mustache.render(o.yearOptions.template, {year: year})).data('year', year).appendTo($years);
-                        });
-                    }
-                }
-                
-                // render pager, if applicable
-                if ($e.data('perPage') && $pager.length) {
-                    $pager.pager({
-                        count: data.total,
-                        perPage: $e.data('perPage'),
-                        trigger: o.pagerTrigger,
-                        template: o.pagerTemplate,
-                        labels: o.pagerLabels,
-                        beforeChange: function (pager, page) {
-                            $e.data('page', page);
-                            _.loadDocuments();
-                        }
-                    });
-                }
-
-                // show the first page
-                $e.data('page', 1);
-                _.loadDocuments();
-            });
-        },
-
-        _setInput: function (filter, value) {
-            var $e = this.element,
-                opts = this.filterOpts[filter];
-
-            // values are displayed differently for different input types
-            if (opts.input == 'select' || opts.input == 'text') {
-                $(opts.container, $e).val(value);
-
-            } else if (opts.input == 'trigger') {
-                var $triggers = $(opts.container + ' ' + opts.trigger, $e),
-                    $trigger = $triggers.filter(function () {
-                        return $(this).data(filter) == value;
-                    });
-
-                if (!opts.allowNone && $trigger.hasClass('active') && $triggers.filter('.active').length == 1) {
-                    // at least one trigger must be active at a time
-                    return;
-                }
-                if (!opts.allowMulti) {
-                    // only one trigger can to be active at a time
-                    $triggers.removeClass('active');
-                }
-                $trigger.toggleClass('active');
-            }
-        },
-
-        _updateFilterFromInput: function (filter) {
-            var $e = this.element,
-                opts = this.filterOpts[filter];
-
-            // reset year if we are updating a content filter
-            if (filter == 'ctype' || filter == 'tag') {
-                $e.removeData('year');
-            }
-
-            // data is gathered differently for different input types
-            if (opts.input == 'select' || opts.input == 'text') {
-                $e.data(filter, $(opts.container, $e).val());
-
-            } else if (opts.input == 'trigger') {
-                var $triggers = $(opts.container + ' ' + opts.trigger, $e);
-
-                // get values of all active triggers
-                var values = [];
-                $triggers.filter('.active').each(function () {
-                    values.push($(this).data(filter));
-                });
-                $e.data(filter, values);
-            }
-
-            this.countAndLoadDocuments();
-        },
-
-        _bindEvents: function () {
-            var $e = this.element,
-                o = this.options;
-
-            // need to set these in a slightly unusual way because of the variable selectors
-            var handlers = {};
-
-            // add handlers for each filter input
-            $.each(this.filterOpts, function (filter, opts) {
-                if (opts.input == 'select' || opts.input == 'text') {
-                    // just update the filter data
-                    handlers['change ' + opts.container] = function (e) {
-                        this._updateFilterFromInput(filter);
-                    }
-                } else if (opts.input == 'trigger') {
-                    // update trigger display, then update the filter data
-                    handlers['click ' + opts.container + ' ' + opts.trigger] = function (e) {
-                        this._setInput(filter, $(e.target).data(filter));
-                        this._updateFilterFromInput(filter);
-                    }
-                }
-            });
-
-            // add handler for clicking an accordion trigger
-            handlers['click ' + o.docContainer + ' ' + o.accordionContainer + ' ' + o.accordionTrigger] = function (e) {
-                $(e.currentTarget).closest(o.accordionContainer).find(o.accordionDocContainer).slideToggle(200);
+            this.filterOpts = {
+                ctype: o.ctypeOptions,
+                tag: o.tagOptions,
+                year: o.yearOptions,
+                perPage: o.perPageOptions
             };
 
-            this._on(handlers);
+            this._drawLibrary();
+            this._bindEvents();
+            this._countAndLoadDocuments();
         },
 
         _drawLibrary: function () {
@@ -525,21 +363,183 @@
             }
         },
 
-        _create: function () {
-            var o = this.options;
+        _bindEvents: function () {
+            var $e = this.element,
+                o = this.options;
 
-            $.ajaxSetup({cache: true});
+            // need to set these in a slightly unusual way because of the variable selectors
+            var handlers = {};
 
-            this.filterOpts = {
-                ctype: o.ctypeOptions,
-                tag: o.tagOptions,
-                year: o.yearOptions,
-                perPage: o.perPageOptions
+            // add handlers for each filter input
+            $.each(this.filterOpts, function (filter, opts) {
+                if (opts.input == 'select' || opts.input == 'text') {
+                    // just update the filter data
+                    handlers['change ' + opts.container] = function (e) {
+                        this._updateFilterFromInput(filter);
+                    }
+                } else if (opts.input == 'trigger') {
+                    // update trigger display, then update the filter data
+                    handlers['click ' + opts.container + ' ' + opts.trigger] = function (e) {
+                        this._setInput(filter, $(e.target).data(filter));
+                        this._updateFilterFromInput(filter);
+                    }
+                }
+            });
+
+            // add handler for clicking an accordion trigger
+            handlers['click ' + o.docContainer + ' ' + o.accordionContainer + ' ' + o.accordionTrigger] = function (e) {
+                $(e.currentTarget).closest(o.accordionContainer).find(o.accordionDocContainer).slideToggle(200);
             };
 
-            this._drawLibrary();
-            this._bindEvents();
-            this.countAndLoadDocuments();
+            this._on(handlers);
+        },
+
+        _setInput: function (filter, value) {
+            var $e = this.element,
+                opts = this.filterOpts[filter];
+
+            // values are displayed differently for different input types
+            if (opts.input == 'select' || opts.input == 'text') {
+                $(opts.container, $e).val(value);
+
+            } else if (opts.input == 'trigger') {
+                var $triggers = $(opts.container + ' ' + opts.trigger, $e),
+                    $trigger = $triggers.filter(function () {
+                        return $(this).data(filter) == value;
+                    });
+
+                if (!opts.allowNone && $trigger.hasClass('active') && $triggers.filter('.active').length == 1) {
+                    // at least one trigger must be active at a time
+                    return;
+                }
+                if (!opts.allowMulti) {
+                    // only one trigger can to be active at a time
+                    $triggers.removeClass('active');
+                }
+                $trigger.toggleClass('active');
+            }
+        },
+
+        _updateFilterFromInput: function (filter) {
+            var $e = this.element,
+                opts = this.filterOpts[filter];
+
+            // reset year if we are updating a content filter
+            if (filter == 'ctype' || filter == 'tag') {
+                $e.removeData('year');
+            }
+
+            // data is gathered differently for different input types
+            if (opts.input == 'select' || opts.input == 'text') {
+                $e.data(filter, $(opts.container, $e).val());
+
+            } else if (opts.input == 'trigger') {
+                var $triggers = $(opts.container + ' ' + opts.trigger, $e);
+
+                // get values of all active triggers
+                var values = [];
+                $triggers.filter('.active').each(function () {
+                    values.push($(this).data(filter));
+                });
+                $e.data(filter, values);
+            }
+
+            this._countAndLoadDocuments();
+        },
+
+        _countAndLoadDocuments: function () {
+            var _ = this,
+                $e = this.element,
+                o = this.options,
+                countOpts = {
+                    tag: $e.data('tag'),
+                    year: $e.data('year')
+                },
+                $docs = $(o.docContainer, $e).html(o.loadingTemplate),
+                $docsfound = $(o.docsFoundContainer, $e).empty(),
+                $pager = $(o.pagerContainer, $e).empty();
+
+            // fetch filter options and get page count
+            $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
+                $e.data('total', data.total);
+                if (!data.total) {
+                    $docsfound.html(o.noDocsTemplate);
+                    return;
+                }
+
+                // if we are loading fresh data, redraw the years filter
+                if (!$e.data('year')) {
+                    // obviously this next line is temporary!
+                    // the list of years should be retrieved from the API
+                    $e.data('years', [2014, 2013, 2012]);
+                    if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
+
+                    // render years, if applicable
+                    var $years = $(o.yearOptions.container, $e).empty();
+                    if (o.sortByYear && $years.length) {
+                        $.each($e.data('years'), function (i, year) {
+                            $(Mustache.render(o.yearOptions.template, {year: year})).data('year', year).appendTo($years);
+                        });
+                    }
+                }
+                
+                // render pager, if applicable
+                if ($e.data('perPage') && $pager.length) {
+                    $pager.pager({
+                        count: data.total,
+                        perPage: $e.data('perPage'),
+                        trigger: o.pagerTrigger,
+                        template: o.pagerTemplate,
+                        labels: o.pagerLabels,
+                        beforeChange: function (pager, page) {
+                            $e.data('page', page);
+                            _._loadDocuments();
+                        }
+                    });
+                }
+
+                // show the first page
+                $e.data('page', 1);
+                _._loadDocuments();
+            });
+        },
+
+        _loadDocuments: function () {
+            var _ = this,
+                $e = _.element,
+                o = _.options,
+                ctype = $e.data('ctype'),
+                opts = {
+                    tag: $e.data('tag'),
+                    year: $e.data('year'),
+                    skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
+                    limit: $e.data('perPage') || 0
+                },
+                $docs = $(o.docContainer, $e).html(o.loadingTemplate);
+
+            // get this page of records for current filter options
+            $.getJSON(o.feedUrl + ctype + '?callback=?', opts, function (data) {
+                var template = _.contentTypes[ctype].multiple ? o.multiDocTemplate : o.singleDocTemplate,
+                    docs = [],
+                    $docsfound = $(o.docsFoundContainer, $e);
+
+                // render document list
+                $.each(data, function (i, item) {
+                    var itemData = _.contentTypes[ctype].parse(item.Q4Dto, o);
+                    if (itemData) docs.push(itemData);
+                });
+                $docs.html(Mustache.render(template, {docs: docs}));
+
+                // render "documents found" message
+                $docsfound.html(Mustache.render(o.docsFoundTemplate, {
+                    docCount: docs.length,
+                    docTotal: $e.data('total'),
+                    docFirst: opts.skip + 1,
+                    docLast: opts.skip + docs.length,
+                    page: $e.data('page'),
+                    pageCount: Math.ceil($e.data('total') / $e.data('perPage'))
+                }));
+            });
         }
     });
 })(jQuery);

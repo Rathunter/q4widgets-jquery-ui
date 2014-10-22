@@ -102,11 +102,17 @@
             },
 
             perPageOptions: {
+                /* A selector for the container. */
                 container: '.perpage',
+                /* The type of input to use. */
                 input: 'select',
+                /* A template for each trigger or select option. */
                 template: '<option>{{number}}</option>',
+                /* A selector for each trigger. */
                 trigger: '> *',
+                /* Whether to allow multiple triggers to be selected at once. */
                 allowMulti: false,
+                /* Whether to allow no triggers to be selected. */
                 allowNone: false
             },
 
@@ -330,28 +336,22 @@
                     return;
                 }
 
-                // obviously this is temporary!
-                // this list of years should be retrieved from the API
-                $e.data('years', [2014, 2013, 2012]);
-                $e.data('year', $e.data('years').length ? $e.data('years')[0] : 0);
-                
-                // render years, if applicable
-                var $years = $(o.yearOptions.container, $e).empty();
-                if (o.sortByYear && $years.length) {
-                    $years.pager({
-                        pages: $e.data('years'),
-                        showFirstLast: false,
-                        showPrevNext: false,
-                        trigger: o.yearOptions.trigger,
-                        template: o.yearOptions.template.replace('{{year}}', '{{page}}'),
-                        labels: o.pagerLabels,
-                        beforeChange: function (pager, year) {
-                            $e.data('year', year);
-                            _.loadDocuments();
-                        }
-                    });
-                }
+                // if we are loading fresh data, redraw the years filter
+                if (!$e.data('year')) {
+                    // obviously this next line is temporary!
+                    // the list of years should be retrieved from the API
+                    $e.data('years', [2014, 2013, 2012]);
+                    if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
 
+                    // render years, if applicable
+                    var $years = $(o.yearOptions.container, $e).empty();
+                    if (o.sortByYear && $years.length) {
+                        $.each($e.data('years'), function (i, year) {
+                            $(Mustache.render(o.yearOptions.template, {year: year})).data('year', year).appendTo($years);
+                        });
+                    }
+                }
+                
                 // render pager, if applicable
                 var $pager = $(o.pagerContainer, $e).empty();
                 if ($e.data('perPage') && $pager.length) {
@@ -378,6 +378,7 @@
             var $e = this.element,
                 opts = this.filterOpts[filter];
 
+            // values are displayed differently for different input types
             if (opts.input == 'select' || opts.input == 'text') {
                 $(opts.container, $e).val(value);
 
@@ -403,6 +404,12 @@
             var $e = this.element,
                 opts = this.filterOpts[filter];
 
+            // reset year if we are updating a content filter
+            if (filter == 'ctype' || filter == 'tag') {
+                $e.removeData('year');
+            }
+
+            // data is gathered differently for different input types
             if (opts.input == 'select' || opts.input == 'text') {
                 $e.data(filter, $(opts.container, $e).val());
 
@@ -427,6 +434,7 @@
             // need to set these in a slightly unusual way because of the variable selectors
             var handlers = {};
 
+            // add handlers for each filter input
             $.each(this.filterOpts, function (filter, opts) {
                 if (opts.input == 'select' || opts.input == 'text') {
                     // just update the filter data
@@ -461,7 +469,7 @@
             // revert invalid input options to default
             var inputTypes = ['select', 'trigger', 'text'];
             $.each([o.ctypeOptions, o.tagOptions, o.yearOptions], function (i, opts) {
-                if (!$.inArray(opts.input, inputTypes)) {
+                if ($.inArray(opts.input, inputTypes) == -1) {
                     opts.input = 'trigger';
                 };
             });

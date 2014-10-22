@@ -11,7 +11,7 @@
             dateFormat: 'MM/DD/YYYY',
             /* An overall template for the timeline. */
             template: (
-                '<ul class="categories"></ul>' +
+                '<ul class="content-types"></ul>' +
                 '<ul class="tags"></ul>' +
                 '<input type="text" class="search">' +
                 'Year: <select class="years"></select>' +
@@ -113,15 +113,15 @@
             /* A selector for the search box. */
             searchSelector: '.search',
 
-            /* An array of categories. Categories can be either
-             * content types, or {name, contentType} objects.
+            /* An array of content types. 
+             * These can be either strings, or {name, contentType} objects.
              * Content types must match the ones defined in this.contentTypes
              */
-            categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
-            /* Category options. */
-            catOptions: {
+            contentTypes: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
+            /* Content type options. */
+            ctypeOptions: {
                 /* A selector for the container. */
-                container: '.categories',
+                container: '.content-types',
                 /* The type of input to use. */
                 input: 'trigger',
                 /* A template for each trigger or select option. */
@@ -135,7 +135,7 @@
             },
 
             /* An array of preset tags to filter by
-             * (if tagInput is 'select' or 'trigger').
+             * (used if tagOptions.input is 'select' or 'trigger').
              * Tags can be either strings, or {name, value} objects.
              */
             tags: [],
@@ -278,7 +278,7 @@
             var _ = this,
                 $e = _.element,
                 o = _.options,
-                cat = $e.data('cat'),
+                ctype = $e.data('ctype'),
                 opts = {
                     tag: $e.data('tag'),
                     year: $e.data('year'),
@@ -288,14 +288,14 @@
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate);
 
             // get this page of records for current filter options
-            $.getJSON(o.feedUrl + cat + '?callback=?', opts, function (data) {
-                var template = _.contentTypes[cat].multiple ? o.multiDocTemplate : o.singleDocTemplate,
+            $.getJSON(o.feedUrl + ctype + '?callback=?', opts, function (data) {
+                var template = _.contentTypes[ctype].multiple ? o.multiDocTemplate : o.singleDocTemplate,
                     docs = [],
                     $docsfound = $(o.docsFoundContainer, $e);
 
                 // render document list
                 $.each(data, function (i, item) {
-                    var itemData = _.contentTypes[cat].parse(item.Q4Dto, o);
+                    var itemData = _.contentTypes[ctype].parse(item.Q4Dto, o);
                     if (itemData) docs.push(itemData);
                 });
                 $docs.html(Mustache.render(template, {docs: docs}));
@@ -323,7 +323,7 @@
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate);
 
             // fetch filter options and get page count
-            $.getJSON(o.feedUrl + $e.data('cat') + '/count?callback=?', countOpts, function (data) {
+            $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
                 $e.data('total', data.total);
                 if (!data.total) {
                     $docs.html(o.noDocsTemplate);
@@ -460,34 +460,34 @@
 
             // revert invalid input options to default
             var inputTypes = ['select', 'trigger', 'text'];
-            $.each([o.catOptions, o.tagOptions, o.yearOptions], function (i, opts) {
+            $.each([o.ctypeOptions, o.tagOptions, o.yearOptions], function (i, opts) {
                 if (!$.inArray(opts.input, inputTypes)) {
                     opts.input = 'trigger';
                 };
             });
 
-            // display category options - passed as either strings or objects
-            var $cats = $(o.catOptions.container, $e),
-                cats = [];
-            $.each(o.categories, function (i, cat) {
-                if (typeof cat === 'string' && cat in _.contentTypes) {
-                    cats.push({
-                        name: _.contentTypes[cat].name,
-                        value: cat
+            // display content type options - passed as either strings or objects
+            var $ctypes = $(o.ctypeOptions.container, $e),
+                ctypes = [];
+            $.each(o.contentTypes, function (i, ctype) {
+                if (typeof ctype === 'string' && ctype in _.contentTypes) {
+                    ctypes.push({
+                        name: _.contentTypes[ctype].name,
+                        value: ctype
                     });
-                } else if (typeof cat === 'object' && 'contentType' in cat && cat.contentType in _.contentTypes) {
-                    cats.push({
-                        name: ('name' in cat ? cat.name : _.contentTypes[cat.contentType].name),
-                        value: cat.contentType
+                } else if (typeof ctype === 'object' && 'contentType' in ctype && ctype.contentType in _.contentTypes) {
+                    ctypes.push({
+                        name: ('name' in ctype ? ctype.name : _.contentTypes[ctype.contentType].name),
+                        value: ctype.contentType
                     });
                 }
             });
-            $.each(cats, function (i, cat) {
-                $(Mustache.render(o.catOptions.template, cat)).data('cat', cat.value).appendTo($cats);
+            $.each(ctypes, function (i, ctype) {
+                $(Mustache.render(o.ctypeOptions.template, ctype)).data('ctype', ctype.value).appendTo($ctypes);
             });
-            // start with first category
-            this._setInput('cat', cats[0].value);
-            $e.data('cat', cats[0].value);
+            // start with first content type
+            this._setInput('ctype', ctypes[0].value);
+            $e.data('ctype', ctypes[0].value);
 
             // display preset tag options - passed as either strings or objects
             var $tags = $(o.tagOptions.container, $e),
@@ -538,7 +538,7 @@
             $.ajaxSetup({cache: true});
 
             this.filterOpts = {
-                cat: o.catOptions,
+                ctype: o.ctypeOptions,
                 tag: o.tagOptions,
                 year: o.yearOptions,
                 perPage: o.perPageOptions

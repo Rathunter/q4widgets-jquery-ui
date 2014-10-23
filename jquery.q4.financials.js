@@ -30,6 +30,13 @@
             reportTypes: [],
             /**
              * @cfg
+             * A list of document categories to display.
+             * Example: Financial Report, MD&A, Earnings Press Release.
+             * Use an empty list to display all (default).
+             */
+            docCategories: [],
+            /**
+             * @cfg
              * A moment.js format string with which to display report and document dates.
              */
             dateFormat: 'MM/DD/YYYY',
@@ -142,14 +149,16 @@
                     };
 
                     $.each(report.Documents, function(i, doc) {
-                        tplReport.docs.push({
-                            docCategory: doc.DocumentCategory,
-                            docSize: doc.DocumentFileSize,
-                            docThumbUrl: doc.DocumentThumbnailPath,
-                            docTitle: doc.DocumentTitle,
-                            docType: doc.DocumentFileType,
-                            docUrl: doc.DocumentPath
-                        });
+                        if (!o.docCategories.length || $.inArray(doc.DocumentCategory, o.docCategories) > -1) {
+                            tplReport.docs.push({
+                                docCategory: doc.DocumentCategory,
+                                docSize: doc.DocumentFileSize,
+                                docThumbUrl: doc.DocumentThumbnailPath,
+                                docTitle: doc.DocumentTitle,
+                                docType: doc.DocumentFileType,
+                                docUrl: doc.DocumentPath
+                            });
+                        }
                     });
 
                     tplData.reports.push(tplReport);

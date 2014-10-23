@@ -36,8 +36,10 @@
 
                 $.each($channel.children('item'), function (i, item) {
                     var $item = $(item),
-                        body = $item.children('description').text(),
-                        text = $(body).text().replace(/\/*<!\[CDATA\[[\s\S]*?\]\]>\/*/, '').trim();
+                        // body may be HTML or text, depending on the feed
+                        body = $item.children('description').text().trim(),
+                        // wrap body in a div to force it to HTML, then take the text
+                        text = $('<div>').html(body).text().replace(/\/*<!\[CDATA\[[\s\S]*?\]\]>\/*/g, '').trim();
 
                     feed.items.push({
                         title: $item.children('title').text(),

@@ -13,11 +13,13 @@
             template: (
                 '<ul class="content-types"></ul>' +
                 '<ul class="tags"></ul>' +
-                '<input type="text" class="search">' +
-                'Year: <select class="years"></select>' +
-                'Documents per page: <select class="perpage"></select>' +
-                '<ul class="documents"></ul>' +
+                '<p>' +
+                    '<input type="text" class="search">' +
+                    'Year: <select class="years"></select>' +
+                    'Documents per page: <select class="perpage"></select>' +
+                '</p>' +
                 '<p class="docsfound"></p>' +
+                '<ul class="documents"></ul>' +
                 '<ul class="pager"></ul>'
             ),
             /* An HTML string to display while loading. */
@@ -412,8 +414,8 @@
                     // at least one trigger must be active at a time
                     return;
                 }
-                if (!opts.allowMulti) {
-                    // only one trigger can to be active at a time
+                if (!opts.allowMulti && !$trigger.hasClass('active')) {
+                    // only one trigger can be active at a time
                     $triggers.removeClass('active');
                 }
                 $trigger.toggleClass('active');
@@ -463,6 +465,7 @@
             $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
                 $e.data('total', data.total);
                 if (!data.total) {
+                    $docs.empty();
                     $docsfound.html(o.noDocsTemplate);
                     return;
                 }

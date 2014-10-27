@@ -9,24 +9,24 @@
                     name: 'Blog',
                     type: 'rss',
                     url: '[blog rss url]',
-                    template: (
-                        ''
-                    )
+                    template: ''
                 },
                 {
                     name: 'Videos',
                     type: 'youtube',
                     username: '[youtube username]',
-                    template: (
-                        ''
-                    )
+                    template: ''
                 }
             ],
+            filter: [],
             template: (
-                '<h2><a href="{{url}}">{{title}}</a></h2>' + 
-                '<p>{{date}}</p>' + 
-                '{{summary}}'
-            )
+                '<li>' + 
+                    '<h2><a href="{{url}}">{{title}}</a></h2>' + 
+                    '<p>{{date}}</p>' + 
+                    '{{summary}}' +
+                '</li>'
+            ),
+            complete: null
         },
 
         feedTypes: {
@@ -71,7 +71,8 @@
                             title: item.title.$t,
                             url: item.link[0].href,
                             date: moment(item.updated.$t),
-                            content: item.content.$t
+                            content: item.content.$t,
+                            thumb: $(item.content.$t).find('img').eq(0).attr('src')
                         });
                     });
                     return items;
@@ -79,14 +80,20 @@
             }
         },
 
+        items: [],
+
         _create: function () {
+            this._fetchFeeds()
+        },
+
+        updateFilter: function (filter) {
+            this.options.filter = filter || [];
             this._renderFeeds();
         },
 
-        _renderFeeds: function (url) {
+        _fetchFeeds: function () {
             var _ = this,
-                o = this.options,
-                $e = this.element;
+                o = this.options;
 
             // get promise objects for the ajax call to each feed
             var fetches = [];
@@ -110,19 +117,38 @@
                     return b.date.diff(a.date);
                 });
 
-                // render
-                $.each(items, function (i, item) {
-                    if (o.limit > 0 && i == o.limit) return false;
+                _.items = items;
 
-                    // final formatting
-                    item.date = item.date.format(o.dateFormat);
-                    var text = $('<div>').html(item.content).text().trim();
-                    item.summary = text.slice(0, item.feed.summaryLength || o.summaryLength);
-                    item.firstLine = text.split('\n')[0];
-
-                    $e.append(Mustache.render(item.feed.template || o.template, item));
-                });
+                _._renderFeeds();
             });
+        },
+
+        _renderFeeds: function () {
+            var o = this.options,
+                $e = this.element.empty(),
+                count = 0;
+
+            if (!$.isArray(o.filter)) o.filter = [o.filter];
+
+            $.each(this.items, function (i, item) {
+                if (o.filter.length && $.inArray(item.feed.name, o.filter) == -1) return true;
+
+                if (o.limit > 0 && count == o.limit) return false;
+                count++;
+                
+                // formatting
+                var text = $('<div>').html(item.content).text().trim();
+                
+                $e.append(Mustache.render(item.feed.template || o.template, $.extend({}, item, {
+                    date: item.date.format(o.dateFormat),
+                    summary: text.slice(0, item.feed.summaryLength || o.summaryLength),
+                    firstLine: text.split('\n')[0]
+                })));
+            });
+
+            if (typeof o.complete === 'function') {
+                o.complete.call(this);
+            }
         }
     });
 })(jQuery);

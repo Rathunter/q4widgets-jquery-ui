@@ -21,33 +21,21 @@
             columns: 0,
             /**
              * @cfg
+             * The earliest year to display; previous years will be ignored.
+             * Set to zero to show all years (default).
+             **/
+            firstYear: 0,
+            /**
+             * @cfg
              * A list of document categories that will appear as rows in the table.
              * title: The title to display for that row.
              * reportType: A filter list of financial report subtypes (optional).
-             * text: The text to use for the link (default blank). This can optionally include the following codes:
-             *   {{year}}: the fiscal year of the report.
-             *   {{shortType}}: the short name of the report subtype (e.g. Q1, Q2, Annual).
-             * 
+             * category: A filter list of document categories (optional).
+             * tags: A filter list of tags (optional).
+             * text: The text to use for the link (default blank).
+             *   See options.template documentation for available tags.
              */
-            categories: [
-                {
-                    title: 'Quarterly Report',
-                    reportType: ['First Quarter', 'Second Quarter', 'Third Quarter', 'Fourth Quarter'],
-                    text: '{{shortType}}',
-                    cssClass: 'quarterly'
-                },
-                {
-                    title: '10-K',
-                    category: ['10-K'],
-                    reportType: ['Annual Report'],
-                    text: '{{year}}'
-                },
-                {
-                    title: 'Proxy Statement',
-                    category: ['Proxy'],
-                    text: 'Proxy'
-                }
-            ],
+            categories: [],
             /**
              * @cfg
              * A map of short names for each report subtype.
@@ -68,7 +56,16 @@
              * Categories have these tags: {{catTitle}}, {{catClass}}
              * Within a category, use {{#catYears}} to loop through years.
              * Within a year, use {{#docs}} to loop through documents.
-             * Documents have these tags: {{docText}}, {{docType}}, {{docUrl}}
+             * Documents can have these tags:
+             *   {{text}}: The value of the category's "text" option
+             *     (which might contain any of the below tags).
+             *   {{fileType}}: the document file type.
+             *   {{shortType}}: the short name of the report subtype,
+             *     as defined in options.shortTypes (e.g. Q1, Q2, Annual).
+             *   {{size}}: the size of the document file.
+             *   {{title}}: the title of the document.
+             *   {{url}}: the URL of the document file.
+             *   {{year}}: the fiscal year of the report.
              */
             template: (
                 '<ul class="ftHeader">' +
@@ -93,9 +90,9 @@
             complete: null
         },
 
-        fetchFinancials: function() {
+        _fetchFinancials: function() {
             var _ = this,
-                o = _.options,
+                o = this.options,
                 params = {
                     serviceDto: {
                         ViewType: GetViewType(),
@@ -115,14 +112,13 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function(data) {
-                    _.drawFinancialTable(data);
+                    _._drawFinancialTable(data);
                 }
             });
         },
 
-        drawFinancialTable: function(data) {
-            var _ = this,
-                o = _.options,
+        _drawFinancialTable: function(data) {
+            var o = this.options,
                 years = [],
                 documents = {},
                 tplData = {
@@ -132,7 +128,7 @@
 
             // Create a list of years.
             $.each(data.GetFinancialReportListResult, function(i, report) {
-                if ($.inArray(report.ReportYear, years) == -1) {
+                if ($.inArray(report.ReportYear, years) == -1 && (o.firstYear == 0 || report.ReportYear >= o.firstYear)) {
                     years.push(report.ReportYear);
                 }
             });
@@ -145,10 +141,16 @@
 
             // Create a document object indexed by category and year.
             $.each(o.categories, function(i, cat) {
+                // Add this category to the document object.
                 documents[cat.title] = {};
                 $.each(years, function(i, year) {
                     documents[cat.title][year] = [];
                 });
+
+                // Also, normalize category filters to arrays.
+                if (!$.isArray(cat.category)) cat.category = cat.category ? [cat.category] : [];
+                if (!$.isArray(cat.reportType)) cat.reportType = cat.reportType ? [cat.reportType] : [];
+                if (!$.isArray(cat.tags)) cat.tags = cat.tags ? [cat.tags] : [];
             });
 
             // Loop through all documents for the selected years, and add them to the data object.
@@ -157,18 +159,27 @@
 
                 $.each(report.Documents, function(i, doc) {
                     $.each(o.categories, function(i, cat) {
-                        // Skip categories that don't match this document.
-                        if ('category' in cat && cat.category.length && cat.category != doc.DocumentCategory) return true;
-                        if ('reportType' in cat && cat.reportType.length && cat.reportType != report.ReportSubType) return true;
+                        // Skip document if category/tag filters don't match.
+                        if (cat.category.length && $.inArray(doc.DocumentCategory, cat.category) == -1) return true;
+                        if (cat.reportType.length && $.inArray(report.ReportSubType, cat.reportType) == -1) return true;
+                        if (cat.tags.length && !$(doc.TagsList).filter(cat.tags).length) return true;
 
                         // Add the document to the data object in the correct category and year.
                         documents[cat.title][report.ReportYear].push({
-                            docText: 'text' in cat ? cat.text
-                                .replace('{{year}}', report.ReportYear)
-                                .replace('{{shortType}}', o.shortTypes[report.ReportSubType])
-                                : '',
-                            docType: doc.DocumentFileType,
-                            docUrl: doc.DocumentPath
+                            text: 'text' in cat ? Mustache.render(cat.text, {
+                                fileType: doc.DocumentFileType,
+                                shortType: o.shortTypes[report.ReportSubType],
+                                size: doc.DocumentFileSize,
+                                title: doc.DocumentTitle,
+                                url: doc.DocumentPath,
+                                year: report.ReportYear
+                            }): '',
+                            fileType: doc.DocumentFileType,
+                            shortType: o.shortTypes[report.ReportSubType],
+                            size: doc.DocumentFileSize,
+                            title: doc.DocumentTitle,
+                            url: doc.DocumentPath,
+                            year: report.ReportYear
                         });
                     });
                 });
@@ -186,7 +197,7 @@
                     catYears: []
                 };
                 $.each(years, function(i, year) {
-                    if (documents[cat.title].hasOwnProperty(year)) {
+                    if (year in documents[cat.title]) {
                         // Push the documents in reverse (i.e. ascending) order.
                         documents[cat.title][year].reverse();
                         tplCat.catYears.push({'docs': documents[cat.title][year]});
@@ -198,18 +209,18 @@
             });
 
             // Render the template and append it to the element.
-            _.element.append(Mustache.render(o.template, tplData));
+            this.element.append(Mustache.render(o.template, tplData));
 
             // Fire the complete callback.
             if (typeof o.complete === 'function') {
-                o.complete();
+                o.complete.call(this);
             }
         },
 
         _create: function() {
             $.ajaxSetup({cache: true});
 
-            this.fetchFinancials();
+            this._fetchFinancials();
         }
     });
 })(jQuery);

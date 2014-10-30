@@ -19,11 +19,13 @@
                     '{{{body}}}' +
                 '</article>' +
                 '{{/items}}'
-            )
+            ),
+            complete: null
         },
 
         _renderFeed: function (url) {
-            var o = this.options,
+            var _ = this,
+                o = this.options,
                 $e = this.element;
 
             $.get(o.url, function (xml) {
@@ -54,7 +56,12 @@
                     });
                 });
 
-                $e.html(Mustache.render(o.template, feed));
+                $e.append(Mustache.render(o.template, feed));
+
+                if (typeof o.complete === 'function') {
+                    console.log('done');
+                    o.complete.call(_);
+                }
             });
         },
 

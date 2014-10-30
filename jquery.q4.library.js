@@ -454,7 +454,7 @@
                 $e = this.element,
                 o = this.options,
                 countOpts = {
-                    tag: $e.data('tag'),
+                    tag: ($e.data('tag') || []).join('|'), // this may change in the API
                     year: $e.data('year')
                 },
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate),
@@ -462,6 +462,7 @@
                 $pager = $(o.pagerContainer, $e).empty();
 
             // fetch filter options and get page count
+            // TODO: support multiple content types
             $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
                 $e.data('total', data.total);
                 if (!data.total) {
@@ -513,7 +514,7 @@
                 o = _.options,
                 ctype = $e.data('ctype'),
                 opts = {
-                    tag: $e.data('tag'),
+                    tag: ($e.data('tag') || []).join('|'), // this may change in the API
                     year: $e.data('year'),
                     skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
                     limit: $e.data('perPage') || 0

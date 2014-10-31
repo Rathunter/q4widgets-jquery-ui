@@ -1,24 +1,26 @@
 (function ($) {
     $.widget('q4.mashfeed', {
         options: {
-            limit: 10,
+            /* The global maximum number of items. 0 for unlimited (default). */
+            limit: 0,
+            /* A Moment.js format for dates. */
             dateFormat: 'MMM D, YYYY h:mm A',
+            /* The number of characters to truncate summaries to. */
             summaryLength: 500,
-            feeds: [
-                {
-                    name: 'Blog',
-                    type: 'rss',
-                    url: '[blog rss url]',
-                    template: ''
-                },
-                {
-                    name: 'Videos',
-                    type: 'youtube',
-                    username: '[youtube username]',
-                    template: ''
-                }
-            ],
+            /* Feeds to fetch. Should be a list of objects containing options
+             * for each feed. Valid options are:
+             *   name: The name of the feed.
+             *   type: The type, as listed in feedTypes (example: rss, youtube).
+             *   template: A Mustache template for a single feed item (optional).
+             * See feedTypes for type-specific options. */
+            feeds: [],
+            /* A list of feed names. If this list is not empty,
+             * only the feeds named in the list will be parsed.
+             */
             filter: [],
+            /* A default Mustache template for each feed item.
+             * Can be overridden for individual feed types.
+             */
             template: (
                 '<li>' + 
                     '<h2><a href="{{url}}">{{title}}</a></h2>' + 
@@ -26,10 +28,14 @@
                     '{{summary}}' +
                 '</li>'
             ),
+            /* A callback that fires after rendering is finished. */
             complete: null
         },
 
         feedTypes: {
+            /* Options for rss:
+             *   url: The url of the feed.
+             */
             rss: {
                 fetch: function (feed, o) {
                     return $.ajax({
@@ -55,6 +61,9 @@
                 }
             },
 
+            /* Options for youtube:
+             *   username: The username of the YouTube account to fetch from.
+             */
             youtube: {
                 fetch: function (feed, o) {
                     return $.ajax({

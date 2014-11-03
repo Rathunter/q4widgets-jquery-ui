@@ -41,7 +41,7 @@
             // abort if page doesn't exist
             if ($.inArray(page, this.pages) == -1) return;
 
-            var index = this.pages.indexOf(page),
+            var index = $.inArray(page, this.pages),
                 last = this.pages.length - 1;
 
             // update first/last/prev/next triggers

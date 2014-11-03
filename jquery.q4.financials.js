@@ -125,6 +125,7 @@
             var _ = this,
                 o = _.options,
                 years = [],
+                reportsByYear = {},
                 tplData = {
                     years: [],
                     reports: []
@@ -136,8 +137,10 @@
                     // Add this year to the years array if it's not there already.
                     if ($.inArray(report.ReportYear, years) == -1) {
                         years.push(report.ReportYear);
+                        reportsByYear[report.ReportYear] = [];
                     }
 
+                    // Format the report.
                     var tplReport = {
                         docs: [],
                         repCoverUrl: report.CoverImagePath,
@@ -148,6 +151,7 @@
                         repYear: report.ReportYear
                     };
 
+                    // Format the documents inside this report.
                     $.each(report.Documents, function(i, doc) {
                         if (!o.docCategories.length || $.inArray(doc.DocumentCategory, o.docCategories) > -1) {
                             tplReport.docs.push({
@@ -161,14 +165,19 @@
                         }
                     });
 
+                    // Add the report to the global list and the per-year list.
                     tplData.reports.push(tplReport);
+                    reportsByYear[report.ReportYear].push(tplReport);
                 }
             });
 
             // Sort the years in descending order.
             years.sort(function(a, b) { return b - a });
             $.each(years, function(i, year) {
-                tplData.years.push({year: year});
+                tplData.years.push({
+                    year: year,
+                    reports: reportsByYear[year]
+                });
             });
 
             // Render the template and append it to the element.

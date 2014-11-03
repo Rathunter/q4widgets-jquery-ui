@@ -146,7 +146,7 @@
                 count++;
                 
                 // formatting
-                var text = $('<div>').html(item.content).text().trim();
+                var text = $.trim($('<div>').html(item.content).text());
                 
                 $e.append(Mustache.render(item.feed.template || o.template, $.extend({}, item, {
                     date: item.date.format(o.dateFormat),

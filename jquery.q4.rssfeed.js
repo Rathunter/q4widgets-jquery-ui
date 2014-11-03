@@ -42,9 +42,9 @@
 
                     var $item = $(item),
                         // body may be HTML or text, depending on the feed
-                        body = $item.children('description').text().trim(),
+                        body = $.trim($item.children('description').text()),
                         // wrap body in a div to force it to HTML, then take the text
-                        text = $('<div>').html(body).text().replace(/\/*<!\[CDATA\[[\s\S]*?\]\]>\/*/g, '').trim();
+                        text = $.trim($('<div>').html(body).text().replace(/\/*<!\[CDATA\[[\s\S]*?\]\]>\/*/g, ''));
 
                     feed.items.push({
                         title: $item.children('title').text(),

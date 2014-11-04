@@ -79,6 +79,7 @@
                         items.push({
                             title: item.title.$t,
                             url: item.link[0].href,
+                            id: item.id.$t.split('/').pop(),
                             date: moment(item.updated.$t),
                             content: item.content.$t,
                             thumb: $(item.content.$t).find('img').eq(0).attr('src')

@@ -32,6 +32,13 @@
             complete: null
         },
 
+        /* A hash of feed types, indexed by id.
+         * Each is an object with the following properties:
+         *   fetch: A function that takes a feed object and widget options,
+         *     and returns an AJAX call to the feed.
+         *   parse: A function that takes raw feed data, a feed object, and
+         *     widget options, and returns a list of items for the template.
+         */
         feedTypes: {
             /* Options for rss:
              *   url: The url of the feed.
@@ -43,13 +50,15 @@
                         dataType: 'jsonp'
                     });
                 },
-                parse: function (data, o) {
+                parse: function (data, feed, o) {
                     var items = [];
 
                     $.each(data[0].responseData.feed.entries, function (i, item) {
                         if (o.limit > 0 && i == o.limit) return false;
 
                         items.push({
+                            feedName: feed.name,
+                            feedUrl: feed.url,
                             title: item.title,
                             url: item.link,
                             date: moment(item.publishedDate, 'DD MMM YYYY hh:mm:ss'),
@@ -71,12 +80,14 @@
                         dataType: 'jsonp'
                     });
                 },
-                parse: function (data, o) {
+                parse: function (data, feed, o) {
                     var items = [];
                     $.each(data[0].feed.entry, function (i, item) {
                         if (o.limit > 0 && i == o.limit) return false;
 
                         items.push({
+                            feedName: feed.name,
+                            feedUrl: feed.url,
                             title: item.title.$t,
                             url: item.link[0].href,
                             id: item.id.$t.split('/').pop(),
@@ -116,7 +127,7 @@
                 var items = [];
                 $.each(arguments, function (i, data) {
                     var feed = o.feeds[i];
-                    $.each(_.feedTypes[feed.type].parse(data, o), function (i, item) {
+                    $.each(_.feedTypes[feed.type].parse(data, feed, o), function (i, item) {
                         item.feed = feed;
                         items.push(item);
                     });

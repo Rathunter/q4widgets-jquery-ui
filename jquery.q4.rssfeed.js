@@ -59,7 +59,6 @@
                 $e.append(Mustache.render(o.template, feed));
 
                 if (typeof o.complete === 'function') {
-                    console.log('done');
                     o.complete.call(_);
                 }
             });

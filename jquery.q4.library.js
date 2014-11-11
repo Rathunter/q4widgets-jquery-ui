@@ -190,7 +190,7 @@
                 parse: function (item, o) {
                     return {
                         title: item.Title,
-                        date: moment(item.ContentAssetDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
+                        date: moment(item.ContentAssetDate).format(o.dateFormat),
                         url: item.FilePath,
                         type: item.FileType,
                         size: item.FileSize
@@ -223,7 +223,7 @@
                     });
                     return {
                         title: item.Title,
-                        date: moment(item.StartDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
+                        date: moment(item.StartDate).format(o.dateFormat),
                         subdocs: docs
                     };
                 }
@@ -246,7 +246,7 @@
                     });
                     return {
                         title: item.ReportTitle,
-                        date: moment(item.ReportDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
+                        date: moment(item.ReportDate).format(o.dateFormat),
                         subdocs: docs
                     };
                 }
@@ -258,7 +258,7 @@
                 parse: function (item, o) {
                     return {
                         title: item.Title,
-                        date: moment(item.PresentationDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
+                        date: moment(item.PresentationDate).format(o.dateFormat),
                         url: item.DocumentPath,
                         type: item.DocumentFileType,
                         size: item.DocumentFileSize
@@ -273,7 +273,7 @@
                     if (!('DocumentPath' in item) || !item.DocumentPath.length) return;
                     return {
                         title: item.Headline,
-                        date: moment(item.PressReleaseDate, 'MM/DD/YYYY hh:mm:ss').format(o.dateFormat),
+                        date: moment(item.PressReleaseDate).format(o.dateFormat),
                         url: item.DocumentPath,
                         type: item.DocumentFileType,
                         size: item.DocumentFileSize

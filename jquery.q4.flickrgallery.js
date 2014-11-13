@@ -12,8 +12,10 @@
  *      });
  *
  * @docauthor marcusk@q4websystems.com
+ *
+ * requires: Mustache.js
  */
-(function($) {
+(function ($) {
     $.widget('q4.flickrGallery', {
         options: {
             /**
@@ -86,9 +88,9 @@
             complete: null
         },
 
-        drawGallery: function() {
+        drawGallery: function () {
             var o = this.options,
-                $elem = this.element,
+                $e = this.element,
                 sizes = {
                     Square: "_s",
                     LargeSquare: "_q",
@@ -106,7 +108,7 @@
                     '&user_id=' + o.userId +
                     '&format=json&jsoncallback=?';
 
-            $.getJSON(getList_url, function(data) {
+            $.getJSON(getList_url, function (data) {
                 if (data.stat != 'ok') {
                     console.log('Flickr error: ' + data.message);
                     return;
@@ -140,8 +142,8 @@
                         '&extras=description,url_o&format=json&jsoncallback=?';
 
                     // Save the request object returned by this API call.
-                    apiCalls.push($.getJSON(getPhotos_url, function(data) {
-                        $.each(data.photoset.photo, function(i, photo) {
+                    apiCalls.push($.getJSON(getPhotos_url, function (data) {
+                        $.each(data.photoset.photo, function (i, photo) {
                             var baseUrl = 'https://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret;
                             photos.push({
                                 photoTitle: photo.title,
@@ -163,34 +165,19 @@
                 });
 
                 // When all the API calls have finished, append their results in order.
-                $.when.apply(this, apiCalls).done(function() {
-                    $elem.append(Mustache.render(o.template, tplData));
+                $.when.apply(this, apiCalls).done(function () {
+                    $e.append(Mustache.render(o.template, tplData));
 
                     // fire complete callback
-                    if (o.complete !== null) {
+                    if (typeof o.complete === 'function') {
                         o.complete();
                     }
                 });
             });
         },
 
-        _create: function() {
-            $.ajaxSetup({ cache: true });
-
-            var inst = this;
-            
-            $.when(
-                $.getScript("//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js")
-            ).done(function() {
-                inst.loaded = true;
-                inst.drawGallery();
-            });
-        },
-
-        _init: function() {
-            if (this.loaded) {
-                this.drawGallery();
-            }
+        _init: function () {
+            this.drawGallery();
         }
     });
 })(jQuery);

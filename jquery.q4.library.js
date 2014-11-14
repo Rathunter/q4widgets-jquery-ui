@@ -454,7 +454,7 @@
                 $e = this.element,
                 o = this.options,
                 countOpts = {
-                    tag: ($e.data('tag') || []).join('|'), // this may change in the API
+                    tag: ($e.data('tag') || []),
                     year: $e.data('year')
                 },
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate),
@@ -463,19 +463,24 @@
 
             // fetch filter options and get page count
             // TODO: support multiple content types
-            $.getJSON(o.feedUrl + $e.data('ctype') + '/count?callback=?', countOpts, function (data) {
-                $e.data('total', data.total);
-                if (!data.total) {
+            $.getJSON(o.feedUrl + $e.data('ctype') + '/years?callback=?', countOpts, function (data) {
+                var years = [],
+                    yeartotals = {};
+
+                if (!data.length) {
                     $docs.empty();
                     $docsfound.html(o.noDocsTemplate);
                     return;
                 }
 
-                // if we are loading fresh data, redraw the years filter
+                $.each(data, function (i, year) {
+                    years.push(year._id.year);
+                    yeartotals[year._id.year] = year.total;
+                });
+
+                // if data filters have been updated, redraw the years filter
                 if (!$e.data('year')) {
-                    // obviously this next line is temporary!
-                    // the list of years should be retrieved from the API
-                    $e.data('years', [2014, 2013, 2012]);
+                    $e.data('years', years);
                     if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
 
                     // render years, if applicable
@@ -486,11 +491,14 @@
                         });
                     }
                 }
-                
+
+                var yeartotal = yeartotals[$e.data('year')] || 0;
+                $e.data('total', yeartotal);
+
                 // render pager, if applicable
                 if ($e.data('perPage') && $pager.length) {
                     $pager.pager({
-                        count: data.total,
+                        count: yeartotal,
                         perPage: $e.data('perPage'),
                         trigger: o.pagerTrigger,
                         template: o.pagerTemplate,
@@ -514,7 +522,7 @@
                 o = _.options,
                 ctype = $e.data('ctype'),
                 opts = {
-                    tag: ($e.data('tag') || []).join('|'), // this may change in the API
+                    tag: ($e.data('tag') || []),
                     year: $e.data('year'),
                     skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
                     limit: $e.data('perPage') || 0

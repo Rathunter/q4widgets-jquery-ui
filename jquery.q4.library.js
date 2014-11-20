@@ -121,13 +121,15 @@
             /* A selector for the search box. */
             searchSelector: '.search',
 
-            /* An array of content types. 
-             * These can be either strings, or {name, contentType} objects.
-             * Content types must match the ones defined in this.contentTypes
+            /* An array of categories. 
+             * These can be either contentType strings,
+             * or {name, contentType, options} objects.
+             * Content types must match the ones defined in this.contentTypes.
+             * Options can include: type (for contentAssets), tag, year.
              */
-            contentTypes: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
+            categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
             /* Content type options. */
-            ctypeOptions: {
+            catOptions: {
                 /* A selector for the container. */
                 container: '.content-types',
                 /* The type of input to use. */
@@ -191,6 +193,7 @@
                     return {
                         title: item.Title,
                         date: moment(item.ContentAssetDate).format(o.dateFormat),
+                        list: item.Type,
                         url: item.FilePath,
                         type: item.FileType,
                         size: item.FileSize
@@ -288,7 +291,7 @@
             $.ajaxSetup({cache: true});
 
             this.filterOpts = {
-                ctype: o.ctypeOptions,
+                cat: o.catOptions,
                 tag: o.tagOptions,
                 year: o.yearOptions,
                 perPage: o.perPageOptions
@@ -309,28 +312,34 @@
 
             // revert invalid input options to default
             var inputTypes = ['select', 'trigger', 'text'];
-            $.each([o.ctypeOptions, o.tagOptions, o.yearOptions], function (i, opts) {
+            $.each([o.catOptions, o.tagOptions, o.yearOptions], function (i, opts) {
                 if ($.inArray(opts.input, inputTypes) == -1) {
                     opts.input = 'trigger';
                 };
             });
 
-            // display content type options - passed as either strings or objects
-            var $ctypes = $(o.ctypeOptions.container, $e);
-            $.each(o.contentTypes, function (i, ctype) {
-                if (typeof ctype === 'string' && ctype in _.contentTypes) {
-                    ctype = {name: _.contentTypes[ctype].name, contentType: ctype};
+            // normalize and display category options
+            var $cats = $(o.catOptions.container, $e);
+            $.each(o.categories, function (i, cat) {
+                if (typeof cat === 'string' && cat in _.contentTypes) {
+                    cat = {name: _.contentTypes[cat].name, contentType: cat};
                 }
-                else if (typeof ctype === 'object' && 'contentType' in ctype && ctype.contentType in _.contentTypes) {
-                    if (!('name' in ctype)) ctype.name = _.contentTypes[ctype.contentType].name;
+                else if (typeof cat === 'object' && 'contentType' in cat && cat.contentType in _.contentTypes) {
+                    if (!('name' in cat)) cat.name = _.contentTypes[cat.contentType].name;
                 }
                 else return true;
 
-                $(Mustache.render(o.ctypeOptions.template, ctype)).data('ctype', ctype.contentType).appendTo($ctypes);
+                if (!('options' in cat) || typeof cat.options !== 'object') {
+                    cat.options = {};
+                }
+
+                o.categories[i] = cat;
+
+                $(Mustache.render(o.catOptions.template, cat)).data('cat', i).appendTo($cats);
             });
             // start with first content type
-            this._setInput('ctype', o.contentTypes[0].contentType);
-            $e.data('ctype', o.contentTypes[0].contentType);
+            this._setInput('cat', 0);
+            $e.data('cat', 0);
 
             // display preset tag options - passed as either strings or objects
             var $tags = $(o.tagOptions.container, $e);
@@ -427,7 +436,7 @@
                 opts = this.filterOpts[filter];
 
             // reset year if we are updating a content filter
-            if (filter == 'ctype' || filter == 'tag') {
+            if (filter == 'cat' || filter == 'tag') {
                 $e.removeData('year');
             }
 
@@ -453,17 +462,18 @@
             var _ = this,
                 $e = this.element,
                 o = this.options,
-                countOpts = {
+                cat = o.categories[$e.data('cat')],
+                countOpts = $.extend({}, cat.options, {
                     tag: ($e.data('tag') || []),
                     year: $e.data('year')
-                },
+                }),
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate),
                 $docsfound = $(o.docsFoundContainer, $e).empty(),
                 $pager = $(o.pagerContainer, $e).empty();
 
             // fetch filter options and get page count
             // TODO: support multiple content types
-            $.getJSON(o.feedUrl + $e.data('ctype') + '/years?callback=?', countOpts, function (data) {
+            $.getJSON(o.feedUrl + cat.contentType + '/years?callback=?', countOpts, function (data) {
                 var years = [],
                     yeartotals = {};
 
@@ -520,24 +530,25 @@
             var _ = this,
                 $e = _.element,
                 o = _.options,
-                ctype = $e.data('ctype'),
-                opts = {
+                cat = o.categories[$e.data('cat')],
+                ctype = this.contentTypes[cat.contentType],
+                opts = $.extend({}, cat.options, {
                     tag: ($e.data('tag') || []),
                     year: $e.data('year'),
                     skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
                     limit: $e.data('perPage') || 0
-                },
+                }),
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate);
 
             // get this page of records for current filter options
-            $.getJSON(o.feedUrl + ctype + '?callback=?', opts, function (data) {
-                var template = _.contentTypes[ctype].multiple ? o.multiDocTemplate : o.singleDocTemplate,
+            $.getJSON(o.feedUrl + cat.contentType + '?callback=?', opts, function (data) {
+                var template = ctype.multiple ? o.multiDocTemplate : o.singleDocTemplate,
                     docs = [],
                     $docsfound = $(o.docsFoundContainer, $e);
 
                 // render document list
                 $.each(data, function (i, item) {
-                    var itemData = _.contentTypes[ctype].parse(item.Q4Dto, o);
+                    var itemData = ctype.parse(item.Q4Dto, o);
                     if (itemData) docs.push(itemData);
                 });
                 $docs.html(Mustache.render(template, {docs: docs}));

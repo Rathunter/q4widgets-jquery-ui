@@ -1,4 +1,5 @@
 (function ($) {
+    /* requires: jVectorMap, Mustache.js */
     $.widget('q4.multiMap', {
         options: {
             /* The name of the map to use from jVectorMap.
@@ -13,6 +14,8 @@
             /* An array of view objects, each with these properties:
              *   label: The name of the view.
              *   cssClass: An optional class to add to the trigger.
+             *   legend: Whether to display a legend. Defaults to true.
+             *   text: Some optional text to display.
              *   categories: An array of category objects with these properties:
              *     label: The name of the category.
              *     colour: The CSS colour to use for elements in this category.
@@ -30,12 +33,15 @@
             legendContainer: '.legend',
             /* A template for a single legend category. */
             legendTemplate: '<li class="{{cssClass}}"><span style="background-color: {{colour}}"></span>{{label}}</li>',
+            /* A selector for the container for category text. */
+            textContainer: '.text',
             /* A selector for the vector map. */
             mapContainer: '#map',
             /* An overall template for the widget. */
             template: (
                 '<ul class="views"></ul>' +
                 '<ul class="legend"></ul>' +
+                '<div class="text"></div>' +
                 '<div id="map"></div>'
             )
         },
@@ -83,17 +89,21 @@
             handlers['click ' + o.viewContainer + ' ' + o.viewTrigger] = function (e) {
                 var $triggers = $(o.viewContainer + ' ' + o.viewTrigger, $e),
                     $trigger = $(e.currentTarget),
-                    $legend = $(o.legendContainer, $e).empty();
+                    $legend = $(o.legendContainer, $e).empty(),
+                    $text = $(o.textContainer, $e);
 
                 // activate this view
                 $triggers.removeClass('active');
                 $trigger.addClass('active');
 
-                // redraw legend
+                // redraw legend and text
                 var view = o.views[$triggers.index($trigger)];
-                $.each(view.categories, function (i, cat) {
-                    $legend.append(Mustache.render(o.legendTemplate, cat));
-                });
+                if (view.legend || !('legend' in view)) {
+                    $.each(view.categories, function (i, cat) {
+                        $legend.append(Mustache.render(o.legendTemplate, cat));
+                    });
+                }
+                $text.html(view.text || '');
 
                 // reset all map element values
                 var values = {};

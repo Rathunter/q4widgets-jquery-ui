@@ -181,7 +181,11 @@
                 allowNone: false
             },
 
-            /* A callback that is fired after loading a new page of documents. */
+            /* A callback fired after a filter control is updated,
+             * but before matching documents are loaded.
+             * Return false to cancel loading documents. */
+            onFilterUpdate: function () {},
+            /* A callback fired after loading a new page of documents. */
             pageComplete: function () {}
         },
 
@@ -285,18 +289,32 @@
             }
         },
 
+        setFilter: function (filter, value) {
+            if (filter == 'category') filter = 'cat';
+            if (filter == 'tags') filter = 'tag';
+
+            this._setInput(filter, value);
+            this._updateFilterFromInput(filter);
+        },
+
         _create: function () {
             var o = this.options;
 
             $.ajaxSetup({cache: true});
 
+            // store these options in a more convenient array
             this.filterOpts = {
                 cat: o.catOptions,
                 tag: o.tagOptions,
                 year: o.yearOptions,
-                perPage: o.perPageOptions
+                perPage: o.perPageOptions,
+                search: {
+                    container: o.searchSelector,
+                    input: 'text'
+                }
             };
 
+            // render the library and load the initial page of documents
             this._drawLibrary();
             this._bindEvents();
             this._countAndLoadDocuments();
@@ -317,6 +335,9 @@
                     opts.input = 'trigger';
                 };
             });
+
+            // initialize search term
+            $e.data('search', $(o.searchSelector, $e).val());
 
             // normalize and display category options
             var $cats = $(o.catOptions.container, $e);
@@ -387,12 +408,22 @@
                     // just update the filter data
                     handlers['change ' + opts.container] = function (e) {
                         this._updateFilterFromInput(filter);
+
+                        this._trigger('onFilterUpdate', e);
+                        if (e.isDefaultPrevented()) return;
+
+                        this._countAndLoadDocuments();
                     }
                 } else if (opts.input == 'trigger') {
                     // update trigger display, then update the filter data
                     handlers['click ' + opts.container + ' ' + opts.trigger] = function (e) {
                         this._setInput(filter, $(e.target).data(filter));
                         this._updateFilterFromInput(filter);
+
+                        this._trigger('onFilterUpdate', e);
+                        if (e.isDefaultPrevented()) return;
+
+                        this._countAndLoadDocuments();
                     }
                 }
             });
@@ -450,12 +481,11 @@
                 // get values of all active triggers
                 var values = [];
                 $triggers.filter('.active').each(function () {
-                    values.push($(this).data(filter));
+                    // use concat to flatten any array values
+                    values = values.concat($(this).data(filter));
                 });
                 $e.data(filter, values);
             }
-
-            this._countAndLoadDocuments();
         },
 
         _countAndLoadDocuments: function () {
@@ -465,7 +495,8 @@
                 cat = o.categories[$e.data('cat')],
                 opts = $.extend({}, cat.options, {
                     tag: ($e.data('tag') || []),
-                    year: $e.data('year')
+                    year: $e.data('year'),
+                    string: $e.data('search')
                 }),
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate),
                 $docsfound = $(o.docsFoundContainer, $e).empty(),
@@ -541,6 +572,7 @@
                 opts = $.extend({}, cat.options, {
                     tag: ($e.data('tag') || []),
                     year: $e.data('year'),
+                    string: $e.data('search'),
                     skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
                     limit: $e.data('perPage') || 0
                 }),

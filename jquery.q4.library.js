@@ -182,7 +182,7 @@
             },
 
             /* A callback that is fired after loading a new page of documents. */
-            afterPage: null
+            pageComplete: function () {}
         },
 
         contentTypes: {
@@ -463,7 +463,7 @@
                 $e = this.element,
                 o = this.options,
                 cat = o.categories[$e.data('cat')],
-                countOpts = $.extend({}, cat.options, {
+                opts = $.extend({}, cat.options, {
                     tag: ($e.data('tag') || []),
                     year: $e.data('year')
                 }),
@@ -473,56 +473,62 @@
 
             // fetch filter options and get page count
             // TODO: support multiple content types
-            $.getJSON(o.feedUrl + cat.contentType + '/years?callback=?', countOpts, function (data) {
-                var years = [],
-                    yeartotals = {};
+            $.ajax({
+                url: o.feedUrl + cat.contentType + '/years',
+                data: opts,
+                traditional: true,
+                dataType: 'jsonp',
+                success: function (data) {
+                    var years = [],
+                        yeartotals = {};
 
-                if (!data.length) {
-                    $docs.empty();
-                    $docsfound.html(o.noDocsTemplate);
-                    return;
-                }
+                    if (!data.length) {
+                        $docs.empty();
+                        $docsfound.html(o.noDocsTemplate);
+                        return;
+                    }
 
-                $.each(data, function (i, year) {
-                    years.push(year._id.year);
-                    yeartotals[year._id.year] = year.total;
-                });
+                    $.each(data, function (i, year) {
+                        years.push(year._id.year);
+                        yeartotals[year._id.year] = year.total;
+                    });
 
-                // if data filters have been updated, redraw the years filter
-                if (!$e.data('year')) {
-                    $e.data('years', years);
-                    if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
+                    // if data filters have been updated, redraw the years filter
+                    if (!$e.data('year')) {
+                        $e.data('years', years);
+                        if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
 
-                    // render years, if applicable
-                    var $years = $(o.yearOptions.container, $e).empty();
-                    if (o.sortByYear && $years.length) {
-                        $.each($e.data('years'), function (i, year) {
-                            $(Mustache.render(o.yearOptions.template, {year: year})).data('year', year).appendTo($years);
+                        // render years, if applicable
+                        var $years = $(o.yearOptions.container, $e).empty();
+                        if (o.sortByYear && $years.length) {
+                            $.each($e.data('years'), function (i, year) {
+                                $(Mustache.render(o.yearOptions.template, {year: year})).data('year', year).appendTo($years);
+                            });
+                        }
+                    }
+
+                    var yeartotal = yeartotals[$e.data('year')] || 0;
+                    $e.data('total', yeartotal);
+
+                    // render pager, if applicable
+                    if ($e.data('perPage') && $pager.length) {
+                        $pager.pager({
+                            count: yeartotal,
+                            perPage: $e.data('perPage'),
+                            trigger: o.pagerTrigger,
+                            template: o.pagerTemplate,
+                            labels: o.pagerLabels,
+                            beforeChange: function (pager, page) {
+                                $e.data('page', page);
+                                _._loadDocuments();
+                            }
                         });
                     }
+
+                    // show the first page
+                    $e.data('page', 1);
+                    _._loadDocuments();
                 }
-
-                var yeartotal = yeartotals[$e.data('year')] || 0;
-                $e.data('total', yeartotal);
-
-                // render pager, if applicable
-                if ($e.data('perPage') && $pager.length) {
-                    $pager.pager({
-                        count: yeartotal,
-                        perPage: $e.data('perPage'),
-                        trigger: o.pagerTrigger,
-                        template: o.pagerTemplate,
-                        labels: o.pagerLabels,
-                        beforeChange: function (pager, page) {
-                            $e.data('page', page);
-                            _._loadDocuments();
-                        }
-                    });
-                }
-
-                // show the first page
-                $e.data('page', 1);
-                _._loadDocuments();
             });
         },
 
@@ -541,27 +547,36 @@
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate);
 
             // get this page of records for current filter options
-            $.getJSON(o.feedUrl + cat.contentType + '?callback=?', opts, function (data) {
-                var template = ctype.multiple ? o.multiDocTemplate : o.singleDocTemplate,
-                    docs = [],
-                    $docsfound = $(o.docsFoundContainer, $e);
+            $.ajax({
+                url: o.feedUrl + cat.contentType + '/search',
+                data: opts,
+                traditional: true,
+                dataType: 'jsonp',
+                success: function (data) {
+                    var template = ctype.multiple ? o.multiDocTemplate : o.singleDocTemplate,
+                        docs = [],
+                        $docsfound = $(o.docsFoundContainer, $e);
 
-                // render document list
-                $.each(data, function (i, item) {
-                    var itemData = ctype.parse(item.Q4Dto, o);
-                    if (itemData) docs.push(itemData);
-                });
-                $docs.html(Mustache.render(template, {docs: docs}));
+                    // render document list
+                    $.each(data, function (i, item) {
+                        var itemData = ctype.parse(item.Q4Dto, o);
+                        if (itemData) docs.push(itemData);
+                    });
+                    $docs.html(Mustache.render(template, {docs: docs}));
 
-                // render "documents found" message
-                $docsfound.html(Mustache.render(o.docsFoundTemplate, {
-                    docCount: docs.length,
-                    docTotal: $e.data('total'),
-                    docFirst: opts.skip + 1,
-                    docLast: opts.skip + docs.length,
-                    page: $e.data('page'),
-                    pageCount: Math.ceil($e.data('total') / $e.data('perPage'))
-                }));
+                    // render "documents found" message
+                    $docsfound.html(Mustache.render(o.docsFoundTemplate, {
+                        docCount: docs.length,
+                        docTotal: $e.data('total'),
+                        docFirst: opts.skip + 1,
+                        docLast: opts.skip + docs.length,
+                        page: $e.data('page'),
+                        pageCount: Math.ceil($e.data('total') / $e.data('perPage'))
+                    }));
+
+                    // fire callback
+                    _._trigger('pageComplete');
+                }
             });
         }
     });

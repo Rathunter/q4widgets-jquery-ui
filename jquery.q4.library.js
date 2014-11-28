@@ -7,6 +7,10 @@
             perPage: 0,
             /* Whether to sort the documents by year. */
             sortByYear: true,
+            /* Whether to show an "All years" option. */
+            allowAllYears: true,
+            /* The label for the "All years" option. */
+            allYearsText: 'All',
             /* A Moment.js date format string. */
             dateFormat: 'MM/DD/YYYY',
             /* An overall template for the timeline. */
@@ -172,7 +176,7 @@
                 /* The type of input to use. */
                 input: 'select',
                 /* A template for each trigger or select option. */
-                template: '<option>{{year}}</option>',
+                template: '<option value="{{value}}">{{year}}</option>',
                 /* A selector for each trigger. */
                 trigger: '> *',
                 /* Whether to allow multiple triggers to be selected at once. */
@@ -466,9 +470,9 @@
             var $e = this.element,
                 opts = this.filterOpts[filter];
 
-            // reset year if we are updating a content filter
+            // reset years if we are updating a content filter
             if (filter == 'cat' || filter == 'tag') {
-                $e.removeData('year');
+                $e.removeData('years');
             }
 
             // data is gathered differently for different input types
@@ -511,7 +515,8 @@
                 dataType: 'jsonp',
                 success: function (data) {
                     var years = [],
-                        yeartotals = {};
+                        yeartotals = {},
+                        total = 0;
 
                     if (!data.length) {
                         $docs.empty();
@@ -522,29 +527,38 @@
                     $.each(data, function (i, year) {
                         years.push(year._id.year);
                         yeartotals[year._id.year] = year.total;
+                        total += year.total;
                     });
 
-                    // if data filters have been updated, redraw the years filter
-                    if (!$e.data('year')) {
+                    // if years have been reset (content updated), redraw the years filter
+                    if (!$e.data('years')) {
                         $e.data('years', years);
-                        if ($e.data('years').length) $e.data('year', $e.data('years')[0]);
+
+                        // reset year if currently selected year has no documents
+                        if ($.inArray(parseInt($e.data('year')), years) == -1) {
+                            $e.data('year', years.length && !o.allowAllYears ? years[0] : '');
+                        }
 
                         // render years, if applicable
                         var $years = $(o.yearOptions.container, $e).empty();
                         if (o.sortByYear && $years.length) {
+                            if (o.allowAllYears) {
+                                $(Mustache.render(o.yearOptions.template, {value: '', year: o.allYearsText})).data('year', '').appendTo($years);
+                            }
                             $.each($e.data('years'), function (i, year) {
-                                $(Mustache.render(o.yearOptions.template, {year: year})).data('year', year).appendTo($years);
+                                $(Mustache.render(o.yearOptions.template, {value: year, year: year})).data('year', year).appendTo($years);
                             });
                         }
+                        $years.val($e.data('year'));
                     }
 
-                    var yeartotal = yeartotals[$e.data('year')] || 0;
-                    $e.data('total', yeartotal);
+                    var doctotal = $e.data('year') ? yeartotals[$e.data('year')] || 0 : total;
+                    $e.data('total', doctotal);
 
                     // render pager, if applicable
                     if ($e.data('perPage') && $pager.length) {
                         $pager.pager({
-                            count: yeartotal,
+                            count: doctotal,
                             perPage: $e.data('perPage'),
                             trigger: o.pagerTrigger,
                             template: o.pagerTemplate,

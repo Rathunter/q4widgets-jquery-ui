@@ -125,11 +125,16 @@
             /* A selector for the search box. */
             searchSelector: '.search',
 
-            /* An array of categories. 
+            /* An array of categories.
              * These can be either contentType strings,
-             * or {name, contentType, options} objects.
-             * Content types must match the ones defined in this.contentTypes.
-             * Options can include: type (for contentAssets), tag, year.
+             * or {name, contentType, options} objects with the following properties:
+             *   name: The display name.
+             *   contentType: One of the types defined in this.contentTypes.
+             *   cssClass: An optional class to apply to the widget.
+             *   options: An optional object of parameters to pass to the API:
+             *     tag: Tag(s) to filter by. Can be a string or an array.
+             *     year: Year(s) to filter by. String or array.
+             *     type: For contentAssets only, the download list(s) to use.\
              */
             categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
             /* Content type options. */
@@ -186,8 +191,7 @@
             },
 
             /* A callback fired after a filter control is updated,
-             * but before matching documents are loaded.
-             * Return false to cancel loading documents. */
+             * but before matching documents are loaded. */
             onFilterUpdate: function () {},
             /* A callback fired after loading a new page of documents. */
             pageComplete: function () {}
@@ -599,7 +603,7 @@
                 traditional: true,
                 dataType: 'jsonp',
                 success: function (data) {
-                    var template = ctype.multiple ? o.multiDocTemplate : o.singleDocTemplate,
+                    var template = 'template' in cat ? cat.template : (ctype.multiple ? o.multiDocTemplate : o.singleDocTemplate),
                         docs = [],
                         $docsfound = $(o.docsFoundContainer, $e);
 
@@ -609,6 +613,12 @@
                         if (itemData) docs.push(itemData);
                     });
                     $docs.html(Mustache.render(template, {docs: docs}));
+
+                    // add class for this category, and store it for removal later
+                    if ('cssClass' in cat) {
+                        $e.removeClass($e.data('catClass'));
+                        $e.addClass(cat.cssClass).data('catClass', cat.cssClass);
+                    }
 
                     // render "documents found" message
                     $docsfound.html(Mustache.render(o.docsFoundTemplate, {

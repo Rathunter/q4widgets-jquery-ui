@@ -13,6 +13,7 @@
             maxYear: null,
             minYear: null,
             defaultThumb: '',
+            container: null,
             template: (
                 '<ul class="years">' +
                     '{{#years}}<li>{{year}}</li>{{/years}}' +
@@ -41,6 +42,9 @@
             complete: function () {}
         },
 
+        results: null,
+        years: null,
+
         dataUrl: '',
         yearsUrl: '',
         dataResultField: '',
@@ -48,38 +52,58 @@
         dateField: '',
 
         _create: function () {
-            var _ = this,
-                o = this.options,
-                $e = this.element;
-
-            // normalize array options
-            o.years = [].concat(o.years).sort(function (a, b) { return b - a; });
-            o.tags = [].concat(o.tags);
-
-            if (o.showAllYears) {
-                // get data for all years and render entire widget
-                this._getData(this.dataUrl, -1, function (data) {
-                    _._renderWidget(_._parseDataWithYears(data[_.dataResultField]));
-                });
-            }
-            else {
-                // get list of years
-                this._getData(this.yearsUrl, -1, function (data) {
-                    var years = $.grep(data[_.yearsResultField], function (year) {
-                        return _._filterYear(year);
-                    });
-
-                    if (years.length) {
-                        // get data for latest year and render entire widget
-                        _._getData(_.dataUrl, years[0], function (data) {
-                            _._renderWidget(_._parseDataWithYears(data[_.dataResultField], years));
-                        });
-                    }
-                });
-            }
+            this._normalizeOptions();
         },
 
-        _getParams: function () {
+        _init: function () {
+            var _ = this,
+                o = this.options;
+
+            // if results already fetched, don't fetch them again
+            // but do parse them again as options may have changed
+            if (this.results) this._renderWidget(this._parseResultsWithYears(this.results, this.years));
+            else {
+                if (o.showAllYears) {
+                    // get data for all years and render entire widget
+                    this._getData(this.dataUrl, -1, function (data) {
+                        _.results = data[_.dataResultField];
+                        _._renderWidget(_._parseResultsWithYears(_.results));
+                    });
+                }
+                else {
+                    // get list of years
+                    this._getData(this.yearsUrl, -1, function (data) {
+                        _.years = $.grep(data[_.yearsResultField], function (year) {
+                            return _._filterYear(year);
+                        });
+
+                        if (_.years.length) {
+                            // get data for latest year and render entire widget
+                            _._getData(_.dataUrl, _.years[0], function (data) {
+                                _.results = data[_.dataResultField];
+                                _._renderWidget(_._parseResultsWithYears(_.results, _.years));
+                            });
+                        }
+                    });
+                }
+            }
+
+        },
+
+        _setOption: function (key, value) {
+            this._super(key, value);
+            this._normalizeOptions();
+        },
+
+        _normalizeOptions: function () {
+            var o = this.options;
+
+            // convert strings to arrays
+            o.years = [].concat(o.years).sort(function (a, b) { return b - a; });
+            o.tags = [].concat(o.tags);
+        },
+
+        _buildParams: function () {
             var o = this.options;
 
             return {
@@ -98,7 +122,7 @@
 
         _getData: function (url, year, success, error) {
             var o = this.options,
-                params = $.extend(this._getParams(), {
+                params = $.extend(this._buildParams(), {
                     year: year
                 });
 
@@ -130,11 +154,30 @@
             return !length || text.length <= length ? text : text.substring(0, length) + '...';
         },
 
+        _formatDate: function (dateString) {
+            var o = this.options,
+                date = new Date(dateString);
+
+            if (typeof o.dateFormat == 'string') {
+                // if o.dateFormat is a format string, return a formatted date string
+                return $.datepicker.formatDate(o.dateFormat, date);
+            }
+            else if (typeof o.dateFormat == 'object') {
+                // if o.dateFormat is an object of names to format strings,
+                // return an object of names to formatted date strings
+                var dates = {};
+                for (name in o.dateFormat) {
+                    dates[name] = $.datepicker.formatDate(o.dateFormat[name], date);
+                }
+                return dates;
+            }
+        },
+
         _parseItem: function (result) {
             return {};
         },
 
-        _parseData: function (results) {
+        _parseResults: function (results) {
             var _ = this;
 
             return $.map(results, function (result) {
@@ -142,7 +185,7 @@
             });
         },
 
-        _parseDataWithYears: function (results, years) {
+        _parseResultsWithYears: function (results, years) {
             var _ = this,
                 o = this.options,
                 itemsByYear = {},
@@ -202,7 +245,7 @@
                 $e = this.element;
 
             // render entire widget
-            var $widget = $(Mustache.render(o.template, tplData)).appendTo($e);
+            var $widget = $(Mustache.render(o.template, tplData)).appendTo(o.container ? $(o.container, $e) : $e);
 
             // render years if applicable
             if (o.yearContainer && o.yearTemplate) {
@@ -232,7 +275,7 @@
 
                         // get data for selected year
                         _._getData(_.dataUrl, year, function (data) {
-                            var items = _._parseData(data[_.dataResultField]);
+                            var items = _._parseResults(data[_.dataResultField]);
                             if (o.itemContainer && o.itemTemplate) {
                                 // rerender item section
                                 _._renderItems(items);
@@ -289,7 +332,7 @@
             this._super();
         },
 
-        _getParams: function () {
+        _buildParams: function () {
             var o = this.options;
 
             return $.extend(this._super(), {
@@ -306,8 +349,8 @@
             var item = {
                 title: this._truncate(result.Title, o.titleLength),
                 url: result.LinkToDetailPage,
-                date: $.datepicker.formatDate(o.dateFormat, new Date(result.StartDate)),
-                endDate: $.datepicker.formatDate(o.dateFormat, new Date(result.EndDate)),
+                date: this._formatDate(result.StartDate),
+                endDate: this._formatDate(result.EndDate),
                 location: result.Location,
                 body: this._truncate(result.Body, o.bodyLength),
                 docs: $.map(result.Attachments, function (doc) {
@@ -353,7 +396,7 @@
         yearsResultField: 'GetPresentationYearListResult',
         dateField: 'PresentationDate',
 
-        _getParams: function () {
+        _buildParams: function () {
             var o = this.options;
 
             return $.extend(this._super(), {
@@ -367,7 +410,7 @@
             return {
                 title: this._truncate(result.Title, o.titleLength),
                 url: result.LinkToDetailPage,
-                date: $.datepicker.formatDate(o.dateFormat, new Date(result.PresentationDate)),
+                date: this._formatDate(result.PresentationDate),
                 tags: result.TagsList,
                 body: this._truncate(result.Body, o.bodyLength),
                 docUrl: result.DocumentPath
@@ -393,7 +436,7 @@
         yearsResultField: 'GetPressReleaseYearListResult',
         dateField: 'PressReleaseDate',
 
-        _getParams: function () {
+        _buildParams: function () {
             var o = this.options;
 
             return $.extend(this._super(), {
@@ -409,7 +452,7 @@
             return {
                 title: this._truncate(result.Headline, o.titleLength),
                 url: result.LinkToDetailPage,
-                date: $.datepicker.formatDate(o.dateFormat, new Date(result.PressReleaseDate)),
+                date: this._formatDate(result.PressReleaseDate),
                 tags: result.TagsList,
                 body: this._truncate(result.Body, o.bodyLength),
                 shortBody: this._truncate(result.ShortBody, o.shortBodyLength),

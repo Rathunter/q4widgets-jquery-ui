@@ -13,7 +13,6 @@
             maxYear: null,
             minYear: null,
             defaultThumb: '',
-            container: null,
             template: (
                 '<ul class="years">' +
                     '{{#years}}<li>{{year}}</li>{{/years}}' +
@@ -27,6 +26,8 @@
             yearContainer: null,
             yearTemplate: '<li>{{year}}</li>',
             yearTrigger: null,
+            yearSelect: false,
+            allYearsText: 'All',
             activeClass: 'active',
             itemContainer: null,
             itemTemplate: (
@@ -36,14 +37,13 @@
                     '<a href="{{url}}" class="title">{{title}}</a>' +
                 '</li>'
             ),
-            onYearClick: function () {},
-            yearsComplete: function () {},
+            onYearChange: function () {},
             itemsComplete: function () {},
             complete: function () {}
         },
 
-        results: null,
         years: null,
+        $widget: null,
 
         dataUrl: '',
         yearsUrl: '',
@@ -59,35 +59,32 @@
             var _ = this,
                 o = this.options;
 
-            // if results already fetched, don't fetch them again
-            // but do parse them again as options may have changed
-            if (this.results) this._renderWidget(this._parseResultsWithYears(this.results, this.years));
-            else {
-                if (o.showAllYears) {
-                    // get data for all years and render entire widget
-                    this._getData(this.dataUrl, -1, function (data) {
-                        _.results = data[_.dataResultField];
-                        _._renderWidget(_._parseResultsWithYears(_.results));
-                    });
-                }
-                else {
-                    // get list of years
-                    this._getData(this.yearsUrl, -1, function (data) {
-                        _.years = $.grep(data[_.yearsResultField], function (year) {
-                            return _._filterYear(year);
-                        });
+            if (o.showAllYears) {
+                // get data for all years and render widget
+                this._getData(this.dataUrl, -1, function (data) {
+                    var tplData = _._parseResultsWithYears(data[_.dataResultField]);
+                    // get filtered year list from parsed results
+                    _.years = $.map(tplData.years, function (tplYear) { return tplYear.value; });
 
-                        if (_.years.length) {
-                            // get data for latest year and render entire widget
-                            _._getData(_.dataUrl, _.years[0], function (data) {
-                                _.results = data[_.dataResultField];
-                                _._renderWidget(_._parseResultsWithYears(_.results, _.years));
-                            });
-                        }
-                    });
-                }
+                    _._renderWidget(tplData, -1);
+                });
             }
+            else {
+                // get list of years
+                this._getData(this.yearsUrl, -1, function (data) {
+                    // filter year list before parsing results
+                    _.years = $.grep(data[_.yearsResultField], function (year) { return _._filterYear(year); });
 
+                    if (_.years.length) {
+                        // get data for latest year (or all years) and render widget
+                        _._getData(_.dataUrl, _.years[0], function (data) {
+                            _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), _.years[0]);
+                        });
+                    } else {
+                        _._renderWidget(_._parseResultsWithYears([], _.years), -1);
+                    }
+                });
+            }
         },
 
         _setOption: function (key, value) {
@@ -99,8 +96,8 @@
             var o = this.options;
 
             // convert strings to arrays
-            o.years = [].concat(o.years).sort(function (a, b) { return b - a; });
-            o.tags = [].concat(o.tags);
+            o.years = o.years ? [].concat(o.years).sort(function (a, b) { return b - a; }) : [];
+            o.tags = o.tags ? [].concat(o.tags) : [];
         },
 
         _buildParams: function () {
@@ -115,6 +112,7 @@
                     Signature: GetSignature(),
                     ItemCount: o.limit || -1,
                     StartIndex: o.skip,
+                    IncludeTags: true,
                     TagList: !o.tags.length ? null : o.tags
                 }
             };
@@ -173,7 +171,7 @@
             }
         },
 
-        _parseItem: function (result) {
+        _parseResult: function (result) {
             return {};
         },
 
@@ -181,7 +179,7 @@
             var _ = this;
 
             return $.map(results, function (result) {
-                return _._parseItem(result);
+                return _._parseResult(result);
             });
         },
 
@@ -196,6 +194,7 @@
 
             if (!$.isArray(years)) years = [];
 
+            // parse items
             $.each(results, function (i, result) {
                 var date = new Date(result[_.dateField]),
                     year = date.getFullYear();
@@ -208,7 +207,7 @@
                     itemsByYear[year] = [];
                 }
 
-                var item = _._parseItem(result);
+                var item = _._parseResult(result);
 
                 tplData.items.push(item);
                 itemsByYear[year].push(item);
@@ -216,11 +215,13 @@
 
             // sort the years in descending order
             years.sort(function(a, b) { return b - a });
+
+            // build by-year data for template
             $.each(years, function (i, year) {
                 tplData.years.push({
                     year: year,
-                    items: itemsByYear[year],
-                    active: i == 0
+                    value: year,
+                    items: itemsByYear[year]
                 });
             });
 
@@ -239,66 +240,86 @@
             this._trigger('itemsComplete');
         },
 
-        _renderWidget: function (tplData) {
+        _renderWidget: function (tplData, activeYear) {
             var _ = this,
                 o = this.options,
                 $e = this.element;
 
-            // render entire widget
-            var $widget = $(Mustache.render(o.template, tplData)).appendTo(o.container ? $(o.container, $e) : $e);
-
-            // render years if applicable
-            if (o.yearContainer && o.yearTemplate) {
-                $(o.yearContainer, $e).empty();
-                $.each(tplData.years, function (i, year) {
-                    $(o.yearContainer, $e).append(Mustache.render(o.yearTemplate, year));
+            // add "all years" option, if there are years to show
+            if (o.showAllYears && tplData.years.length) {
+                tplData.years.unshift({
+                    year: o.allYearsText,
+                    value: -1,
+                    items: tplData.items
                 });
             }
 
-            // render items if applicable
+            // render entire widget and store a reference
+            this.$widget = $(Mustache.render(o.template, tplData)).appendTo($e);
+
+            // render items separately if applicable
             if (o.itemContainer && o.itemTemplate) {
                 this._renderItems(tplData.items);
             }
 
-            // bind click events to year triggers
+            // render years separately if applicable
+            if (o.yearContainer && o.yearTemplate) {
+                $(o.yearContainer, $e).empty();
+                $.each(tplData.years, function (i, tplYear) {
+                    tplYear.active = tplYear.year == activeYear;
+                    $(o.yearContainer, $e).append(Mustache.render(o.yearTemplate, tplYear));
+                });
+            }
+
+            // bind events to year triggers/selectbox
             if (o.yearTrigger) {
+                // set class on trigger for current year
                 $(o.yearTrigger, $e).each(function (i) {
-                    var year = tplData.years[i].year;
-                    if (year.active) $(this).addClass(o.activeClass);
+                    var year = tplData.years[i].value;
+                    if (year == activeYear) $(this).addClass(o.activeClass);
 
                     $(this).click(function (e) {
                         e.preventDefault();
                         if ($(this).hasClass(o.activeClass)) return;
                         $(o.yearTrigger, $e).removeClass(o.activeClass);
                         $(this).addClass(o.activeClass);
-                        _._trigger('onYearClick');
 
-                        // get data for selected year
-                        _._getData(_.dataUrl, year, function (data) {
-                            var items = _._parseResults(data[_.dataResultField]);
-                            if (o.itemContainer && o.itemTemplate) {
-                                // rerender item section
-                                _._renderItems(items);
-                            }
-                            else {
-                                // set the active year to this one
-                                $.each(tplData.years, function (i, yr) {
-                                    yr.active = yr.year == year;
-                                });
-                                // rerender entire widget
-                                $widget.remove();
-                                _._renderWidget({
-                                    years: tplData.years,
-                                    items: items
-                                });
-                            }
-                        });
+                        _._updateYear(year);
                     });
+                });
+            }
+            if (o.yearSelect) {
+                // update year selectbox to current year and bind change event
+                $(o.yearSelect, $e).val(activeYear).change(function (e) {
+                    _._updateYear($(this).val());
                 });
             }
 
             // fire callback
             this._trigger('complete');
+        },
+
+        _updateYear: function (year) {
+            var _ = this,
+                o = this.options;
+
+            _._trigger('onYearChange');
+
+            // default value if year is invalid
+            if (!$.inArray(year, _.years)) year = o.showAllYears ? -1 : _.years[0];
+
+            // get data for selected year
+            _._getData(_.dataUrl, year, function (data) {
+                if (o.itemContainer && o.itemTemplate) {
+                    // rerender item section
+                    _._renderItems(_._parseResults(data[_.dataResultField]));
+                }
+                else {
+                    // rerender entire widget
+                    _.$widget.remove();
+                    _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), year);
+                }
+            });
         }
     });
 
@@ -343,7 +364,7 @@
             });
         },
 
-        _parseItem: function (result) {
+        _parseResult: function (result) {
             var o = this.options;
 
             var item = {
@@ -404,7 +425,7 @@
             });
         },
 
-        _parseItem: function (result) {
+        _parseResult: function (result) {
             var o = this.options;
 
             return {
@@ -446,7 +467,7 @@
             });
         },
 
-        _parseItem: function (result) {
+        _parseResult: function (result) {
             var o = this.options;
 
             return {

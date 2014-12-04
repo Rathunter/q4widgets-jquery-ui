@@ -1,18 +1,41 @@
 (function ($) {
     $.widget('q4.api', {
         options: {
+            /* The maximum number of results to fetch from the server. */
             limit: 0,
+            /* The number of results to skip. Used for pagination. */
             skip: 0,
+            /* Whether to include an "all years" option in template data
+             * and year selectors. If true, the widget will display
+             * all year data by default on first load; otherwise it will
+             * start with data from the most recent year. */
             showAllYears: false,
+            /* Whether to fetch items dated in the future. */
             showFuture: true,
+            /* Whether to fetch items dated in the past. */
             showPast: true,
+            /* A list of tags to filter by. */
             tags: [],
+            /* The maximum length of an item's title. Zero for no limit (default). */
             titleLength: 0,
+            /* A datepicker format string, which can be used in the template
+             * as {{date}}. Can alternately be an object of format strings,
+             * which can be accessed with {{date.key}} (where key is the
+             * object key corresponding to the string you want to use). */
             dateFormat: 'mm/dd/yy',
+            /* An array of years to filter by. If passed, no items will
+             * be displayed unless they are dated to a year in this list. */
             years: [],
+            /* The latest year to display items from. */
             maxYear: null,
+            /* The earliest year to display items from. */
             minYear: null,
+            /* A URL to a default thumbnail, in case an item has none. */
             defaultThumb: '',
+            /* Whether to append the widget to the container, or
+             * replace its contents entirely. */
+            append: true,
+            /* A Mustache.js template for the overall widget. */
             template: (
                 '<ul class="years">' +
                     '{{#years}}<li>{{year}}</li>{{/years}}' +
@@ -23,13 +46,22 @@
                     '{{^items}}No items found.{{/items}}' +
                 '</ul>'
             ),
-            yearContainer: null,
-            yearTemplate: '<li>{{year}}</li>',
+            /* An optional selector for year trigger links.
+             * If passed, click events will be bound here. */
             yearTrigger: null,
-            yearSelect: false,
+            /* An optional selector for a year selectbox.
+             * If passed, change events will be bound here. */
+            yearSelect: null,
+            /* The text to use for the "all years" option. */
             allYearsText: 'All',
+            /* The CSS class to use for a selected year trigger. */
             activeClass: 'active',
+            /* An optional selector for the items container. */
             itemContainer: null,
+            /* An optional template for the items container. If itemContainer
+             * is also passed, this will be used to render the items list.
+             * Also, when the year is changed, only the items list will be
+             * rerendered, instead of the entire widget. */
             itemTemplate: (
                 '<li>' +
                     '<img class="thumb" src="{{thumb}}">' +
@@ -37,8 +69,11 @@
                     '<a href="{{url}}" class="title">{{title}}</a>' +
                 '</li>'
             ),
+            /* A callback that fires when a year trigger or selectbox changes. */
             onYearChange: function () {},
+            /* A callback that fires after the item list is rendered. */
             itemsComplete: function () {},
+            /* A callback that fires after the entire widget is rendered. */
             complete: function () {}
         },
 
@@ -254,7 +289,13 @@
                 });
             }
 
+            // set the active year in the template data
+            $.each(tplData.years, function (i, tplYear) {
+                tplYear.active = tplYear.year == activeYear;
+            });
+
             // render entire widget and store a reference
+            if (!o.append) $e.empty();
             this.$widget = $(Mustache.render(o.template, tplData)).appendTo($e);
 
             // render items separately if applicable
@@ -262,54 +303,59 @@
                 this._renderItems(tplData.items);
             }
 
-            // render years separately if applicable
-            if (o.yearContainer && o.yearTemplate) {
-                $(o.yearContainer, $e).empty();
-                $.each(tplData.years, function (i, tplYear) {
-                    tplYear.active = tplYear.year == activeYear;
-                    $(o.yearContainer, $e).append(Mustache.render(o.yearTemplate, tplYear));
-                });
-            }
-
             // bind events to year triggers/selectbox
             if (o.yearTrigger) {
-                // set class on trigger for current year
+                // add year data to each trigger and bind click event
                 $(o.yearTrigger, $e).each(function (i) {
                     var year = tplData.years[i].value;
-                    if (year == activeYear) $(this).addClass(o.activeClass);
+                    $(this).data('year', year);
 
                     $(this).click(function (e) {
                         e.preventDefault();
-                        if ($(this).hasClass(o.activeClass)) return;
-                        $(o.yearTrigger, $e).removeClass(o.activeClass);
-                        $(this).addClass(o.activeClass);
-
-                        _._updateYear(year);
+                        if (!$(this).hasClass(o.activeClass)) _.setYear(year);
                     });
                 });
             }
             if (o.yearSelect) {
-                // update year selectbox to current year and bind change event
-                $(o.yearSelect, $e).val(activeYear).change(function (e) {
-                    _._updateYear($(this).val());
+                // bind change event to selectbox
+                $(o.yearSelect, $e).change(function (e) {
+                    _.setYear($(this).val());
                 });
             }
+
+            // set triggers/selectbox to show active year
+            this._updateYearControls(activeYear);
 
             // fire callback
             this._trigger('complete');
         },
 
-        _updateYear: function (year) {
+        _updateYearControls: function (year) {
+            var o = this.options;
+
+            if (o.yearTrigger) {
+                $(o.yearTrigger, $e).each(function () {
+                    $(this).toggleClass(o.activeClass, $(this).data('year') == year);
+                });
+            }
+            if (o.yearSelect) {
+                $(o.yearSelect, $e).val(year);
+            }
+        },
+
+        setYear: function (year) {
             var _ = this,
                 o = this.options;
 
-            _._trigger('onYearChange');
+            this._trigger('onYearChange');
+
+            this._updateYearControls(year);
 
             // default value if year is invalid
-            if (!$.inArray(year, _.years)) year = o.showAllYears ? -1 : _.years[0];
+            if (!$.inArray(year, this.years)) year = o.showAllYears ? -1 : this.years[0];
 
             // get data for selected year
-            _._getData(_.dataUrl, year, function (data) {
+            this._getData(this.dataUrl, year, function (data) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
                     _._renderItems(_._parseResults(data[_.dataResultField]));

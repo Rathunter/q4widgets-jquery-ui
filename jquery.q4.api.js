@@ -331,7 +331,8 @@
         },
 
         _updateYearControls: function (year) {
-            var o = this.options;
+            var o = this.options,
+                $e = this.element;
 
             if (o.yearTrigger) {
                 $(o.yearTrigger, $e).each(function () {

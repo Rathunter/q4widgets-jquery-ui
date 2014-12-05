@@ -69,6 +69,8 @@
                     '<a href="{{url}}" class="title">{{title}}</a>' +
                 '</li>'
             ),
+            /* A message to use in the items container if no items are found. */
+            notFoundTemplate: 'No items found.',
             /* A callback that fires when a year trigger or selectbox changes. */
             onYearChange: function () {},
             /* A callback that fires after the item list is rendered. */
@@ -267,10 +269,14 @@
             var o = this.options,
                 $e = this.element;
 
-            $(o.itemContainer, $e).empty();
-            $.each(items, function (i, item) {
-                $(o.itemContainer, $e).append(Mustache.render(o.itemTemplate, item));
-            });
+            if (items.length) {
+                $(o.itemContainer, $e).empty();
+                $.each(items, function (i, item) {
+                    $(o.itemContainer, $e).append(Mustache.render(o.itemTemplate, item));
+                });
+            } else {
+                $(o.itemContainer, $e).html(o.notFoundTemplate);
+            }
 
             this._trigger('itemsComplete');
         },

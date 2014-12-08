@@ -5,6 +5,9 @@
             limit: 0,
             /* The number of results to skip. Used for pagination. */
             skip: 0,
+            /* Whether to fetch data from all years, or just the most recent.
+             * If showAllYears is true, this is assumed to be true also. */
+            fetchAllYears: false,
             /* Whether to include an "all years" option in template data
              * and year selectors. If true, the widget will display
              * all year data by default on first load; otherwise it will
@@ -96,7 +99,7 @@
             var _ = this,
                 o = this.options;
 
-            if (o.showAllYears) {
+            if (o.showAllYears || o.fetchAllYears) {
                 // get data for all years and render widget
                 this._getData(this.dataUrl, -1, function (data) {
                     var tplData = _._parseResultsWithYears(data[_.dataResultField]);
@@ -258,7 +261,7 @@
                 tplData.years.push({
                     year: year,
                     value: year,
-                    items: itemsByYear[year]
+                    items: itemsByYear[year] || []
                 });
             });
 

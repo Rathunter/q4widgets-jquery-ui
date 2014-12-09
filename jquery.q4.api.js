@@ -534,6 +534,8 @@
                 body: this._truncate(result.Body, o.bodyLength),
                 shortBody: this._truncate(result.ShortBody, o.shortBodyLength),
                 docUrl: result.DocumentPath,
+                docSize: result.DocumentFileSize,
+                docType: result.DocumentFileType,
                 thumb: result.ThumbnailPath || o.defaultThumb
             };
         }

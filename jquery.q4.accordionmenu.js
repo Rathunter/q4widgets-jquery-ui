@@ -48,8 +48,7 @@
              * @cfg
              * A template for the overall accordion. Take care in modifying.
              */
-            template: (
-                '{{#sections}}' +
+            sectionTemplate: (
                 '<div class="accordionItem">' +
                     '<h3 class="accordionTrigger">' +
                         '<span class="accordionTriggerText">{{> sectionTrigger}}</span>' +
@@ -57,44 +56,40 @@
                     '</h3>' +
                     '<div class="accordionContent">' +
                         '<ul class="accordionMenu">' +
-                            '{{> menuItems}}' +
+                            '{{#items}}{{> menuItem}}{{/items}}' +
                         '</ul>' +
                         '<div class="accordionBody">' +
-                            '{{> bodyItems}}' +
+                            '{{{staticContent}}}' +
+                            '{{#items}}{{> bodyItem}}{{/items}}' +
                         '</div>' +
                     '</div>' +
-                '</div>' +
-                '{{/sections}}'
+                '</div>'
             ),
 
             /**
              * @cfg
-             * A recursive template for each item in the menu.
+             * A recursive template for a single item in the menu.
              */
             menuItemTemplate: (
-                '{{#items}}' +
                 '<li>' +
                     '<span class="itemTrigger">{{> itemTrigger}}</span>' +
                     '<a class="itemLink" href="#" data-target="{{id}}">{{title}}</a>' +
                     '<ul>' +
-                        '{{> menuItems}}' +
+                        '{{#items}}{{> menuItem}}{{/items}}' +
                     '</ul>' +
-                '</li>' +
-                '{{/items}}'
+                '</li>'
             ),
 
             /**
              * @cfg
-             * A recursive template for each menu item's body content.
+             * A recursive template for a single menu item's body content.
              */
             bodyItemTemplate: (
-                '{{#items}}' +
                 '<div data-id="{{id}}">' +
                     '<h4>{{title}}</h4>' +
                     '<div class="itemContent">{{{content}}}</div>' +
                 '</div>' +
-                '{{> bodyItems}}' +
-                '{{/items}}'
+                '{{#items}}{{> bodyItem}}{{/items}}'
             ),
 
             /**
@@ -108,6 +103,7 @@
             content: {
                 sections: [
                     {
+                        staticContent: 'This is the header of section 1.',
                         title: 'Section 1',
                         items: [
                             {
@@ -127,6 +123,7 @@
                         ]
                     },
                     {
+                        staticContent: 'This is the header of section 2.',
                         title: 'Section 2',
                         items: [
                             {
@@ -169,8 +166,7 @@
         },
 
         drawAccordion: function () {
-            var _ = this,
-                o = _.options,
+            var o = this.options,
                 $e = this.element;
 
             // add a unique id to each item
@@ -179,7 +175,7 @@
             function formatItems(i, item) {
                 item.id = itemCount;
                 itemCount++;
-                if (!item.hasOwnProperty('items')) {
+                if (!('items' in item)) {
                     item.items = [];
                 }
                 $.each(item.items, formatItems);
@@ -189,9 +185,9 @@
             });
 
             // render template
-            $e.html(Mustache.render(o.template, o.content, {
-                menuItems: o.menuItemTemplate,
-                bodyItems: o.bodyItemTemplate,
+            $e.append(Mustache.render(o.template, o.content, {
+                menuItem: o.menuItemTemplate,
+                bodyItem: o.bodyItemTemplate,
                 sectionTrigger: o.sectionExpandTrigger,
                 itemTrigger: o.itemExpandTrigger
             }));
@@ -207,11 +203,10 @@
         },
 
         setupEvents: function () {
-            var _ = this,
-                o = _.options,
-                $e = _.element;
+            var o = this.options,
+                $e = this.element;
 
-            _._on($('.accordionTrigger', $e), {
+            this._on($('.accordionTrigger', $e), {
                 click: function (e) {
                     e.preventDefault();
 
@@ -238,7 +233,7 @@
                 }
             });
 
-            _._on($('.itemTrigger', $e), {
+            this._on($('.itemTrigger', $e), {
                 click: function (e) {
                     e.preventDefault();
 
@@ -256,7 +251,7 @@
                 }
             });
 
-            _._on($('.itemLink', $e), {
+            this._on($('.itemLink', $e), {
                 click: function (e) {
                     e.preventDefault();
 

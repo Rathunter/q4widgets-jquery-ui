@@ -99,26 +99,30 @@
             var _ = this,
                 o = this.options;
 
-            if (o.showAllYears || o.fetchAllYears) {
+            if (o.showAllYears) o.fetchAllYears = true;
+
+            // if we're fetching an unlimited number of docs for all years,
+            // we can skip fetching the year list
+            if (o.fetchAllYears && !o.limit) {
                 // get data for all years and render widget
-                this._getData(this.dataUrl, -1, function (data) {
+                this._getData(-1, function (data) {
                     var tplData = _._parseResultsWithYears(data[_.dataResultField]);
                     // get filtered year list from parsed results
                     _.years = $.map(tplData.years, function (tplYear) { return tplYear.value; });
 
-                    _._renderWidget(tplData, -1);
+                    _._renderWidget(tplData, o.showAllYears || !_.years.length ? -1 : _.years[0]);
                 });
             }
             else {
                 // get list of years
-                this._getData(this.yearsUrl, -1, function (data) {
+                this._getYears(function (data) {
                     // filter year list before parsing results
                     _.years = $.grep(data[_.yearsResultField], function (year) { return _._filterYear(year); });
 
                     if (_.years.length) {
                         // get data for latest year (or all years) and render widget
-                        _._getData(_.dataUrl, _.years[0], function (data) {
-                            _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), _.years[0]);
+                        _._getData(o.fetchAllYears ? -1 : _.years[0], function (data) {
+                            _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), o.showAllYears ? -1 : _.years[0]);
                         });
                     } else {
                         _._renderWidget(_._parseResultsWithYears([], _.years), -1);
@@ -141,29 +145,18 @@
         },
 
         _buildParams: function () {
-            var o = this.options;
-
             return {
                 serviceDto: {
                     ViewType: GetViewType(),
                     ViewDate: GetViewDate(),
                     RevisionNumber: GetRevisionNumber(),
                     LanguageId: GetLanguageId(),
-                    Signature: GetSignature(),
-                    ItemCount: o.limit || -1,
-                    StartIndex: o.skip,
-                    IncludeTags: true,
-                    TagList: !o.tags.length ? null : o.tags
+                    Signature: GetSignature()
                 }
             };
         },
 
-        _getData: function (url, year, success, error) {
-            var o = this.options,
-                params = $.extend(this._buildParams(), {
-                    year: year
-                });
-
+        _callApi: function (url, params, success, error) {
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -175,6 +168,30 @@
                     console.log('Error fetching API data: ' + data);
                 }
             });
+        },
+
+        _getYears: function (success, error) {
+            // FIXME: we should be able to pass an array of tags when getting
+            // the years list. Unfortunately, due to a bug in the API, passing
+            // tags to the years endpoint always yields zero results. So unless
+            // we're pulling all docs (in which case we don't pull a year list),
+            // we can only show the year list for all tags. If we're filtering
+            // by tag, the year list might include years with no documents.
+            return this._callApi(this.yearsUrl, this._buildParams(), success, error);
+        },
+
+        _getData: function (year, success, error) {
+            var o = this.options;
+
+            return this._callApi(this.dataUrl, $.extend(true, this._buildParams(), {
+                serviceDto: {
+                    ItemCount: o.limit || -1,
+                    StartIndex: o.skip,
+                    TagList: !o.tags.length ? null : o.tags,
+                    IncludeTags: true
+                },
+                year: year
+            }), success, error);
         },
 
         _filterYear: function (year) {
@@ -297,10 +314,15 @@
                     items: tplData.items
                 });
             }
-
-            // set the active year in the template data
+            
+            var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
-                tplYear.active = tplYear.year == activeYear;
+                if (tplYear.year == activeYear) {
+                    // set the active year in the template data
+                    tplYear.active = true;
+                    // save this year's items for separate item rendering
+                    yearItems = tplYear.items;
+                }
             });
 
             // render entire widget and store a reference
@@ -309,7 +331,7 @@
 
             // render items separately if applicable
             if (o.itemContainer && o.itemTemplate) {
-                this._renderItems(tplData.items);
+                this._renderItems(yearItems);
             }
 
             // bind events to year triggers/selectbox
@@ -365,7 +387,7 @@
             if (!$.inArray(year, this.years)) year = o.showAllYears ? -1 : this.years[0];
 
             // get data for selected year
-            this._getData(this.dataUrl, year, function (data) {
+            this._getData(year, function (data) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
                     _._renderItems(_._parseResults(data[_.dataResultField]));

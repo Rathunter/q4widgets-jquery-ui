@@ -48,6 +48,7 @@
              * The album template can include these tags: {{albumTitle}}, {{albumDesc}}, {{photoCount}}
              * Use {{#photos}} to loop through each photo.
              * The photo loop can use these tags: {{photoTitle}}, {{photoDesc}}, {{photoIndex}}, {{thumbUrl}}, {{photoUrl}}, {{hiresUrl}}
+             * It can also use {{url.Size}} where Size is any thumbSize option.
              */
             template: (
                 '{{#albums}}' +
@@ -165,7 +166,8 @@
                                 photoIndex: i + 1,
                                 thumbUrl: baseUrl + _.sizes[o.thumbSize] + '.jpg',
                                 photoUrl: baseUrl + _.sizes[o.photoSize] + '.jpg',
-                                hiresUrl: photo.url_o
+                                hiresUrl: photo.url_o,
+                                url: _._generateUrls(baseUrl)
                             });
                         });
 
@@ -182,6 +184,14 @@
 
             // return a promise which is resolved after all albums have been parsed
             return $.when.apply(this, apiCalls);
+        },
+
+        _generateUrls: function (baseUrl) {
+            var urls = {};
+            $.each(this.sizes, function (size, ext) {
+                urls[size] = baseUrl + ext + '.jpg';
+            });
+            return urls;
         }
     });
 })(jQuery);

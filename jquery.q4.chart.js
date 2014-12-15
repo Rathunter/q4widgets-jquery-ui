@@ -5,12 +5,9 @@
             lockStock: false,
             url: '//feeds.q4websystems.com',
             apiKey: 'FCAFF3C994E84D8EAA7D5DEA093D48FD',
-            exchange: ['NYSE'],
-            symbol: ['ABX'],
-            customNames: {
-                use: false,
-                names: []
-            },
+            symbols: [
+                ['NYSE', 'ABX', 'NYSE:ABX']
+            ],
             usePublic: true,
             startDate: 946702800000,
             showLegendSymbol: true,
@@ -22,7 +19,6 @@
             yHeight2: 50,
             offsetTop: 300,
             labels: true,
-            vType: 'column',
             news: false,
             newsOnLoad: false,
             newsSize: 200,
@@ -32,7 +28,24 @@
             eventsOnLoad: false,
             eventSize: 100,
             onChartComplete: null,
+            stockOpts: {},
+            volumeOpts: {},
+            newsOpts: {},
+            eventsOpts: {},
             highstock: {
+                chart: {
+                    marginTop: 60
+                },
+                legend: {
+                    enabled: true,
+                    align: 'left',
+                    verticalAlign: 'top',
+                    floating: true
+                },
+                rangeSelector: {
+                    enabled: true,
+                    selected: 1
+                },
                 credits: {
                     enabled: true,
                     text: "Q4 Web Systems",
@@ -62,53 +75,46 @@
             var _ = this,
                 o = _.options;
 
-            // check to make sure indices match
-            if (!o.symbol.length || o.symbol.length != o.exchange.length) {
-                this.destroy();
-                return;
-            }
-
             // build stock series without data
-            $.each(o.symbol, function (i) {
-                var show = i === 0 ? true : false, // have only the first symbol visible
-                    exchange = o.exchange[i].replace('TSE', 'TSX'), // correct exchange for Toronto Stock Exchange
-                    symbol = o.symbol[i].split('.').shift(), // correct symbol name (Example: ABX.CA > ABX)
-                    name = o.customNames.use ? o.customNames.names[i] : exchange + ':' + symbol;
+            $.each(o.symbols, function (i, exsymbol) {
+                var exchange = exsymbol[0].replace('TSE', 'TSX'), // correct exchange for Toronto Stock Exchange
+                    symbol = exsymbol[1].split('.').shift(), // correct symbol name (Example: ABX.CA > ABX)
+                    name = exsymbol.length > 2 && exsymbol[2] ? exsymbol[2] : exchange + ':' + symbol;
 
                 // Stock Price Series
-                o.highstock.series.push({
+                o.highstock.series.push($.extend({
+                    type: 'areaspline',
                     name: name,
-                    visible: show,
+                    visible: i === 0,
                     id: 'Price',
                     showInLegend: o.showLegendSymbol,
                     turboThreshold: o.threshold,
                     tooltip: {
                         valueDecimals: 2
                     }
-                });
+                }, o.stockOpts));
 
                 // Volume Series
                 if (o.volume) {
-                    o.highstock.series.push({
-                        type: o.vType,
+                    o.highstock.series.push($.extend({
+                        type: 'column',
                         name: exchange + ':Volume',
                         id: 'Volume',
                         turboThreshold: o.threshold,
                         showInLegend: false,
                         yAxis: 1
-                    });
+                    }, o.volumeOpts));
                 }
             });
 
             // News Series
             if (o.news) {
-                o.highstock.series.push({
+                o.highstock.series.push($.extend({
+                    type: 'flags',
                     name: 'News',
                     id: 'News',
                     onSeries: 'Price',
                     shape: 'circlepin',
-                    type: 'flags',
-                    fillColor: o.highstock.colors[6],
                     width: 3,
                     height: 3,
                     y: -10,
@@ -121,18 +127,17 @@
                             }
                         }
                     }
-                });
+                }, o.newsOpts));
             }
 
             // Events Series
             if (o.events) {
-                o.highstock.series.push({
+                o.highstock.series.push($.extend({
+                    type: 'flags',
                     name: 'Events',
                     id: 'Events',
                     onSeries: 'Price',
                     shape: 'circlepin',
-                    type: 'flags',
-                    fillColor: o.highstock.colors[7],
                     width: 3,
                     height: 3,
                     y: -25,
@@ -144,7 +149,7 @@
                             }
                         }
                     }
-                });
+                }, o.eventsOpts));
             }
 
             // Request stock data for the first series before chart highcharts is initialized
@@ -163,8 +168,8 @@
                 url = o.url + '/feed/StockQuote.svc/GetStockQuoteHistoricalList';
                 data = {
                     apiKey: o.apiKey,
-                    exchange: o.exchange[i],
-                    symbol: o.symbol[i],
+                    exchange: o.symbols[i][0],
+                    symbol: o.symbols[i][1],
                     pageSize: o.threshold - 200
                 };
                 dataType = 'jsonp';
@@ -182,8 +187,8 @@
                         ItemCount: o.threshold - 200,
                         Signature: GetSignature()
                     },
-                    exchange: o.exchange[i],
-                    symbol: o.symbol[i]
+                    exchange: o.symbols[i][0],
+                    symbol: o.symbols[i][1],
                 });
                 dataType: 'json';
             }

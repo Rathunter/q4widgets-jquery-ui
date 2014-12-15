@@ -27,28 +27,29 @@
             albums: [],
             /* Number of photos to return. The maximum is 500. */
             perPage: 500,
-            /* The size of image to use for each thumbnail. Sizes are as follows:
-             * Square:        75 x 75
-             * LargeSquare:  150 x 150
-             * Thumbnail:    100 x 75
-             * Small:        240 x 180
-             * Small320:     320 x 240
-             * Medium:       500 x 375
-             * Medium640:    640 x 480
-             * Medium800:    800 x 600
-             * Large:       1024 x 768
-             * Original:    2400 x 1800
-             */
-            thumbSize: 'Square',
-            /* The size of image to use for each photo when clicked.
-             * Size values are the same as in the thumbSize option.
-             */
-            photoSize: 'Medium',
-            /* A mustache.js template for a single photo album.
-             * The album template can include these tags: {{albumTitle}}, {{albumDesc}}, {{photoCount}}
-             * Use {{#photos}} to loop through each photo.
-             * The photo loop can use these tags: {{photoTitle}}, {{photoDesc}}, {{photoIndex}}, {{thumbUrl}}, {{photoUrl}}, {{hiresUrl}}
-             * It can also use {{url.Size}} where Size is any thumbSize option.
+            /* A mustache.js template for all photo albums.
+             * An album has these tags:
+             *   albumID
+             *   albumTitle
+             *   albumDesc
+             *   photoCount
+             *   photos: An array of photos in this album.
+             *   Each photo has these tags:
+             *     photoID
+             *     photoTitle
+             *     photoDesc
+             *     photoIndex
+             *     url: An object of URLs for each size, e.g. {{url.Medium}}:
+             *       Square:        75 x 75
+             *       LargeSquare:  150 x 150
+             *       Thumbnail:    100 x 75
+             *       Small:        240 x 180
+             *       Small320:     320 x 240
+             *       Medium:       500 x 375
+             *       Medium640:    640 x 480
+             *       Medium800:    800 x 600
+             *       Large:       1024 x 768
+             *       Original:    2400 x 1800
              */
             template: (
                 '{{#albums}}' +
@@ -158,23 +159,23 @@
                     dataType: 'jsonp',
                     jsonp: 'jsoncallback',
                     success: function (data) {
-                        $.each(data.photoset.photo, function (i, photo) {
+                        $.each(data.photoset.photo, function (j, photo) {
                             var baseUrl = 'https://farm' + photo.farm + '.static.flickr.com/' + photo.server + '/' + photo.id + '_' + photo.secret;
                             photos.push({
+                                photoID: photo.id,
                                 photoTitle: photo.title,
                                 photoDesc: photo.description._content,
-                                photoIndex: i + 1,
-                                thumbUrl: baseUrl + _.sizes[o.thumbSize] + '.jpg',
-                                photoUrl: baseUrl + _.sizes[o.photoSize] + '.jpg',
-                                hiresUrl: photo.url_o,
+                                photoIndex: j + 1,
                                 url: _._generateUrls(baseUrl)
                             });
                         });
 
                         // add template data to the widget's albums array
                         _.albums[i] = {
+                            albumID: photoset.id,
                             albumTitle: photoset.title._content,
                             albumDesc: photoset.description._content,
+                            albumIndex: i + 1,
                             photos: photos,
                             photoCount: photos.length
                         };

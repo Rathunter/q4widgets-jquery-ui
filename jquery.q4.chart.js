@@ -219,10 +219,10 @@
                 // Store the start date for the first stock series.
                 // This will be used later for news so dots don't fall off the chart
                 var item = data.GetStockQuoteHistoricalListResult;
-                o.startDate = item[item.length - 1].HistoricalDate;
+                this.startDate = item[item.length - 1].HistoricalDate;
             }
 
-            var startDate = (new Date(o.startDate)).getTime();
+            var startDate = (new Date(this.startDate)).getTime();
 
             $.each(data.GetStockQuoteHistoricalListResult, function (index, data) {
                 var price = data.Last;

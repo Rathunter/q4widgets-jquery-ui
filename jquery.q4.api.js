@@ -15,6 +15,11 @@
              * all year data by default on first load; otherwise it will
              * start with data from the most recent year. */
             showAllYears: false,
+            /* The text to use for the "all years" option. */
+            allYearsText: 'All',
+            /* The year to display first. Default is "all", or most recent.
+             * It may be useful to pass (new Date()).getFullYear(). */
+            startYear: null,
             /* Whether to fetch items dated in the future. */
             showFuture: true,
             /* Whether to fetch items dated in the past. */
@@ -51,17 +56,16 @@
                     '{{^items}}No items found.{{/items}}' +
                 '</ul>'
             ),
-            /* An optional selector for year trigger links.
+            /* An optional selector for year trigger links in the main template.
              * If passed, click events will be bound here. */
             yearTrigger: null,
-            /* An optional selector for a year selectbox.
+            /* An optional selector for a year selectbox in the main template.
              * If passed, change events will be bound here. */
             yearSelect: null,
-            /* The text to use for the "all years" option. */
-            allYearsText: 'All',
             /* The CSS class to use for a selected year trigger. */
             activeClass: 'active',
-            /* An optional selector for the items container. */
+            /* An optional selector for the items container. You must also 
+             * pass itemTemplate for this to have any effect. */
             itemContainer: null,
             /* An optional template for the items container. If itemContainer
              * is also passed, this will be used to render the items list.
@@ -101,10 +105,10 @@
             var _ = this,
                 o = this.options;
 
-            if (o.showAllYears) o.fetchAllYears = true;
+            // if "all years" is enabled and it's the default, fetch all years
+            if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
 
-            // if we're fetching an unlimited number of docs for all years,
-            // we can skip fetching the year list
+            // if we're fetching all docs for all years, skip fetching the year list
             if (o.fetchAllYears && !o.limit) {
                 // get data for all years and render widget
                 this._getData(-1, function (data) {
@@ -122,9 +126,14 @@
                     _.years = $.grep(data[_.yearsResultField], function (year) { return _._filterYear(year); });
 
                     if (_.years.length) {
-                        // get data for latest year (or all years) and render widget
-                        _._getData(o.fetchAllYears ? -1 : _.years[0], function (data) {
-                            _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), o.showAllYears ? -1 : _.years[0]);
+                        // if startYear is specified and it exists, use it
+                        var startYear = ($.inArray(o.startYear, _.years) > -1) ? o.startYear :
+                            // otherwise use "all" if enabled, or the most recent
+                            (o.showAllYears ? -1 : _.years[0]);
+
+                        // get data for starting year (or all years) and render widget
+                        _._getData(o.fetchAllYears ? -1 : startYear, function (data) {
+                            _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), startYear);
                         });
                     } else {
                         _._renderWidget(_._parseResultsWithYears([], _.years), -1);

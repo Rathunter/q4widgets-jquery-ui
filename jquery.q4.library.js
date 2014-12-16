@@ -7,10 +7,13 @@
             perPage: 0,
             /* Whether to sort the documents by year. */
             sortByYear: true,
-            /* Whether to show an "All years" option. */
+            /* Whether to show an "all years" option. */
             allowAllYears: true,
-            /* The label for the "All years" option. */
+            /* The label for the "all years" option. */
             allYearsText: 'All',
+            /* The year to display first. Default is "all", or most recent.
+             * It may be useful to pass new Date().getFullYear(). */
+            startYear: null,
             /* A Moment.js date format string. */
             dateFormat: 'MM/DD/YYYY',
             /* An overall template for the timeline. */
@@ -191,7 +194,8 @@
             },
 
             /* A callback fired after a filter control is updated,
-             * but before matching documents are loaded. */
+             * but before matching documents are loaded.
+             * Use event.preventDefault() to cancel loading documents. */
             onFilterUpdate: function () {},
             /* A callback fired after loading a new page of documents. */
             pageComplete: function () {}
@@ -540,7 +544,10 @@
 
                         // reset year if currently selected year has no documents
                         if ($.inArray(parseInt($e.data('year')), years) == -1) {
-                            $e.data('year', years.length && !o.allowAllYears ? years[0] : '');
+                            // if startYear is specified and it exists, use it
+                            $e.data('year', ($.inArray(o.startYear, years) > -1) ? o.startYear :
+                                // otherwise use "all" if enabled, or the most recent
+                                (years.length && !o.allowAllYears ? years[0] : ''));
                         }
 
                         // render years, if applicable

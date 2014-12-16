@@ -1,6 +1,8 @@
 (function ($) {
     $.widget('q4.api', {
         options: {
+            /* The base URL to use for API calls. */
+            url: '',
             /* The maximum number of results to fetch from the server. */
             limit: 0,
             /* The number of results to skip. Used for pagination. */
@@ -139,6 +141,9 @@
         _normalizeOptions: function () {
             var o = this.options;
 
+            // strip trailing slash from domain
+            o.url = o.url.replace(/\/$/, '');
+
             // convert strings to arrays
             o.years = o.years ? [].concat(o.years).sort(function (a, b) { return b - a; }) : [];
             o.tags = o.tags ? [].concat(o.tags) : [];
@@ -157,9 +162,11 @@
         },
 
         _callApi: function (url, params, success, error) {
+            var o = this.options;
+
             $.ajax({
                 type: 'POST',
-                url: url,
+                url: o.url + url,
                 data: JSON.stringify(params),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',

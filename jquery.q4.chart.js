@@ -20,9 +20,8 @@
             lockStock: false,
             /* Whether to show the stock quote in the chart legend. */
             showLegendSymbol: true,
-            /* The turboThreshold value for each series. This may need to be
-             * raised if there are too many data points. */
-            threshold: 1500,
+            /* The maximum number of data points to fetch for the stock chart. */
+            stockLimit: 1500,
             /* Whether to include a volume chart below the stock price chart. */
             volume: false,
             /* The height of the volume chart, as a percentage. */
@@ -32,19 +31,19 @@
             /* Whether to show news flags on initial load. */
             newsOnLoad: false,
             /* The maximum number of news items to display on the chart. */
-            newsSize: 200,
+            newsLimit: 200,
             /* The maximum length of each news item's title. */
             newsLength: 75,
             /* The news category ID to use (defaults to all). */
-            categoryId: '00000000-0000-0000-0000-000000000000',
+            newsCategory: '00000000-0000-0000-0000-000000000000',
             /* An array of tags to filter news releases by. */
-            tags: [],
+            newsTags: [],
             /* Whether to include a series of flags for events. */
             events: false,
             /* Whether to show event flags on initial load. */
             eventsOnLoad: false,
             /* The maximum number of events to display on the chart. */
-            eventSize: 100,
+            eventsLimit: 100,
             /* A set of Highcharts options for the stock price series. */
             stockOpts: {},
             /* A set of Highcharts options for the volume series. */
@@ -154,7 +153,7 @@
             }
 
             // callback after chart loads
-            this._trigger('onChartComplete');
+            this._trigger('onComplete');
         },
 
         _toggleStock: function (series) {
@@ -234,7 +233,7 @@
                     id: 'price' + i,
                     visible: i === 0,
                     showInLegend: o.showLegendSymbol,
-                    turboThreshold: o.threshold,
+                    turboThreshold: 0,
                     tooltip: {
                         valueDecimals: 2
                     },
@@ -251,7 +250,7 @@
                         type: 'column',
                         name: exchange + ':Volume',
                         id: 'volume' + i,
-                        turboThreshold: o.threshold,
+                        turboThreshold: 0,
                         showInLegend: false,
                         yAxis: 1
                     }, o.volumeOpts));
@@ -269,7 +268,7 @@
                     width: 3,
                     height: 3,
                     y: -10,
-                    turboThreshold: o.threshold,
+                    turboThreshold: 0,
                     visible: o.newsOnLoad,
                     point: {
                         events: {
@@ -298,6 +297,7 @@
                     width: 3,
                     height: 3,
                     y: -25,
+                    turboThreshold: 0,
                     visible: o.eventsOnLoad,
                     point: {
                         events: {
@@ -319,48 +319,112 @@
         },
 
         _getStockData: function (symbol) {
-            var _ = this,
-                o = this.options;
-
-            var type, url, data, contentType, dataType;
+            var o = this.options;
 
             if (o.usePublic) {
-                type = 'GET';
-                url = o.url + '/feed/StockQuote.svc/GetStockQuoteHistoricalList';
-                data = {
-                    apiKey: o.apiKey,
-                    exchange: symbol[0],
-                    symbol: symbol[1],
-                    pageSize: o.threshold - 200
+                return this._getData(
+                    '/feed/StockQuote.svc/GetStockQuoteHistoricalList',
+                    {
+                        exchange: symbol[0],
+                        symbol: symbol[1],
+                    },
+                    o.stockLimit
+                );
+            } else {
+                return this._getData(
+                    '/Services/StockQuoteService.svc/GetStockQuoteHistoricalList',
+                    {
+                        exchange: symbol[0],
+                        symbol: symbol[1],
+                    },
+                    o.stockLimit
+                );
+            }
+        },
+
+        _getNewsData: function () {
+            var o = this.options;
+
+            if (o.usePublic) {
+                return this._getData(
+                    '/feed/PressRelease.svc/GetPressReleaseList',
+                    {
+                        pressReleaseDateFilter: 3,
+                        categoryId: o.categoryId,
+                        tagList: o.newsTags.join('|')
+                    },
+                    o.newsLimit
+                );
+            } else {
+                return this._getData(
+                    '/Services/PressReleaseService.svc/GetPressReleaseList',
+                    {
+                        serviceDto: {
+                            TagList: o.newsTags.join('|')
+                        },
+                        pressReleaseSelection: 3,
+                        pressReleaseCategoryWorkflowId: o.categoryId,
+                    },
+                    o.newsLimit
+                );
+            }
+        },
+
+        _getEventsData: function () {
+            var o = this.options;
+
+            if (o.usePublic) {
+                return this._getData(
+                    '/feed/Event.svc/GetEventList',
+                    {eventDateFilter: 3},
+                    o.eventsLimit
+                );
+            } else {
+                return this._getData(
+                    '/Services/EventService.svc/GetEventList',
+                    {eventSelection: 3},
+                    o.eventsLimit
+                );
+            }
+        },
+
+        _getData: function (url, params, limit) {
+            var o = this.options,
+                opts;
+
+            if (o.usePublic) {
+                opts = {
+                    type: 'GET',
+                    url: o.url + url,
+                    dataType: 'jsonp',
+                    contentType: 'application/json; charset=utf-8',
+                    data: $.extend(true, {
+                        apiKey: o.apiKey,
+                        pageSize: limit
+                    }, params)
                 };
-                dataType = 'jsonp';
 
             } else {
-                type = 'POST',
-                url = o.url + '/services/StockQuoteService.svc/GetStockQuoteHistoricalList';
-                data = JSON.stringify({
-                    serviceDto: {
-                        ViewType: GetViewType(),
-                        ViewDate: GetViewDate(),
-                        RevisionNumber: GetRevisionNumber(),
-                        LanguageId: GetLanguageId(),
-                        Signature: GetSignature(),
-                        StartIndex: 0,
-                        ItemCount: o.threshold - 200
-                    },
-                    exchange: symbol[0],
-                    symbol: symbol[1],
-                });
-                dataType: 'json';
+                opts = {
+                    type: 'POST',
+                    url: o.url + url,
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify($.extend(true, {
+                        serviceDto: {
+                            ViewType: GetViewType(),
+                            ViewDate: GetViewDate(),
+                            RevisionNumber: GetRevisionNumber(),
+                            LanguageId: GetLanguageId(),
+                            Signature: GetSignature(),
+                            StartIndex: 0,
+                            ItemCount: limit
+                        }
+                    }, params))
+                };
             }
 
-            return $.ajax({
-                type: type,
-                url: url,
-                data: data,
-                dataType: dataType,
-                contentType: 'application/json; charset=utf-8'
-            });
+            return $.ajax(opts);
         },
 
         _parseStockData: function (data) {
@@ -404,25 +468,6 @@
             return [stockData.reverse(), volumeData.reverse()];
         },
 
-        _getNewsData: function () {
-            var _ = this,
-                o = this.options;
-
-            return $.ajax({
-                type: 'GET',
-                url: o.url + '/feed/PressRelease.svc/GetPressReleaseList',
-                data: {
-                    apiKey: o.apiKey,
-                    includeTags: true,
-                    pageSize: o.newsSize,
-                    pressReleaseDateFilter: 3,
-                    categoryId: o.categoryId,
-                    tagList: o.tags.join('|')
-                },
-                dataType: 'jsonp'
-            });
-        },
-
         _parseNewsData: function (data) {
             var _ = this,
                 o = this.options,
@@ -444,23 +489,6 @@
             });
 
             return prData.reverse();
-        },
-
-        _getEventsData: function () {
-            var _ = this,
-                o = this.options;
-
-            return $.ajax({
-                type: 'GET',
-                url: o.url + '/feed/Event.svc/GetEventList',
-                data: {
-                    apiKey: o.apiKey,
-                    includeTags: true,
-                    pageSize: o.eventSize,
-                    eventDateFilter: 3
-                },
-                dataType: 'jsonp'
-            });
         },
 
         _parseEventsData: function(data) {

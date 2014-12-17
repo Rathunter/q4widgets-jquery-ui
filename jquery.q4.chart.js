@@ -13,7 +13,7 @@
              * the exchange, the symbol, and an optional custom name to use
              * instead of "EXCHANGE:SYMBOL".
              */
-            symbols: [
+            stocks: [
                 ['NYSE', 'XXX', 'NYSE:XXX']
             ],
             /* Whether to prevent stock price charts from being toggled off. */
@@ -89,6 +89,7 @@
         },
 
         startDate: null,
+        chart: null,
 
         _create: function () {
             var _ = this,
@@ -100,27 +101,119 @@
 
             Highcharts.setOptions(o.highchartsOpts);
 
-            // build the series objects for stock price, volume, news, events
-            var series = this._buildSeries();
-
             // Request stock data for the first series before chart is initialized
-            this._stockRequest(o.symbols[0], function (data) {
-                // this should be a 2-tuple of stock price and volume data
-                stockSeries = _._buildStockArr(data);
-
-                if (!stockSeries.length) {
+            this._getStockData(o.stocks[0]).done(function (data) {
+                if (!data.GetStockQuoteHistoricalListResult.length) {
                     $e.html('There is currently no stock data, please check back later.');
                     return;
                 }
 
-                // add the data to the first stock's series objects
-                series[0].data = stockSeries[0].reverse();
-                if (o.volume) {
-                    series[1].data = stockSeries[1].reverse();
-                }
-
-                _.initHighstock(series);
+                _._initChart(data);
             });
+        },
+
+        _initChart: function (data) {
+            var _ = this,
+                o = this.options,
+                $e = this.element;
+
+            // this should be a 2-tuple of stock price and volume data
+            var stockData = this._parseStockData(data);
+
+            // build the series objects for stock price, volume, news, events
+            o.highstock.series = this._buildSeries();
+
+            // add the first symbol's stock price data as the first series
+            o.highstock.series[0].data = stockData[0];
+            if (o.volume) {
+                // add the first symbol's volume data as the second series
+                o.highstock.series[1].data = stockData[1];
+                // add a second y-axis
+                o.highstock.yAxis = [{}, {}];
+            }
+
+            // initialize Highstock
+            this.chart = $e.highcharts('StockChart', o.highstock).highcharts();
+
+            if (o.volume) {
+                // rescale the volume y-axis according to volumeHeight
+                var minmax = this.chart.yAxis[1].getExtremes();
+                this.chart.yAxis[1].setExtremes(0, minmax.max * 100 / o.volumeHeight, true, false);
+            }
+
+            // if enabled, request news/events data after the chart loads
+            if (o.news && o.newsOnLoad) {
+                this._getNewsData().done(function (data) {
+                    _.chart.get('news').setData(_._parseNewsData(data));
+                });
+            }
+            if (o.events && o.eventsOnLoad) {
+                this._getEventsData().done(function (data) {
+                    _.chart.get('events').setData(_._parseEventsData(data));
+                });
+            }
+
+            // callback after chart loads
+            this._trigger('onChartComplete');
+        },
+
+        _toggleStock: function (series) {
+            var _ = this,
+                o = this.options,
+                i = o.volume ? series._i / 2 : series._i;
+
+            if (o.lockStock) return false;
+
+            // Load the stock price/volume data if it hasn't been already
+            if (!series.data.length) {
+                this.chart.showLoading();
+                this._getStockData(o.stocks[i]).done(function (data) {
+                    // this should be a 2-tuple of stock price and volume data
+                    var stockData = _._parseStockData(data);
+
+                    // load data into this symbol's price/volume series
+                    series.setData(stockData[0]);
+                    if (o.volume) {
+                        _.chart.get('volume' + i).setData(stockData[1]);
+                    }
+
+                    _.chart.hideLoading();
+                });
+
+            } else {
+                // Toggle the volume chart along with the stock price chart
+                if (o.volume) {
+                    var volSeries = this.chart.get('volume' + i);
+                    if (volSeries.visible) {
+                        volSeries.hide();
+                    } else {
+                        volSeries.show();
+                    }
+                }
+            }
+        },
+
+        _toggleFlags: function (series) {
+            var _ = this,
+                o = this.options;
+
+            // Load the news/event data if it hasn't been already
+            if (!series.data.length) {
+                this.chart.showLoading();
+
+                if (series.options.id == 'news') {
+                    this._getNewsData().done(function (data) {
+                        _.chart.get('news').setData(_._parseNewsData(data));
+                        _.chart.hideLoading();
+                    });
+
+                } else {
+                    this._getEventsData().done(function (data) {
+                        _.chart.get('events').setData(_._parseEventsData(data));
+                        _.chart.hideLoading();
+                    });
+                }
+            }
         },
 
         _buildSeries: function () {
@@ -129,16 +222,16 @@
                 series = [];
 
             // build stock series without data
-            $.each(o.symbols, function (i, exsymbol) {
-                var exchange = exsymbol[0].replace('TSE', 'TSX'), // correct exchange for Toronto Stock Exchange
-                    symbol = exsymbol[1].split('.').shift(), // correct symbol name (Example: ABX.CA > ABX)
-                    name = exsymbol.length > 2 && exsymbol[2] ? exsymbol[2] : exchange + ':' + symbol;
+            $.each(o.stocks, function (i, stock) {
+                var exchange = stock[0],
+                    symbol = stock[1],
+                    name = stock.length > 2 && stock[2] ? stock[2] : exchange + ':' + symbol;
 
                 // Stock Price Series
                 series.push($.extend({
                     type: 'areaspline',
                     name: name,
-                    id: 'Price',
+                    id: 'price' + i,
                     visible: i === 0,
                     showInLegend: o.showLegendSymbol,
                     turboThreshold: o.threshold,
@@ -157,7 +250,7 @@
                     series.push($.extend({
                         type: 'column',
                         name: exchange + ':Volume',
-                        id: 'Volume',
+                        id: 'volume' + i,
                         turboThreshold: o.threshold,
                         showInLegend: false,
                         yAxis: 1
@@ -170,8 +263,8 @@
                 series.push($.extend({
                     type: 'flags',
                     name: 'News',
-                    id: 'News',
-                    onSeries: 'Price',
+                    id: 'news',
+                    onSeries: 'price0',
                     shape: 'circlepin',
                     width: 3,
                     height: 3,
@@ -199,8 +292,8 @@
                 series.push($.extend({
                     type: 'flags',
                     name: 'Events',
-                    id: 'Events',
-                    onSeries: 'Price',
+                    id: 'events',
+                    onSeries: 'price0',
                     shape: 'circlepin',
                     width: 3,
                     height: 3,
@@ -225,7 +318,7 @@
             return series;
         },
 
-        _stockRequest: function (symbol, success, error) {
+        _getStockData: function (symbol) {
             var _ = this,
                 o = this.options;
 
@@ -266,15 +359,11 @@
                 url: url,
                 data: data,
                 dataType: dataType,
-                contentType: 'application/json; charset=utf-8',
-                success: success,
-                error: error || function () {
-                    console.log('Historical stock quotes failed to load.');
-                }
+                contentType: 'application/json; charset=utf-8'
             });
         },
 
-        _buildStockArr: function (data) {
+        _parseStockData: function (data) {
             var _ = this,
                 o = this.options,
                 $e = this.element,
@@ -290,7 +379,6 @@
             $.each(data.GetStockQuoteHistoricalListResult, function (i, quote) {
                 var price = quote.Last;
 
-                // build data for stock & volume
                 if (price > 0) {
                     var time = (new Date(quote.HistoricalDate)).getTime();
 
@@ -313,67 +401,14 @@
                 }
             });
 
-            // var i = series === undefined ? 0 : series._i;
-
-            // // Add data for first series before initalizing highstock
-            // if (!series) {
-            //     o.highstock.series[i].data = stockData.reverse();
-            //     if (o.volume) {
-            //         o.highstock.series[i + 1].data = volumeData.reverse();
-            //     }
-            //     this.initHighstock();
-            // }
-            // // Add additional series to highstock
-            // else {
-            //     series.setData(stockData.reverse());
-            //     if (o.volume) {
-            //         $e.highcharts().series[i + 1].setData(volumeData.reverse());
-            //     }
-            //     //hide loading icon
-            //     //$e.highcharts().hideLoading();
-            // }
-
-            return [stockData, volumeData];
+            return [stockData.reverse(), volumeData.reverse()];
         },
 
-        initHighstock: function (series) {
-            var _ = this,
-                o = this.options,
-                $e = this.element;
-
-            o.highstock.series = series;
-
-            if (o.volume) {
-                o.highstock.yAxis = [{}, {}];
-            }
-
-            // initalize highstock
-            var chart = $e.highcharts('StockChart', o.highstock).highcharts();
-
-            if (o.volume) {
-                // rescale the volume chart according to volumeHeight
-                var minmax = chart.yAxis[1].getExtremes();
-                chart.yAxis[1].setExtremes(0, minmax.max * 100 / o.volumeHeight, true, false);
-            }
-
-            // if enabled, request news/events data after the chart loads
-            // FIXME: these request functions still need to actually populate the chart with the data
-            if (o.news && o.newsOnLoad) {
-                this.newsRequest(chart.series.slice(o.events ? -3 : -2)[0]);
-            }
-            if (o.events && o.eventsOnLoad) {
-                this.eventsRequest(chart.series.slice(-2)[0]);
-            }
-
-            // callback after chart loads
-            this._trigger('onChartComplete');
-        },
-
-        newsRequest: function (series) {
+        _getNewsData: function () {
             var _ = this,
                 o = this.options;
 
-            $.ajax({
+            return $.ajax({
                 type: 'GET',
                 url: o.url + '/feed/PressRelease.svc/GetPressReleaseList',
                 data: {
@@ -384,50 +419,38 @@
                     categoryId: o.categoryId,
                     tagList: o.tags.join('|')
                 },
-                dataType: 'jsonp',
-                success: function (data) {
-                    _.buildNewsArr(data, series);
-                },
-                error: function () {
-                    console.log('News failed to load.');
-                }
+                dataType: 'jsonp'
             });
         },
 
-        buildNewsArr: function (data, series) {
-            var o = this.options,
-                $highcharts = this.element.highcharts(),
-                start = (new Date(this.startDate)).getTime(),
+        _parseNewsData: function (data) {
+            var _ = this,
+                o = this.options,
                 prData = [];
 
-            //Build news array
-            $.each(data.GetPressReleaseListResult, function (index, data) {
-                var headline = data.Headline.length > (o.newsLength + 10) ? data.Headline.substring(0, o.newsLength) + '...' : data.Headline,
-                    details = o.url + data.LinkToDetailPage,
-                    date = (new Date(data.PressReleaseDate)).getTime();
+            $.each(data.GetPressReleaseListResult, function (i, item) {
+                var headline = item.Headline.length > (o.newsLength + 10) ? item.Headline.substring(0, o.newsLength) + '...' : item.Headline,
+                    details = o.url + item.LinkToDetailPage,
+                    time = (new Date(item.PressReleaseDate)).getTime();
 
-                if (date > start) {
+                if (time >= _.startDate) {
                     prData.push({
-                        x: date,
+                        x: time,
                         title: ' ',
                         text: headline,
                         url: details
                     });
                 }
             });
-            
-            // add news to chart
-            series.setData(prData.reverse());
 
-            // hide loading icon
-            $highcharts.hideLoading();
+            return prData.reverse();
         },
 
-        eventsRequest: function (series) {
+        _getEventsData: function () {
             var _ = this,
                 o = this.options;
 
-            $.ajax({
+            return $.ajax({
                 type: 'GET',
                 url: o.url + '/feed/Event.svc/GetEventList',
                 data: {
@@ -436,94 +459,34 @@
                     pageSize: o.eventSize,
                     eventDateFilter: 3
                 },
-                dataType: 'jsonp',
-                success: function (data) {
-                    _.buildEventArr(data, series);
-                },
-                error: function () {
-                    console.log('Events failed to load.');
-                }
+                dataType: 'jsonp'
             });
         },
 
-        buildEventArr: function(data, series) {
-            var o = this.options,
-                $highcharts = this.element.highcharts(),
-                start = (new Date(this.startDate)).getTime(),
+        _parseEventsData: function(data) {
+            var _ = this,
+                o = this.options,
                 eventData = [];
 
-            //Build news array
-            $.each(data.GetEventListResult, function (index, data) {
-                var details = o.url + data.LinkToDetailPage,
-                    date = (new Date(data.StartDate)).getTime();
+            $.each(data.GetEventListResult, function (i, item) {
+                var details = o.url + item.LinkToDetailPage,
+                    time = (new Date(item.StartDate)).getTime();
 
-                if (date > start) {
+                if (time >= _.startDate) {
                     eventData.push({
-                        x: date,
+                        x: time,
                         title: ' ',
-                        text: data.Title,
+                        text: item.Title,
                         url: details
                     });
                 }
             });
 
-            // add news to chart
-            series.setData(eventData.sort(function (a, b) {
+            return eventData.sort(function (a, b) {
                 if (a.x < b.x) return -1;
                 if (a.x > b.x) return 1;
                 return 0;
-            }));
-            
-            // hide loading icon
-            $highcharts.hideLoading();
-        },
-
-        _toggleStock: function (series) {
-            var _ = this,
-                o = this.options,
-                $e = this.element,
-                i = o.volume ? series._i : series._i / 2;
-
-            if (o.lockStock) return false;
-
-            // Load the stock price/volume data if it hasn't been already
-            if (series.options.data === undefined) {
-                $e.highcharts().showLoading();
-                // FIXME: we still need to actually populate the chart with the data
-                _._stockRequest(o.symbols[i]);
-
-            } else {
-                // Toggle the volume chart along with the stock price chart
-                if (o.volume) {
-                    var volSeries = $e.highcharts().series[i + 1];
-                    if (volSeries.visible) {
-                        volSeries.hide();
-                    } else {
-                        volSeries.show();
-                    }
-                }
-            }
-        },
-
-        _toggleFlags: function (series) {
-            // Load the news/event data if it hasn't been already
-            // FIXME: these request functions still need to actually populate the chart with the data
-            if (!series.data.length) {
-                $e.highcharts().showLoading();
-                if (series.name == 'News') {   
-                    _.newsRequest(series);
-                } else {
-                    _.eventsRequest(series);
-                }
-            }
-        },
-
-        destroy: function () {
-            this.element.html('The chart has failed to load, please double check the configuration.');
-        },
-
-        _setOption: function (option, value) {
-            this._superApply(arguments);
+            });
         }
     });
 })(jQuery);

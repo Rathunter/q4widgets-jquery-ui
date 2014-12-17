@@ -431,7 +431,7 @@
         yearsResultField: 'GetEventYearListResult',
         dateField: 'StartDate',
 
-        _create: function () {
+        _normalizeOptions: function () {
             var o = this.options;
 
             // GetEventYearList doesn't accept EventSelection for some reason
@@ -494,6 +494,71 @@
                 };
             }
             return item;
+        }
+    });
+
+
+    /* Financial Report Widget */
+
+    $.widget('q4.financials', $.q4.api, {
+        options: {
+            /* A list of report subtypes to display.
+             * Valid values are:
+             *   Annual Report, Supplemental Report,
+             *   First Quarter, Second Quarter, Third Quarter, Fourth Quarter.
+             * Use an empty list to display all (default). */
+            reportTypes: [],
+            /* A list of document categories to display.
+             * Example: Financial Report, MD&A, Earnings Press Release.
+             * Use an empty list to display all (default). */
+            docCategories: [],
+            /* A map of short names for each report subtype. */
+            shortTypes: {
+                'Annual Report': 'Annual',
+                'Supplemental Report': 'Supplemental',
+                'First Quarter': 'Q1',
+                'Second Quarter': 'Q2',
+                'Third Quarter': 'Q3',
+                'Fourth Quarter': 'Q4'
+            },
+        },
+
+        dataUrl: '/Services/FinancialReportService.svc/GetFinancialReportList',
+        yearsUrl: '/Services/FinancialReportService.svc/GetFinancialReportYearList',
+        dataResultField: 'GetFinancialReportListResult',
+        yearsResultField: 'GetFinancialReportYearListResult',
+        dateField: 'ReportDate',
+
+        _buildParams: function () {
+            var o = this.options;
+
+            return $.extend(this._super(), {
+                reportSubTypeList: o.reportTypes
+            });
+        },
+
+        _parseResult: function (result) {
+            var _ = this,
+                o = this.options;
+
+            return {
+                coverUrl: result.CoverImagePath,
+                date: $.datepicker.formatDate(o.dateFormat, new Date(result.ReportDate)),
+                shortType: o.shortTypes[result.ReportSubType],
+                title: result.ReportTitle,
+                type: result.ReportSubType,
+                year: result.ReportYear,
+                docs: $.map(result.Documents, function (doc) {
+                    return {
+                        docCategory: doc.DocumentCategory,
+                        docSize: doc.DocumentFileSize,
+                        docThumb: doc.DocumentThumbnailPath,
+                        docTitle: _._truncate(doc.DocumentTitle, o.titleLength),
+                        docType: doc.DocumentFileType,
+                        docUrl: doc.DocumentPath
+                    };
+                })
+            };
         }
     });
 

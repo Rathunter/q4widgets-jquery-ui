@@ -111,7 +111,7 @@
             // if we're fetching all docs for all years, skip fetching the year list
             if (o.fetchAllYears && !o.limit) {
                 // get data for all years and render widget
-                this._getData(-1, function (data) {
+                this._getData(-1).done(function (data) {
                     var tplData = _._parseResultsWithYears(data[_.dataResultField]);
                     // get filtered year list from parsed results
                     _.years = $.map(tplData.years, function (tplYear) { return tplYear.value; });
@@ -121,7 +121,7 @@
             }
             else {
                 // get list of years
-                this._getYears(function (data) {
+                this._getYears().done(function (data) {
                     // filter year list before parsing results
                     _.years = $.grep(data[_.yearsResultField], function (year) { return _._filterYear(year); });
 
@@ -132,9 +132,10 @@
                             (o.showAllYears ? -1 : _.years[0]);
 
                         // get data for starting year (or all years) and render widget
-                        _._getData(o.fetchAllYears ? -1 : startYear, function (data) {
+                        _._getData(o.fetchAllYears ? -1 : startYear).done(function (data) {
                             _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), startYear);
                         });
+
                     } else {
                         _._renderWidget(_._parseResultsWithYears([], _.years), -1);
                     }
@@ -170,19 +171,15 @@
             };
         },
 
-        _callApi: function (url, params, success, error) {
+        _callApi: function (url, params) {
             var o = this.options;
 
-            $.ajax({
+            return $.ajax({
                 type: 'POST',
                 url: o.url + url,
                 data: JSON.stringify(params),
                 contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: success || function (data) {},
-                error: error || function (data) {
-                    console.log('Error fetching API data: ' + data);
-                }
+                dataType: 'json'
             });
         },
 
@@ -196,7 +193,7 @@
             return this._callApi(this.yearsUrl, this._buildParams(), success, error);
         },
 
-        _getData: function (year, success, error) {
+        _getData: function (year) {
             var o = this.options;
 
             return this._callApi(this.dataUrl, $.extend(true, this._buildParams(), {
@@ -207,7 +204,7 @@
                     IncludeTags: true
                 },
                 year: year
-            }), success, error);
+            }));
         },
 
         _filterYear: function (year) {
@@ -403,7 +400,7 @@
             if (!$.inArray(year, this.years)) year = o.showAllYears ? -1 : this.years[0];
 
             // get data for selected year
-            this._getData(year, function (data) {
+            this._getData(year).done(function (data) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
                     _._renderItems(_._parseResults(data[_.dataResultField]));
@@ -422,6 +419,7 @@
 
     $.widget('q4.events', $.q4.api, {
         options: {
+            /* Whether to sort the events in ascending chronological order. */
             sortAscending: false
         },
 
@@ -512,7 +510,8 @@
              * Example: Financial Report, MD&A, Earnings Press Release.
              * Use an empty list to display all (default). */
             docCategories: [],
-            /* A map of short names for each report subtype. */
+            /* A map of short names for each report subtype,
+             * for use in the template. */
             shortTypes: {
                 'Annual Report': 'Annual',
                 'Supplemental Report': 'Supplemental',
@@ -567,7 +566,6 @@
 
     $.widget('q4.presentations', $.q4.api, {
         options: {
-
         },
 
         dataUrl: '/Services/PresentationService.svc/GetPresentationList',
@@ -603,10 +601,15 @@
 
     $.widget('q4.news', $.q4.api, {
         options: {
+            /* The ID of the PR category to fetch. Defaults to all. */
             category: '00000000-0000-0000-0000-000000000000',
+            /* Whether to fetch the body of the press releases. */
             loadBody: true,
+            /* Whether to fetch the shortened body of the press releases. */
             loadShortBody: true,
+            /* The maximum length for the body. Default 0 (unlimited). */
             bodyLength: 0,
+            /* The maximum length for the short body. Default 0 (unlimited). */
             shortBodyLength: 0
         },
 

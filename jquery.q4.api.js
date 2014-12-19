@@ -183,14 +183,14 @@
             });
         },
 
-        _getYears: function (success, error) {
-            // FIXME: we should be able to pass an array of tags when getting
-            // the years list. Unfortunately, due to a bug in the API, passing
-            // tags to the years endpoint always yields zero results. So unless
-            // we're pulling all docs (in which case we don't pull a year list),
-            // we can only show the year list for all tags. If we're filtering
-            // by tag, the year list might include years with no documents.
-            return this._callApi(this.yearsUrl, this._buildParams(), success, error);
+        _getYears: function () {
+            var o = this.options;
+
+            return this._callApi(this.yearsUrl, $.extend(true, this._buildParams(), {
+                serviceDto: {
+                    TagList: !o.tags.length ? null : o.tags
+                }
+            }));
         },
 
         _getData: function (year) {
@@ -284,7 +284,7 @@
             });
 
             // sort the years in descending order
-            years.sort(function(a, b) { return b - a });
+            years.sort(function (a, b) { return b - a });
 
             // build by-year data for template
             $.each(years, function (i, year) {

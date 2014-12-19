@@ -1,21 +1,34 @@
 (function($) {
     $.widget('q4.treemenu', {
         options: {
+            /* Whether opening a menu item will close its sibling items. */
             openMultipleItems: false,
+            /* A selector in the main template for the menu. */
             menuContainer: '.menu',
+            /* A selector in the main template the body content. */
             bodyContainer: '.body',
+            /* A selector in the menu item template for child menu items. */
             submenu: '.submenu',
+            /* A selector in the menu item template to display the content. */
             trigger: '.itemLink',
+            /* A selector in the menu item template to toggle child items. */
             expandTrigger: '.itemExpand',
+            /* The text to display in a collapsed menu item's trigger. */
             expandText: '[ + ]',
+            /* The text to display in an expanded menu item's trigger. */
             collapseText: '[ - ]',
+            /* A class to add to each menu item. */
             itemClass: 'treemenu-item',
+            /* A class to add to each menu item. */
             activeClass: 'treemenu-active',
+            /* A class to add to an expanded menu item. */
             expandedClass: 'treemenu-expanded',
+            /* A Mustache template for the overall widget. */
             template: (
                 '<ul class="menu"></ul>' +
                 '<div class="body"></div>'
             ),
+            /* A recursive Mustache template for each menu item. */
             menuItemTemplate: (
                 '<li>' +
                     '<span class="itemExpand"></span>' +
@@ -23,12 +36,18 @@
                     '<ul class="submenu"></ul>' +
                 '</li>'
             ),
+            /* A Mustache template for each item's body content. */
             bodyItemTemplate: (
                 '<div>' +
                     '<h4>{{title}}</h4>' +
                     '<div class="itemContent">{{{content}}}</div>' +
                 '</div>'
             ),
+            /* A nested array of menu item objects, each with these properties:
+             *   title: The title to display in the menu.
+             *   content: The body content to display when an item is clicked.
+             *   items: An optional array of child menu items.
+             */
             content: [
                 {
                     title: 'Item 1',

@@ -1,15 +1,25 @@
 (function($) {
     $.widget('q4.accordion', {
         options: {
+            /* Whether opening an accordion section will close the others. */
             openMultipleSections: false,
+            /* Whether the first accordion item should be open at init. */
             openFirstItem: true,
+            /* A selector for the trigger to open/close a section. */
             trigger: '.accordionTrigger',
+            /* A selector for the expand/collapse message. */
             indicator: '.accordionTriggerText',
+            /* A selector for the container to show/hide. */
             container: '.accordionContent',
+            /* The indicator text for a closed section. */
             expandText: 'EXPAND [ + ]',
+            /* The indicator text for an open section. */
             collapseText: 'CLOSE [ – ]',
+            /* A class to add to an open section. */
             activeClass: 'active',
+            /* A class to add to each section. */
             sectionClass: 'accordion-item',
+            /* A Mustache template for each section. */
             template: (
                 '<div class="accordionItem">' +
                     '<h3 class="accordionTrigger">' +
@@ -19,6 +29,10 @@
                     '<div class="accordionContent">{{{content}}}</div>' +
                 '</div>'
             ),
+            /* A list of objects representing sections, with these properties:
+             *   title: The title to display in the header.
+             *   content: The content to display in the body.
+             *   open (boolean): Whether to show or hide the section initially. */
             content: [
                 {
                     title: 'Title 1',
@@ -47,12 +61,16 @@
 
                 // render section
                 var $section = $(Mustache.render(o.template, section)).addClass(o.sectionClass).appendTo($e);
-                $(o.indicator, $section).html(o.expandText);
 
                 // if content is a jQuery object, add it to the section
                 if ($cont) {
                     $('.accordion-placeholder', $section).replaceWith($cont);
                 }
+
+                // show/hide section container
+                var open = (i == 0 && o.openFirstItem) || section.open;
+                $(o.container, $section).toggle(open);
+                $(o.indicator, $section).html(open ? o.collapseText : o.expandText);
             });
         },
 

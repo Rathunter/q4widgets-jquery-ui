@@ -301,12 +301,12 @@
             }
         },
 
-        setFilter: function (filter, value) {
+        setFilter: function (filter, value, reload) {
             if (filter == 'category') filter = 'cat';
             if (filter == 'tags') filter = 'tag';
 
             this._setInput(filter, value);
-            this._updateFilterFromInput(filter);
+            this._updateFilterFromInput(filter, reload);
         },
 
         _create: function () {
@@ -419,23 +419,19 @@
                 if (opts.input == 'select' || opts.input == 'text') {
                     // just update the filter data
                     handlers['change ' + opts.container] = function (e) {
-                        this._updateFilterFromInput(filter);
-
                         this._trigger('onFilterUpdate', e);
                         if (e.isDefaultPrevented()) return;
 
-                        this._countAndLoadDocuments();
+                        this._updateFilterFromInput(filter, true);
                     }
                 } else if (opts.input == 'trigger') {
                     // update trigger display, then update the filter data
                     handlers['click ' + opts.container + ' ' + opts.trigger] = function (e) {
-                        this._setInput(filter, $(e.target).data(filter));
-                        this._updateFilterFromInput(filter);
-
                         this._trigger('onFilterUpdate', e);
                         if (e.isDefaultPrevented()) return;
 
-                        this._countAndLoadDocuments();
+                        this._setInput(filter, $(e.target).data(filter));
+                        this._updateFilterFromInput(filter, true);
                     }
                 }
             });
@@ -474,14 +470,9 @@
             }
         },
 
-        _updateFilterFromInput: function (filter) {
+        _updateFilterFromInput: function (filter, reload) {
             var $e = this.element,
                 opts = this.filterOpts[filter];
-
-            // reset years if we are updating a content filter
-            if (filter == 'cat' || filter == 'tag') {
-                $e.removeData('years');
-            }
 
             // data is gathered differently for different input types
             if (opts.input == 'select' || opts.input == 'text') {
@@ -498,6 +489,17 @@
                 });
                 $e.data(filter, values);
             }
+
+            // optionally, refetch documents based on updated filter
+            if (reload) {
+                if (filter == 'year' || filter == 'perPage') {
+                    // don't need to refetch years or document count
+                    this._updateDocumentCount();
+                    this._loadDocumentPage(1);
+                } else {
+                    this._countAndLoadDocuments();
+                }
+            }
         },
 
         _countAndLoadDocuments: function () {
@@ -511,8 +513,7 @@
                     string: $e.data('search')
                 }),
                 $docs = $(o.docContainer, $e).html(o.loadingTemplate),
-                $docsfound = $(o.docsFoundContainer, $e).empty(),
-                $pager = $(o.pagerContainer, $e).empty();
+                $docsfound = $(o.docsFoundContainer, $e).empty();
 
             // fetch filter options and get page count
             // TODO: support multiple content types
@@ -532,63 +533,71 @@
                         return;
                     }
 
+                    // add "all" option to start of year totals list if enabled
+                    if (o.allowAllYears) {
+                        yeartotals[''] = 0;
+                    }
+
                     $.each(data, function (i, year) {
                         years.push(year._id.year);
                         yeartotals[year._id.year] = year.total;
-                        total += year.total;
+                        yeartotals[''] += year.total;
                     });
+                    $e.data('yeartotals', yeartotals);
+                    $e.data('years', years);
 
-                    // if years have been reset (content updated), redraw the years filter
-                    if (!$e.data('years')) {
-                        $e.data('years', years);
+                    // set current year and render pager
+                    _._updateDocumentCount();
 
-                        // reset year if currently selected year has no documents
-                        if ($.inArray(parseInt($e.data('year')), years) == -1) {
-                            // if startYear is specified and it exists, use it
-                            $e.data('year', ($.inArray(o.startYear, years) > -1) ? o.startYear :
-                                // otherwise use "all" if enabled, or the most recent
-                                (years.length && !o.allowAllYears ? years[0] : ''));
+                    // render years
+                    var $years = $(o.yearOptions.container, $e).empty();
+                    if (o.sortByYear && $years.length) {
+                        if (o.allowAllYears) {
+                            $(Mustache.render(o.yearOptions.template, {value: '', year: o.allYearsText})).data('year', '').appendTo($years);
                         }
-
-                        // render years, if applicable
-                        var $years = $(o.yearOptions.container, $e).empty();
-                        if (o.sortByYear && $years.length) {
-                            if (o.allowAllYears) {
-                                $(Mustache.render(o.yearOptions.template, {value: '', year: o.allYearsText})).data('year', '').appendTo($years);
-                            }
-                            $.each($e.data('years'), function (i, year) {
-                                $(Mustache.render(o.yearOptions.template, {value: year, year: year})).data('year', year).appendTo($years);
-                            });
-                        }
-                        $years.val($e.data('year'));
-                    }
-
-                    var doctotal = $e.data('year') ? yeartotals[$e.data('year')] || 0 : total;
-                    $e.data('total', doctotal);
-
-                    // render pager, if applicable
-                    if ($e.data('perPage') && $pager.length) {
-                        $pager.pager({
-                            count: doctotal,
-                            perPage: $e.data('perPage'),
-                            trigger: o.pagerTrigger,
-                            template: o.pagerTemplate,
-                            labels: o.pagerLabels,
-                            beforeChange: function (pager, page) {
-                                $e.data('page', page);
-                                _._loadDocuments();
-                            }
+                        $.each(years, function (i, year) {
+                            $(Mustache.render(o.yearOptions.template, {value: year, year: year})).data('year', year).appendTo($years);
                         });
                     }
+                    _._setInput('year', $e.data('year'));
 
                     // show the first page
-                    $e.data('page', 1);
-                    _._loadDocuments();
+                    _._loadDocumentPage(1);
                 }
             });
         },
 
-        _loadDocuments: function () {
+        _updateDocumentCount: function () {
+            var _ = this,
+                o = this.options,
+                $e = this.element,
+                $pager = $(o.pagerContainer, $e).empty();
+
+            // reset year if a year with no documents is currently selected
+            if ($.inArray(parseInt($e.data('year')), $e.data('years')) == -1 &&
+                !($e.data('year') == '' && o.allowAllYears)) {
+                // if startYear is specified and it exists, use it
+                $e.data('year', ($.inArray(o.startYear, $e.data('years')) > -1) ? o.startYear :
+                    // otherwise use "all" if enabled, or the most recent year
+                    ($e.data('years').length && !o.allowAllYears ? $e.data('years')[0] : ''));
+            }
+
+            // render pager
+            if ($e.data('perPage') && $pager.length) {
+                $pager.pager({
+                    count: $e.data('yeartotals')[$e.data('year')],
+                    perPage: $e.data('perPage'),
+                    trigger: o.pagerTrigger,
+                    template: o.pagerTemplate,
+                    labels: o.pagerLabels,
+                    beforeChange: function (pager, page) {
+                        _._loadDocumentPage(page);
+                    }
+                });
+            }
+        },
+
+        _loadDocumentPage: function (page) {
             var _ = this,
                 $e = _.element,
                 o = _.options,
@@ -598,10 +607,11 @@
                     tag: ($e.data('tag') || []),
                     year: $e.data('year'),
                     string: $e.data('search'),
-                    skip: $e.data('perPage') ? ($e.data('page') - 1) * $e.data('perPage') : 0,
+                    skip: $e.data('perPage') ? (page - 1) * $e.data('perPage') : 0,
                     limit: $e.data('perPage') || 0
                 }),
-                $docs = $(o.docContainer, $e).html(o.loadingTemplate);
+                $docs = $(o.docContainer, $e).html(o.loadingTemplate),
+                $docsfound = $(o.docsFoundContainer, $e).empty();
 
             // get this page of records for current filter options
             $.ajax({
@@ -612,7 +622,7 @@
                 success: function (data) {
                     var template = 'template' in cat ? cat.template : (ctype.multiple ? o.multiDocTemplate : o.singleDocTemplate),
                         docs = [],
-                        $docsfound = $(o.docsFoundContainer, $e);
+                        doctotal = $e.data('yeartotals')[$e.data('year')] || 0;
 
                     // render document list
                     $.each(data, function (i, item) {
@@ -630,11 +640,11 @@
                     // render "documents found" message
                     $docsfound.html(Mustache.render(o.docsFoundTemplate, {
                         docCount: docs.length,
-                        docTotal: $e.data('total'),
+                        docTotal: doctotal,
                         docFirst: opts.skip + 1,
                         docLast: opts.skip + docs.length,
-                        page: $e.data('page'),
-                        pageCount: Math.ceil($e.data('total') / $e.data('perPage'))
+                        page: page,
+                        pageCount: Math.ceil(doctotal / $e.data('perPage'))
                     }));
 
                     // fire callback

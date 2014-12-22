@@ -157,6 +157,9 @@
             // convert strings to arrays
             o.years = o.years ? [].concat(o.years).sort(function (a, b) { return b - a; }) : [];
             o.tags = o.tags ? [].concat(o.tags) : [];
+
+            // convert strings to ints
+            if (typeof o.startYear == 'string' && o.startYear.length) o.startYear = parseInt(o.startYear);
         },
 
         _buildParams: function () {

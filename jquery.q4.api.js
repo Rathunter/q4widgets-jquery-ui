@@ -42,8 +42,8 @@
             minYear: null,
             /* A URL to a default thumbnail, in case an item has none. */
             defaultThumb: '',
-            /* Whether to append the widget to the container, or
-             * replace its contents entirely. */
+            /* Whether to append the widget to the container, or replace its
+             * contents entirely. */
             append: true,
             /* A Mustache.js template for the overall widget. */
             template: (
@@ -56,6 +56,9 @@
                     '{{^items}}No items found.{{/items}}' +
                 '</ul>'
             ),
+            /* A message or HTML string to display while loading the widget.
+             * Set to false to disable this feature. */
+            loadingMessage: 'Loading...',
             /* An optional selector for year trigger links in the main template.
              * If passed, click events will be bound here. */
             yearTrigger: null,
@@ -78,14 +81,25 @@
                     '<a href="{{url}}" class="title">{{title}}</a>' +
                 '</li>'
             ),
-            /* A message to use in the items container if no items are found. */
-            notFoundTemplate: 'No items found.',
+            /* A message or HTML string to display while loading items.
+             * By default it is the same as loadingMessage.
+             * Set to false to disable this feature. */
+            itemLoadingMessage: null,
+            /* A message or HTML string to display in the items container
+             * if no items are found. */
+            itemNotFoundMessage: 'No items found.',
             /* A callback that fires when a year trigger or selectbox changes. */
-            onYearChange: function () {},
+            onYearChange: function (e) {},
+            /* A callback that fires before the full widget is rendered. \
+             * Receives the full template data. */
+            beforeRender: function (e, tplData) {},
+            /* A callback that fires before the items are rendered.
+             * Receives template data for the list of items. */
+            beforeRenderItems: function (e, tplData) {},
             /* A callback that fires after the item list is rendered. */
-            itemsComplete: function () {},
+            itemsComplete: function (e) {},
             /* A callback that fires after the entire widget is rendered. */
-            complete: function () {}
+            complete: function (e) {}
         },
 
         years: null,
@@ -103,7 +117,11 @@
 
         _init: function () {
             var _ = this,
-                o = this.options;
+                o = this.options,
+                $e = this.element;
+
+            if (!o.append) $e.empty();
+            this.$widget = $(o.loadingMessage || '').appendTo($e);
 
             // if "all years" is enabled and it's the default, fetch all years
             if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
@@ -160,6 +178,16 @@
 
             // convert strings to ints
             if (typeof o.startYear == 'string' && o.startYear.length) o.startYear = parseInt(o.startYear);
+
+            // if item loading message is unset, set to match loading message
+            if (o.itemLoadingMessage === null) o.itemLoadingMessage = o.loadingMessage;
+
+            // if appending, make sure template and loading message are HTML
+            // so they can be stored properly in $widget
+            if (o.append) {
+                if (!/<|>/.test(o.template)) o.template = '<div>' + o.template + '</div>';
+                if (!/<|>/.test(o.loadingMessage)) o.loadingMessage = '<div>' + o.loadingMessage + '</div>';
+            }
         },
 
         _buildParams: function () {
@@ -305,13 +333,15 @@
             var o = this.options,
                 $e = this.element;
 
+            this._trigger('beforeRenderItems', null, {items: items});
+
             if (items.length) {
                 $(o.itemContainer, $e).empty();
                 $.each(items, function (i, item) {
                     $(o.itemContainer, $e).append(Mustache.render(o.itemTemplate, item));
                 });
             } else {
-                $(o.itemContainer, $e).html(o.notFoundTemplate);
+                $(o.itemContainer, $e).html(o.itemNotFoundMessage);
             }
 
             this._trigger('itemsComplete');
@@ -341,8 +371,10 @@
                 }
             });
 
-            // render entire widget and store a reference
-            if (!o.append) $e.empty();
+            this._trigger('beforeRender', null, tplData);
+
+            // clear previous contents and render entire widget
+            this.$widget.remove();
             this.$widget = $(Mustache.render(o.template, tplData)).appendTo($e);
 
             // render items separately if applicable
@@ -359,14 +391,14 @@
 
                     $(this).click(function (e) {
                         e.preventDefault();
-                        if (!$(this).hasClass(o.activeClass)) _.setYear(year);
+                        if (!$(this).hasClass(o.activeClass)) _.setYear(year, e);
                     });
                 });
             }
             if (o.yearSelect) {
                 // bind change event to selectbox
                 $(o.yearSelect, $e).change(function (e) {
-                    _.setYear($(this).val());
+                    _.setYear($(this).val(), e);
                 });
             }
 
@@ -391,16 +423,28 @@
             }
         },
 
-        setYear: function (year) {
+        setYear: function (year, e) {
             var _ = this,
-                o = this.options;
+                o = this.options,
+                $e = this.element;
 
-            this._trigger('onYearChange');
-
-            this._updateYearControls(year);
+            // fire callback and allow a chance to cancel the event
+            this._trigger('onYearChange', e);
+            if (e.isDefaultPrevented()) return;
 
             // default value if year is invalid
             if (!$.inArray(year, this.years)) year = o.showAllYears ? -1 : this.years[0];
+
+            this._updateYearControls(year);
+
+            // display loading message
+            if (o.itemContainer && o.itemTemplate) {
+                if (o.itemLoadingMessage !== false) $(o.itemContainer).html(o.itemLoadingMessage);
+            }
+            else if (o.loadingMessage !== false) {
+                this.$widget.remove();
+                this.$widget = $(o.loadingMessage).appendTo($e);
+            }
 
             // get data for selected year
             this._getData(year).done(function (data) {
@@ -410,7 +454,6 @@
                 }
                 else {
                     // rerender entire widget
-                    _.$widget.remove();
                     _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), year);
                 }
             });

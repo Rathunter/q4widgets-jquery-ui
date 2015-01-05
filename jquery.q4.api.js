@@ -360,17 +360,17 @@
                     items: tplData.items
                 });
             }
-            
+
             var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
-                if (tplYear.year == activeYear) {
+                if (tplYear.value == activeYear) {
                     // set the active year in the template data
                     tplYear.active = true;
                     // save this year's items for separate item rendering
                     yearItems = tplYear.items;
                 }
             });
-
+            
             this._trigger('beforeRender', null, tplData);
 
             // clear previous contents and render entire widget

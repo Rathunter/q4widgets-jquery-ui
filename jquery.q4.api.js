@@ -326,6 +326,15 @@
                 });
             });
 
+            // add "all years" option, if there are years to show
+            if (o.showAllYears && tplData.years.length) {
+                tplData.years.unshift({
+                    year: o.allYearsText,
+                    value: -1,
+                    items: tplData.items
+                });
+            }
+
             return tplData;
         },
 
@@ -351,15 +360,6 @@
             var _ = this,
                 o = this.options,
                 $e = this.element;
-
-            // add "all years" option, if there are years to show
-            if (o.showAllYears && tplData.years.length) {
-                tplData.years.unshift({
-                    year: o.allYearsText,
-                    value: -1,
-                    items: tplData.items
-                });
-            }
 
             var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
@@ -589,10 +589,10 @@
             return {
                 coverUrl: result.CoverImagePath,
                 date: $.datepicker.formatDate(o.dateFormat, new Date(result.ReportDate)),
-                shortType: o.shortTypes[result.ReportSubType],
                 title: result.ReportTitle,
-                type: result.ReportSubType,
                 year: result.ReportYear,
+                type: result.ReportSubType,
+                shortType: o.shortTypes[result.ReportSubType],
                 docs: $.map(result.Documents, function (doc) {
                     return {
                         docCategory: doc.DocumentCategory,
@@ -604,6 +604,39 @@
                     };
                 })
             };
+        },
+
+        _parseResultsWithYears: function (results, years) {
+            var o = this.options,
+                tplData = this._super(results, years);
+
+            // also sort each year's documents by subtype
+            $.each(tplData.years, function (i, tplYear) {
+                var types = [],
+                    docsByType = {};
+
+                $.each(tplYear.items, function (i, item) {
+                    if ($.inArray(item.type, types) == -1) {
+                        // keep an array of types to preserve order
+                        types.push(item.type);
+                        docsByType[item.type] = [];
+                    }
+                    $.each(item.docs, function (i, doc) {
+                        docsByType[item.type].push(doc);
+                    });
+                });
+
+                // insert a types array into each year
+                tplYear.types = $.map(types, function (type, i) {
+                    return {
+                        type: type,
+                        shortType: o.shortTypes[type],
+                        docs: docsByType[type]
+                    };
+                });
+            });
+
+            return tplData;
         }
     });
 

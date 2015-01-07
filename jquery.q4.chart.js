@@ -2,24 +2,23 @@
     /* requires: highstock 2.0 */
     $.widget('q4.chart', {
         options: {
-            /* The base URL to use for the API. */
-            url: '//feeds.q4websystems.com',
+            /* The base URL to use for the API (e.g. "//feeds.q4websystems.com" */
+            url: '',
             /* Whether to use the public feed API or the private API. */
             usePublic: true,
             /* The API key to use for public feeds. */
             apiKey: '',
-            /* The stock symbols that will appear on the stock price chart.
-             * This is an array of tuples, where each tuple contains
-             * the exchange, the symbol, and an optional custom name to use
-             * instead of "EXCHANGE:SYMBOL".
-             */
+            /* An array of stock symbols to use on the stock price chart.
+             * Each symbol can be a string of the format "EXCHANGE:SYMBOL",
+             * or an array containing "EXCHANGE:SYMBOL" and a custom
+             * display name. */
             stocks: [
-                ['NYSE', 'XXX', 'NYSE:XXX']
+                ['NYSE:XXX', 'NYSE: XXX']
             ],
             /* Whether to prevent stock price charts from being toggled off. */
             lockStock: false,
             /* Whether to show the stock quote in the chart legend. */
-            showLegendSymbol: true,
+            showSymbolInLegend: true,
             /* The maximum number of data points to fetch for the stock chart. */
             stockLimit: 1500,
             /* Whether to include a volume chart below the stock price chart. */
@@ -128,7 +127,7 @@
                 // add the first symbol's volume data as the second series
                 o.highstock.series[1].data = stockData[1];
                 // add a second y-axis
-                o.highstock.yAxis = [{}, {}];
+                o.highstock.yAxis = [o.highstock.yAxis || {}, {}];
             }
 
             // initialize Highstock
@@ -222,9 +221,12 @@
 
             // build stock series without data
             $.each(o.stocks, function (i, stock) {
-                var exchange = stock[0],
-                    symbol = stock[1],
-                    name = stock.length > 2 && stock[2] ? stock[2] : exchange + ':' + symbol;
+                if (typeof stock === 'string') stock = [stock];
+
+                var exsymbol = stock[0].split(':'),
+                    exchange = exsymbol[0],
+                    symbol = exsymbol[1],
+                    name = stock.length > 1 && stock[1] ? stock[1] : stock[0];
 
                 // Stock Price Series
                 series.push($.extend({
@@ -232,7 +234,7 @@
                     name: name,
                     id: 'price' + i,
                     visible: i === 0,
-                    showInLegend: o.showLegendSymbol,
+                    showInLegend: o.showSymbolInLegend,
                     turboThreshold: 0,
                     tooltip: {
                         valueDecimals: 2
@@ -318,15 +320,18 @@
             return series;
         },
 
-        _getStockData: function (symbol) {
+        _getStockData: function (stock) {
             var o = this.options;
+
+            if (typeof stock === 'string') stock = [stock];
+            var exsymbol = stock[0].split(':');
 
             if (o.usePublic) {
                 return this._getData(
                     '/feed/StockQuote.svc/GetStockQuoteHistoricalList',
                     {
-                        exchange: symbol[0],
-                        symbol: symbol[1],
+                        exchange: exsymbol[0],
+                        symbol: exsymbol[1]
                     },
                     o.stockLimit
                 );
@@ -334,8 +339,8 @@
                 return this._getData(
                     '/Services/StockQuoteService.svc/GetStockQuoteHistoricalList',
                     {
-                        exchange: symbol[0],
-                        symbol: symbol[1],
+                        exchange: exsymbol[0],
+                        symbol: exsymbol[1]
                     },
                     o.stockLimit
                 );

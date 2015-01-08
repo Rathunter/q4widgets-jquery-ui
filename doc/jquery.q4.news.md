@@ -1,0 +1,29 @@
+# q4.news
+
+### Fetches and displays press releases from the Q4 private API.
+
+*Source file: `jquery.q4.api.js`, line 834*  
+
+
+
+## Options
+- **category** - *string*  
+The ID of the PR category to fetch. Defaults to all.  
+
+- **loadBody** - *boolean*  
+Whether to fetch the body of the press releases.  
+*Default:* `true`  
+
+- **loadShortBody** - *boolean*  
+Whether to fetch the shortened body of the press releases.  
+*Default:* `true`  
+
+- **bodyLength** - *number*  
+The maximum length for the body, or zero for unlimited.  
+*Default:* `0`  
+
+- **shortBodyLength** - *number*  
+The maximum length for the short body, or zero for unlimited.  
+*Default:* `0`  
+
+

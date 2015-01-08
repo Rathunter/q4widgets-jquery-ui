@@ -1,79 +1,171 @@
 (function ($) {
-    $.widget('q4.api', {
+    /**
+     * Base widget for accessing Q4 private API data.
+     * @class q4.api
+     * @abstract
+     * @author marcusk@q4websystems.com
+     * @requires Mustache.js
+     */
+    $.widget('q4.api', /** @lends q4.api */ {
         options: {
-            /* The base URL to use for API calls. */
+            /**
+             * The base URL to use for API calls. 
+             * @type {string}
+             */
             url: '',
-            /* The maximum number of results to fetch from the server. */
+            /**
+             * The maximum number of results to fetch from the server.
+             * @type {number}
+             * @default
+             */
             limit: 0,
-            /* The number of results to skip. Used for pagination. */
+            /**
+             * The number of results to skip. Used for pagination.
+             * @type {number}
+             * @default
+             */
             skip: 0,
-            /* Whether to fetch data from all years, or just the most recent.
-             * If showAllYears is true, this is assumed to be true also. */
+            /**
+             * Whether to fetch data from all years, or just the most recent.
+             * If `showAllYears` is true, this is assumed to be true also.
+             * @type {boolean}
+             * @default
+             */
             fetchAllYears: false,
-            /* Whether to include an "all years" option in template data
+            /**
+             * Whether to include an "all years" option in template data
              * and year selectors. If true, the widget will display
              * all year data by default on first load; otherwise it will
-             * start with data from the most recent year. */
+             * start with data from the most recent year.
+             * @type {boolean}
+             * @default
+             */
             showAllYears: false,
-            /* The text to use for the "all years" option. */
+            /**
+             * The text to use for the "all years" option.
+             * @type {string}
+             * @default
+             */
             allYearsText: 'All',
-            /* The year to display first. Default is "all", or most recent.
-             * It may be useful to pass (new Date()).getFullYear(). */
+            /**
+             * The year to display first. Default is to display all years if
+             * that option is enabled, otherwise the most recent year.
+             * A useful value to pass is `(new Date()).getFullYear()`. 
+             * @type {?number}
+             */
             startYear: null,
-            /* Whether to fetch items dated in the future. */
+            /**
+             * Whether to fetch items dated in the future.
+             * @type {boolean}
+             * @default
+             */
             showFuture: true,
-            /* Whether to fetch items dated in the past. */
+            /**
+             * Whether to fetch items dated in the past.
+             * @type {boolean}
+             * @default
+             */
             showPast: true,
-            /* A list of tags to filter by. */
+            /**
+             * A list of tags to filter by.
+             * @type {Array<string>}
+             */
             tags: [],
-            /* The maximum length of an item's title. Zero for no limit (default). */
+            /**
+             * The maximum length of an item's title. Zero for no limit.
+             * @type {number}
+             * @default
+             */
             titleLength: 0,
-            /* A datepicker format string, which can be used in the template
-             * as {{date}}. Can alternately be an object of format strings,
-             * which can be accessed with {{date.key}} (where key is the
-             * object key corresponding to the string you want to use). */
+            /**
+             * A datepicker format string, which can be used in the template
+             * as `{{date}}`. Can alternately be an object of format strings,
+             * which can be accessed with `{{date.key}}` (where key is the
+             * object key corresponding to the string you want to use).
+             * @type {string}
+             * @default
+             */
             dateFormat: 'mm/dd/yy',
-            /* An array of years to filter by. If passed, no items will
-             * be displayed unless they are dated to a year in this list. */
+            /**
+             * An array of years to filter by. If passed, no items will
+             * be displayed unless they are dated to a year in this list.
+             * @type {Array<number>}
+             */
             years: [],
-            /* The latest year to display items from. */
+            /**
+             * The latest year to display items from.
+             * @type {?number}
+             */
             maxYear: null,
-            /* The earliest year to display items from. */
+            /**
+             * The earliest year to display items from.
+             * @type {?number}
+             */
             minYear: null,
-            /* A URL to a default thumbnail, in case an item has none. */
+            /**
+             * A URL to a default thumbnail, in case an item has none.
+             * @type {string}
+             */
             defaultThumb: '',
-            /* Whether to append the widget to the container, or replace its
-             * contents entirely. */
+            /**
+             * Whether to append the widget to the container, or replace its
+             * contents entirely.
+             * @type {boolean}
+             * @default
+             */
             append: true,
-            /* A Mustache.js template for the overall widget. */
-            template: (
-                '<ul class="years">' +
-                    '{{#years}}<li>{{year}}</li>{{/years}}' +
-                '</ul>' +
-                '<h1>{{title}}</h1>' +
-                '<ul class="items">' +
-                    '{{#items}}<li><a target="_blank" href="{{url}}">{{title}}</a></li>{{/items}}' +
-                    '{{^items}}No items found.{{/items}}' +
-                '</ul>'
-            ),
-            /* A message or HTML string to display while loading the widget.
-             * Set to false to disable this feature. */
+            /**
+             * A Mustache.js template for the overall widget.
+             * @type {string}
+             * @example
+             * '<ul class="years">' +
+             *     '{{#years}}<li>{{year}}</li>{{/years}}' +
+             * '</ul>' +
+             * '<h1>{{title}}</h1>' +
+             * '<ul class="items">' +
+             *     '{{#items}}<li><a target="_blank" href="{{url}}">{{title}}</a></li>{{/items}}' +
+             *     '{{^items}}No items found.{{/items}}' +
+             * '</ul>'
+             */
+            template: '',
+            /**
+             * A message or HTML string to display while loading the widget.
+             * Set to `false` to disable this feature.
+             * @type {(string|boolean)}
+             * @default
+             */
             loadingMessage: 'Loading...',
-            /* An optional selector for year trigger links in the main template.
-             * If passed, click events will be bound here. */
+            /**
+             * An optional selector for year trigger links in the main template.
+             * If passed, click events will be bound here.
+             * @type {?string}
+             */
             yearTrigger: null,
-            /* An optional selector for a year selectbox in the main template.
-             * If passed, change events will be bound here. */
+            /**
+             * An optional selector for a year selectbox in the main template.
+             * If passed, change events will be bound here.
+             * @type {?string}
+             */
             yearSelect: null,
-            /* The CSS class to use for a selected year trigger. */
+            /**
+             * The CSS class to use for a selected year trigger.
+             * @type {string}
+             * @default
+             */
             activeClass: 'active',
-            /* An optional selector for the items container. You must also 
-             * pass itemTemplate for this to have any effect. */
+            /**
+             * An optional selector for the items container. You must also 
+             * pass `itemTemplate` for this to have any effect.
+             * @type {?string}
+             */
             itemContainer: null,
-            /* An optional template for the items container. If itemContainer
+            /**
+             * An optional template for the items container. If `itemContainer`
              * is also passed, this will be used to render the items list.
              * Also, when the year is changed, only the items list will be
-             * rerendered, instead of the entire widget. */
+             * rerendered, instead of the entire widget. 
+             * @type {string}
+             */
             itemTemplate: (
                 '<li>' +
                     '<img class="thumb" src="{{thumb}}">' +
@@ -81,24 +173,51 @@
                     '<a href="{{url}}" class="title">{{title}}</a>' +
                 '</li>'
             ),
-            /* A message or HTML string to display while loading items.
-             * By default it is the same as loadingMessage.
-             * Set to false to disable this feature. */
+            /**
+             * A message or HTML string to display while loading items.
+             * By default it is the same as `loadingMessage`.
+             * Set to `false` to disable this feature.
+             * @type {?string}
+             */
             itemLoadingMessage: null,
-            /* A message or HTML string to display in the items container
-             * if no items are found. */
+            /**
+             * A message or HTML string to display in the items container
+             * if no items are found.
+             * @type {string}
+             * @default
+             */
             itemNotFoundMessage: 'No items found.',
-            /* A callback that fires when a year trigger or selectbox changes. */
+            /**
+             * A callback that fires when a year trigger or selectbox changes.
+             * @type {function}
+             * @param {Event} [event] The triggering event object.
+             */
             onYearChange: function (e) {},
-            /* A callback that fires before the full widget is rendered. \
-             * Receives the full template data. */
+            /**
+             * A callback that fires before the full widget is rendered.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             * @param {Object} [templateData] The complete template data.
+             */
             beforeRender: function (e, tplData) {},
-            /* A callback that fires before the items are rendered.
-             * Receives template data for the list of items. */
+            /**
+             * A callback that fires before the items are rendered.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             * @param {Object} [templateData] Template data for the items list.
+             */
             beforeRenderItems: function (e, tplData) {},
-            /* A callback that fires after the item list is rendered. */
+            /**
+             * A callback that fires after the item list is rendered.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             */
             itemsComplete: function (e) {},
-            /* A callback that fires after the entire widget is rendered. */
+            /**
+             * A callback that fires after the entire widget is rendered.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             */
             complete: function (e) {}
         },
 
@@ -463,9 +582,18 @@
 
     /* Event Widget */
 
-    $.widget('q4.events', $.q4.api, {
+    /**
+     * Fetches and displays events from the Q4 private API.
+     * @class q4.events
+     * @extends q4.api
+     */
+    $.widget('q4.events', $.q4.api, /** @lends q4.events */ {
         options: {
-            /* Whether to sort the events in ascending chronological order. */
+            /**
+             * Whether to sort the events in ascending chronological order.
+             * @type {boolean}
+             * @default
+             */
             sortAscending: false
         },
 
@@ -544,20 +672,40 @@
 
     /* Financial Report Widget */
 
-    $.widget('q4.financials', $.q4.api, {
+    /**
+     * Fetches and displays financial reports from the Q4 private API.
+     * @class q4.financials
+     * @extends q4.api
+     */
+    $.widget('q4.financials', $.q4.api, /** @lends q4.financials */ {
         options: {
-            /* A list of report subtypes to display.
+            /**
+             * A list of report subtypes to display.
              * Valid values are:
-             *   Annual Report, Supplemental Report,
-             *   First Quarter, Second Quarter, Third Quarter, Fourth Quarter.
-             * Use an empty list to display all (default). */
+             * - `Annual Report`
+             * - `Supplemental Report`
+             * - `First Quarter`
+             * - `Second Quarter`
+             * - `Third Quarter`
+             * - `Fourth Quarter`
+             * Use an empty list to display all.
+             * @type {Array<string>}
+             * @default
+             */
             reportTypes: [],
-            /* A list of document categories to display.
-             * Example: Financial Report, MD&A, Earnings Press Release.
-             * Use an empty list to display all (default). */
+            /**
+             * A list of document categories to display.
+             * Use an empty list to display all.
+             * @type {Array<string>}
+             * @example ["Financial Report", "MD&A", "Earnings Press Release"]
+             * @default
+             */
             docCategories: [],
-            /* A map of short names for each report subtype,
-             * for use in the template. */
+            /**
+             * A map of short names for each report subtype,
+             * for use in the template.
+             * @type {Object}
+             */
             shortTypes: {
                 'Annual Report': 'Annual',
                 'Supplemental Report': 'Supplemental',
@@ -643,7 +791,12 @@
 
     /* Presentation Widget */
 
-    $.widget('q4.presentations', $.q4.api, {
+    /**
+     * Fetches and displays presentations from the Q4 private API.
+     * @class q4.presentations
+     * @extends q4.api
+     */
+    $.widget('q4.presentations', $.q4.api, /** @lends q4.presentations */ {
         options: {
         },
 
@@ -678,17 +831,41 @@
 
     /* Press Release Widget */
 
-    $.widget('q4.news', $.q4.api, {
+    /**
+     * Fetches and displays press releases from the Q4 private API.
+     * @class q4.news
+     * @extends q4.api
+     */
+    $.widget('q4.news', $.q4.api, /** @lends q4.news */ {
         options: {
-            /* The ID of the PR category to fetch. Defaults to all. */
+            /**
+             * The ID of the PR category to fetch. Defaults to all.
+             * @type {string}
+             */
             category: '00000000-0000-0000-0000-000000000000',
-            /* Whether to fetch the body of the press releases. */
+            /**
+             * Whether to fetch the body of the press releases.
+             * @type {boolean}
+             * @default
+             */
             loadBody: true,
-            /* Whether to fetch the shortened body of the press releases. */
+            /**
+             * Whether to fetch the shortened body of the press releases.
+             * @type {boolean}
+             * @default
+             */
             loadShortBody: true,
-            /* The maximum length for the body. Default 0 (unlimited). */
+            /**
+             * The maximum length for the body, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
             bodyLength: 0,
-            /* The maximum length for the short body. Default 0 (unlimited). */
+            /**
+             * The maximum length for the short body, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
             shortBodyLength: 0
         },
 

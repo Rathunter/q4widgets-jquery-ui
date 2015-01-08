@@ -1,52 +1,45 @@
-/**
- * @class q4.calendar
- *
- * @example
- *      $("#clndr").calendar({
- *          news: true,
- *          presentations: true,
- *          eventSize: 50,
- *          slideshare: "Q4WebSystems"
- *      });
- *
- * @docauthor jasonm@q4websystems.com
- * 
- * requires: CLNDR.js, Moment.js, Underscore.js
- */
 (function($) {
-    $.widget("q4.calendar", {
+    /**
+     * @class q4.calendar
+     * @example
+     *     $("#clndr").calendar({
+     *         news: true,
+     *         presentations: true,
+     *         eventSize: 50,
+     *         slideshare: "Q4WebSystems"
+     *     });
+     * @author jasonm@q4websystems.com
+     * @requires CLNDR.js
+     * @requires Moment.js
+     * @requires Underscore.js
+     */
+    $.widget("q4.calendar", /** @lends q4.calendar */ {
         options: {
              /**
-             * @cfg
              * This allows the widget to be placed on a site not hosted by Q4.
              * Requires url and apiKey to be set in the configuration.
              */
             publicFeed: false,
             /**
-             * @cfg
              * A URL to a Q4 hosted website.
              * This is only requied if publicFeed is set to true.
              */
             url: '',
             /**
-             * @cfg
              * The API Key can be found under System Admin > Site List > Public Site
              * in the admin of any Q4 Website.
              * This is only requied if publicFeed is set to true.
              */
             apiKey: '',
             /**
-             * @cfg {Boolean}
              * Set to true to include all related Press Releases
              */
             news: false,
             /**
-             * @cfg {Boolean}
              * Set to true to include all related presentations.
              */
             presentations: false,
             /**
-             * @cfg
              * Can be set to a SlideShare username.
              * This will add a SlideShare presentations as an event.
              */
@@ -66,12 +59,10 @@
              */
             onSlideShareLoad: function(calendar, events){ },
             /**
-             * @cfg
              * The number of events to add to the calendar
              */
             eventSize: 25,
             /**
-             * @cfg
              * Filter Events by Tag.
              */
             tags: [],
@@ -171,8 +162,7 @@
                  */
                 doneRendering: function(){ },
                 /**
-                 * @class q4.calendar.clickEvents
-                 * Example Config:
+                 * @example
                  *
                  *      $("#clndr").eventCal({
                  *          calendar: {

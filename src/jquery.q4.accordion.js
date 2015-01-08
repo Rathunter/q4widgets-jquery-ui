@@ -1,25 +1,60 @@
 (function($) {
-    $.widget('q4.accordion', {
+    /**
+     * Creates an expanding and collapsing accordion from sections of content.
+     * @class q4.accordion
+     * @requires mustache.js
+     */
+    $.widget('q4.accordion', /** @lends q4.accordion */ {
         options: {
-            /* Whether opening an accordion section will close the others. */
+            /**
+             * Whether opening an accordion section will close the others.
+             * @type {boolean}
+             */
             openMultipleSections: false,
-            /* Whether the first accordion item should be open at init. */
+            /**
+             * Whether the first accordion item should be open at init.
+             * @type {boolean}
+             */
             openFirstItem: true,
-            /* A selector for the trigger to open/close a section. */
+            /**
+             * A selector for the trigger to open/close a section.
+             * @type {string}
+             */
             trigger: '.accordionTrigger',
-            /* A selector for the expand/collapse message. */
+            /**
+             * A selector for the expand/collapse message.
+             * @type {string}
+             */
             indicator: '.accordionTriggerText',
-            /* A selector for the container to show/hide. */
+            /**
+             * A selector for the container to show/hide.
+             * @type {string}
+             */
             container: '.accordionContent',
-            /* The indicator text for a closed section. */
+            /**
+             * The indicator text for a closed section.
+             * @type {string}
+             */
             expandText: 'EXPAND [ + ]',
-            /* The indicator text for an open section. */
+            /**
+             * The indicator text for an open section.
+             * @type {string}
+             */
             collapseText: 'CLOSE [ – ]',
-            /* A class to add to an open section. */
+            /**
+             * A class to add to an open section.
+             * @type {string}
+             */
             activeClass: 'active',
-            /* A class to add to each section. */
+            /**
+             * A class to add to each section.
+             * @type {string}
+             */
             sectionClass: 'accordion-item',
-            /* A Mustache template for each section. */
+            /**
+             * A Mustache template for each section.
+             * @type {string}
+             */
             template: (
                 '<div class="accordionItem">' +
                     '<h3 class="accordionTrigger">' +
@@ -29,10 +64,12 @@
                     '<div class="accordionContent">{{{content}}}</div>' +
                 '</div>'
             ),
-            /* A list of objects representing sections, with these properties:
-             *   title: The title to display in the header.
-             *   content: The content to display in the body.
-             *   open (boolean): Whether to show or hide the section initially. */
+            /**
+             * A list of objects representing sections.
+             * @type {Array<Object>}
+             * @prop {string}  title   The title to display in the header.
+             * @prop {string}  content The content to display in the body.
+             * @prop {boolean} open    Whether to show or hide the section initially. */
             content: [
                 {
                     title: 'Title 1',

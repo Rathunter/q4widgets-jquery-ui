@@ -1,44 +1,43 @@
-/**
- * @class q4.financialTable
- *     @example
- *     $("#financials").financialTable({
- *         year: 2014,
- *         reportSubType: ['Annual Report', 'Supplemental Report']
- *     });
- *
- * @docauthor marcusk@q4websystems.com
- *
- * requires: Mustache.js
- */
 (function($) {
-    $.widget('q4.financialTable', {
+    /**
+     * Creates a table of different types of financial documents sorted by year.
+     * Each year can have links to documents for each quarter.
+     * 
+     * @class q4.financialTable
+     * @example
+     *     $("#financials").financialTable({
+     *         year: 2014,
+     *         reportSubType: ['Annual Report', 'Supplemental Report']
+     *     });
+     * @author marcusk@q4websystems.com
+     * @requires Mustache.js
+     */
+    $.widget('q4.financialTable', /** @lends q4.financialTable */ {
         options: {
             /**
-             * @cfg
              * The number of year columns to display.
              * Set to zero to show all columns (default).
-             **/
+             * @type {number}
+             */
             columns: 0,
-            /**
-             * @cfg
-             * The earliest year to display; previous years will be ignored.
+            /** The earliest year to display; previous years will be ignored.
              * Set to zero to show all years (default).
-             **/
+             * @type {(number|string)}
+             */
             firstYear: 0,
-            /**
-             * @cfg
-             * A list of document categories that will appear as rows in the table.
-             * title: The title to display for that row.
-             * reportType: A filter list of financial report subtypes (optional).
-             * category: A filter list of document categories (optional).
-             * tags: A filter list of tags (optional).
-             * text: The text to use for the link (default blank).
+            /** A list of document categories that will appear as rows in the table.
+             * @type {Array<Object>}
+             * @prop {string}        title      The title to display for that row.
+             * @prop {Array<string>} reportType A filter list of financial report subtypes (optional).
+             * @prop {Array<string>} category   A filter list of document categories (optional).
+             * @prop {Array<string>} tags       A filter list of tags (optional).
+             * @prop {string}        text       The text to use for the link (default blank).
              *   See options.template documentation for available tags.
              */
             categories: [],
             /**
-             * @cfg
              * A map of short names for each report subtype.
+             * @type {Object}
              */
             shortTypes: {
                 'Annual Report': 'Annual',
@@ -49,7 +48,6 @@
                 'Fourth Quarter': 'Q4'
             },
             /**
-             * @cfg
              * A mustache.js template for the financial report list.
              * Use {{#years}} to loop through document years.
              * Use {{#categories}} to loop through document categories.
@@ -66,6 +64,7 @@
              *   {{title}}: the title of the document.
              *   {{url}}: the URL of the document file.
              *   {{year}}: the fiscal year of the report.
+             * @type {string}
              */
             template: (
                 '<ul class="ftHeader">' +
@@ -84,10 +83,10 @@
                 '{{/categories}}'
             ),
             /**
-            * @cfg
             * A callback function that is called when rendering is completed.
+            * @type {function(Event)}
             */
-            complete: null
+            complete: function (e) {}
         },
 
         _fetchFinancials: function() {
@@ -212,9 +211,7 @@
             this.element.append(Mustache.render(o.template, tplData));
 
             // Fire the complete callback.
-            if (typeof o.complete === 'function') {
-                o.complete.call(this);
-            }
+            this._trigger('complete');
         },
 
         _create: function() {

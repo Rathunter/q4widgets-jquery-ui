@@ -27,7 +27,6 @@ exports.publish = function (data, opts) {
 
         // class
         if (path.length == 2 && doclet.kind == 'class') {
-            //console.log(doclet);
             classes[doclet.longname] = {
                 name: doclet.longname,
                 description: doclet.description,
@@ -60,12 +59,11 @@ exports.publish = function (data, opts) {
 
         // method
         if (path.length == 3 && doclet.kind == 'function' && doclet.name.charAt(0) != '_') {
-            //console.log(doclet);
             classes['q4.' + path[1]].methods.push({
                 name: doclet.name,
                 description: doclet.description,
                 line: doclet.meta.lineno,
-                params: doclet.params || [],
+                params: (doclet.params || []).map(stringify_type),
                 examples: (doclet.examples || []).filter(single_line),
                 exblocks: (doclet.examples || []).filter(multi_line)
             });

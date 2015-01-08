@@ -1,47 +1,97 @@
 (function ($) {
-    $.widget('q4.mashfeed', {
+    /**
+     * Grab a number of content feeds and mix them together into a single
+     * chronological list.
+     * @class q4.mashfeed
+     * @author marcusk@q4websystems.com
+     * @requires Moment.js
+     * @requires Mustache.js
+     */
+    $.widget('q4.mashfeed', /** @lends q4.mashfeed */ {
         options: {
-            /* The global maximum number of items. 0 for unlimited (default). */
+            /**
+             * The global maximum number of items, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
             limit: 0,
-            /* A Moment.js format for dates. */
+            /**
+             * A Moment.js format for dates.
+             * @type {string}
+             * @default
+             */
             dateFormat: 'MMM D, YYYY h:mm A',
-            /* Whether to display dates using Moment's fromNow function. */
+            /**
+             * Whether to display dates using Moment's fromNow function.
+             * @type {boolean}
+             * @default
+             */
             fromNow: false,
-            /* The number of characters to truncate summaries to. */
+            /**
+             * The maximum character length of a title, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
+            titleLength: 80,
+            /**
+             * The maximum character length of a summary, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
             summaryLength: 500,
-            /* Feeds to fetch. Should be a list of objects containing options
-             * for each feed. Valid options are:
-             *   name: The name of the feed.
-             *   type: The type, as listed in feedTypes (example: rss, youtube).
-             *   template: A Mustache template for a single feed item
+            /**
+             * An array of feeds to fetch. Each feed is an object of options
+             * for that feed. Some feed options override global options.
+             * Valid options for all feed types are:
+             * - name: The name of the feed.
+             * - type: The type, as listed in feedTypes (example: rss, youtube).
+             * - template: A Mustache template for a single feed item
              *     (overrides the default template).
-             * See feedTypes for type-specific options. */
+             * - limit: The maximum number of items from this feed.
+             * - titleLength: The maximum character length of a title.
+             * - summaryLength: The maximum character length of a summary.
+             * - fetch: A function overriding the feed type's fetch method.
+             * - getItems: A function overriding the feed type's getItems method.
+             * - parseItem: A function overriding the feed type's parseItem method.
+             * 
+             * See `feedTypes` for type-specific options.
+             * @type {Array<Object>}
+             */
             feeds: [],
-            /* A list of feed names. If this list is not empty,
+            /**
+             * A list of feed names. If this list is not empty,
              * only the feeds named in the list will be parsed.
+             * @type {Array<string>}
              */
             filter: [],
-            /* A default Mustache template for a single feed item.
+            /**
+             * A default Mustache template for a single feed item.
              * Can be overridden for individual feed types.
+             * @type {string}
+             * @example
+             * '<li>' + 
+             *     '<h2><a href="{{url}}">{{title}}</a></h2>' + 
+             *     '<p>{{date}}</p>' + 
+             *     '{{summary}}' +
+             * '</li>'
              */
-            template: (
-                '<li>' + 
-                    '<h2><a href="{{url}}">{{title}}</a></h2>' + 
-                    '<p>{{date}}</p>' + 
-                    '{{summary}}' +
-                '</li>'
-            ),
-            /* A callback that fires after rendering is finished. */
-            complete: function () {}
+            template: '',
+            /**
+             * A callback that fires after rendering is finished.
+             * @type {function}
+             * @param {Object} [event] The event object.
+             */
+            complete: function (e) {}
         },
 
-        /* A hash of feed types, indexed by id.
+        /**
+         * A hash of feed types, indexed by id.
          * Each is an object with the following properties:
-         *   fetch: A function that takes a feed object and returns
+         * - fetch: A function that takes a feed object and returns
          *     an AJAX call to the feed.
-         *   getItems: A function that takes raw feed data and returns the
+         * - getItems: A function that takes raw feed data and returns the
          *     array of raw items found in that feed.
-         *   parseItem: A function that takes a raw feed item and returns
+         * - parseItem: A function that takes a raw feed item and returns
          *     a formatted item object for the template.
          */
         feedTypes: {
@@ -92,8 +142,9 @@
                 }
             },
 
-            /* Options for youtube:
-             *   username: The username of the YouTube account to fetch from.
+            /**
+             * Options for youtube:
+             * - username: The username of the YouTube account to fetch from.
              */
             youtube: {
                 fetch: function (feed) {
@@ -115,11 +166,38 @@
                         thumb: $(item.content.$t).find('img').eq(0).attr('src')
                     };
                 }
+            },
+
+            /**
+             * This is a very basic feed type; the methods are meant to be
+             * overridden with custom functions.
+             * Options for custom_jsonp:
+             * - params: An object of parameters to pass to the URL.
+             */
+            custom_jsonp: {
+                fetch: function (feed) {
+                    return $.ajax({
+                        url: feed.url,
+                        data: feed.params,
+                        dataType: 'jsonp'
+                    });
+                },
+                getItems: function (data) {
+                    return data;
+                },
+                parseItem: function (item) {
+                    return item;
+                }
             }
         },
 
         items: [],
 
+        /**
+         * Update the `filter` option.
+         * @param {Array<string>} filter An array of feed names to display,
+         *   or an empty array to display all feeds.
+         */
         updateFilter: function (filter) {
             this.options.filter = filter || [];
             this._renderFeeds();
@@ -136,12 +214,16 @@
         _fetchFeeds: function () {
             var _ = this,
                 o = this.options;
-                
+
             this.items = [];
 
             // get promise objects for the ajax call to each feed
             var fetches = $.map(o.feeds, function (feed) {
-                return _.feedTypes[feed.type].fetch.call(_, feed);
+                // call the custom fetch method if available
+                return (typeof feed.fetch === 'function' ?
+                    feed.fetch.call(_, feed) :
+                    _.feedTypes[feed.type].fetch.call(_, feed)
+                );
             });
 
             // when all feeds have been fetched, parse the results
@@ -151,16 +233,25 @@
                     var data = arg[0],
                         feed = o.feeds[i],
                         feedType = _.feedTypes[feed.type],
-                        feedItems = feedType.getItems(data);
+                        // call the custom getItems method if available
+                        feedItems = (typeof feed.getItems === 'function' ?
+                            feed.getItems.call(_, data) :
+                            feedType.getItems.call(_, data)
+                        );
 
                     // limit the array to the maximum number of entries
                     if (o.limit > 0) feedItems = feedItems.slice(0, o.limit);
+                    if (feed.limit > 0) feedItems = feedItems.slice(0, feed.limit);
 
                     // get the formatted item, and add a reference to the feed
                     $.each(feedItems, function (i, feedItem) {
                         _.items.push($.extend({
                             feed: feed
-                        }, feedType.parseItem.call(_, feedItem)));
+                        // call the custom parseItem method if available
+                        }, (typeof feed.parseItem === 'function' ?
+                            feed.parseItem.call(_, feedItem) :
+                            feedType.parseItem.call(_, feedItem))
+                        ));
                     });
                 });
 
@@ -179,6 +270,10 @@
             // normalize the filter list
             if (!$.isArray(o.filter)) o.filter = [o.filter];
 
+            function truncate(text, length) {
+                return length && text.length > length ? text.slice(0, length) + '...' : text;
+            }
+
             $.each(this.items, function (i, item) {
                 // skip this item if the filter list isn't empty and this feed isn't in it
                 if (o.filter.length && $.inArray(item.feed.name, o.filter) == -1) return true;
@@ -186,14 +281,22 @@
                 // check if we've hit the maximum number of items
                 if (o.limit > 0 && count == o.limit) return false;
                 count++;
-                
-                // some final formatting, then render
-                var text = $.trim($('<div>').html(item.content).text());
-                $e.append(Mustache.render(item.feed.template || o.template, $.extend({}, item, {
-                    date: o.fromNow ? item.date.fromNow() : item.date.format(o.dateFormat),
-                    summary: text.slice(0, item.feed.summaryLength || o.summaryLength),
-                    firstLine: text.split('\n')[0]
-                })));
+
+                // some final formatting
+                if ('title' in item) {
+                    item.title = truncate(item.title, item.feed.titleLength || o.titleLength);
+                }
+                if ('date' in item) {
+                    item.date = o.fromNow ? item.date.fromNow() : item.date.format(o.dateFormat);
+                }
+                if ('content' in item) {
+                    var text = $.trim($('<div>').html(item.content).text());
+                    item.summary = truncate(text, item.feed.summaryLength || o.summaryLength);
+                    item.firstLine = text.split('\n')[0];
+                }
+
+                // render item
+                $e.append(Mustache.render(item.feed.template || o.template, item));
             });
 
             this._trigger('complete');

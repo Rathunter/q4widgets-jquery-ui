@@ -1,45 +1,55 @@
-/**
- * @class q4.flickrGallery
- * Example Config:
- *
- *      $("#gallery").flickrGallery({
- *          apiKey: 'abcdef1234567890',
- *          userId: '11111111@N01',
- *          perPage: 100,
- *          thumbSize: 'Thumbnail',
- *          photoSize: 'Large',
- *          albums: ['First Photo Album', 'Second Photo Album']
- *      });
- *
- * @docauthor marcusk@q4websystems.com
- *
- * requires: Mustache.js
- */
-
 (function ($) {
-    $.widget('q4.flickrGallery', {
+    /**
+     * Fetches and displays photo albums from a user on Flickr.
+     * @class q4.flickrGallery
+     * @example
+     * $("#gallery").flickrGallery({
+     *     apiKey: 'abcdef1234567890',
+     *     userId: '11111111@N01',
+     *     perPage: 100,
+     *     albums: ['First Photo Album', 'Second Photo Album']
+     * });
+     * @author marcusk@q4websystems.com
+     * @requires Mustache.js
+     */
+    $.widget('q4.flickrGallery', /** @lends q4.flickrGallery */ {
         options: {
-            /* Flickr API key. */
+            /**
+             * A Flickr API key. 
+             * @type {string}
+             */
             apiKey: '',
-            /* Flickr user ID. */
+            /**
+             * A Flickr user ID.
+             * @type {string}
+             */
             userId: '',
-            /* List of photo album names. If the list is empty, return all photo albums. */
+            /**
+             * An array of photo album names to fetch.
+             * If the list is empty (default), fetch all photo albums.
+             * @type {Array<string>}
+             */
             albums: [],
-            /* Number of photos to return. The maximum is 500. */
+            /**
+             * The maximum number of photos to fetch from each album.
+             * This can be up to 500.
+             * @type {number}
+             * @default
+             */
             perPage: 500,
             /* A mustache.js template for all photo albums.
              * An album has these tags:
-             *   albumID
-             *   albumTitle
-             *   albumDesc
-             *   photoCount
-             *   photos: An array of photos in this album.
+             *   {{albumID}}
+             *   {{albumTitle}}
+             *   {{albumDesc}}
+             *   {{photoCount}}
+             *   {{#photos}}: An array of photos in this album.
              *   Each photo has these tags:
-             *     photoID
-             *     photoTitle
-             *     photoDesc
-             *     photoIndex
-             *     url: An object of URLs for each size, e.g. {{url.Medium}}:
+             *     {{photoID}}
+             *     {{photoTitle}}
+             *     {{photoDesc}}
+             *     {{photoIndex}}
+             *     {{url}}: URLs for each size. (e.g. {{url.Medium}}):
              *       Square:        75 x 75
              *       LargeSquare:  150 x 150
              *       Thumbnail:    100 x 75
@@ -50,24 +60,28 @@
              *       Medium800:    800 x 600
              *       Large:       1024 x 768
              *       Original:    2400 x 1800
+             * @example
+             * '{{#albums}}' +
+             *     '<h3>{{albumTitle}}</h3>' +
+             *     '<ul class="album">' +
+             *         '{{#photos}}' +
+             *         '<li class="col-xs-4 col-sm-3 col-md-2 col-lg-2">' +
+             *             '<a class="fancybox" rel="fncbx" title="{{photoTitle}}" href="{{photoUrl}}">' +
+             *                '<img src="{{thumbUrl}}" alt="{{photoTitle}}">' +
+             *                 '<span class="title">{{photoTitle}}</span>' +
+             *             '</a>' +
+             *         '</li>' +
+             *         '{{/photos}}' +
+             *     '</ul>' +
+             * '{{/albums}}'
              */
-            template: (
-                '{{#albums}}' +
-                    '<h3>{{albumTitle}}</h3>' +
-                    '<ul class="album">' +
-                        '{{#photos}}' +
-                        '<li class="col-xs-4 col-sm-3 col-md-2 col-lg-2">' +
-                            '<a class="fancybox" rel="fncbx" title="{{photoTitle}}" href="{{photoUrl}}">' +
-                                '<img src="{{thumbUrl}}" alt="{{photoTitle}}">' +
-                                '<span class="title">{{photoTitle}}</span>' +
-                            '</a>' +
-                        '</li>' +
-                        '{{/photos}}' +
-                    '</ul>' +
-                '{{/albums}}'
-            ),
-            /* A callback function that is called when rendering is completed. */
-            complete: function () {}
+            template: '',
+            /**
+             * A callback fired when rendering is completed.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             */
+            complete: function (e) {}
         },
 
         sizes: {

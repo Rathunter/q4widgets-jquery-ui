@@ -1,6 +1,6 @@
 # q4.financialTable
 
-### Creates a table of different types of financial documents sorted by year.
+### A table of different types of financial documents sorted by year.
 Each year can have links to documents for each quarter.
 
 *Source file: `jquery.q4.financialtable.js`, line 2*  
@@ -10,10 +10,10 @@ Each year can have links to documents for each quarter.
 
 Example:
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 ## Options
@@ -22,10 +22,10 @@ The number of year columns to display.
 Set to zero to show all columns (default).  
 *Example:*
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 - **firstYear** - *number&#x2F;string*  
@@ -33,30 +33,31 @@ The earliest year to display; previous years will be ignored.
 Set to zero to show all years (default).  
 *Example:*
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 - **categories** - *Array&lt;Object&gt;*  
-A list of document categories that will appear as rows in the table.  
+An array of document categories that will appear as rows
+in the table.  
 *Example:*
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 - **shortTypes** - *Object*  
 A map of short names for each report subtype.  
 *Example:*
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 - **template** - *string*  
@@ -78,20 +79,23 @@ Documents can have these tags:
   {{year}}: the fiscal year of the report.  
 *Example:*
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 - **complete** - *function*  
-A callback function that is called when rendering is completed.  
+A callback fired when rendering is completed.  
+*Parameters:*
+    - **event** - *Event*  
+    The event object.
 *Example:*
 ```
-    $("#financials").financialTable({
-        year: 2014,
-        reportSubType: ['Annual Report', 'Supplemental Report']
-    });
+$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});
 ```
 
 

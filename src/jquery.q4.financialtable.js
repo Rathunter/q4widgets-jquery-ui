@@ -1,14 +1,13 @@
-(function($) {
+(function ($) {
     /**
-     * Creates a table of different types of financial documents sorted by year.
+     * A table of different types of financial documents sorted by year.
      * Each year can have links to documents for each quarter.
-     * 
      * @class q4.financialTable
      * @example
-     *     $("#financials").financialTable({
-     *         year: 2014,
-     *         reportSubType: ['Annual Report', 'Supplemental Report']
-     *     });
+     * $("#financials").financialTable({
+     *     year: 2014,
+     *     reportSubType: ['Annual Report', 'Supplemental Report']
+     * });
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
      */
@@ -20,19 +19,22 @@
              * @type {number}
              */
             columns: 0,
-            /** The earliest year to display; previous years will be ignored.
+            /**
+             * The earliest year to display; previous years will be ignored.
              * Set to zero to show all years (default).
              * @type {(number|string)}
              */
             firstYear: 0,
-            /** A list of document categories that will appear as rows in the table.
+            /**
+             * An array of document categories that will appear as rows
+             * in the table.
              * @type {Array<Object>}
              * @prop {string}        title      The title to display for that row.
              * @prop {Array<string>} reportType A filter list of financial report subtypes (optional).
              * @prop {Array<string>} category   A filter list of document categories (optional).
              * @prop {Array<string>} tags       A filter list of tags (optional).
-             * @prop {string}        text       The text to use for the link (default blank).
-             *   See options.template documentation for available tags.
+             * @prop {string}        text       A template to use for the link (default blank).
+             *   See `template` documentation for available tags.
              */
             categories: [],
             /**
@@ -83,8 +85,9 @@
                 '{{/categories}}'
             ),
             /**
-            * A callback function that is called when rendering is completed.
-            * @type {function(Event)}
+            * A callback fired when rendering is completed.
+            * @type {function}
+            * @param {Event} [event] The event object.
             */
             complete: function (e) {}
         },

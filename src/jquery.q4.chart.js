@@ -1,57 +1,148 @@
 (function ($) {
-    /* requires: highstock 2.0 */
-    $.widget('q4.chart', {
+    /**
+     * A preconfigured stock chart, using the Highstock plugin.
+     * @class q4.chart
+     * @author jasonm@q4websystems.com, marcusk@q4websystems.com
+     * @requires Highstock
+     */
+    $.widget('q4.chart', /** @lends q4.chart */ {
         options: {
-            /* The base URL to use for the API (e.g. "//feeds.q4websystems.com" */
+            /**
+             * The base URL of the Q4 website.
+             * @type {string}
+             * @example //feeds.q4websystems.com
+             */
             url: '',
-            /* Whether to use the public feed API or the private API. */
+            /**
+             * Whether to use the public feed (true) or the private API (false).
+             * @type {boolean}
+             * @default
+             */
             usePublic: true,
-            /* The API key to use for public feeds. */
+            /**
+             * If `usePublic` is `true`, the API key to use for public feeds.
+             * @type {string}
+             */
             apiKey: '',
-            /* An array of stock symbols to use on the stock price chart.
+            /**
+             * An array of stock symbols to use on the stock price chart.
              * Each symbol can be a string of the format "EXCHANGE:SYMBOL",
              * or an array containing "EXCHANGE:SYMBOL" and a custom
-             * display name. */
-            stocks: [
-                ['NYSE:XXX', 'NYSE: XXX']
-            ],
-            /* Whether to prevent stock price charts from being toggled off. */
+             * display name.
+             * @type {(string|Array<string>)}
+             * @example 'NYSE:XXX'
+             * @example ['NYSE:XXX', 'New York: XXX']
+             */
+            stocks: [],
+            /**
+             * Whether to prevent stock price charts from being toggled off.
+             * @type {boolean}
+             * @default
+             */
             lockStock: false,
-            /* Whether to show the stock quote in the chart legend. */
+            /**
+             * Whether to show the stock quote in the chart legend.
+             * @type {boolean}
+             * @default
+             */
             showSymbolInLegend: true,
-            /* The maximum number of data points to fetch for the stock chart. */
+            /**
+             * The maximum number of data points to fetch for the stock chart.
+             * @type {number}
+             * @default
+             */
             stockLimit: 1500,
-            /* Whether to include a volume chart below the stock price chart. */
+            /**
+             * Whether to include a volume chart below the stock price chart.
+             * @type {boolean}
+             * @default
+             */
             volume: false,
-            /* The height of the volume chart, as a percentage. */
+            /**
+             * The height of the volume chart, as a percentage.
+             * @type {number}
+             * @default
+             */
             volumeHeight: 40,
-            /* Whether to include a series of flags for press releases. */
+            /**
+             * Whether to include a series of flags for press releases.
+             * @type {boolean}
+             * @default
+             */
             news: false,
-            /* Whether to show news flags on initial load. */
+            /**
+             * If `news` is true, whether to show news flags on initial load.
+             * @type {boolean}
+             * @default
+             */
             newsOnLoad: false,
-            /* The maximum number of news items to display on the chart. */
+            /**
+             * If `news` is true, the maximum number of news items to display.
+             * @type {number}
+             * @default
+             */
             newsLimit: 200,
-            /* The maximum length of each news item's title. */
+            /**
+             * If `news` is true, the maximum length of each news headline.
+             * @type {number}
+             * @default
+             */
             newsLength: 75,
-            /* The news category ID to use (defaults to all). */
+            /**
+             * If `news` is true, the news category ID to use.
+             * The default is to load all categories.
+             * @type {string}
+             * @default
+             */
             newsCategory: '00000000-0000-0000-0000-000000000000',
-            /* An array of tags to filter news releases by. */
+            /**
+             * If `news` is true, an array of tags to filter news releases by.
+             * @type {Array<string>}
+             */
             newsTags: [],
-            /* Whether to include a series of flags for events. */
+            /**
+             * Whether to include a series of flags for events.
+             * @type {boolean}
+             * @default
+             */
             events: false,
-            /* Whether to show event flags on initial load. */
+            /**
+             * If `events` is true, whether to show event flags on initial load.
+             * @type {boolean}
+             * @default
+             */
             eventsOnLoad: false,
-            /* The maximum number of events to display on the chart. */
+            /**
+             * If `events` is true, the maximum number of events to display.
+             * @type {number}
+             * @default
+             */
             eventsLimit: 100,
-            /* A set of Highcharts options for the stock price series. */
+            /**
+             * A set of Highcharts options for the stock price series.
+             * @type {Object}
+             */
             stockOpts: {},
-            /* A set of Highcharts options for the volume series. */
+            /**
+             * A set of Highcharts options for the volume series.
+             * @type {Object}
+             */
             volumeOpts: {},
-            /* A set of Highcharts options for the press release series. */
+            /**
+             * A set of Highcharts options for the press release series.
+             * @type {Object}
+             */
             newsOpts: {},
-            /* A set of Highcharts options for the event series. */
+            /**
+             * A set of Highcharts options for the event series.
+             * @type {Object}
+             */
             eventsOpts: {},
-            /* A set of general Highcharts options to use for the chart. */
+            /**
+             * A set of general Highcharts options to use for the chart.
+             * @type {Object}
+             * @default
+             */
             highstock: {
                 chart: {
                     height: 400,
@@ -76,13 +167,21 @@
                     href: "http://www.q4websystems.com"
                 }
             },
-            /* A set of Highcharts configuration options. */
+            /**
+             * A set of Highcharts configuration options.
+             * @type {Object}
+             * @default
+             */
             highchartsOpts: {
                 global: {
                     useUTC: false
                 }
             },
-            /* A callback that is fired after the chart is rendered. */
+            /**
+             * A callback that is fired after the chart is rendered.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             */
             onComplete: function () {}
         },
 

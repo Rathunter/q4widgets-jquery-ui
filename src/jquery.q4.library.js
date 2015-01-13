@@ -1,46 +1,115 @@
 (function ($) {
-    $.widget('q4.library', {
+    /**
+     * A colletion of many different document types in the same widget.
+     * Documents can be filtered by title, tag, or date.
+     * @class q4.library
+     * @author marcusk@q4websystems.com
+     * @requires Moment.js
+     * @requires Mustache.js
+     * @requires q4.pager
+     */
+    $.widget('q4.library', /** @lends q4.library */ {
         options: {
-            /* The base URL for API calls. Should end with a slash. */
-            feedUrl: '/',
-            /* The number of items to display per page, or 0 for unlimited. */
+            /**
+             * The base URL for the Q4 website.
+             * @type {string}
+             */
+            feedUrl: '',
+            /**
+             * The number of items to display per page, or 0 for unlimited.
+             * @type {number}
+             * @default
+             */
             perPage: 0,
-            /* Whether to sort the documents by year. */
+            /**
+             * Whether to divide the documents by year, or show all at once.
+             * @type {boolean}
+             * @default
+             */
             sortByYear: true,
-            /* Whether to show an "all years" option. */
+            /**
+             * If using a years filter, whether to show an "all years" option.
+             * @type {boolean}
+             * @default
+             */
             allowAllYears: true,
-            /* The label for the "all years" option. */
+            /**
+             * The label for the "all years" option.
+             * @type {string}
+             * @default
+             */
             allYearsText: 'All',
-            /* The year to display first. Default is "all", or most recent.
-             * It may be useful to pass new Date().getFullYear(). */
+            /**
+             * The year to display first. Default is "all", or most recent.
+             * @type {?number}
+             * @example `new Date().getFullYear()`
+             * @default
+             */
             startYear: null,
-            /* A Moment.js date format string. */
+            /**
+             * A Moment.js date format string.
+             * @type {string}
+             * @default
+             */
             dateFormat: 'MM/DD/YYYY',
-            /* An overall template for the timeline. */
+            /**
+             * An overall template for the timeline.
+             * @type {string}
+             * @default
+             */
             template: (
-                '<ul class="content-types"></ul>' +
-                '<ul class="tags"></ul>' +
-                '<p>' +
-                    '<input type="text" class="search">' +
-                    'Year: <select class="years"></select>' +
-                    'Documents per page: <select class="perpage"></select>' +
-                '</p>' +
-                '<p class="docsfound"></p>' +
-                '<ul class="documents"></ul>' +
-                '<ul class="pager"></ul>'
+                 '<ul class="content-types"></ul>' +
+                 '<ul class="tags"></ul>' +
+                 '<p>' +
+                     '<input type="text" class="search">' +
+                     'Year: <select class="years"></select>' +
+                     'Documents per page: <select class="perpage"></select>' +
+                 '</p>' +
+                 '<p class="docsfound"></p>' +
+                 '<ul class="documents"></ul>' +
+                 '<ul class="pager"></ul>'
             ),
-            /* An HTML string to display while loading. */
-            loadingTemplate: 'loading...',
-            /* A selector for a message about the number of documents found. */
+            /**
+             * An HTML string to display while loading.
+             * @type {string}
+             * @default
+             */
+            loadingTemplate: 'Loading...',
+            /**
+             * A selector for a message about the number of documents found.
+             * @type {string}
+             * @default
+             */
             docsFoundContainer: '.docsfound',
-            /* An HTML string to display the number of documents found. */
+            /**
+             * A Mustache template to display the number of documents found.
+             *   {{docCount}}  The number of documents on this page.
+             *   {{docTotal}}  The total number of documents.
+             *   {{docFirst}}  The index of the first document displayed.
+             *   {{docLast}}   The index of the last document displayed.
+             *   {{page}}      The page number.
+             *   {{pageCount}} The total number of pages.
+             * @type {string}
+             * @default
+             */
             docsFoundTemplate: 'Showing {{docFirst}}–{{docLast}} of {{docTotal}} documents.',
-            /* An HTML string to display when no documents are found. */
-            noDocsTemplate: 'No documents found. Please try broadening your search.',
-
-            /* A selector for the document list. */
+            /**
+             * An HTML string to display when no documents are found.
+             * @type {string}
+             * @default
+             */
+            noDocsMessage: 'No documents found. Please try broadening your search.',
+            /**
+             * A selector for the document list.
+             * @type {string}
+             * @default
+             */
             docContainer: '.documents',
-            /* A template for a list of single documents. */
+            /**
+             * A template for a list of single documents.
+             * @type {string}
+             * @default
+             */
             singleDocTemplate: (
                 '<h3 class="docheader single">' +
                     '<span class="title">Title</span>' +
@@ -59,7 +128,11 @@
                     '{{/docs}}' +
                 '</ul>'
             ),
-            /* A template for a list of documents with sub-documents. */
+            /**
+             * A template for a list of documents with sub-documents.
+             * @type {string}
+             * @default
+             */
             multiDocTemplate: (
                 '<h3 class="docheader multi">' +
                     '<span class="title">Title</span>' +
@@ -88,117 +161,178 @@
                     '{{/docs}}' +
                 '</ul>'
             ),
-
-            /* A selector for the overall container for the accordion effect on multiple-document items. */
+            /**
+             * A selector for the overall container for multiple-document items.
+             * Used to add an accordion effect.
+             * @type {string}
+             * @default
+             */
             accordionContainer: '.multi',
-            /* A selector for the trigger for the accordion effect. */
+            /**
+             * A selector for the trigger for the multi-doc accordion effect.
+             * @type {string}
+             * @default
+             */
             accordionTrigger: '.trigger',
-            /* A selector for the list of documents that will be shown/hidden by the accordion. */
+            /**
+             * A selector for the list of documents that will be shown/hidden
+             * by the multi-doc accordion.
+             * @type {string}
+             * @default
+             */
             accordionDocContainer: '.docs',
-
-            /* A selector for the pager. */
+            /**
+             * A selector for the pager.
+             * @type {string}
+             * @default
+             */
             pagerContainer: '.pager',
-            /* A selector for each pager link. */
+            /**
+             * A selector for each pager link.
+             * @type {string}
+             * @default
+             */
             pagerTrigger: '> *',
-            /* A template for individual pager links. */
+            /**
+             * A template for individual pager links.
+             * @type {string}
+             * @default
+             */
             pagerTemplate: '<li>{{page}}</li>',
-            /* A list of four labels for first, previous, next, and last pager items. */
-            pagerLabels: {
-                first: '«',
-                prev: '<',
-                next: '>',
-                last: '»'
-            },
-
+            /**
+             * An object with labels for pager navigation items.
+             * @type {Object}
+             * @prop {string} first The first page.
+             * @prop {string} prev  The previous page.
+             * @prop {string} next  The next page.
+             * @prop {string} last  The last page.
+             */
+            pagerLabels: {first: '«', prev: '<', next: '>', last: '»'},
+            /**
+             * Options for the "documents per page" control.
+             * @type {Object}
+             * @prop {string}  container  A selector for the container.
+             * @prop {string}  input      The type of input to use. Can be `select`, `trigger` or `text`.
+             * @prop {string}  template   If `input` is `trigger` or `select`, a template for each option.
+             * @prop {string}  trigger    If `input` is `trigger`, a selector for each trigger.
+             * @prop {boolean} allowMulti If `input` is `trigger`, whether to allow
+             *                            multiple triggers to be selected at once.
+             * @prop {boolean} allowNone  If `input` is `trigger`, Whether to allow
+             *                            no triggers to be selected.
+             * @default
+             */
             perPageOptions: {
-                /* A selector for the container. */
                 container: '.perpage',
-                /* The type of input to use. */
                 input: 'select',
-                /* A template for each trigger or select option. */
                 template: '<option>{{number}}</option>',
-                /* A selector for each trigger. */
                 trigger: '> *',
-                /* Whether to allow multiple triggers to be selected at once. */
                 allowMulti: false,
-                /* Whether to allow no triggers to be selected. */
                 allowNone: false
             },
-
-            /* A selector for the search box. */
+            /**
+             * A selector for the search box.
+             * @type {string}
+             * @default
+             */
             searchSelector: '.search',
-
-            /* An array of categories.
+            /**
+             * An array of categories to display.
              * These can be either contentType strings,
-             * or {name, contentType, options} objects with the following properties:
+             * or objects with these properties:
              *   name: The display name.
              *   contentType: One of the types defined in this.contentTypes.
              *   cssClass: An optional class to apply to the widget.
              *   options: An optional object of parameters to pass to the API:
              *     tag: Tag(s) to filter by. Can be a string or an array.
              *     year: Year(s) to filter by. String or array.
-             *     type: For contentAssets only, the download list(s) to use.\
+             *     type: For contentAssets only, the download list(s) to use.
              */
             categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
-            /* Content type options. */
+            /**
+             * Options for the category control.
+             * @type {Object}
+             * @prop {string}  container  A selector for the container.
+             * @prop {string}  input      The type of input to use. Can be `select`, `trigger` or `text`.
+             * @prop {string}  template   If `input` is `trigger` or `select`, a template for each option.
+             * @prop {string}  trigger    If `input` is `trigger`, a selector for each trigger.
+             * @prop {boolean} allowMulti If `input` is `trigger`, whether to allow
+             *                            multiple triggers to be selected at once.
+             * @prop {boolean} allowNone  If `input` is `trigger`, Whether to allow
+             *                            no triggers to be selected.
+             * @default
+             */
             catOptions: {
-                /* A selector for the container. */
                 container: '.content-types',
-                /* The type of input to use. */
                 input: 'trigger',
-                /* A template for each trigger or select option. */
                 template: '<li>{{name}}</li>',
-                /* A selector for each trigger. */
                 trigger: '> *',
-                /* Whether to allow multiple triggers to be selected at once. */
                 allowMulti: false,
-                /* Whether to allow no triggers to be selected. */
                 allowNone: false
             },
-
-            /* An array of preset tags to filter by
-             * (used if tagOptions.input is 'select' or 'trigger').
-             * Tags can be either strings, or {name, value} objects.
+            /**
+             * If `tagOptions.input` is `trigger` or `select`, an array of
+             * preset tags to offer as filter options.
+             * Tags can be either strings or {name, value} objects.
+             * @type {(Array<string>|Array<object>)}}
              */
             tags: [],
-            /* Tag options. */
+            /**
+             * Options for the tag filter control.
+             * @type {Object}
+             * @prop {string}  container  A selector for the container.
+             * @prop {string}  input      The type of input to use. Can be `select`, `trigger` or `text`.
+             * @prop {string}  template   If `input` is `trigger` or `select`, a template for each option.
+             * @prop {string}  trigger    If `input` is `trigger`, a selector for each trigger.
+             * @prop {boolean} allowMulti If `input` is `trigger`, whether to allow
+             *                            multiple triggers to be selected at once.
+             * @prop {boolean} allowNone  If `input` is `trigger`, Whether to allow
+             *                            no triggers to be selected.
+             * @default
+             */
             tagOptions: {
-                /* A selector for the container. */
                 container: '.tags',
-                /* The type of input to use. */
                 input: 'trigger',
-                /* A template for each trigger or select option. */
                 template: '<li>{{name}}</li>',
-                /* A selector for each trigger. */
                 trigger: '> *',
-                /* Whether to allow multiple triggers to be selected at once. */
                 allowMulti: true,
-                /* Whether to allow no triggers to be selected. */
                 allowNone: true
             },
-
-            /* Year options. */
+            /**
+             * Options for the year filter control.
+             * @type {Object}
+             * @prop {string}  container  A selector for the container.
+             * @prop {string}  input      The type of input to use. Can be `select`, `trigger` or `text`.
+             * @prop {string}  template   If `input` is `trigger` or `select`, a template for each option.
+             * @prop {string}  trigger    If `input` is `trigger`, a selector for each trigger.
+             * @prop {boolean} allowMulti If `input` is `trigger`, whether to allow
+             *                            multiple triggers to be selected at once.
+             * @prop {boolean} allowNone  If `input` is `trigger`, Whether to allow
+             *                            no triggers to be selected.
+             * @default
+             */
             yearOptions: {
-                /* A selector for the container. */
                 container: '.years',
-                /* The type of input to use. */
                 input: 'select',
-                /* A template for each trigger or select option. */
                 template: '<option value="{{value}}">{{year}}</option>',
-                /* A selector for each trigger. */
                 trigger: '> *',
-                /* Whether to allow multiple triggers to be selected at once. */
                 allowMulti: false,
-                /* Whether to allow no triggers to be selected. */
                 allowNone: false
             },
 
-            /* A callback fired after a filter control is updated,
+            /**
+             * A callback fired after a filter control is updated,
              * but before matching documents are loaded.
-             * Use event.preventDefault() to cancel loading documents. */
-            onFilterUpdate: function () {},
-            /* A callback fired after loading a new page of documents. */
-            pageComplete: function () {}
+             * Use event.preventDefault() to cancel loading documents.
+             * @type {function}
+             * @param {Event} [event] The triggering event.
+             */
+            onFilterUpdate: function (e) {},
+            /**
+             * A callback fired after loading a new page of documents.
+             * @type {function}
+             * @param {Event} [event] The triggering event.
+             */
+            pageComplete: function (e) {}
         },
 
         contentTypes: {
@@ -301,6 +435,12 @@
             }
         },
 
+        /**
+         * Set the value of one of the filters.
+         * @param {string}        filter   The filter to update.
+         * @param {number|string} value    The value to assign to the filter.
+         * @param {boolean}       [reload] Whether to fetch fresh documents.
+         */
         setFilter: function (filter, value, reload) {
             if (filter == 'category') filter = 'cat';
             if (filter == 'tags') filter = 'tag';
@@ -313,6 +453,9 @@
             var o = this.options;
 
             $.ajaxSetup({cache: true});
+
+            // strip slash from feed url
+            o.feedUrl = o.feedUrl.replace(/\/$/, '');
 
             // store these options in a more convenient array
             this.filterOpts = {
@@ -518,7 +661,7 @@
             // fetch filter options and get page count
             // TODO: support multiple content types
             $.ajax({
-                url: o.feedUrl + cat.contentType + '/years',
+                url: o.feedUrl + '/' + cat.contentType + '/years',
                 data: opts,
                 traditional: true,
                 dataType: 'jsonp',
@@ -529,7 +672,7 @@
 
                     if (!data.length) {
                         $docs.empty();
-                        $docsfound.html(o.noDocsTemplate);
+                        $docsfound.html(o.noDocsMessage);
                         return;
                     }
 
@@ -615,7 +758,7 @@
 
             // get this page of records for current filter options
             $.ajax({
-                url: o.feedUrl + cat.contentType + '/search',
+                url: o.feedUrl + '/' + cat.contentType + '/search',
                 data: opts,
                 traditional: true,
                 dataType: 'jsonp',

@@ -1,13 +1,14 @@
-(function($) {
+(function ($) {
     /**
+     * An interactive calendar with links to events.
      * @class q4.calendar
      * @example
-     *     $("#clndr").calendar({
-     *         news: true,
-     *         presentations: true,
-     *         eventSize: 50,
-     *         slideshare: "Q4WebSystems"
-     *     });
+     * $("#clndr").calendar({
+     *     news: true,
+     *     presentations: true,
+     *     eventSize: 50,
+     *     slideshare: "Q4WebSystems"
+     * });
      * @author jasonm@q4websystems.com
      * @requires CLNDR.js
      * @requires Moment.js
@@ -18,74 +19,82 @@
              /**
              * This allows the widget to be placed on a site not hosted by Q4.
              * Requires url and apiKey to be set in the configuration.
+             * @type {boolean}
+             * @default
              */
             publicFeed: false,
             /**
              * A URL to a Q4 hosted website.
-             * This is only requied if publicFeed is set to true.
+             * This is only required if `publicFeed` is true.
+             * @type {string}
              */
             url: '',
             /**
              * The API Key can be found under System Admin > Site List > Public Site
-             * in the admin of any Q4 Website.
-             * This is only requied if publicFeed is set to true.
+             * in the admin of any Q4 website.
+             * This is only required if `publicFeed` is true.
+             * @type {string}
              */
             apiKey: '',
             /**
-             * Set to true to include all related Press Releases
+             * Whether to include all related press releases.
+             * @type {boolean}
+             * @default
              */
             news: false,
             /**
-             * Set to true to include all related presentations.
+             * Whether to include all related presentations.
+             * @type {boolean}
+             * @default
              */
             presentations: false,
             /**
              * Can be set to a SlideShare username.
-             * This will add a SlideShare presentations as an event.
+             * This will add SlideShare presentations as events.
+             * @type {string}
              */
             slideshare: '',
             /**
-             * @event
+             * A callback fired after events are loaded.
+             * @type {function}
              * @param {Object} calendar DOM element, can be used with methods such as .addEvents()
              * @param {Array} events An array containing all events
-             * Callback is fired after events are loaded
              */
-            onEventsLoad: function(calendar, events){ },
+            onEventsLoad: function (calendar, events) {},
             /**
-             * @event
+             * A callback fired after SlideShare has loaded.
+             * @type {function}
              * @param {Object} calendar DOM element, can be used with methods such as .addEvents()
              * @param {Array} events An array containing slideshare data
-             * Callback is fired after SlideShare has loaded
              */
-            onSlideShareLoad: function(calendar, events){ },
+            onSlideShareLoad: function (calendar, events) {},
             /**
-             * The number of events to add to the calendar
+             * The maximum number of events to add to the calendar.
+             * @type {number}
+             * @default
              */
             eventSize: 25,
             /**
-             * Filter Events by Tag.
+             * An array of tags used to filter events.
+             * @type {Array<string>}
              */
             tags: [],
             /**
-             * @class q4.calendar.options.calendar
-             *
-             * Example Config:
-             *
-             *      $("#clndr").eventCal({
-             *          calendar: {
-             *              adjacentDaysChangeMonth:true,
-             *              daysOfTheWeek: ['Su','Mo','Tu','We','Th','Fi','Sa'],
-             *              showAdjacentMonths: false,
-             *              weekOffset: 1,
-             *              doneRendering: function(){
-             *                  console.log('done rendering')
-             *              },
-             *              ready: function(){
-             *                  console.log('calendar is ready')
-             *              }
-             *          }
-             *      });
-             *
+             * An options object to pass directly to the CLNDR.js instance.
+             * See that module's documentation for details.
+             * @example
+             * {
+             *     adjacentDaysChangeMonth: true,
+             *     daysOfTheWeek: ['Su','Mo','Tu','We','Th','Fi','Sa'],
+             *     showAdjacentMonths: false,
+             *     weekOffset: 1,
+             *     doneRendering: function () {
+             *         console.log('done rendering')
+             *     },
+             *     ready: function () {
+             *         console.log('calendar is ready')
+             *     }
+             * }
              */
             calendar: {
                 multiDayEvents: {

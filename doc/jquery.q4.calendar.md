@@ -1,6 +1,6 @@
 # q4.calendar
 
-### 
+### An interactive calendar with links to events.
 
 *Source file: `jquery.q4.calendar.js`, line 2*  
 *Author: jasonm@q4websystems.com*  
@@ -11,165 +11,178 @@
 
 Example:
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
 ## Options
-- **publicFeed** - **  
+- **publicFeed** - *boolean*  
 This allows the widget to be placed on a site not hosted by Q4.
 Requires url and apiKey to be set in the configuration.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **url** - **  
+- **url** - *string*  
 A URL to a Q4 hosted website.
-This is only requied if publicFeed is set to true.  
+This is only required if `publicFeed` is true.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **apiKey** - **  
+- **apiKey** - *string*  
 The API Key can be found under System Admin > Site List > Public Site
-in the admin of any Q4 Website.
-This is only requied if publicFeed is set to true.  
+in the admin of any Q4 website.
+This is only required if `publicFeed` is true.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **news** - **  
-Set to true to include all related Press Releases  
+- **news** - *boolean*  
+Whether to include all related press releases.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **presentations** - **  
-Set to true to include all related presentations.  
+- **presentations** - *boolean*  
+Whether to include all related presentations.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **slideshare** - **  
+- **slideshare** - *string*  
 Can be set to a SlideShare username.
-This will add a SlideShare presentations as an event.  
+This will add SlideShare presentations as events.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **onEventsLoad** - **  
-This allows the widget to be placed on a site not hosted by Q4.
-Requires url and apiKey to be set in the configuration.  
+- **onEventsLoad** - *function*  
+A callback fired after events are loaded.  
 *Parameters:*
     - **calendar** - *Object*  
     DOM element, can be used with methods such as .addEvents()
     - **events** - *Array*  
     An array containing all events
-Callback is fired after events are loaded
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **onSlideShareLoad** - **  
-This allows the widget to be placed on a site not hosted by Q4.
-Requires url and apiKey to be set in the configuration.  
+- **onSlideShareLoad** - *function*  
+A callback fired after SlideShare has loaded.  
 *Parameters:*
     - **calendar** - *Object*  
     DOM element, can be used with methods such as .addEvents()
     - **events** - *Array*  
     An array containing slideshare data
-Callback is fired after SlideShare has loaded
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **eventSize** - **  
-The number of events to add to the calendar  
+- **eventSize** - *number*  
+The maximum number of events to add to the calendar.  
+*Default:* `25`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **tags** - **  
-Filter Events by Tag.  
+- **tags** - *Array&lt;string&gt;*  
+An array of tags used to filter events.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});
 ```
 
-- **calendar** - **  
-This allows the widget to be placed on a site not hosted by Q4.
-Requires url and apiKey to be set in the configuration.  
+- **calendar** - *boolean*  
+An options object to pass directly to the CLNDR.js instance.
+See that module's documentation for details.  
+*Default:* `false`  
 *Example:*
 ```
-    $("#clndr").calendar({
-        news: true,
-        presentations: true,
-        eventSize: 50,
-        slideshare: "Q4WebSystems"
-    });
+{
+    adjacentDaysChangeMonth: true,
+    daysOfTheWeek: ['Su','Mo','Tu','We','Th','Fi','Sa'],
+    showAdjacentMonths: false,
+    weekOffset: 1,
+    doneRendering: function () {
+        console.log('done rendering')
+    },
+    ready: function () {
+        console.log('calendar is ready')
+    }
+}
 ```
 
 

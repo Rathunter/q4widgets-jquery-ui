@@ -44,15 +44,15 @@
              * for that feed. Some feed options override global options.
              * Valid options for all feed types are:
              * - name: The name of the feed.
-             * - type: The type, as listed in feedTypes (example: rss, youtube).
+             * - type: The type, as listed in `feedTypes` (e.g. `rss`, `youtube`).
              * - template: A Mustache template for a single feed item
              *     (overrides the default template).
              * - limit: The maximum number of items from this feed.
              * - titleLength: The maximum character length of a title.
              * - summaryLength: The maximum character length of a summary.
-             * - fetch: A function overriding the feed type's fetch method.
-             * - getItems: A function overriding the feed type's getItems method.
-             * - parseItem: A function overriding the feed type's parseItem method.
+             * - fetch: A function overriding the feed type's `fetch` method.
+             * - getItems: A function overriding the feed type's `getItems` method.
+             * - parseItem: A function overriding the feed type's `parseItem` method.
              * 
              * See `feedTypes` for type-specific options.
              * @type {Array<Object>}
@@ -93,6 +93,9 @@
          *     array of raw items found in that feed.
          * - parseItem: A function that takes a raw feed item and returns
          *     a formatted item object for the template.
+         * Note that some of these (twitter, facebook, youtube) are pretty
+         * tightly coupled to specific Q4 APIs, but others (rss, custom_jsonp)
+         * are more generic and should be more generally useful.
          */
         feedTypes: {
             /* Options for rss:
@@ -137,7 +140,31 @@
                         username: item.user.name,
                         content: item.text,
                         date: moment(item.created_at, 'ddd MMM DD hh:mm:ss ZZ YYYY'),
-                        id: item.id
+                        id: item.id_str
+                    };
+                }
+            },
+
+            /* Options for facebook:
+             *   url: The url of the JSON feed.
+             */
+            facebook: {
+                fetch: function (feed) {
+                    return $.ajax({
+                        url: feed.url,
+                        dataType: 'jsonp'
+                    });
+                },
+                getItems: function (data) {
+                    return data.entries;
+                },
+                parseItem: function (item) {
+                    return {
+                        title: item.title,
+                        url: item.alternate,
+                        id: item.id,
+                        date: moment(item.published),
+                        content: item.text
                     };
                 }
             },

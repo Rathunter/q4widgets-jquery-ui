@@ -4,7 +4,7 @@
 chronological list.
 
 *Source file: `jquery.q4.mashfeed.js`, line 2*  
-*Author: marcusk@q4websystems.com*  
+*Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Moment.js
 - Mustache.js
@@ -36,15 +36,15 @@ An array of feeds to fetch. Each feed is an object of options
 for that feed. Some feed options override global options.
 Valid options for all feed types are:
 - name: The name of the feed.
-- type: The type, as listed in feedTypes (example: rss, youtube).
+- type: The type, as listed in `feedTypes` (e.g. `rss`, `youtube`).
 - template: A Mustache template for a single feed item
     (overrides the default template).
 - limit: The maximum number of items from this feed.
 - titleLength: The maximum character length of a title.
 - summaryLength: The maximum character length of a summary.
-- fetch: A function overriding the feed type's fetch method.
-- getItems: A function overriding the feed type's getItems method.
-- parseItem: A function overriding the feed type's parseItem method.
+- fetch: A function overriding the feed type's `fetch` method.
+- getItems: A function overriding the feed type's `getItems` method.
+- parseItem: A function overriding the feed type's `parseItem` method.
 
 See `feedTypes` for type-specific options.  
 *Default:* `0`  

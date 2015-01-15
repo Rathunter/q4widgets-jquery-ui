@@ -2,6 +2,7 @@
     /**
      * An interactive calendar with links to events.
      * @class q4.calendar
+     * @version 1.0.0
      * @example
      * $("#clndr").calendar({
      *     news: true,

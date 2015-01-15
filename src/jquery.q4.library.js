@@ -3,6 +3,7 @@
      * A colletion of many different document types in the same widget.
      * Documents can be filtered by title, tag, or date.
      * @class q4.library
+     * @version 1.0.0
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js
@@ -83,12 +84,12 @@
             docsFoundContainer: '.docsfound',
             /**
              * A Mustache template to display the number of documents found.
-             *   {{docCount}}  The number of documents on this page.
-             *   {{docTotal}}  The total number of documents.
-             *   {{docFirst}}  The index of the first document displayed.
-             *   {{docLast}}   The index of the last document displayed.
-             *   {{page}}      The page number.
-             *   {{pageCount}} The total number of pages.
+             * - {{docCount}}  The number of documents on this page.
+             * - {{docTotal}}  The total number of documents.
+             * - {{docFirst}}  The index of the first document displayed.
+             * - {{docLast}}   The index of the last document displayed.
+             * - {{page}}      The page number.
+             * - {{pageCount}} The total number of pages.
              * @type {string}
              * @default
              */

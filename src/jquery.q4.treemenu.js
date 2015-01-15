@@ -1,34 +1,91 @@
-(function($) {
-    $.widget('q4.treemenu', {
+(function ($) {
+    /**
+     * An expanding tree-style table of contents for a set of content.
+     * @class q4.treemenu
+     * @version 1.0.0
+     * @author marcusk@q4websystems.com
+     * @requires Mustache.js
+     */
+    $.widget('q4.treemenu', /** @lends q4.treemenu */ {
         options: {
-            /* Whether opening a menu item will close its sibling items. */
+            /**
+             * Whether opening a menu item will close its sibling items.
+             * @type {boolean}
+             * @default
+             */
             openMultipleItems: false,
-            /* A selector in the main template for the menu. */
+            /**
+             * A selector in the main template for the menu.
+             * @type {string}
+             * @default
+             */
             menuContainer: '.menu',
-            /* A selector in the main template the body content. */
+            /**
+             * A selector in the main template the body content.
+             * @type {string}
+             * @default
+             */
             bodyContainer: '.body',
-            /* A selector in the menu item template for child menu items. */
+            /**
+             * A selector in the menu item template for child menu items.
+             * @type {string}
+             * @default
+             */
             submenu: '.submenu',
-            /* A selector in the menu item template to display the content. */
+            /**
+             * A selector in the menu item template to display the content.
+             * @type {string}
+             * @default
+             */
             trigger: '.itemLink',
-            /* A selector in the menu item template to toggle child items. */
+            /**
+             * A selector in the menu item template to toggle child items.
+             * @type {string}
+             * @default
+             */
             expandTrigger: '.itemExpand',
-            /* The text to display in a collapsed menu item's trigger. */
+            /**
+             * The text to display in a collapsed menu item's trigger.
+             * @type {string}
+             * @default
+             */
             expandText: '[ + ]',
-            /* The text to display in an expanded menu item's trigger. */
+            /**
+             * The text to display in an expanded menu item's trigger.
+             * @type {string}
+             * @default
+             */
             collapseText: '[ - ]',
-            /* A class to add to each menu item. */
+            /**
+             * A class to add to each menu item.
+             * @type {string}
+             * @default
+             */
             itemClass: 'treemenu-item',
-            /* A class to add to each menu item. */
+            /**
+             * A class to add to each menu item.
+             * @type {string}
+             * @default
+             */
             activeClass: 'treemenu-active',
-            /* A class to add to an expanded menu item. */
+            /**
+             * A class to add to an expanded menu item.
+             * @type {string}
+             * @default
+             */
             expandedClass: 'treemenu-expanded',
-            /* A Mustache template for the overall widget. */
+            /**
+             * A Mustache template for the overall widget.
+             * @type {string}
+             */
             template: (
                 '<ul class="menu"></ul>' +
                 '<div class="body"></div>'
             ),
-            /* A recursive Mustache template for each menu item. */
+            /**
+             * A recursive Mustache template for each menu item.
+             * @type {string}
+             */
             menuItemTemplate: (
                 '<li>' +
                     '<span class="itemExpand"></span>' +
@@ -36,17 +93,21 @@
                     '<ul class="submenu"></ul>' +
                 '</li>'
             ),
-            /* A Mustache template for each item's body content. */
+            /**
+             * A Mustache template for each item's body content.
+             * @type {string}
+             */
             bodyItemTemplate: (
                 '<div>' +
                     '<h4>{{title}}</h4>' +
                     '<div class="itemContent">{{{content}}}</div>' +
                 '</div>'
             ),
-            /* A nested array of menu item objects, each with these properties:
-             *   title: The title to display in the menu.
-             *   content: The body content to display when an item is clicked.
-             *   items: An optional array of child menu items.
+            /**
+             * A nested array of menu item objects, each with these properties:
+             * - `title`   The title to display in the menu.
+             * - `content` The body content to display when an item is clicked.
+             * - `items`   An optional array of child menu items.
              */
             content: [
                 {

@@ -3,6 +3,7 @@
      * Grab a number of content feeds and mix them together into a single
      * chronological list.
      * @class q4.mashfeed
+     * @version 1.0.0
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js

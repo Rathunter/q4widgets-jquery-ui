@@ -2,7 +2,7 @@
 
 ### Fetches and displays events from the Q4 private API.
 
-*Source file: `jquery.q4.api.js`, line 585*  
+*Source file: `jquery.q4.api.js`, line 586*  
 
 
 

@@ -3,7 +3,7 @@
 ### Fetches and displays photo albums from a user on Flickr.
 
 *Source file: `jquery.q4.flickrgallery.js`, line 2*  
-*Author: marcusk@q4websystems.com*  
+*Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js
 

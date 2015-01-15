@@ -1,6 +1,24 @@
 (function ($) {
-    $.widget('q4.timeline', {
+    /**
+     * A carousel of events on a timeline, with groups and navigation.
+     * @class q4.timeline
+     * @version 1.0.0
+     * @author marcusk@q4websystems.com
+     * @requires Mustache.js
+     * @requires slick
+     */
+    $.widget('q4.timeline', /** @lends q4.timeline */ {
         options: {
+            /**
+             * An array of event groups. Each group has these properties:
+             * - `heading` The heading for the category.
+             * - `text`    Text to display for the category.
+             * - `items`   An array of items with these properties:
+             *     - `heading`  The heading for the event.
+             *     - `cssClass` An optional CSS class to use in the template.
+             *     - `text`     Text to display for the event.
+             * @type {Object}
+             */
             content: [
                 {
                     heading: '1980s',
@@ -29,8 +47,24 @@
                     ]
                 }
             ],
-
+            /**
+             * Whether to render a navigation carousel.
+             * This is generally used to display the groups.
+             * @type {boolean}
+             * @default
+             */
+            navCarousel: false,
+            /**
+             * A selector for the navigation carousel.
+             * @type {string}
+             * @default
+             */
             navContainer: '.timeline-nav',
+            /**
+             * A Mustache template to use for the navigation carousel.
+             * All properties from `content` are available as tags.
+             * @type {string}
+             */
             navTemplate: (
                 '{{#groups}}' +
                 '<li class="{{cssClass}}">' +
@@ -39,14 +73,42 @@
                 '</li>' +
                 '{{/groups}}'
             ),
+            /**
+             * A selector for each group's slide in the navigation carousel.
+             * When clicked, this will move the main carousel to that group.
+             * @type {string}
+             * @default
+             */
             navSelector: 'li',
-            navCarousel: false,
+            /**
+             * Options to pass directly to the nav carousel's Slick object.
+             * See Slick's documentation for details.
+             * @type {Object}
+             */
             navOptions: {
                 infinite: false,
                 slidesToShow: 10
             },
-
+            /**
+             * Whether to render a main carousel.
+             * This is generally used to display the individual timeline items.
+             * @type {boolean}
+             * @default
+             */
+            mainCarousel: true,
+            /**
+             * A selector for the main carousel.
+             * @type {string}
+             * @default
+             */
             mainContainer: '.timeline-main',
+            /**
+             * A Mustache template to use for the main carousel.
+             * All properties from `content` are available as tags.
+             * Items also have a {{group}} tag with the index # of their
+             * containing group.
+             * @type {string}
+             */
             mainTemplate: (
                 '{{#items}}' +
                 '<li class="{{cssClass}}" data-group="{{group}}">' +
@@ -55,16 +117,46 @@
                 '</li>' +
                 '{{/items}}'
             ),
+            /**
+             * A selector for each item's slide in the main carousel.
+             * When clicked, this will move the nav carousel to this item's group.
+             * @type {string}
+             * @default
+             */
             mainSelector: 'li',
-            mainCarousel: true,
+            /**
+             * Options to pass directly to the main carousel's Slick object.
+             * See Slick's documentation for details.
+             * @type {Object}
+             */
             mainOptions: {
                 infinite: false,
                 slidesToShow: 3
             },
-
-            afterNavChange: null,
-            afterMainChange: null,
-            complete: null
+            /**
+             * A callback fired after a change in the nav carousel.
+             * @type {function}
+             * @param {Event}  [event] The triggering event.
+             * @param {Object} [data]  A data object with these properties:
+             * - `element` The nav carousel's jQuery element.
+             * - `target`  The index of the target group.
+             */
+            afterNavChange: function (e, data) {},
+            /**
+             * A callback fired after a change in the main carousel.
+             * @type {function}
+             * @param {Event} [event] The triggering event.
+             * @param {Object} [data]  A data object with these properties:
+             * - `element` The main carousel's jQuery element.
+             * - `target`  The index of the target timeline item.
+             */
+            afterMainChange: function (e, data) {},
+            /**
+             * A callback fired after rendering is complete.
+             * @type {function}
+             * @param {Event} [event] The triggering event.
+             */
+            complete: function (e) {}
         },
 
         drawTimeline: function () {
@@ -117,9 +209,10 @@
                         }
 
                         // fire main callback
-                        if (typeof o.afterMainChange === 'function') {
-                            o.afterMainChange.call(this, $main, currentItem);
-                        }
+                        _._trigger('afterMainChange', null, {
+                            element: $main,
+                            target: currentItem
+                        });
                     }
                 };
                 $main.slick($.extend({}, mainDefaults, o.mainOptions));
@@ -156,9 +249,10 @@
             }
 
             // fire nav callback
-            if (typeof o.afterNavChange === 'function') {
-                o.afterNavChange.call(this, $nav, targetGroup);
-            }
+            this._trigger('afterNavChange', null, {
+                element: $nav,
+                target: targetGroup
+            });
         },
 
         _create: function () {
@@ -170,9 +264,7 @@
             this.initCarousels();
 
             // fire complete callbask
-            if (typeof o.complete === 'function') {
-                o.complete.call(this);
-            }
+            this._trigger('complete');
         }
     });
 })(jQuery);

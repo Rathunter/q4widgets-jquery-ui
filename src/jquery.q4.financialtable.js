@@ -3,6 +3,7 @@
      * A table of different types of financial documents sorted by year.
      * Each year can have links to documents for each quarter.
      * @class q4.financialTable
+     * @version 1.0.0
      * @example
      * $("#financials").financialTable({
      *     year: 2014,

@@ -3,7 +3,7 @@
 ### An interactive calendar with links to events.
 
 *Source file: `jquery.q4.calendar.js`, line 2*  
-*Author: jasonm@q4websystems.com*  
+*Author(s): jasonm@q4websystems.com *  
 *Requires:*
 - CLNDR.js
 - Moment.js

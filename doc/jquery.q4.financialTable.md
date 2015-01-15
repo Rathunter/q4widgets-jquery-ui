@@ -4,7 +4,7 @@
 Each year can have links to documents for each quarter.
 
 *Source file: `jquery.q4.financialtable.js`, line 2*  
-*Author: marcusk@q4websystems.com*  
+*Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js
 

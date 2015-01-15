@@ -2,6 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
+     * @version 1.0.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires Mustache.js

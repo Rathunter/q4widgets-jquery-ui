@@ -3,7 +3,7 @@
 ### Base widget for accessing Q4 private API data.
 
 *Source file: `jquery.q4.api.js`, line 2*  
-*Author: marcusk@q4websystems.com*  
+*Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js
 

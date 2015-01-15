@@ -4,7 +4,7 @@
 Documents can be filtered by title, tag, or date.
 
 *Source file: `jquery.q4.library.js`, line 2*  
-*Author: marcusk@q4websystems.com*  
+*Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Moment.js
 - Mustache.js
@@ -53,12 +53,12 @@ A selector for a message about the number of documents found.
 
 - **docsFoundTemplate** - *string*  
 A Mustache template to display the number of documents found.
-  {{docCount}}  The number of documents on this page.
-  {{docTotal}}  The total number of documents.
-  {{docFirst}}  The index of the first document displayed.
-  {{docLast}}   The index of the last document displayed.
-  {{page}}      The page number.
-  {{pageCount}} The total number of pages.  
+- {{docCount}}  The number of documents on this page.
+- {{docTotal}}  The total number of documents.
+- {{docFirst}}  The index of the first document displayed.
+- {{docLast}}   The index of the last document displayed.
+- {{page}}      The page number.
+- {{pageCount}} The total number of pages.  
 *Default:* `"Showing {{docFirst}}–{{docLast}} of {{docTotal}} documents."`  
 
 - **noDocsMessage** - *string*  

@@ -2,7 +2,9 @@
     /**
      * A preconfigured stock chart, using the Highstock plugin.
      * @class q4.chart
-     * @author jasonm@q4websystems.com, marcusk@q4websystems.com
+     * @version 1.0.0
+     * @author jasonm@q4websystems.com
+     * @author marcusk@q4websystems.com
      * @requires Highstock
      */
     $.widget('q4.chart', /** @lends q4.chart */ {

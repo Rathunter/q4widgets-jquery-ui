@@ -1,10 +1,51 @@
 (function ($) {
-    $.widget('q4.rssfeed', {
+    /**
+     * Fetch, format and display an RSS feed.
+     * @class q4.rssfeed
+     * @version 1.0.0
+     * @author marcusk@q4websystems.com
+     * @requires Moment.js
+     * @requires Mustache.js
+     */
+    $.widget('q4.rssfeed', /** @lends q4.rssfeed */ {
         options: {
+            /**
+             * The URL of the RSS feed.
+             * @type {string}
+             */
             url: '',
+            /**
+             * The maximum number of items to display, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
             limit: 0,
+            /**
+             * A Moment.js date format string to use when rendering.
+             * @type {string}
+             * @default
+             */
             dateFormat: 'MMM D, YYYY h:mm A',
+            /**
+             * The maximum length for each item's summary, or zero for unlimited.
+             * @type {number}
+             * @default
+             */
             summaryLength: 500,
+            /**
+             * A Mustache template for the widget, with these tags:
+             * - {{title}} The title of the feed.
+             * - {{url}}   The URL of the feed.
+             * - {{date}}  The last updated date of the feed.
+             * - {{items}} An array of items with these tags:
+             *     - {{title}}     The item's title.
+             *     - {{url}}       The item's URL.
+             *     - {{date}}      The item's publication date.
+             *     - {{body}}      The item's body content.
+             *     - {{summary}}   The plaintext body content, truncated to `summaryLength`.
+             *     - {{firstLine}} The plaintext body content, up to the first line break.
+             * @type {string}
+             */
             template: (
                 '<header>' +
                     '<h1><a href="{{url}}" target="_blank">{{title}}</a></h1>' +
@@ -20,7 +61,12 @@
                 '</article>' +
                 '{{/items}}'
             ),
-            complete: null
+            /**
+             * A callback fired after rendering is complete.
+             * @type {function}
+             * @param {Event} [event] The triggering event.
+             */
+            complete: function (e) {}
         },
 
         _renderFeed: function (url) {
@@ -58,9 +104,7 @@
 
                 $e.append(Mustache.render(o.template, feed));
 
-                if (typeof o.complete === 'function') {
-                    o.complete.call(_);
-                }
+                _._trigger('complete');
             });
         },
 

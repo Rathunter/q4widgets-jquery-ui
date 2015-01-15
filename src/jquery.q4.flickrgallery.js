@@ -2,6 +2,7 @@
     /**
      * Fetches and displays photo albums from a user on Flickr.
      * @class q4.flickrGallery
+     * @version 1.0.0
      * @example
      * $("#gallery").flickrGallery({
      *     apiKey: 'abcdef1234567890',

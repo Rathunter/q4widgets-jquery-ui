@@ -3,7 +3,7 @@
 ### A preconfigured stock chart, using the Highstock plugin.
 
 *Source file: `jquery.q4.chart.js`, line 2*  
-*Author: jasonm@q4websystems.com, marcusk@q4websystems.com*  
+*Author(s): jasonm@q4websystems.com marcusk@q4websystems.com *  
 *Requires:*
 - Highstock
 

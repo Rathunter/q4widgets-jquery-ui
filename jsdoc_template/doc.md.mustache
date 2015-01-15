@@ -3,7 +3,7 @@
 ### {{{description}}}
 
 *Source file: `{{file}}`, line {{line}}*  
-{{#author}}*Author: {{.}}*  {{/author}}
+{{#author.0}}*Author(s): {{#author}}{{.}} {{/author}}*  {{/author.0}}
 {{#requires.0}}*Requires:*
 {{#requires}}- {{{.}}}
 {{/requires}}{{/requires.0}}

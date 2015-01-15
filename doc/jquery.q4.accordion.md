@@ -5,7 +5,7 @@
 *Source file: `jquery.q4.accordion.js`, line 2*  
 
 *Requires:*
-- mustache.js
+- Mustache.js
 
 
 ## Options

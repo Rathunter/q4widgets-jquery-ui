@@ -79,10 +79,20 @@ Documents can have these tags:
   {{year}}: the fiscal year of the report.  
 *Example:*
 ```
-$("#financials").financialTable({
-    year: 2014,
-    reportSubType: ['Annual Report', 'Supplemental Report']
-});
+'<ul class="ftHeader">' +
+    '<li>Document</li>' +
+    '{{#years}}<li>{{year}}</li>{{/years}}' +
+'</ul>' +
+'{{#categories}}' +
+'<ul class="ftRow {{catClass}}">' +
+    '<li>{{catTitle}}</li>' +
+    '{{#catYears}}' +
+    '<li>' +
+        '{{#docs}}<a href="{{docUrl}}" class="docLink {{docType}}">{{docText}}</a>{{/docs}}' +
+    '</li>' +
+    '{{/catYears}}' +
+'</ul>' +
+'{{/categories}}'
 ```
 
 - **complete** - *function*  

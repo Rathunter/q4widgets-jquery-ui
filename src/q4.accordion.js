@@ -2,7 +2,7 @@
     /**
      * Creates an expanding and collapsing accordion from sections of content.
      * @class q4.accordion
-     * @version 1.0.0
+     * @version 1.0.1
      * @requires Mustache.js
      */
     $.widget('q4.accordion', /** @lends q4.accordion */ {
@@ -55,16 +55,16 @@
             /**
              * A Mustache template for each section.
              * @type {string}
+             * @example
+             * '<div class="accordionItem">' +
+             *     '<h3 class="accordionTrigger">' +
+             *         '<span class="accordionTriggerText"></span>' +
+             *         '{{{title}}}' +
+             *     '</h3>' +
+             *     '<div class="accordionContent">{{{content}}}</div>' +
+             * '</div>'
              */
-            template: (
-                '<div class="accordionItem">' +
-                    '<h3 class="accordionTrigger">' +
-                        '<span class="accordionTriggerText"></span>' +
-                        '{{{title}}}' +
-                    '</h3>' +
-                    '<div class="accordionContent">{{{content}}}</div>' +
-                '</div>'
-            ),
+            template: '',
             /**
              * A list of objects representing sections.
              * @type {Array<Object>}

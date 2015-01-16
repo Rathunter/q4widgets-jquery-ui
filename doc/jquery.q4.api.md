@@ -113,7 +113,7 @@ The CSS class to use for a selected year trigger.
 *Default:* `"active"`  
 
 - **itemContainer** - *string*  
-An optional selector for the items container. You must also 
+An optional selector for the items container. You must also
 pass `itemTemplate` for this to have any effect.  
 
 - **itemTemplate** - *string*  
@@ -121,6 +121,14 @@ An optional template for the items container. If `itemContainer`
 is also passed, this will be used to render the items list.
 Also, when the year is changed, only the items list will be
 rerendered, instead of the entire widget.  
+*Example:*
+```
+<li>' +
+    '<img class="thumb" src="{{thumb}}">' +
+    '<span class="date">{{date}}</span>' +
+    '<a href="{{url}}" class="title">{{title}}</a>' +
+'</li>'
+```
 
 - **itemLoadingMessage** - *string*  
 A message or HTML string to display while loading items.

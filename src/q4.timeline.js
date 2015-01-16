@@ -2,7 +2,7 @@
     /**
      * A carousel of events on a timeline, with groups and navigation.
      * @class q4.timeline
-     * @version 1.0.0
+     * @version 1.0.1
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
      * @requires slick
@@ -18,35 +18,37 @@
              *     - `cssClass` An optional CSS class to use in the template.
              *     - `text`     Text to display for the event.
              * @type {Object}
+             * @example
+             * [
+             *     {
+             *         heading: '1980s',
+             *         text: 'Many things happened in the 1980s.',
+             *         items: [
+             *             {
+             *                 heading: 1981,
+             *                 cssClass: 'green',
+             *                 text: 'This is the first thing.'
+             *             },
+             *             {
+             *                 heading: 1985,
+             *                 cssClass: 'blue',
+             *                 text: 'This is the second thing.'
+             *             }
+             *         ]
+             *     },
+             *     {
+             *         heading: '2000s',
+             *         cssClass: 'red',
+             *         items: [
+             *             {
+             *                 heading: 'January 1, 2000',
+             *                 text: 'In the year 2000, everything changed.'
+             *             }
+             *         ]
+             *     }
+             * ]
              */
-            content: [
-                {
-                    heading: '1980s',
-                    text: 'Many things happened in the 1980s.',
-                    items: [
-                        {
-                            heading: 1981,
-                            cssClass: 'green',
-                            text: 'This is the first thing.'
-                        },
-                        {
-                            heading: 1985,
-                            cssClass: 'blue',
-                            text: 'This is the second thing.'
-                        }
-                    ]
-                },
-                {
-                    heading: '2000s',
-                    cssClass: 'red',
-                    items: [
-                        {
-                            heading: 'January 1, 2000',
-                            text: 'In the year 2000, everything changed.'
-                        }
-                    ]
-                }
-            ],
+            content: [],
             /**
              * Whether to render a navigation carousel.
              * This is generally used to display the groups.
@@ -64,15 +66,15 @@
              * A Mustache template to use for the navigation carousel.
              * All properties from `content` are available as tags.
              * @type {string}
+             * @example
+             * '{{#groups}}' +
+             * '<li class="{{cssClass}}">' +
+             *     '<h3>{{heading}}</h3>' +
+             *     '{{{text}}}' +
+             * '</li>' +
+             * '{{/groups}}'
              */
-            navTemplate: (
-                '{{#groups}}' +
-                '<li class="{{cssClass}}">' +
-                    '<h3>{{heading}}</h3>' +
-                    '{{{text}}}' +
-                '</li>' +
-                '{{/groups}}'
-            ),
+            navTemplate: '',
             /**
              * A selector for each group's slide in the navigation carousel.
              * When clicked, this will move the main carousel to that group.
@@ -108,15 +110,15 @@
              * Items also have a {{group}} tag with the index # of their
              * containing group.
              * @type {string}
+             * @example
+             * '{{#items}}' +
+             * '<li class="{{cssClass}}" data-group="{{group}}">' +
+             *     '<h3>{{heading}}</h3>' +
+             *     '<div class="itemtext">{{{text}}}</div>' +
+             * '</li>' +
+             * '{{/items}}'
              */
-            mainTemplate: (
-                '{{#items}}' +
-                '<li class="{{cssClass}}" data-group="{{group}}">' +
-                    '<h3>{{heading}}</h3>' +
-                    '<div class="itemtext">{{{text}}}</div>' +
-                '</li>' +
-                '{{/items}}'
-            ),
+            mainTemplate: '',
             /**
              * A selector for each item's slide in the main carousel.
              * When clicked, this will move the nav carousel to this item's group.

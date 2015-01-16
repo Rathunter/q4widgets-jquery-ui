@@ -3,7 +3,7 @@
      * A table of different types of financial documents sorted by year.
      * Each year can have links to documents for each quarter.
      * @class q4.financialTable
-     * @version 1.0.0
+     * @version 1.0.1
      * @example
      * $("#financials").financialTable({
      *     year: 2014,
@@ -68,23 +68,23 @@
              *   {{url}}: the URL of the document file.
              *   {{year}}: the fiscal year of the report.
              * @type {string}
+             * @example
+             * '<ul class="ftHeader">' +
+             *     '<li>Document</li>' +
+             *     '{{#years}}<li>{{year}}</li>{{/years}}' +
+             * '</ul>' +
+             * '{{#categories}}' +
+             * '<ul class="ftRow {{catClass}}">' +
+             *     '<li>{{catTitle}}</li>' +
+             *     '{{#catYears}}' +
+             *     '<li>' +
+             *         '{{#docs}}<a href="{{docUrl}}" class="docLink {{docType}}">{{docText}}</a>{{/docs}}' +
+             *     '</li>' +
+             *     '{{/catYears}}' +
+             * '</ul>' +
+             * '{{/categories}}'
              */
-            template: (
-                '<ul class="ftHeader">' +
-                    '<li>Document</li>' +
-                    '{{#years}}<li>{{year}}</li>{{/years}}' +
-                '</ul>' +
-                '{{#categories}}' +
-                '<ul class="ftRow {{catClass}}">' +
-                    '<li>{{catTitle}}</li>' +
-                    '{{#catYears}}' +
-                    '<li>' +
-                        '{{#docs}}<a href="{{docUrl}}" class="docLink {{docType}}">{{docText}}</a>{{/docs}}' +
-                    '</li>' +
-                    '{{/catYears}}' +
-                '</ul>' +
-                '{{/categories}}'
-            ),
+            template: '',
             /**
             * A callback fired when rendering is completed.
             * @type {function}

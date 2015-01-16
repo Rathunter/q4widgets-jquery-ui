@@ -2,7 +2,7 @@
     /**
      * An interactive calendar with links to events.
      * @class q4.calendar
-     * @version 1.0.0
+     * @version 1.0.1
      * @example
      * $("#clndr").calendar({
      *     news: true,
@@ -143,7 +143,7 @@
                  */
                 weekOffset: 0,
                 /**
-                 * An array of day abbreviation labels. 
+                 * An array of day abbreviation labels.
                  * The array MUST start with Sunday (use in conjunction with weekOffset to change the starting day to Monday)
                  */
                 daysOfTheWeek: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
@@ -153,7 +153,7 @@
                 showAdjacentMonths: true,
                 /**
                  * When days from adjacent months are clicked, switch the current month.
-                 * fires nextMonth/previousMonth/onMonthChange click callbacks. 
+                 * fires nextMonth/previousMonth/onMonthChange click callbacks.
                  */
                 adjacentDaysChangeMonth: false,
                 /**
@@ -173,32 +173,30 @@
                 doneRendering: function(){ },
                 /**
                  * @example
-                 *
-                 *      $("#clndr").eventCal({
-                 *          calendar: {
-                 *              clickEvents: {
-                 *                  click: function(target){
-                 *                      var events = target.events,
-                 *                          length = events.length;
-                 *                      if (length){
-                 *                          console.log(length +' Event(s)')
-                 *                      } else {
-                 *                          console.log('No Events')
-                 *                      }
-                 *                  },
-                 *                  onMonthChange: function(month){
-                 *                      console.log(moment(month._d).format('MMMM'));
-                 *                  },
-                 *                  onYearChange: function(month) {
-                 *                      console.log(moment(month._d).format('YYYY'));
-                 *                  },
-                 *                  today: function(month){
-                 *                      console.log(month);
-                 *                  }
-                 *              }
-                 *          }
-                 *      });
-                 *
+                 * $("#clndr").eventCal({
+                 *     calendar: {
+                 *         clickEvents: {
+                 *             click: function(target){
+                 *                 var events = target.events,
+                 *                     length = events.length;
+                 *                 if (length){
+                 *                     console.log(length +' Event(s)')
+                 *                 } else {
+                 *                     console.log('No Events')
+                 *                 }
+                 *             },
+                 *             onMonthChange: function(month){
+                 *                 console.log(moment(month._d).format('MMMM'));
+                 *             },
+                 *             onYearChange: function(month) {
+                 *                 console.log(moment(month._d).format('YYYY'));
+                 *             },
+                 *             today: function(month){
+                 *                 console.log(month);
+                 *             }
+                 *         }
+                 *     }
+                 * });
                  */
                 clickEvents: {
                     /**

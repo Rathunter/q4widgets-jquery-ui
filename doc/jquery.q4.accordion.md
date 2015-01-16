@@ -38,6 +38,16 @@ A class to add to each section.
 
 - **template** - *string*  
 A Mustache template for each section.  
+*Example:*
+```
+'<div class="accordionItem">' +
+    '<h3 class="accordionTrigger">' +
+        '<span class="accordionTriggerText"></span>' +
+        '{{{title}}}' +
+    '</h3>' +
+    '<div class="accordionContent">{{{content}}}</div>' +
+'</div>'
+```
 
 - **content** - *Array&lt;Object&gt;*  
 A list of objects representing sections.  

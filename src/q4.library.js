@@ -3,7 +3,7 @@
      * A colletion of many different document types in the same widget.
      * Documents can be filtered by title, tag, or date.
      * @class q4.library
-     * @version 1.0.0
+     * @version 1.0.1
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js
@@ -57,19 +57,19 @@
              * An overall template for the timeline.
              * @type {string}
              * @default
+             * @example
+             *  '<ul class="content-types"></ul>' +
+             *  '<ul class="tags"></ul>' +
+             *  '<p>' +
+             *      '<input type="text" class="search">' +
+             *      'Year: <select class="years"></select>' +
+             *      'Documents per page: <select class="perpage"></select>' +
+             *  '</p>' +
+             *  '<p class="docsfound"></p>' +
+             *  '<ul class="documents"></ul>' +
+             *  '<ul class="pager"></ul>'
              */
-            template: (
-                 '<ul class="content-types"></ul>' +
-                 '<ul class="tags"></ul>' +
-                 '<p>' +
-                     '<input type="text" class="search">' +
-                     'Year: <select class="years"></select>' +
-                     'Documents per page: <select class="perpage"></select>' +
-                 '</p>' +
-                 '<p class="docsfound"></p>' +
-                 '<ul class="documents"></ul>' +
-                 '<ul class="pager"></ul>'
-            ),
+            template: '',
             /**
              * An HTML string to display while loading.
              * @type {string}
@@ -109,59 +109,57 @@
             /**
              * A template for a list of single documents.
              * @type {string}
-             * @default
+             * @example
+             * '<h3 class="docheader single">' +
+             *     '<span class="title">Title</span>' +
+             *     '<span class="date">Date</span>' +
+             *     '<span class="type">Type</span>' +
+             *     '<span class="size">Size</span>' +
+             * '</h3>' +
+             * '<ul class="doclist">' +
+             *     '{{#docs}}' +
+             *     '<li class="single"><a href="{{url}}" target="_blank">' +
+             *         '<span class="title">{{title}}</span>' +
+             *         '<span class="date">{{date}}</span>' +
+             *         '<span class="type">{{type}}</span>' +
+             *         '<span class="size">{{size}}</span>' +
+             *     '</a></li>' +
+             *     '{{/docs}}' +
+             * '</ul>'
              */
-            singleDocTemplate: (
-                '<h3 class="docheader single">' +
-                    '<span class="title">Title</span>' +
-                    '<span class="date">Date</span>' +
-                    '<span class="type">Type</span>' +
-                    '<span class="size">Size</span>' +
-                '</h3>' +
-                '<ul class="doclist">' +
-                    '{{#docs}}' +
-                    '<li class="single"><a href="{{url}}" target="_blank">' +
-                        '<span class="title">{{title}}</span>' +
-                        '<span class="date">{{date}}</span>' +
-                        '<span class="type">{{type}}</span>' +
-                        '<span class="size">{{size}}</span>' +
-                    '</a></li>' +
-                    '{{/docs}}' +
-                '</ul>'
-            ),
+            singleDocTemplate: '',
             /**
              * A template for a list of documents with sub-documents.
              * @type {string}
-             * @default
+             * @example
+             * '<h3 class="docheader multi">' +
+             *     '<span class="title">Title</span>' +
+             *     '<span class="date">Date</span>' +
+             *     '<span class="type">Type</span>' +
+             *     '<span class="size">Size</span>' +
+             * '</h3>' +
+             * '<ul class="doclist">' +
+             *     '{{#docs}}' +
+             *     '<li class="multi">' +
+             *         '<div class="trigger">' +
+             *             '<span class="title">{{title}}</span>' +
+             *             '<span class="date">{{date}}</span>' +
+             *         '</div>' +
+             *         '<ul class="docs">' +
+             *             '{{#subdocs}}' +
+             *             '<li><a href="{{url}}" target="_blank">' +
+             *                 '<span class="title">{{title}}</span>' +
+             *                 '<span class="date"></span>' +
+             *                 '<span class="type">{{type}}</span>' +
+             *                 '<span class="size">{{size}}</span>' +
+             *             '</a></li>' +
+             *             '{{/subdocs}}' +
+             *         '</ul>' +
+             *     '</li>' +
+             *     '{{/docs}}' +
+             * '</ul>'
              */
-            multiDocTemplate: (
-                '<h3 class="docheader multi">' +
-                    '<span class="title">Title</span>' +
-                    '<span class="date">Date</span>' +
-                    '<span class="type">Type</span>' +
-                    '<span class="size">Size</span>' +
-                '</h3>' +
-                '<ul class="doclist">' +
-                    '{{#docs}}' +
-                    '<li class="multi">' +
-                        '<div class="trigger">' +
-                            '<span class="title">{{title}}</span>' +
-                            '<span class="date">{{date}}</span>' +
-                        '</div>' +
-                        '<ul class="docs">' +
-                            '{{#subdocs}}' +
-                            '<li><a href="{{url}}" target="_blank">' +
-                                '<span class="title">{{title}}</span>' +
-                                '<span class="date"></span>' +
-                                '<span class="type">{{type}}</span>' +
-                                '<span class="size">{{size}}</span>' +
-                            '</a></li>' +
-                            '{{/subdocs}}' +
-                        '</ul>' +
-                    '</li>' +
-                    '{{/docs}}' +
-                '</ul>'
-            ),
+            multiDocTemplate: '',
             /**
              * A selector for the overall container for multiple-document items.
              * Used to add an accordion effect.
@@ -388,7 +386,7 @@
                 multiple: true,
                 parse: function (item, o) {
                     if (!item.Documents.length) return;
-                    
+
                     docs = [];
                     $.each(item.Documents, function (i, doc) {
                         docs.push({

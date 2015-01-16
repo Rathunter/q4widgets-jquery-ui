@@ -37,6 +37,22 @@ A Mustache template for the widget, with these tags:
     - {{body}}      The item's body content.
     - {{summary}}   The plaintext body content, truncated to `summaryLength`.
     - {{firstLine}} The plaintext body content, up to the first line break.  
+*Example:*
+```
+'<header>' +
+    '<h1><a href="{{url}}" target="_blank">{{title}}</a></h1>' +
+    '<p>Last updated: {{date}}</p>' +
+'</header>' +
+'{{#items}}' +
+'<article>' +
+    '<header>' +
+        '<h2><a href="{{url}}" target="_blank">{{{title}}}</a></h2>' +
+        '<p>{{date}}</p>' +
+    '</header>' +
+    '{{{body}}}' +
+'</article>' +
+'{{/items}}'
+```
 
 - **complete** - *function*  
 A callback fired after rendering is complete.  

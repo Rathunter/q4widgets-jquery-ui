@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.0.0
+     * @version 1.0.1
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
@@ -10,7 +10,7 @@
     $.widget('q4.api', /** @lends q4.api */ {
         options: {
             /**
-             * The base URL to use for API calls. 
+             * The base URL to use for API calls.
              * @type {string}
              */
             url: '',
@@ -51,7 +51,7 @@
             /**
              * The year to display first. Default is to display all years if
              * that option is enabled, otherwise the most recent year.
-             * A useful value to pass is `(new Date()).getFullYear()`. 
+             * A useful value to pass is `(new Date()).getFullYear()`.
              * @type {?number}
              */
             startYear: null,
@@ -155,7 +155,7 @@
              */
             activeClass: 'active',
             /**
-             * An optional selector for the items container. You must also 
+             * An optional selector for the items container. You must also
              * pass `itemTemplate` for this to have any effect.
              * @type {?string}
              */
@@ -164,16 +164,16 @@
              * An optional template for the items container. If `itemContainer`
              * is also passed, this will be used to render the items list.
              * Also, when the year is changed, only the items list will be
-             * rerendered, instead of the entire widget. 
+             * rerendered, instead of the entire widget.
              * @type {string}
+             * @example
+             * <li>' +
+             *     '<img class="thumb" src="{{thumb}}">' +
+             *     '<span class="date">{{date}}</span>' +
+             *     '<a href="{{url}}" class="title">{{title}}</a>' +
+             * '</li>'
              */
-            itemTemplate: (
-                '<li>' +
-                    '<img class="thumb" src="{{thumb}}">' +
-                    '<span class="date">{{date}}</span>' +
-                    '<a href="{{url}}" class="title">{{title}}</a>' +
-                '</li>'
-            ),
+            itemTemplate: '',
             /**
              * A message or HTML string to display while loading items.
              * By default it is the same as `loadingMessage`.
@@ -490,7 +490,7 @@
                     yearItems = tplYear.items;
                 }
             });
-            
+
             this._trigger('beforeRender', null, tplData);
 
             // clear previous contents and render entire widget

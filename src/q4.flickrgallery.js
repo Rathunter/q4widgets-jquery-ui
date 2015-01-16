@@ -16,7 +16,7 @@
     $.widget('q4.flickrGallery', /** @lends q4.flickrGallery */ {
         options: {
             /**
-             * A Flickr API key. 
+             * A Flickr API key.
              * @type {string}
              */
             apiKey: '',

@@ -545,7 +545,7 @@
                 // This will be used later for news so dots don't fall off the chart
                 this.startDate = (new Date(data.GetStockQuoteHistoricalListResult.slice(-1)[0].HistoricalDate)).getTime();
             }
-            
+
             $.each(data.GetStockQuoteHistoricalListResult, function (i, quote) {
                 var price = quote.Last;
 

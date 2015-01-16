@@ -42,6 +42,19 @@ A Moment.js date format string.
 
 - **template** - *string*  
 An overall template for the timeline.  
+*Example:*
+```
+ '<ul class="content-types"></ul>' +
+ '<ul class="tags"></ul>' +
+ '<p>' +
+     '<input type="text" class="search">' +
+     'Year: <select class="years"></select>' +
+     'Documents per page: <select class="perpage"></select>' +
+ '</p>' +
+ '<p class="docsfound"></p>' +
+ '<ul class="documents"></ul>' +
+ '<ul class="pager"></ul>'
+```
 
 - **loadingTemplate** - *string*  
 An HTML string to display while loading.  
@@ -71,9 +84,57 @@ A selector for the document list.
 
 - **singleDocTemplate** - *string*  
 A template for a list of single documents.  
+*Example:*
+```
+'<h3 class="docheader single">' +
+    '<span class="title">Title</span>' +
+    '<span class="date">Date</span>' +
+    '<span class="type">Type</span>' +
+    '<span class="size">Size</span>' +
+'</h3>' +
+'<ul class="doclist">' +
+    '{{#docs}}' +
+    '<li class="single"><a href="{{url}}" target="_blank">' +
+        '<span class="title">{{title}}</span>' +
+        '<span class="date">{{date}}</span>' +
+        '<span class="type">{{type}}</span>' +
+        '<span class="size">{{size}}</span>' +
+    '</a></li>' +
+    '{{/docs}}' +
+'</ul>'
+```
 
 - **multiDocTemplate** - *string*  
 A template for a list of documents with sub-documents.  
+*Example:*
+```
+'<h3 class="docheader multi">' +
+    '<span class="title">Title</span>' +
+    '<span class="date">Date</span>' +
+    '<span class="type">Type</span>' +
+    '<span class="size">Size</span>' +
+'</h3>' +
+'<ul class="doclist">' +
+    '{{#docs}}' +
+    '<li class="multi">' +
+        '<div class="trigger">' +
+            '<span class="title">{{title}}</span>' +
+            '<span class="date">{{date}}</span>' +
+        '</div>' +
+        '<ul class="docs">' +
+            '{{#subdocs}}' +
+            '<li><a href="{{url}}" target="_blank">' +
+                '<span class="title">{{title}}</span>' +
+                '<span class="date"></span>' +
+                '<span class="type">{{type}}</span>' +
+                '<span class="size">{{size}}</span>' +
+            '</a></li>' +
+            '{{/subdocs}}' +
+        '</ul>' +
+    '</li>' +
+    '{{/docs}}' +
+'</ul>'
+```
 
 - **accordionContainer** - *string*  
 A selector for the overall container for multiple-document items.

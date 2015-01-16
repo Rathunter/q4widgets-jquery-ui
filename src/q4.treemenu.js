@@ -2,7 +2,7 @@
     /**
      * An expanding tree-style table of contents for a set of content.
      * @class q4.treemenu
-     * @version 1.0.0
+     * @version 1.0.1
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
      */
@@ -77,50 +77,52 @@
             /**
              * A Mustache template for the overall widget.
              * @type {string}
+             * @example
+             * '<ul class="menu"></ul>' +
+             * '<div class="body"></div>'
              */
-            template: (
-                '<ul class="menu"></ul>' +
-                '<div class="body"></div>'
-            ),
+            template: '',
             /**
              * A recursive Mustache template for each menu item.
              * @type {string}
+             * @example
+             * '<li>' +
+             *     '<span class="itemExpand"></span>' +
+             *     '<a class="itemLink" href="#">{{title}}</a>' +
+             *     '<ul class="submenu"></ul>' +
+             * '</li>'
              */
-            menuItemTemplate: (
-                '<li>' +
-                    '<span class="itemExpand"></span>' +
-                    '<a class="itemLink" href="#">{{title}}</a>' +
-                    '<ul class="submenu"></ul>' +
-                '</li>'
-            ),
+            menuItemTemplate: '',
             /**
              * A Mustache template for each item's body content.
              * @type {string}
+             * @example
+             * '<div>' +
+             *     '<h4>{{title}}</h4>' +
+             *     '<div class="itemContent">{{{content}}}</div>' +
+             * '</div>'
              */
-            bodyItemTemplate: (
-                '<div>' +
-                    '<h4>{{title}}</h4>' +
-                    '<div class="itemContent">{{{content}}}</div>' +
-                '</div>'
-            ),
+            bodyItemTemplate: '',
             /**
              * A nested array of menu item objects, each with these properties:
              * - `title`   The title to display in the menu.
              * - `content` The body content to display when an item is clicked.
              * - `items`   An optional array of child menu items.
+             * @example
+             * [
+             *     {
+             *         title: 'Item 1',
+             *         content: 'Item 1 content',
+             *         items: [
+             *             {
+             *                 title: 'Item 1.1',
+             *                 content: 'Item 1.1 content'
+             *             }
+             *         ]
+             *     }
+             * ]
              */
-            content: [
-                {
-                    title: 'Item 1',
-                    content: 'Item 1 content',
-                    items: [
-                        {
-                            title: 'Item 1.1',
-                            content: 'Item 1.1 content'
-                        }
-                    ]
-                }
-            ]
+            content: []
         },
 
         _create: function () {
@@ -197,7 +199,7 @@
                 click: function (e) {
                     e.preventDefault();
                     var $item = $(e.target).closest('.' + o.itemClass);
-                    
+
                     // toggle expanded class on menu item
                     $item.toggleClass(o.expandedClass);
                     var expanded = $item.hasClass(o.expandedClass);

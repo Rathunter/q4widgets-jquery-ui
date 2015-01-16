@@ -56,14 +56,34 @@ A class to add to an expanded menu item.
 - **template** - *string*  
 A Mustache template for the overall widget.  
 *Default:* `false`  
+*Example:*
+```
+'<ul class="menu"></ul>' +
+'<div class="body"></div>'
+```
 
 - **menuItemTemplate** - *string*  
 A recursive Mustache template for each menu item.  
 *Default:* `false`  
+*Example:*
+```
+'<li>' +
+    '<span class="itemExpand"></span>' +
+    '<a class="itemLink" href="#">{{title}}</a>' +
+    '<ul class="submenu"></ul>' +
+'</li>'
+```
 
 - **bodyItemTemplate** - *string*  
 A Mustache template for each item's body content.  
 *Default:* `false`  
+*Example:*
+```
+'<div>' +
+    '<h4>{{title}}</h4>' +
+    '<div class="itemContent">{{{content}}}</div>' +
+'</div>'
+```
 
 - **content** - *boolean*  
 A nested array of menu item objects, each with these properties:
@@ -71,5 +91,20 @@ A nested array of menu item objects, each with these properties:
 - `content` The body content to display when an item is clicked.
 - `items`   An optional array of child menu items.  
 *Default:* `false`  
+*Example:*
+```
+[
+    {
+        title: 'Item 1',
+        content: 'Item 1 content',
+        items: [
+            {
+                title: 'Item 1.1',
+                content: 'Item 1.1 content'
+            }
+        ]
+    }
+]
+```
 
 

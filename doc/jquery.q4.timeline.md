@@ -2,7 +2,7 @@
 
 ### A carousel of events on a timeline, with groups and navigation.
 
-*Source file: `jquery.q4.timeline.js`, line 2*  
+*Source file: `q4.timeline.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js

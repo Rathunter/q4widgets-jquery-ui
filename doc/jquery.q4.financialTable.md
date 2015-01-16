@@ -3,7 +3,7 @@
 ### A table of different types of financial documents sorted by year.
 Each year can have links to documents for each quarter.
 
-*Source file: `jquery.q4.financialtable.js`, line 2*  
+*Source file: `q4.financialtable.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js

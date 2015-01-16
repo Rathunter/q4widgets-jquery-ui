@@ -2,7 +2,7 @@
 
 ### An interactive map with multiple datasets, that you can toggle between.
 
-*Source file: `jquery.q4.multimap.js`, line 2*  
+*Source file: `q4.multimap.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - jVectorMap

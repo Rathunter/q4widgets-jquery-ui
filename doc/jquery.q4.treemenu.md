@@ -2,7 +2,7 @@
 
 ### An expanding tree-style table of contents for a set of content.
 
-*Source file: `jquery.q4.treemenu.js`, line 2*  
+*Source file: `q4.treemenu.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js

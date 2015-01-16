@@ -2,7 +2,7 @@
 
 ### Fetch, format and display an RSS feed.
 
-*Source file: `jquery.q4.rssfeed.js`, line 2*  
+*Source file: `q4.rssfeed.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Moment.js

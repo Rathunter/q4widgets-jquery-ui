@@ -2,7 +2,7 @@
 
 ### A navigator for any kind of paginated content.
 
-*Source file: `jquery.q4.pager.js`, line 2*  
+*Source file: `q4.pager.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Mustache.js

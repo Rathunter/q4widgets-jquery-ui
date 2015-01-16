@@ -2,7 +2,7 @@
 
 ### Fetches and displays financial reports from the Q4 private API.
 
-*Source file: `jquery.q4.api.js`, line 676*  
+*Source file: `q4.api.js`, line 676*  
 
 
 

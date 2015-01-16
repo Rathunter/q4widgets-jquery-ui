@@ -2,7 +2,7 @@
 
 ### Creates an expanding and collapsing accordion from sections of content.
 
-*Source file: `jquery.q4.accordion.js`, line 2*  
+*Source file: `q4.accordion.js`, line 2*  
 
 *Requires:*
 - Mustache.js

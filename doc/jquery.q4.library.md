@@ -3,7 +3,7 @@
 ### A colletion of many different document types in the same widget.
 Documents can be filtered by title, tag, or date.
 
-*Source file: `jquery.q4.library.js`, line 2*  
+*Source file: `q4.library.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Moment.js

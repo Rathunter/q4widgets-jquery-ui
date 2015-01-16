@@ -3,7 +3,7 @@
 ### Grab a number of content feeds and mix them together into a single
 chronological list.
 
-*Source file: `jquery.q4.mashfeed.js`, line 2*  
+*Source file: `q4.mashfeed.js`, line 2*  
 *Author(s): marcusk@q4websystems.com *  
 *Requires:*
 - Moment.js

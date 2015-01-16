@@ -4,15 +4,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        uglify_custom: {
+        uglify_newer: {
             default: {
                 files: [{
                     expand: true,
                     cwd: 'src',
                     src: '*.js',
-                    dest: 'dist',
-                    ext: '.min.js',
-                    extDot: 'last'
                 }]
             }
         },
@@ -21,9 +18,11 @@ module.exports = function (grunt) {
             options: {
                 banner: (
                     '<% var widget = widgets[grunt.task.current.target]; %>' +
-                    '/* Widget: q4.<%= widget.name %> */\n' +
-                    '/* Version: <%= widget.version %> */\n' +
-                    '/* Compiled on <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                    '/*\n' +
+                    'Widget: q4.<%= widget.name %>\n' +
+                    'Version: <%= widget.version %>\n' +
+                    'Compiled on <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+                    '*/\n'
                 )
             }
         },
@@ -52,7 +51,9 @@ module.exports = function (grunt) {
             }
         },
 
-        clean: ['doc_json']
+        clean: {
+            doc: ['doc_json']
+        }
     });
 
     grunt.loadNpmTasks('grunt-newer');
@@ -61,31 +62,46 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mustache-render');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerMultiTask('uglify_custom', function () {
-        this.files.forEach(function (file) {
+    grunt.registerMultiTask('uglify_newer', function () {
+        grunt.config('clean_and_uglify.default.files', this.files.map(function (file) {
             var path = file.src[0],
                 data = fs.readFileSync(path, {encoding: 'utf8'}),
-                name = data.match(/@class q4\.(.*)\n/)[1];
+                name = path.match(/q4\.(.*)\.js/)[1],
+                version = data.match(/@version (.*)\n/)[1],
+                file = {
+                    src: [path],
+                    dest: 'dist/q4.' + name + '.' + version + '.min.js'
+                };
 
-            // store this widget's data in the config
+            // create clean and uglify targets for this file
+            grunt.config('clean.' + name, ['dist/q4.' + name + '.*.min.js']);
+            grunt.config('uglify.' + name + '.files', [file]);
+
+            // while we're at it, add info to config for use in the uglify banner
             grunt.config('widgets.' + name, {
-                path: path,
                 name: name,
-                filename: path.split('/').pop(),
-                version: data.match(/@version (.*)\n/)[1]
+                version: version
             });
 
-            // create and run an uglify target for this file
-            grunt.config('uglify.' + name + '.files', [{
-                src: [path],
-                dest: path.replace(/src\/(.*)\.js/, 'dist/$1.min.js')
-            }]);
+            // add this file to the clean/uglify task
+            return file;
+        }));
+
+        // run clean/uglify only for changed files
+        grunt.task.run('newer:clean_and_uglify');
+    });
+
+    grunt.registerMultiTask('clean_and_uglify', function () {
+        this.files.forEach(function (file) {
+            // run the clean and uglify targets for this file
+            var name = file.src[0].match(/q4\.(.*)\.js/)[1];
+            grunt.task.run('clean:' + name);
             grunt.task.run('uglify:' + name);
         });
     });
 
-    grunt.registerTask('min', ['newer:uglify_custom']);
-    grunt.registerTask('doc', ['jsdoc', 'mustache_render', 'clean']);
+    grunt.registerTask('min', ['uglify_newer']);
+    grunt.registerTask('doc', ['jsdoc', 'mustache_render', 'clean:doc']);
 
     grunt.registerTask('default', ['min', 'doc']);
 };

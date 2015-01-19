@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.0.1
+     * @version 1.0.2
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
@@ -548,9 +548,8 @@
                 o = this.options,
                 $e = this.element;
 
-            // fire callback and allow a chance to cancel the event
-            this._trigger('onYearChange', e);
-            if (e.isDefaultPrevented()) return;
+            // fire callback, cancel event if default action is prevented
+            if (!this._trigger('onYearChange', e)) return;
 
             // default value if year is invalid
             if (!$.inArray(year, this.years)) year = o.showAllYears ? -1 : this.years[0];
@@ -559,7 +558,7 @@
 
             // display loading message
             if (o.itemContainer && o.itemTemplate) {
-                if (o.itemLoadingMessage !== false) $(o.itemContainer).html(o.itemLoadingMessage);
+                if (o.itemLoadingMessage !== false) $(o.itemContainer, $e).html(o.itemLoadingMessage);
             }
             else if (o.loadingMessage !== false) {
                 this.$widget.remove();

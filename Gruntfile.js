@@ -19,9 +19,9 @@ module.exports = function (grunt) {
                 banner: (
                     '<% var widget = widgets[grunt.task.current.target]; %>' +
                     '/*\n' +
-                    'Widget: q4.<%= widget.name %>\n' +
-                    'Version: <%= widget.version %>\n' +
-                    'Compiled on <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+                    'Widget:   q4.<%= widget.name %>\n' +
+                    'Version:  <%= widget.version %>\n' +
+                    'Compiled: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
                     '*/\n'
                 )
             }

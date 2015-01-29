@@ -82,7 +82,7 @@ exports.publish = function (data, opts) {
 
     // export json data for classes
     clsnames.forEach(function (clsname) {
-        fs.writeFile('doc_json/jquery.' + clsname + '.json', JSON.stringify(classes[clsname], null, 4), 'utf8', function (err) {
+        fs.writeFile('doc_json/' + clsname + '.json', JSON.stringify(classes[clsname], null, 4), 'utf8', function (err) {
             if (err) throw err;
         });
     });

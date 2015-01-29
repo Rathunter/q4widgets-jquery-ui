@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.0.2
+     * @version 1.1.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
@@ -55,6 +55,12 @@
              * @type {?number}
              */
             startYear: null,
+            /**
+             * Whether to start with startYear even if there are no documents for that year.
+             * @type {boolean}
+             * @default
+             */
+            forceStartYear: false,
             /**
              * Whether to fetch items dated in the future.
              * @type {boolean}
@@ -227,7 +233,7 @@
 
         dataUrl: '',
         yearsUrl: '',
-        dataResultField: '',
+        itemsResultField: '',
         yearsResultField: '',
         dateField: '',
 
@@ -238,9 +244,13 @@
         _init: function () {
             var _ = this,
                 o = this.options,
-                $e = this.element;
+                $e = this.element,
+                gotItems = $.Deferred(),
+                gotYears = $.Deferred();
 
+            // clear the element if applicable
             if (!o.append) $e.empty();
+            // save a reference to the widget and append the loading message
             this.$widget = $(o.loadingMessage || '').appendTo($e);
 
             // if "all years" is enabled and it's the default, fetch all years
@@ -248,37 +258,61 @@
 
             // if we're fetching all docs for all years, skip fetching the year list
             if (o.fetchAllYears && !o.limit) {
-                // get data for all years and render widget
-                this._getData(-1).done(function (data) {
-                    var tplData = _._parseResultsWithYears(data[_.dataResultField]);
-                    // get filtered year list from parsed results
-                    _.years = $.map(tplData.years, function (tplYear) { return tplYear.value; });
+                // get items for all years
+                this._getItems(-1).done(function (data) {
+                    var items = data[_.itemsResultField];
+                    gotItems.resolve(items);
 
-                    _._renderWidget(tplData, o.showAllYears || !_.years.length ? -1 : _.years[0]);
+                    // get list of years from items
+                    gotYears.resolve($.map(items, function (result) {
+                        return (new Date(result[_.dateField])).getFullYear();
+                    }));
                 });
             }
             else {
-                // get list of years
                 this._getYears().done(function (data) {
-                    // filter year list before parsing results
-                    _.years = $.grep(data[_.yearsResultField], function (year) { return _._filterYear(year); });
-
-                    if (_.years.length) {
-                        // if startYear is specified and it exists, use it
-                        var startYear = ($.inArray(o.startYear, _.years) > -1) ? o.startYear :
-                            // otherwise use "all" if enabled, or the most recent
-                            (o.showAllYears ? -1 : _.years[0]);
-
-                        // get data for starting year (or all years) and render widget
-                        _._getData(o.fetchAllYears ? -1 : startYear).done(function (data) {
-                            _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), startYear);
-                        });
-
-                    } else {
-                        _._renderWidget(_._parseResultsWithYears([], _.years), -1);
-                    }
+                    gotYears.resolve(data[_.yearsResultField]);
                 });
             }
+
+            gotYears.done(function (years) {
+                // filter years
+                _.years = $.grep(years, function (year) {
+                    return (
+                        (!o.maxYear || year <= o.maxYear) &&
+                        (!o.minYear || year >= o.minYear) &&
+                        (!o.years.length || $.inArray(year, o.years) > -1)
+                    );
+                });
+
+                // force startYear onto the years array if requested
+                if (o.forceStartYear && $.inArray(o.startYear, _.years) == -1)
+                    _.years.push(o.startYear);
+
+                // sort the years in descending order
+                _.years.sort(function (a, b) { return b - a });
+
+                // get starting year
+                var activeYear = -1;
+                if (_.years.length) {
+                    // if o.startYear is specified and it exists, use it
+                    if ($.inArray(o.startYear, _.years) > -1) activeYear = o.startYear;
+                    // otherwise if "all" is not enabled, use the most recent
+                    else if (!o.showAllYears) activeYear = _.years[0];
+                }
+
+                // if we didn't fetch items before, get them now that we have the starting year
+                if (!gotItems.isResolved()) {
+                    _._getItems(o.fetchAllYears ? -1 : activeYear).done(function (data) {
+                        gotItems.resolve(data[_.itemsResultField]);
+                    });
+                }
+
+                // once we have the items, render the widget
+                gotItems.done(function (items) {
+                    _._renderWidget(items, activeYear);
+                });
+            });
         },
 
         _setOption: function (key, value) {
@@ -344,7 +378,7 @@
             }));
         },
 
-        _getData: function (year) {
+        _getItems: function (year) {
             var o = this.options;
 
             return this._callApi(this.dataUrl, $.extend(true, this._buildParams(), {
@@ -356,16 +390,6 @@
                 },
                 year: year
             }));
-        },
-
-        _filterYear: function (year) {
-            var o = this.options;
-
-            return (
-                (!o.maxYear || year <= o.maxYear) &&
-                (!o.minYear || year >= o.minYear) &&
-                (!o.years.length || $.inArray(year, o.years) > -1)
-            );
         },
 
         _truncate: function (text, length) {
@@ -392,53 +416,43 @@
             }
         },
 
-        _parseResult: function (result) {
+        _parseItem: function (item) {
             return {};
         },
 
-        _parseResults: function (results) {
+        _parseItems: function (items) {
             var _ = this;
 
-            return $.map(results, function (result) {
-                return _._parseResult(result);
+            return $.map(items, function (item) {
+                return _._parseItem(item);
             });
         },
 
-        _parseResultsWithYears: function (results, years) {
+        _buildTemplateData: function (rawItems) {
             var _ = this,
                 o = this.options,
                 itemsByYear = {},
                 tplData = {
-                    years: [],
-                    items: []
+                    items: [],
+                    years: []
                 };
 
-            if (!$.isArray(years)) years = [];
-
-            // parse items
-            $.each(results, function (i, result) {
-                var date = new Date(result[_.dateField]),
+            $.each(rawItems, function (i, rawItem) {
+                var date = new Date(rawItem[_.dateField]),
                     year = date.getFullYear();
 
-                if ($.inArray(year, years) == -1) {
-                    if (!_._filterYear(year)) return true;
-                    years.push(year);
-                }
-                if (!(year in itemsByYear)) {
-                    itemsByYear[year] = [];
-                }
+                // only save items that are in the years array
+                if (!$.inArray(year, _.years)) return true;
+                if (!(year in itemsByYear)) itemsByYear[year] = [];
 
-                var item = _._parseResult(result);
-
+                // parse item as template data
+                var item = _._parseItem(rawItem);
                 tplData.items.push(item);
                 itemsByYear[year].push(item);
             });
 
-            // sort the years in descending order
-            years.sort(function (a, b) { return b - a });
-
-            // build by-year data for template
-            $.each(years, function (i, year) {
+            // build per-year data for template
+            $.each(this.years, function (i, year) {
                 tplData.years.push({
                     year: year,
                     value: year,
@@ -447,7 +461,7 @@
             });
 
             // add "all years" option, if there are years to show
-            if (o.showAllYears && tplData.years.length) {
+            if (o.showAllYears && this.years.length) {
                 tplData.years.unshift({
                     year: o.allYearsText,
                     value: -1,
@@ -476,10 +490,13 @@
             this._trigger('itemsComplete');
         },
 
-        _renderWidget: function (tplData, activeYear) {
+        _renderWidget: function (rawItems, activeYear) {
             var _ = this,
                 o = this.options,
                 $e = this.element;
+
+            // get template data
+            var tplData = this._buildTemplateData(rawItems);
 
             var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
@@ -543,6 +560,11 @@
             }
         },
 
+        /**
+         * Display items from a particular year. This will refetch the list of items if necessary.
+         * @param {number} year    The year to display, or -1 for all years.
+         * @param {Event}  [event] The triggering event, if any.
+         */
         setYear: function (year, e) {
             var _ = this,
                 o = this.options,
@@ -565,15 +587,15 @@
                 this.$widget = $(o.loadingMessage).appendTo($e);
             }
 
-            // get data for selected year
-            this._getData(year).done(function (data) {
+            // get items for selected year
+            this._getItems(year).done(function (data) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
-                    _._renderItems(_._parseResults(data[_.dataResultField]));
+                    _._renderItems(_._parseItems(data[_.itemsResultField]));
                 }
                 else {
                     // rerender entire widget
-                    _._renderWidget(_._parseResultsWithYears(data[_.dataResultField], _.years), year);
+                    _._renderWidget(data[_.itemsResultField], year);
                 }
             });
         }
@@ -599,7 +621,7 @@
 
         dataUrl: '/Services/EventService.svc/GetEventList',
         yearsUrl: '/Services/EventService.svc/GetEventYearList',
-        dataResultField: 'GetEventListResult',
+        itemsResultField: 'GetEventListResult',
         yearsResultField: 'GetEventYearListResult',
         dateField: 'StartDate',
 
@@ -630,7 +652,7 @@
             });
         },
 
-        _parseResult: function (result) {
+        _parseItem: function (result) {
             var o = this.options;
 
             var item = {
@@ -718,7 +740,7 @@
 
         dataUrl: '/Services/FinancialReportService.svc/GetFinancialReportList',
         yearsUrl: '/Services/FinancialReportService.svc/GetFinancialReportYearList',
-        dataResultField: 'GetFinancialReportListResult',
+        itemsResultField: 'GetFinancialReportListResult',
         yearsResultField: 'GetFinancialReportYearListResult',
         dateField: 'ReportDate',
 
@@ -730,7 +752,7 @@
             });
         },
 
-        _parseResult: function (result) {
+        _parseItem: function (result) {
             var _ = this,
                 o = this.options;
 
@@ -754,34 +776,40 @@
             };
         },
 
-        _parseResultsWithYears: function (results, years) {
+        _buildTemplateData: function (rawItems) {
             var o = this.options,
-                tplData = this._super(results, years);
+                tplData = this._super(rawItems);
 
-            // also sort each year's documents by subtype
-            $.each(tplData.years, function (i, tplYear) {
+            function sortItemsByType(items) {
                 var types = [],
-                    docsByType = {};
+                    itemsByType = {};
 
-                $.each(tplYear.items, function (i, item) {
+                // create an object of items sorted by type
+                $.each(items, function (i, item) {
                     if ($.inArray(item.type, types) == -1) {
                         // keep an array of types to preserve order
                         types.push(item.type);
-                        docsByType[item.type] = [];
+                        itemsByType[item.type] = [];
                     }
                     $.each(item.docs, function (i, doc) {
-                        docsByType[item.type].push(doc);
+                        itemsByType[item.type].push(doc);
                     });
                 });
 
-                // insert a types array into each year
-                tplYear.types = $.map(types, function (type, i) {
+                // return the types object
+                return $.map(types, function (type, i) {
                     return {
                         type: type,
                         shortType: o.shortTypes[type],
-                        docs: docsByType[type]
+                        items: itemsByType[type]
                     };
                 });
+            }
+
+            // add types object to all items, and each year's items
+            tplData.types = sortItemsByType(tplData.items);
+            $.each(tplData.years, function (i, tplYear) {
+                tplYear.types = sortItemsByType(tplYear.items);
             });
 
             return tplData;
@@ -802,7 +830,7 @@
 
         dataUrl: '/Services/PresentationService.svc/GetPresentationList',
         yearsUrl: '/Services/PresentationService.svc/GetPresentationYearList',
-        dataResultField: 'GetPresentationListResult',
+        itemsResultField: 'GetPresentationListResult',
         yearsResultField: 'GetPresentationYearListResult',
         dateField: 'PresentationDate',
 
@@ -814,7 +842,7 @@
             });
         },
 
-        _parseResult: function (result) {
+        _parseItem: function (result) {
             var o = this.options;
 
             return {
@@ -871,7 +899,7 @@
 
         dataUrl: '/Services/PressReleaseService.svc/GetPressReleaseList',
         yearsUrl: '/Services/PressReleaseService.svc/GetPressReleaseYearList',
-        dataResultField: 'GetPressReleaseListResult',
+        itemsResultField: 'GetPressReleaseListResult',
         yearsResultField: 'GetPressReleaseYearListResult',
         dateField: 'PressReleaseDate',
 
@@ -885,7 +913,7 @@
             });
         },
 
-        _parseResult: function (result) {
+        _parseItem: function (result) {
             var o = this.options;
 
             return {

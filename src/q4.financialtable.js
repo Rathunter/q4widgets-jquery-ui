@@ -3,7 +3,7 @@
      * A table of different types of financial documents sorted by year.
      * Each year can have links to documents for each quarter.
      * @class q4.financialTable
-     * @version 1.0.1
+     * @version 1.1.1
      * @example
      * $("#financials").financialTable({
      *     year: 2014,
@@ -36,6 +36,20 @@
              * @prop {Array<string>} tags       A filter list of tags (optional).
              * @prop {string}        text       A template to use for the link (default blank).
              *   See `template` documentation for available tags.
+             * @example
+             * [
+             *     {
+             *          title: 'Quarterly Reports',
+             *          reportType: ['First Quarter', 'Second Quarter', 'Third Quarter', 'Fourth Quarter'],
+             *          category: ['Financials'],
+             *          text: '{{shortType}}'
+             *     },
+             *     {
+             *          title: 'Annual Reports',
+             *          reportType: ['Annual Report'],
+             *          text: 'Annual ({{fileType}})'
+             *     }
+             * ]
              */
             categories: [],
             /**
@@ -78,7 +92,7 @@
              *     '<li>{{catTitle}}</li>' +
              *     '{{#catYears}}' +
              *     '<li>' +
-             *         '{{#docs}}<a href="{{docUrl}}" class="docLink {{docType}}">{{docText}}</a>{{/docs}}' +
+             *         '{{#docs}}<a href="{{url}}" class="docLink {{fileType}}">{{{text}}}</a>{{/docs}}' +
              *     '</li>' +
              *     '{{/catYears}}' +
              * '</ul>' +
@@ -167,23 +181,20 @@
                         if (cat.reportType.length && $.inArray(report.ReportSubType, cat.reportType) == -1) return true;
                         if (cat.tags.length && !$(doc.TagsList).filter(cat.tags).length) return true;
 
-                        // Add the document to the data object in the correct category and year.
-                        documents[cat.title][report.ReportYear].push({
-                            text: 'text' in cat ? Mustache.render(cat.text, {
-                                fileType: doc.DocumentFileType,
-                                shortType: o.shortTypes[report.ReportSubType],
-                                size: doc.DocumentFileSize,
-                                title: doc.DocumentTitle,
-                                url: doc.DocumentPath,
-                                year: report.ReportYear
-                            }): '',
+                        // Format data and render text template.
+                        var docData = {
                             fileType: doc.DocumentFileType,
                             shortType: o.shortTypes[report.ReportSubType],
                             size: doc.DocumentFileSize,
                             title: doc.DocumentTitle,
                             url: doc.DocumentPath,
-                            year: report.ReportYear
-                        });
+                            year: report.ReportYear,
+                            category: doc.DocumentCategory
+                        };
+                        docData.text = 'text' in cat ? Mustache.render(cat.text, docData) : '';
+
+                        // Add the document to the data object in the correct category and year.
+                        documents[cat.title][report.ReportYear].push(docData);
                     });
                 });
             });

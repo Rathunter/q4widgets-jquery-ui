@@ -44,10 +44,19 @@ An array of document categories that will appear as rows
 in the table.  
 *Example:*
 ```
-$("#financials").financialTable({
-    year: 2014,
-    reportSubType: ['Annual Report', 'Supplemental Report']
-});
+[
+    {
+         title: 'Quarterly Reports',
+         reportType: ['First Quarter', 'Second Quarter', 'Third Quarter', 'Fourth Quarter'],
+         category: ['Financials'],
+         text: '{{shortType}}'
+    },
+    {
+         title: 'Annual Reports',
+         reportType: ['Annual Report'],
+         text: 'Annual ({{fileType}})'
+    }
+]
 ```
 
 - **shortTypes** - *Object*  
@@ -88,7 +97,7 @@ Documents can have these tags:
     '<li>{{catTitle}}</li>' +
     '{{#catYears}}' +
     '<li>' +
-        '{{#docs}}<a href="{{docUrl}}" class="docLink {{docType}}">{{docText}}</a>{{/docs}}' +
+        '{{#docs}}<a href="{{url}}" class="docLink {{fileType}}">{{{text}}}</a>{{/docs}}' +
     '</li>' +
     '{{/catYears}}' +
 '</ul>' +

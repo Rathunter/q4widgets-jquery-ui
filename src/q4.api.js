@@ -6,6 +6,7 @@
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
+     * @requires Moment.js (optional)
      */
     $.widget('q4.api', /** @lends q4.api */ {
         options: {
@@ -85,14 +86,22 @@
              */
             titleLength: 0,
             /**
-             * A datepicker format string, which can be used in the template
+             * A date format string, which can be used in the template
              * as `{{date}}`. Can alternately be an object of format strings,
              * which can be accessed with `{{date.key}}` (where key is the
              * object key corresponding to the string you want to use).
+             * By default, dates are formatted using jQuery UI's datepicker.
              * @type {string}
              * @default
              */
             dateFormat: 'mm/dd/yy',
+            /**
+             * Whether to use Moment.js to format dates instead of datepicker.
+             * Only takes effect if the Moment.js library has been included.
+             * @type {boolean}
+             * @default
+             */
+            useMoment: false,
             /**
              * An array of years to filter by. If passed, no items will
              * be displayed unless they are dated to a year in this list.
@@ -399,18 +408,21 @@
 
         _formatDate: function (dateString) {
             var o = this.options,
-                date = new Date(dateString);
+                date = new Date(dateString),
+                useMoment = o.useMoment && typeof moment != 'undefined';
 
             if (typeof o.dateFormat == 'string') {
                 // if o.dateFormat is a format string, return a formatted date string
-                return $.datepicker.formatDate(o.dateFormat, date);
+                return useMoment ? moment(date).format(o.dateFormat) :
+                    $.datepicker.formatDate(o.dateFormat, date);
             }
             else if (typeof o.dateFormat == 'object') {
                 // if o.dateFormat is an object of names to format strings,
                 // return an object of names to formatted date strings
                 var dates = {};
                 for (name in o.dateFormat) {
-                    dates[name] = $.datepicker.formatDate(o.dateFormat[name], date);
+                    dates[name] = useMoment ? moment(date).format(o.dateFormat[name]) :
+                        $.datepicker.formatDate(o.dateFormat[name], date);
                 }
                 return dates;
             }
@@ -442,7 +454,7 @@
                     year = date.getFullYear();
 
                 // only save items that are in the years array
-                if (!$.inArray(year, _.years)) return true;
+                if ($.inArray(year, _.years) == -1) return true;
                 if (!(year in itemsByYear)) itemsByYear[year] = [];
 
                 // parse item as template data
@@ -660,6 +672,7 @@
                 url: result.LinkToDetailPage,
                 date: this._formatDate(result.StartDate),
                 endDate: this._formatDate(result.EndDate),
+                timeZone: result.TimeZone,
                 location: result.Location,
                 body: this._truncate(result.Body, o.bodyLength),
                 docs: $.map(result.Attachments, function (doc) {
@@ -758,7 +771,7 @@
 
             return {
                 coverUrl: result.CoverImagePath,
-                date: $.datepicker.formatDate(o.dateFormat, new Date(result.ReportDate)),
+                date: this._formatDate(result.ReportDate),
                 title: result.ReportTitle,
                 year: result.ReportYear,
                 type: result.ReportSubType,

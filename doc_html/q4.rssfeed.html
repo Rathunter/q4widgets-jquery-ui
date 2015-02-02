@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.rssfeed</h1>
+    <p>Fetch, format and display an RSS feed.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.rssfeed.js#L2' target='_blank'>q4.rssfeed.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Moment.js</li><li>Mustache.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>url</h1>
+        <div>
+            <p>The URL of the RSS feed.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>limit</h1>
+        <div>
+            <p>The maximum number of items to display, or zero for unlimited.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>dateFormat</h1>
+        <div>
+            <p>A Moment.js date format string to use when rendering.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>summaryLength</h1>
+        <div>
+            <p>The maximum length for each item's summary, or zero for unlimited.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>500</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>A Mustache template for the widget, with these tags:
+- {{title}} The title of the feed.
+- {{url}}   The URL of the feed.
+- {{date}}  The last updated date of the feed.
+- {{items}} An array of items with these tags:
+    - {{title}}     The item's title.
+    - {{url}}       The item's URL.
+    - {{date}}      The item's publication date.
+    - {{body}}      The item's body content.
+    - {{summary}}   The plaintext body content, truncated to <code>summaryLength</code>.
+    - {{firstLine}} The plaintext body content, up to the first line break.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;&lt;header&gt;&#39; +
+    &#39;&lt;h1&gt;&lt;a href=&quot;{{url}}&quot; target=&quot;_blank&quot;&gt;{{title}}&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;&#39; +
+    &#39;&lt;p&gt;Last updated: {{date}}&lt;&#x2F;p&gt;&#39; +
+&#39;&lt;&#x2F;header&gt;&#39; +
+&#39;{{#items}}&#39; +
+&#39;&lt;article&gt;&#39; +
+    &#39;&lt;header&gt;&#39; +
+        &#39;&lt;h2&gt;&lt;a href=&quot;{{url}}&quot; target=&quot;_blank&quot;&gt;{{{title}}}&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;&#39; +
+        &#39;&lt;p&gt;{{date}}&lt;&#x2F;p&gt;&#39; +
+    &#39;&lt;&#x2F;header&gt;&#39; +
+    &#39;{{{body}}}&#39; +
+&#39;&lt;&#x2F;article&gt;&#39; +
+&#39;{{&#x2F;items}}&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>complete</h1>
+        <div>
+            <p>A callback fired after rendering is complete.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

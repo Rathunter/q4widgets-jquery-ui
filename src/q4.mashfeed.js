@@ -44,6 +44,7 @@
              * An array of feeds to fetch. Each feed is an object of options
              * for that feed. Some feed options override global options.
              * Valid options for all feed types are:
+             *
              * - name: The name of the feed.
              * - type: The type, as listed in `feedTypes` (e.g. `rss`, `youtube`).
              * - template: A Mustache template for a single feed item
@@ -54,7 +55,7 @@
              * - fetch: A function overriding the feed type's `fetch` method.
              * - getItems: A function overriding the feed type's `getItems` method.
              * - parseItem: A function overriding the feed type's `parseItem` method.
-             * 
+             *
              * See `feedTypes` for type-specific options.
              * @type {Array<Object>}
              */
@@ -70,9 +71,9 @@
              * Can be overridden for individual feed types.
              * @type {string}
              * @example
-             * '<li>' + 
-             *     '<h2><a href="{{url}}">{{title}}</a></h2>' + 
-             *     '<p>{{date}}</p>' + 
+             * '<li>' +
+             *     '<h2><a href="{{url}}">{{title}}</a></h2>' +
+             *     '<p>{{date}}</p>' +
              *     '{{summary}}' +
              * '</li>'
              */

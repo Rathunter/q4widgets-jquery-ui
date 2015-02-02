@@ -30,42 +30,23 @@ module.exports = function (grunt) {
         jsdoc: {
             default: {
                 src: 'src/*.js',
-                dest: 'doc_json',
+                dest: 'doc_html',
                 options: {
                     configure: 'jsdoc.conf.json'
                 }
             }
-        },
-
-        mustache_render: {
-            default: {
-                files: [{
-                    expand: true,
-                    cwd: 'doc_json',
-                    src: '*.json',
-                    template: 'jsdoc_template/doc.md.mustache',
-                    dest: 'doc',
-                    ext: '.md',
-                    extDot: 'last'
-                }]
-            }
-        },
-
-        clean: {
-            doc: ['doc_json']
         }
     });
 
     grunt.loadNpmTasks('grunt-newer');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-jsdoc');
-    grunt.loadNpmTasks('grunt-mustache-render');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerMultiTask('uglify_newer', function () {
         grunt.config('clean_and_uglify.default.files', this.files.map(function (file) {
             var path = file.src[0],
-                data = fs.readFileSync(path, {encoding: 'utf8'}),
+                data = fs.readFileSync(path, 'utf8'),
                 name = path.match(/q4\.(.*)\.js/)[1],
                 version = data.match(/@version (.*)\n/)[1],
                 file = {
@@ -101,7 +82,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('min', ['uglify_newer']);
-    grunt.registerTask('doc', ['jsdoc', 'mustache_render', 'clean:doc']);
+    grunt.registerTask('doc', ['jsdoc']);
 
     grunt.registerTask('default', ['min', 'doc']);
 };

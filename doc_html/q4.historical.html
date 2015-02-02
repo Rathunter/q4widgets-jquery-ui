@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.historical</h1>
+    
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>jasonm@q4websystems.com</li></ul></dd>
+        
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>symbol</h1>
+        <div>
+            <p>The client's symbol
+If this is left blank it will call an additional service and load this from the indices</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>exchange</h1>
+        <div>
+            <p>The exchange the client trades on
+If this is left blank it will call an additional service and load this from the indices</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>loading</h1>
+        <div>
+            <p>markup to use between ajax calls</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>invalidText</h1>
+        <div>
+            <p>message to show if the date range was incorrect</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>noDataText</h1>
+        <div>
+            <p>message to show if no data is returned</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>range</h1>
+        <div>
+            <p>If set to true a date range will be used (start date - end date)</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>maxItems</h1>
+        <div>
+            <p>The max number of items you want to load when a range is used. -1 will load 3000 items (12.5 years)</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>dateFormat</h1>
+        <div>
+            <p>Using jQuery UI's datepicker, this will configure the date format</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>stockTableClass</h1>
+        <div>
+            <p>The parent class used for the returned data</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>rangeTpl</h1>
+        <div>
+            <p>This template is used when range is set to true.</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>moduleTpl</h1>
+        <div>
+            <p>This template is used when range is set to false.</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>stockHeader</h1>
+        <div>
+            <p>If you wish to add a non repeating header with your stockTpl. Example: could be used in a table layout with <tr><th></p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>stockTpl</h1>
+        <div>
+            <p>Template to use for returned stock data</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>onDataLoad</h1>
+        <div>
+            <p>a callback fired each time the historical ajax call completes</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>onFirstLoad</h1>
+        <div>
+            <p>a callback fired after the html is generated</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>onSelectUpdate</h1>
+        <div>
+            <p>a simple callback with no arguments.
+fired anytime a select updates</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>beforeAjaxCall</h1>
+        <div>
+            <p>The client's symbol
+If this is left blank it will call an additional service and load this from the indices</p>
+            <dl>
+                
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

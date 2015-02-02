@@ -16,5 +16,8 @@
             "outputSourceFiles": false,
             "outputSourcePath": false
         }
-    }
+    },
+    "plugins": [
+        "node_modules/grunt-jsdoc/node_modules/jsdoc/plugins/markdown"
+    ]
 }

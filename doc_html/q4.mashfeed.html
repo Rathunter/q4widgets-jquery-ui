@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.mashfeed</h1>
+    <p>Grab a number of content feeds and mix them together into a single
+chronological list.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.mashfeed.js#L2' target='_blank'>q4.mashfeed.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Moment.js</li><li>Mustache.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>limit</h1>
+        <div>
+            <p>The global maximum number of items, or zero for unlimited.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>dateFormat</h1>
+        <div>
+            <p>A Moment.js format for dates.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>fromNow</h1>
+        <div>
+            <p>Whether to display dates using Moment's fromNow function.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>titleLength</h1>
+        <div>
+            <p>The maximum character length of a title, or zero for unlimited.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>80</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>summaryLength</h1>
+        <div>
+            <p>The maximum character length of a summary, or zero for unlimited.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>500</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>feeds</h1>
+        <div>
+            <p>An array of feeds to fetch. Each feed is an object of options
+for that feed. Some feed options override global options.
+Valid options for all feed types are:</p>
+<ul>
+<li>name: The name of the feed.</li>
+<li>type: The type, as listed in <code>feedTypes</code> (e.g. <code>rss</code>, <code>youtube</code>).</li>
+<li>template: A Mustache template for a single feed item
+  (overrides the default template).</li>
+<li>limit: The maximum number of items from this feed.</li>
+<li>titleLength: The maximum character length of a title.</li>
+<li>summaryLength: The maximum character length of a summary.</li>
+<li>fetch: A function overriding the feed type's <code>fetch</code> method.</li>
+<li>getItems: A function overriding the feed type's <code>getItems</code> method.</li>
+<li>parseItem: A function overriding the feed type's <code>parseItem</code> method.</li>
+</ul>
+<p>See <code>feedTypes</code> for type-specific options.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;Object&gt;</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>filter</h1>
+        <div>
+            <p>A list of feed names. If this list is not empty,
+only the feeds named in the list will be parsed.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;string&gt;</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>A default Mustache template for a single feed item.
+Can be overridden for individual feed types.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;&lt;li&gt;&#39; +
+    &#39;&lt;h2&gt;&lt;a href=&quot;{{url}}&quot;&gt;{{title}}&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;&#39; +
+    &#39;&lt;p&gt;{{date}}&lt;&#x2F;p&gt;&#39; +
+    &#39;{{summary}}&#39; +
+&#39;&lt;&#x2F;li&gt;&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>complete</h1>
+        <div>
+            <p>A callback that fires after rendering is finished.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+<section id='methods'>
+    <h1>Methods</h1>
+    <ul>
+    <li>
+        <h1>updateFilter</h1>
+        <div>
+            <p>Update the <code>filter</code> option.</p>
+            <dl>
+                <dt>Parameters</dt>
+                    <dd><ul><li><strong>filter</strong><em>Array&lt;string&gt;</em><p>An array of feed names to display,
+  or an empty array to display all feeds.</p></li></ul></dd>
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.chart</h1>
+    <p>A preconfigured stock chart, using the Highstock plugin.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.chart.js#L2' target='_blank'>q4.chart.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>jasonm@q4websystems.com</li><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Highstock</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>url</h1>
+        <div>
+            <p>The base URL of the Q4 website.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                <dt>Example</dt>
+                    <dd><code> &#x2F;&#x2F;feeds.q4websystems.com</code></dd>
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>usePublic</h1>
+        <div>
+            <p>Whether to use the public feed (true) or the private API (false).</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>apiKey</h1>
+        <div>
+            <p>If <code>usePublic</code> is <code>true</code>, the API key to use for public feeds.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>stocks</h1>
+        <div>
+            <p>An array of stock symbols to use on the stock price chart.
+Each symbol can be a string of the format &quot;EXCHANGE:SYMBOL&quot;,
+or an array containing &quot;EXCHANGE:SYMBOL&quot; and a custom
+display name.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string&#x2F;Array.&lt;string&gt;</em></dd>
+                
+                <dt>Example</dt>
+                    <dd><code> &#39;NYSE:XXX&#39;</code></dd><dt>Example</dt>
+                    <dd><code> [&#39;NYSE:XXX&#39;, &#39;New York: XXX&#39;]</code></dd>
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>lockStock</h1>
+        <div>
+            <p>Whether to prevent stock price charts from being toggled off.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>showSymbolInLegend</h1>
+        <div>
+            <p>Whether to show the stock quote in the chart legend.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>stockLimit</h1>
+        <div>
+            <p>The maximum number of data points to fetch for the stock chart.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>1500</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>volume</h1>
+        <div>
+            <p>Whether to include a volume chart below the stock price chart.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>volumeHeight</h1>
+        <div>
+            <p>The height of the volume chart, as a percentage.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>40</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>news</h1>
+        <div>
+            <p>Whether to include a series of flags for press releases.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>newsOnLoad</h1>
+        <div>
+            <p>If <code>news</code> is true, whether to show news flags on initial load.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>newsLimit</h1>
+        <div>
+            <p>If <code>news</code> is true, the maximum number of news items to display.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>200</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>newsLength</h1>
+        <div>
+            <p>If <code>news</code> is true, the maximum length of each news headline.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>75</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>newsCategory</h1>
+        <div>
+            <p>If <code>news</code> is true, the news category ID to use.
+The default is to load all categories.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>newsTags</h1>
+        <div>
+            <p>If <code>news</code> is true, an array of tags to filter news releases by.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;string&gt;</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>events</h1>
+        <div>
+            <p>Whether to include a series of flags for events.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>eventsOnLoad</h1>
+        <div>
+            <p>If <code>events</code> is true, whether to show event flags on initial load.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>eventsLimit</h1>
+        <div>
+            <p>If <code>events</code> is true, the maximum number of events to display.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>100</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>stockOpts</h1>
+        <div>
+            <p>A set of Highcharts options for the stock price series.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>volumeOpts</h1>
+        <div>
+            <p>A set of Highcharts options for the volume series.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>newsOpts</h1>
+        <div>
+            <p>A set of Highcharts options for the press release series.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>eventsOpts</h1>
+        <div>
+            <p>A set of Highcharts options for the event series.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>highstock</h1>
+        <div>
+            <p>A set of general Highcharts options to use for the chart.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>{chart: {height: 400, marginTop: 60}, legend: {enabled: true, align: &#39;left&#39;, verticalAlign: &#39;top&#39;, floating: true}, rangeSelector: {enabled: true, selected: 1}, navigator: {height: 40}, credits: {enabled: true, text: &quot;Q4 Web Systems&quot;, href: &quot;http:&#x2F;&#x2F;www.q4websystems.com&quot;}}</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>highchartsOpts</h1>
+        <div>
+            <p>A set of Highcharts configuration options.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>{global: {useUTC: false}}</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>onComplete</h1>
+        <div>
+            <p>A callback that is fired after the chart is rendered.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

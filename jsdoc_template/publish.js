@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs = require('fs'),
+    mustache = require('../node_modules/mustache');
 
 function strip_module(req) {
     return req.split('module:')[1];
@@ -23,12 +24,13 @@ exports.publish = function (data, opts) {
     data().get().forEach(function (doclet) {
         if (doclet.undocumented) return;
 
-        var path = doclet.longname.split('.');
+        var path = doclet.longname.split('.'),
+            clss = path.slice(0, 2).join('.');
 
         // class
         if (path.length == 2 && doclet.kind == 'class') {
-            classes[doclet.longname] = {
-                name: doclet.longname,
+            classes[clss] = {
+                name: clss,
                 description: doclet.description,
                 file: doclet.meta.filename,
                 line: doclet.meta.lineno,
@@ -38,14 +40,14 @@ exports.publish = function (data, opts) {
                 options: [],
                 methods: [],
                 requires: (doclet.requires || []).map(strip_module),
-                augments: doclet.augments || [],
+                extends: doclet.augments || [],
                 children: []
             };
         }
 
         // option
         if (path.length == 4 && path[2] == 'options') {
-            classes['q4.' + path[1]].options.push({
+            classes[clss].options.push({
                 name: doclet.name,
                 description: doclet.description,
                 line: doclet.meta.lineno,
@@ -59,7 +61,7 @@ exports.publish = function (data, opts) {
 
         // method
         if (path.length == 3 && doclet.kind == 'function' && doclet.name.charAt(0) != '_') {
-            classes['q4.' + path[1]].methods.push({
+            classes[clss].methods.push({
                 name: doclet.name,
                 description: doclet.description,
                 line: doclet.meta.lineno,
@@ -70,19 +72,34 @@ exports.publish = function (data, opts) {
         }
     });
 
-    var clsnames = Object.keys(classes).sort();
-
-    // format classes
-    clsnames.forEach(function (clsname) {
+    for (clss in classes) {
         // reference child classes
-        classes[clsname].augments.forEach(function (parent) {
-            classes[parent].children.push(clsname);
+        classes[clss].extends.forEach(function (parent) {
+            classes[parent].children.push(clss);
         });
+    }
+
+    var classlist = Object.keys(classes).sort().map(function (clss) {
+        return classes[clss];
     });
 
-    // export json data for classes
-    clsnames.forEach(function (clsname) {
-        fs.writeFile('doc_json/' + clsname + '.json', JSON.stringify(classes[clsname], null, 4), 'utf8', function (err) {
+    // render template for each class
+    var layoutTemplate = fs.readFileSync('jsdoc_template/layout.html.mustache', 'utf-8'),
+        indexTemplate = fs.readFileSync('jsdoc_template/index.html.mustache', 'utf-8'),
+        pageTemplate = fs.readFileSync('jsdoc_template/doc.html.mustache', 'utf-8');
+
+    fs.writeFile('doc_html/index.html', mustache.render(layoutTemplate, {
+        classes: classlist,
+        content: mustache.render(indexTemplate, {classes: classlist})
+    }), 'utf8', function (err) {
+        if (err) throw err;
+    });
+
+    classlist.forEach(function (clss) {
+        fs.writeFile('doc_html/' + clss.name + '.html', mustache.render(layoutTemplate, {
+            classes: classlist,
+            content: mustache.render(pageTemplate, clss)
+        }), 'utf8', function (err) {
             if (err) throw err;
         });
     });

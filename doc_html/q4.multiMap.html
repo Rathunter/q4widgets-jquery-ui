@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.multiMap</h1>
+    <p>An interactive map with multiple datasets, that you can toggle between.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.multimap.js#L2' target='_blank'>q4.multimap.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>jVectorMap</li><li>Mustache.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>map</h1>
+        <div>
+            <p>The name of the map to use from jVectorMap.
+The corresponding JS file must be included.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;us_lcc_en&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>backgroundColour</h1>
+        <div>
+            <p>The background colour of the map.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;transparent&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>defaultColour</h1>
+        <div>
+            <p>The colour of map elements that aren't in any category.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;#ffffff&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>elementPrefix</h1>
+        <div>
+            <p>An optional prefix to add to all element codes.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;us_lcc_en&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>views</h1>
+        <div>
+            <p>An array of views. Each view is made up of geographic elements
+(e.g. countries or states), which are grouped into categories.
+Each category has a colour, and an entry in that view's legend.
+View objects have these properties:
+- label: The name of the view.
+- cssClass: An optional class to add to the trigger.
+- legend: Whether to display a legend. Defaults to true.
+- text: Some optional text to display.
+- categories: An array of category objects with these properties:
+    - label: The name of the category.
+    - colour: The CSS colour to use for elements in this category.
+    - elements: An array of map elements that are in this category.
+    - cssClass: An optional class to add to the legend item.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;Object&gt;</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;us_lcc_en&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>viewContainer</h1>
+        <div>
+            <p>A selector for the container for view triggers.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;.views&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>viewTrigger</h1>
+        <div>
+            <p>A selector for each view trigger in the view container.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;&gt; li&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>viewTemplate</h1>
+        <div>
+            <p>A template for a single view trigger, corresponding to the
+<code>viewTrigger</code> selector. All the properties of the view
+in the <code>views</code> array are available as tags.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;&lt;li class=\&quot;{{cssClass}}\&quot;&gt;&lt;span&gt;&lt;&#x2F;span&gt;{{label}}&lt;&#x2F;li&gt;&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>legendContainer</h1>
+        <div>
+            <p>A selector for the container for legend categories.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;.legend&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>legendTemplate</h1>
+        <div>
+            <p>A template for a single legend category, corresponding to the
+<code>legendContainer</code> selector.. All the properties of the category
+in the <code>views</code> array are available as tags.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;&lt;li class=\&quot;{{cssClass}}\&quot;&gt;&lt;span style=\&quot;background-color: {{colour}}\&quot;&gt;&lt;&#x2F;span&gt;{{label}}&lt;&#x2F;li&gt;&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>textContainer</h1>
+        <div>
+            <p>A selector for the container for category text.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;.text&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>mapContainer</h1>
+        <div>
+            <p>A selector for the vector map.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;#map&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>An overall template for the widget. This should contain elements
+corresponding to <code>viewContainer</code>, <code>legendContainer</code>,
+<code>textContainer</code> and <code>mapContainer</code>.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;us_lcc_en&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

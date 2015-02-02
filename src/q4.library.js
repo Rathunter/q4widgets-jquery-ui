@@ -1,6 +1,6 @@
 (function ($) {
     /**
-     * A colletion of many different document types in the same widget.
+     * A collection of many different document types in the same widget.
      * Documents can be filtered by title, tag, or date.
      * @class q4.library
      * @version 1.0.1
@@ -84,12 +84,13 @@
             docsFoundContainer: '.docsfound',
             /**
              * A Mustache template to display the number of documents found.
-             * - {{docCount}}  The number of documents on this page.
-             * - {{docTotal}}  The total number of documents.
-             * - {{docFirst}}  The index of the first document displayed.
-             * - {{docLast}}   The index of the last document displayed.
-             * - {{page}}      The page number.
-             * - {{pageCount}} The total number of pages.
+             *
+             * - `{{docCount}}`:  The number of documents on this page.
+             * - `{{docTotal}}`:  The total number of documents.
+             * - `{{docFirst}}`:  The index of the first document displayed.
+             * - `{{docLast}}`:   The index of the last document displayed.
+             * - `{{page}}`:      The page number.
+             * - `{{pageCount}}`: The total number of pages.
              * @type {string}
              * @default
              */
@@ -238,13 +239,15 @@
              * An array of categories to display.
              * These can be either contentType strings,
              * or objects with these properties:
-             *   name: The display name.
-             *   contentType: One of the types defined in this.contentTypes.
-             *   cssClass: An optional class to apply to the widget.
-             *   options: An optional object of parameters to pass to the API:
-             *     tag: Tag(s) to filter by. Can be a string or an array.
-             *     year: Year(s) to filter by. String or array.
-             *     type: For contentAssets only, the download list(s) to use.
+             *
+             * - `name`: The display name.
+             * - `contentType`: One of the types defined in this.contentTypes.
+             * - `cssClass`: An optional class to apply to the widget.
+             * - `options`: An optional object of parameters to pass to the API:
+             *
+             *   - `tag`: Tag(s) to filter by. Can be a string or an array.
+             *   - `year`: Year(s) to filter by. String or array.
+             *   - `type`: For contentAssets only, the download list(s) to use.
              */
             categories: ['contentAssets', 'events', 'financialReports', 'presentations', 'pressReleases'],
             /**

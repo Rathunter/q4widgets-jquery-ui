@@ -72,15 +72,16 @@
              * Within a category, use {{#catYears}} to loop through years.
              * Within a year, use {{#docs}} to loop through documents.
              * Documents can have these tags:
-             *   {{text}}: The value of the category's "text" option
+             *
+             * - `{{text}}`: The value of the category's "text" option
              *     (which might contain any of the below tags).
-             *   {{fileType}}: the document file type.
-             *   {{shortType}}: the short name of the report subtype,
+             * - `{{fileType}}`: the document file type.
+             * - `{{shortType}}`: the short name of the report subtype,
              *     as defined in options.shortTypes (e.g. Q1, Q2, Annual).
-             *   {{size}}: the size of the document file.
-             *   {{title}}: the title of the document.
-             *   {{url}}: the URL of the document file.
-             *   {{year}}: the fiscal year of the report.
+             * - `{{size}}`: the size of the document file.
+             * - `{{title}}`: the title of the document.
+             * - `{{url}}`: the URL of the document file.
+             * - `{{year}}`: the fiscal year of the report.
              * @type {string}
              * @example
              * '<ul class="ftHeader">' +

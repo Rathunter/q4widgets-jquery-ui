@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.financialTable</h1>
+    <p>A table of different types of financial documents sorted by year.
+Each year can have links to documents for each quarter.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.financialtable.js#L2' target='_blank'>q4.financialtable.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Mustache.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>columns</h1>
+        <div>
+            <p>The number of year columns to display.
+Set to zero to show all columns (default).</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>firstYear</h1>
+        <div>
+            <p>The earliest year to display; previous years will be ignored.
+Set to zero to show all years (default).</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number&#x2F;string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>categories</h1>
+        <div>
+            <p>An array of document categories that will appear as rows
+in the table.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;Object&gt;</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>[
+    {
+         title: &#39;Quarterly Reports&#39;,
+         reportType: [&#39;First Quarter&#39;, &#39;Second Quarter&#39;, &#39;Third Quarter&#39;, &#39;Fourth Quarter&#39;],
+         category: [&#39;Financials&#39;],
+         text: &#39;{{shortType}}&#39;
+    },
+    {
+         title: &#39;Annual Reports&#39;,
+         reportType: [&#39;Annual Report&#39;],
+         text: &#39;Annual ({{fileType}})&#39;
+    }
+]</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>shortTypes</h1>
+        <div>
+            <p>A map of short names for each report subtype.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Object</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>A mustache.js template for the financial report list.
+Use {{#years}} to loop through document years.
+Use {{#categories}} to loop through document categories.
+Categories have these tags: {{catTitle}}, {{catClass}}
+Within a category, use {{#catYears}} to loop through years.
+Within a year, use {{#docs}} to loop through documents.
+Documents can have these tags:</p>
+<ul>
+<li><code>{{text}}</code>: The value of the category's &quot;text&quot; option
+  (which might contain any of the below tags).</li>
+<li><code>{{fileType}}</code>: the document file type.</li>
+<li><code>{{shortType}}</code>: the short name of the report subtype,
+  as defined in options.shortTypes (e.g. Q1, Q2, Annual).</li>
+<li><code>{{size}}</code>: the size of the document file.</li>
+<li><code>{{title}}</code>: the title of the document.</li>
+<li><code>{{url}}</code>: the URL of the document file.</li>
+<li><code>{{year}}</code>: the fiscal year of the report.</li>
+</ul>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;&lt;ul class=&quot;ftHeader&quot;&gt;&#39; +
+    &#39;&lt;li&gt;Document&lt;&#x2F;li&gt;&#39; +
+    &#39;{{#years}}&lt;li&gt;{{year}}&lt;&#x2F;li&gt;{{&#x2F;years}}&#39; +
+&#39;&lt;&#x2F;ul&gt;&#39; +
+&#39;{{#categories}}&#39; +
+&#39;&lt;ul class=&quot;ftRow {{catClass}}&quot;&gt;&#39; +
+    &#39;&lt;li&gt;{{catTitle}}&lt;&#x2F;li&gt;&#39; +
+    &#39;{{#catYears}}&#39; +
+    &#39;&lt;li&gt;&#39; +
+        &#39;{{#docs}}&lt;a href=&quot;{{url}}&quot; class=&quot;docLink {{fileType}}&quot;&gt;{{{text}}}&lt;&#x2F;a&gt;{{&#x2F;docs}}&#39; +
+    &#39;&lt;&#x2F;li&gt;&#39; +
+    &#39;{{&#x2F;catYears}}&#39; +
+&#39;&lt;&#x2F;ul&gt;&#39; +
+&#39;{{&#x2F;categories}}&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>complete</h1>
+        <div>
+            <p>A callback fired when rendering is completed.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

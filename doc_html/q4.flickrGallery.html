@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.flickrGallery</h1>
+    <p>Fetches and displays photo albums from a user on Flickr.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.flickrgallery.js#L2' target='_blank'>q4.flickrgallery.js</a>, line 2</dd>
+        
+        
+        <dt>Author(s)</dt>
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Mustache.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>apiKey</h1>
+        <div>
+            <p>A Flickr API key.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>userId</h1>
+        <div>
+            <p>A Flickr user ID.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>albums</h1>
+        <div>
+            <p>An array of photo album names to fetch.
+If the list is empty (default), fetch all photo albums.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;string&gt;</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>perPage</h1>
+        <div>
+            <p>The maximum number of photos to fetch from each album.
+This can be up to 500.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>500</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>A mustache.js template for all photo albums.
+An album has these tags:</p>
+<ul>
+<li><code>{{albumID}}</code></li>
+<li><code>{{albumTitle}}</code></li>
+<li><code>{{albumDesc}}</code></li>
+<li><code>{{photoCount}}</code></li>
+<li><p><code>{{#photos}}</code>: An array of photos in this album.
+Each photo has these tags:</p>
+<ul>
+<li><code>{{photoID}}</code></li>
+<li><code>{{photoTitle}}</code></li>
+<li><code>{{photoDesc}}</code></li>
+<li><code>{{photoIndex}}</code></li>
+<li><code>{{url}}</code>: URLs for each size (e.g. <code>{{url.Medium}}</code>).</li>
+</ul>
+</li>
+</ul>
+<p>Valid sizes:</p>
+<ul>
+<li>Square:        75 x 75</li>
+<li>LargeSquare:  150 x 150</li>
+<li>Thumbnail:    100 x 75</li>
+<li>Small:        240 x 180</li>
+<li>Small320:     320 x 240</li>
+<li>Medium:       500 x 375</li>
+<li>Medium640:    640 x 480</li>
+<li>Medium800:    800 x 600</li>
+<li>Large:       1024 x 768</li>
+<li>Original:    2400 x 1800</li>
+</ul>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;{{#albums}}&#39; +
+    &#39;&lt;h3&gt;{{albumTitle}}&lt;&#x2F;h3&gt;&#39; +
+    &#39;&lt;ul class=&quot;album&quot;&gt;&#39; +
+        &#39;{{#photos}}&#39; +
+        &#39;&lt;li class=&quot;col-xs-4 col-sm-3 col-md-2 col-lg-2&quot;&gt;&#39; +
+            &#39;&lt;a class=&quot;fancybox&quot; rel=&quot;fncbx&quot; title=&quot;{{photoTitle}}&quot; href=&quot;{{photoUrl}}&quot;&gt;&#39; +
+               &#39;&lt;img src=&quot;{{thumbUrl}}&quot; alt=&quot;{{photoTitle}}&quot;&gt;&#39; +
+                &#39;&lt;span class=&quot;title&quot;&gt;{{photoTitle}}&lt;&#x2F;span&gt;&#39; +
+            &#39;&lt;&#x2F;a&gt;&#39; +
+        &#39;&lt;&#x2F;li&gt;&#39; +
+        &#39;{{&#x2F;photos}}&#39; +
+    &#39;&lt;&#x2F;ul&gt;&#39; +
+&#39;{{&#x2F;albums}}&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>complete</h1>
+        <div>
+            <p>A callback fired when rendering is completed.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

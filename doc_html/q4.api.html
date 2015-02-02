@@ -1,0 +1,557 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.api</h1>
+    <p>Base widget for accessing Q4 private API data.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L2' target='_blank'>q4.api.js</a>, line 2</dd>
+        
+        <dt>Derived classes</dt>
+            <dd><ul><li><a href='q4.events.html'>q4.events</a></li><li><a href='q4.financials.html'>q4.financials</a></li><li><a href='q4.presentations.html'>q4.presentations</a></li><li><a href='q4.news.html'>q4.news</a></li></ul>See these documentation pages for more options and methods</dd>
+        <dt>Author(s)</dt>
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Mustache.js</li><li>Moment.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>url</h1>
+        <div>
+            <p>The base URL to use for API calls.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>limit</h1>
+        <div>
+            <p>The maximum number of results to fetch from the server.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>skip</h1>
+        <div>
+            <p>The number of results to skip. Used for pagination.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>fetchAllYears</h1>
+        <div>
+            <p>Whether to fetch data from all years, or just the most recent.
+If <code>showAllYears</code> is true, this is assumed to be true also.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>showAllYears</h1>
+        <div>
+            <p>Whether to include an &quot;all years&quot; option in template data
+and year selectors. If true, the widget will display
+all year data by default on first load; otherwise it will
+start with data from the most recent year.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>allYearsText</h1>
+        <div>
+            <p>The text to use for the &quot;all years&quot; option.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;All&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>startYear</h1>
+        <div>
+            <p>The year to display first. Default is to display all years if
+that option is enabled, otherwise the most recent year.
+A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>forceStartYear</h1>
+        <div>
+            <p>Whether to start with startYear even if there are no documents for that year.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>showFuture</h1>
+        <div>
+            <p>Whether to fetch items dated in the future.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>showPast</h1>
+        <div>
+            <p>Whether to fetch items dated in the past.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>tags</h1>
+        <div>
+            <p>A list of tags to filter by.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;string&gt;</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>titleLength</h1>
+        <div>
+            <p>The maximum length of an item's title. Zero for no limit.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>0</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>dateFormat</h1>
+        <div>
+            <p>A date format string, which can be used in the template
+as <code>{{date}}</code>. Can alternately be an object of format strings,
+which can be accessed with <code>{{date.key}}</code> (where key is the
+object key corresponding to the string you want to use).
+By default, dates are formatted using jQuery UI's datepicker.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;mm&#x2F;dd&#x2F;yy&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>useMoment</h1>
+        <div>
+            <p>Whether to use Moment.js to format dates instead of datepicker.
+Only takes effect if the Moment.js library has been included.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>years</h1>
+        <div>
+            <p>An array of years to filter by. If passed, no items will
+be displayed unless they are dated to a year in this list.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;number&gt;</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>maxYear</h1>
+        <div>
+            <p>The latest year to display items from.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>minYear</h1>
+        <div>
+            <p>The earliest year to display items from.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>number</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>defaultThumb</h1>
+        <div>
+            <p>A URL to a default thumbnail, in case an item has none.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>append</h1>
+        <div>
+            <p>Whether to append the widget to the container, or replace its
+contents entirely.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>A Mustache.js template for the overall widget.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;&lt;ul class=&quot;years&quot;&gt;&#39; +
+    &#39;{{#years}}&lt;li&gt;{{year}}&lt;&#x2F;li&gt;{{&#x2F;years}}&#39; +
+&#39;&lt;&#x2F;ul&gt;&#39; +
+&#39;&lt;h1&gt;{{title}}&lt;&#x2F;h1&gt;&#39; +
+&#39;&lt;ul class=&quot;items&quot;&gt;&#39; +
+    &#39;{{#items}}&lt;li&gt;&lt;a target=&quot;_blank&quot; href=&quot;{{url}}&quot;&gt;{{title}}&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;{{&#x2F;items}}&#39; +
+    &#39;{{^items}}No items found.{{&#x2F;items}}&#39; +
+&#39;&lt;&#x2F;ul&gt;&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>loadingMessage</h1>
+        <div>
+            <p>A message or HTML string to display while loading the widget.
+Set to <code>false</code> to disable this feature.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string&#x2F;boolean</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;Loading...&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>yearTrigger</h1>
+        <div>
+            <p>An optional selector for year trigger links in the main template.
+If passed, click events will be bound here.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>yearSelect</h1>
+        <div>
+            <p>An optional selector for a year selectbox in the main template.
+If passed, change events will be bound here.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>activeClass</h1>
+        <div>
+            <p>The CSS class to use for a selected year trigger.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;active&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>itemContainer</h1>
+        <div>
+            <p>An optional selector for the items container. You must also
+pass <code>itemTemplate</code> for this to have any effect.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>itemTemplate</h1>
+        <div>
+            <p>An optional template for the items container. If <code>itemContainer</code>
+is also passed, this will be used to render the items list.
+Also, when the year is changed, only the items list will be
+rerendered, instead of the entire widget.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;&lt;li&gt;&#39; +
+    &#39;&lt;img class=&quot;thumb&quot; src=&quot;{{thumb}}&quot;&gt;&#39; +
+    &#39;&lt;span class=&quot;date&quot;&gt;{{date}}&lt;&#x2F;span&gt;&#39; +
+    &#39;&lt;a href=&quot;{{url}}&quot; class=&quot;title&quot;&gt;{{title}}&lt;&#x2F;a&gt;&#39; +
+&#39;&lt;&#x2F;li&gt;&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>itemLoadingMessage</h1>
+        <div>
+            <p>A message or HTML string to display while loading items.
+By default it is the same as <code>loadingMessage</code>.
+Set to <code>false</code> to disable this feature.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>itemNotFoundMessage</h1>
+        <div>
+            <p>A message or HTML string to display in the items container
+if no items are found.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                <dt>Default value</dt>
+                    <dd><code>&quot;No items found.&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>onYearChange</h1>
+        <div>
+            <p>A callback that fires when a year trigger or selectbox changes.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>beforeRender</h1>
+        <div>
+            <p>A callback that fires before the full widget is rendered.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>beforeRenderItems</h1>
+        <div>
+            <p>A callback that fires before the items are rendered.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>itemsComplete</h1>
+        <div>
+            <p>A callback that fires after the item list is rendered.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>complete</h1>
+        <div>
+            <p>A callback that fires after the entire widget is rendered.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>function</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+<section id='methods'>
+    <h1>Methods</h1>
+    <ul>
+    <li>
+        <h1>setYear</h1>
+        <div>
+            <p>Display items from a particular year. This will refetch the list of items if necessary.</p>
+            <dl>
+                <dt>Parameters</dt>
+                    <dd><ul><li><strong>year</strong><em>number</em><p>The year to display, or -1 for all years.</p></li><li><strong>event</strong><em>Event</em><p>The triggering event, if any.</p></li></ul></dd>
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+    </main>
+</body>
+</html>

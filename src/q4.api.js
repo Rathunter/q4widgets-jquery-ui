@@ -182,7 +182,7 @@
              * rerendered, instead of the entire widget.
              * @type {string}
              * @example
-             * <li>' +
+             * '<li>' +
              *     '<img class="thumb" src="{{thumb}}">' +
              *     '<span class="date">{{date}}</span>' +
              *     '<a href="{{url}}" class="title">{{title}}</a>' +
@@ -715,15 +715,15 @@
     $.widget('q4.financials', $.q4.api, /** @lends q4.financials */ {
         options: {
             /**
-             * A list of report subtypes to display.
+             * A list of report subtypes to display, or an empty list to display all.
              * Valid values are:
+             *
              * - `Annual Report`
              * - `Supplemental Report`
              * - `First Quarter`
              * - `Second Quarter`
              * - `Third Quarter`
              * - `Fourth Quarter`
-             * Use an empty list to display all.
              * @type {Array<string>}
              * @default
              */

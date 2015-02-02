@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+<head>
+    <title>Q4Widgets API Documentation</title>
+    <meta charset='utf-8'>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+    <header>
+        <h1>Q4Widgets API Documentation</h1>
+    </header>
+    <nav>
+        <h1>Widgets</h1>
+        <a href='q4.accordion.html'>q4.accordion</a>
+        <a href='q4.api.html'>q4.api</a>
+        <a href='q4.calendar.html'>q4.calendar</a>
+        <a href='q4.chart.html'>q4.chart</a>
+        <a href='q4.events.html'>q4.events</a>
+        <a href='q4.financialTable.html'>q4.financialTable</a>
+        <a href='q4.financials.html'>q4.financials</a>
+        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+        <a href='q4.historical.html'>q4.historical</a>
+        <a href='q4.library.html'>q4.library</a>
+        <a href='q4.mashfeed.html'>q4.mashfeed</a>
+        <a href='q4.multiMap.html'>q4.multiMap</a>
+        <a href='q4.news.html'>q4.news</a>
+        <a href='q4.pager.html'>q4.pager</a>
+        <a href='q4.presentations.html'>q4.presentations</a>
+        <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.timeline.html'>q4.timeline</a>
+        <a href='q4.treemenu.html'>q4.treemenu</a>
+    </nav>
+    <main>
+<header>
+    <h1>q4.accordion</h1>
+    <p>Creates an expanding and collapsing accordion from sections of content.</p>
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.accordion.js#L2' target='_blank'>q4.accordion.js</a>, line 2</dd>
+        
+        
+        
+        <dt>Requires</dt>
+            <dd><ul><li>Mustache.js</li></ul></dd>
+    </dl>
+</section>
+
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    <li>
+        <h1>openMultipleSections</h1>
+        <div>
+            <p>Whether opening an accordion section will close the others.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>openFirstItem</h1>
+        <div>
+            <p>Whether the first accordion item should be open at init.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>boolean</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>trigger</h1>
+        <div>
+            <p>A selector for the trigger to open/close a section.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>indicator</h1>
+        <div>
+            <p>A selector for the expand/collapse message.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>container</h1>
+        <div>
+            <p>A selector for the container to show/hide.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>expandText</h1>
+        <div>
+            <p>The indicator text for a closed section.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>collapseText</h1>
+        <div>
+            <p>The indicator text for an open section.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>activeClass</h1>
+        <div>
+            <p>A class to add to an open section.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>sectionClass</h1>
+        <div>
+            <p>A class to add to each section.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>template</h1>
+        <div>
+            <p>A Mustache template for each section.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>string</em></dd>
+                
+                
+                <dt>Example</dt>
+                    <dd><pre>&#39;&lt;div class=&quot;accordionItem&quot;&gt;&#39; +
+    &#39;&lt;h3 class=&quot;accordionTrigger&quot;&gt;&#39; +
+        &#39;&lt;span class=&quot;accordionTriggerText&quot;&gt;&lt;&#x2F;span&gt;&#39; +
+        &#39;{{{title}}}&#39; +
+    &#39;&lt;&#x2F;h3&gt;&#39; +
+    &#39;&lt;div class=&quot;accordionContent&quot;&gt;{{{content}}}&lt;&#x2F;div&gt;&#39; +
+&#39;&lt;&#x2F;div&gt;&#39;</pre></dd>
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>content</h1>
+        <div>
+            <p>A list of objects representing sections.</p>
+            <dl>
+                <dt>Type</dt>
+                    <dd><em>Array&lt;Object&gt;</em></dd>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    </ul>
+</section>
+
+
+    </main>
+</body>
+</html>

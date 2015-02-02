@@ -1,0 +1,65 @@
+<header>
+    <h1>{{name}}</h1>
+    {{{description}}}
+</header>
+
+<section id='details'>
+    <dl>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/{{file}}#L{{line}}' target='_blank'>{{file}}</a>, line {{line}}</dd>
+        {{#extends.0}}<dt>Extends</dt>
+            <dd><ul>{{#extends}}<li><a href='{{.}}.html'>{{.}}</a> - see this documentation page for more options and methods</li>{{/extends}}</ul></dd>{{/extends.0}}
+        {{#children.0}}<dt>Derived classes</dt>
+            <dd><ul>{{#children}}<li><a href='{{.}}.html'>{{.}}</a></li>{{/children}}</ul>See these documentation pages for more options and methods</dd>{{/children.0}}
+        {{#author.0}}<dt>Author(s)</dt>
+            <dd><ul>{{#author}}<li>{{.}}</li>{{/author}}</ul></dd>{{/author.0}}
+        {{#requires.0}}<dt>Requires</dt>
+            <dd><ul>{{#requires}}<li>{{.}}</li>{{/requires}}</ul></dd>{{/requires.0}}
+    </dl>
+</section>
+
+{{#options.0}}
+<section id='options'>
+    <h1>Options</h1>
+    <ul>
+    {{#options}}
+    <li>
+        <h1>{{name}}</h1>
+        <div>
+            {{{description}}}
+            <dl>
+                {{#type}}<dt>Type</dt>
+                    <dd><em>{{type}}</em></dd>{{/type}}
+                {{#defaultval}}<dt>Default value</dt>
+                    <dd><code>{{defaultval}}</code></dd>{{/defaultval}}
+                {{#examples}}<dt>Example</dt>
+                    <dd><code>{{.}}</code></dd>{{/examples}}
+                {{#exblocks}}<dt>Example</dt>
+                    <dd><pre>{{.}}</pre></dd>{{/exblocks}}
+            </dl>
+        </div>
+    </li>
+    {{/options}}
+    </ul>
+</section>
+{{/options.0}}
+
+{{#methods.0}}
+<section id='methods'>
+    <h1>Methods</h1>
+    <ul>
+    {{#methods}}
+    <li>
+        <h1>{{name}}</h1>
+        <div>
+            {{{description}}}
+            <dl>
+                {{#params.0}}<dt>Parameters</dt>
+                    <dd><ul>{{#params}}<li><strong>{{name}}</strong><em>{{type}}</em>{{{description}}}</li>{{/params}}</ul></dd>{{/params.0}}
+            </dl>
+        </div>
+    </li>
+    {{/methods}}
+    </ul>
+</section>
+{{/methods.0}}

@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -40,6 +40,8 @@
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.multimap.js#L2' target='_blank'>q4.multimap.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.multimap.1.0.0.min.js' target='_blank'>q4.multimap.1.0.0.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -54,12 +56,11 @@
     <ul>
     <li>
         <h1>map</h1>
+        <span>string</span>
         <div>
             <p>The name of the map to use from jVectorMap.
 The corresponding JS file must be included.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;us_lcc_en&quot;</code></dd>
                 
@@ -69,11 +70,10 @@ The corresponding JS file must be included.</p>
     </li>
     <li>
         <h1>backgroundColour</h1>
+        <span>string</span>
         <div>
             <p>The background colour of the map.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;transparent&quot;</code></dd>
                 
@@ -83,11 +83,10 @@ The corresponding JS file must be included.</p>
     </li>
     <li>
         <h1>defaultColour</h1>
+        <span>string</span>
         <div>
             <p>The colour of map elements that aren't in any category.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;#ffffff&quot;</code></dd>
                 
@@ -97,11 +96,10 @@ The corresponding JS file must be included.</p>
     </li>
     <li>
         <h1>elementPrefix</h1>
+        <span>string</span>
         <div>
             <p>An optional prefix to add to all element codes.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;us_lcc_en&quot;</code></dd>
                 
@@ -111,6 +109,7 @@ The corresponding JS file must be included.</p>
     </li>
     <li>
         <h1>views</h1>
+        <span>Array&lt;Object&gt;</span>
         <div>
             <p>An array of views. Each view is made up of geographic elements
 (e.g. countries or states), which are grouped into categories.
@@ -126,8 +125,6 @@ View objects have these properties:
     - elements: An array of map elements that are in this category.
     - cssClass: An optional class to add to the legend item.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;Object&gt;</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;us_lcc_en&quot;</code></dd>
                 
@@ -137,11 +134,10 @@ View objects have these properties:
     </li>
     <li>
         <h1>viewContainer</h1>
+        <span>string</span>
         <div>
             <p>A selector for the container for view triggers.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;.views&quot;</code></dd>
                 
@@ -151,11 +147,10 @@ View objects have these properties:
     </li>
     <li>
         <h1>viewTrigger</h1>
+        <span>string</span>
         <div>
             <p>A selector for each view trigger in the view container.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;&gt; li&quot;</code></dd>
                 
@@ -165,13 +160,12 @@ View objects have these properties:
     </li>
     <li>
         <h1>viewTemplate</h1>
+        <span>string</span>
         <div>
             <p>A template for a single view trigger, corresponding to the
 <code>viewTrigger</code> selector. All the properties of the view
 in the <code>views</code> array are available as tags.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;&lt;li class=\&quot;{{cssClass}}\&quot;&gt;&lt;span&gt;&lt;&#x2F;span&gt;{{label}}&lt;&#x2F;li&gt;&quot;</code></dd>
                 
@@ -181,11 +175,10 @@ in the <code>views</code> array are available as tags.</p>
     </li>
     <li>
         <h1>legendContainer</h1>
+        <span>string</span>
         <div>
             <p>A selector for the container for legend categories.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;.legend&quot;</code></dd>
                 
@@ -195,13 +188,12 @@ in the <code>views</code> array are available as tags.</p>
     </li>
     <li>
         <h1>legendTemplate</h1>
+        <span>string</span>
         <div>
             <p>A template for a single legend category, corresponding to the
 <code>legendContainer</code> selector.. All the properties of the category
 in the <code>views</code> array are available as tags.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;&lt;li class=\&quot;{{cssClass}}\&quot;&gt;&lt;span style=\&quot;background-color: {{colour}}\&quot;&gt;&lt;&#x2F;span&gt;{{label}}&lt;&#x2F;li&gt;&quot;</code></dd>
                 
@@ -211,11 +203,10 @@ in the <code>views</code> array are available as tags.</p>
     </li>
     <li>
         <h1>textContainer</h1>
+        <span>string</span>
         <div>
             <p>A selector for the container for category text.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;.text&quot;</code></dd>
                 
@@ -225,11 +216,10 @@ in the <code>views</code> array are available as tags.</p>
     </li>
     <li>
         <h1>mapContainer</h1>
+        <span>string</span>
         <div>
             <p>A selector for the vector map.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;#map&quot;</code></dd>
                 
@@ -239,13 +229,12 @@ in the <code>views</code> array are available as tags.</p>
     </li>
     <li>
         <h1>template</h1>
+        <span>string</span>
         <div>
             <p>An overall template for the widget. This should contain elements
 corresponding to <code>viewContainer</code>, <code>legendContainer</code>,
 <code>textContainer</code> and <code>mapContainer</code>.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;us_lcc_en&quot;</code></dd>
                 

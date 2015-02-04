@@ -1,7 +1,17 @@
 <section id='index'>
     <ul>
         {{#classes}}
-        <li><a href='{{name}}.html'>{{name}}</a> – {{{description}}}</li>
+        <li>
+            <h1>{{name}}</h1>
+            <span>{{version}}</span>
+            <div>
+                {{{description}}}
+                <p>
+                    <a href='{{name}}.html'>Documentation</a> –
+                    <a href='https://q4widgets.q4web.com/q4widgets/{{distfile}}' target='_blank'>Script link</a>
+                </p>
+            </div>
+        </li>
         {{/classes}}
     </ul>
 </section>

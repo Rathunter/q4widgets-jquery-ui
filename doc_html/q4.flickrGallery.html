@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -40,6 +40,8 @@
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.flickrgallery.js#L2' target='_blank'>q4.flickrgallery.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.flickrgallery.1.0.0.min.js' target='_blank'>q4.flickrgallery.1.0.0.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -54,11 +56,10 @@
     <ul>
     <li>
         <h1>apiKey</h1>
+        <span>string</span>
         <div>
             <p>A Flickr API key.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -67,11 +68,10 @@
     </li>
     <li>
         <h1>userId</h1>
+        <span>string</span>
         <div>
             <p>A Flickr user ID.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -80,12 +80,11 @@
     </li>
     <li>
         <h1>albums</h1>
+        <span>Array&lt;string&gt;</span>
         <div>
             <p>An array of photo album names to fetch.
 If the list is empty (default), fetch all photo albums.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;string&gt;</em></dd>
                 
                 
                 
@@ -94,12 +93,11 @@ If the list is empty (default), fetch all photo albums.</p>
     </li>
     <li>
         <h1>perPage</h1>
+        <span>number</span>
         <div>
             <p>The maximum number of photos to fetch from each album.
 This can be up to 500.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>500</code></dd>
                 
@@ -109,6 +107,7 @@ This can be up to 500.</p>
     </li>
     <li>
         <h1>template</h1>
+        <span>string</span>
         <div>
             <p>A mustache.js template for all photo albums.
 An album has these tags:</p>
@@ -142,8 +141,6 @@ Each photo has these tags:</p>
 <li>Original:    2400 x 1800</li>
 </ul>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -165,11 +162,10 @@ Each photo has these tags:</p>
     </li>
     <li>
         <h1>complete</h1>
+        <span>function</span>
         <div>
             <p>A callback fired when rendering is completed.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 

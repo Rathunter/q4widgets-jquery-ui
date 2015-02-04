@@ -10,46 +10,55 @@
             /**
              * Whether opening an accordion section will close the others.
              * @type {boolean}
+             * @default
              */
             openMultipleSections: false,
             /**
              * Whether the first accordion item should be open at init.
              * @type {boolean}
+             * @default
              */
             openFirstItem: true,
             /**
              * A selector for the trigger to open/close a section.
              * @type {string}
+             * @default
              */
             trigger: '.accordionTrigger',
             /**
              * A selector for the expand/collapse message.
              * @type {string}
+             * @default
              */
             indicator: '.accordionTriggerText',
             /**
              * A selector for the container to show/hide.
              * @type {string}
+             * @default
              */
             container: '.accordionContent',
             /**
              * The indicator text for a closed section.
              * @type {string}
+             * @default
              */
             expandText: 'EXPAND [ + ]',
             /**
              * The indicator text for an open section.
              * @type {string}
+             * @default
              */
             collapseText: 'CLOSE [ – ]',
             /**
              * A class to add to an open section.
              * @type {string}
+             * @default
              */
             activeClass: 'active',
             /**
              * A class to add to each section.
              * @type {string}
+             * @default
              */
             sectionClass: 'accordion-item',
             /**

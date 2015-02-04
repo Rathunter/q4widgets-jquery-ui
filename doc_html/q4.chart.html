@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -40,6 +40,8 @@
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.chart.js#L2' target='_blank'>q4.chart.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.chart.1.0.0.min.js' target='_blank'>q4.chart.1.0.0.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -54,11 +56,10 @@
     <ul>
     <li>
         <h1>url</h1>
+        <span>string</span>
         <div>
             <p>The base URL of the Q4 website.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 <dt>Example</dt>
                     <dd><code> &#x2F;&#x2F;feeds.q4websystems.com</code></dd>
@@ -68,11 +69,10 @@
     </li>
     <li>
         <h1>usePublic</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to use the public feed (true) or the private API (false).</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
                 
@@ -82,11 +82,10 @@
     </li>
     <li>
         <h1>apiKey</h1>
+        <span>string</span>
         <div>
             <p>If <code>usePublic</code> is <code>true</code>, the API key to use for public feeds.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -95,14 +94,13 @@
     </li>
     <li>
         <h1>stocks</h1>
+        <span>string&#x2F;Array.&lt;string&gt;</span>
         <div>
             <p>An array of stock symbols to use on the stock price chart.
 Each symbol can be a string of the format &quot;EXCHANGE:SYMBOL&quot;,
 or an array containing &quot;EXCHANGE:SYMBOL&quot; and a custom
 display name.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string&#x2F;Array.&lt;string&gt;</em></dd>
                 
                 <dt>Example</dt>
                     <dd><code> &#39;NYSE:XXX&#39;</code></dd><dt>Example</dt>
@@ -113,11 +111,10 @@ display name.</p>
     </li>
     <li>
         <h1>lockStock</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to prevent stock price charts from being toggled off.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -127,11 +124,10 @@ display name.</p>
     </li>
     <li>
         <h1>showSymbolInLegend</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to show the stock quote in the chart legend.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
                 
@@ -141,11 +137,10 @@ display name.</p>
     </li>
     <li>
         <h1>stockLimit</h1>
+        <span>number</span>
         <div>
             <p>The maximum number of data points to fetch for the stock chart.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>1500</code></dd>
                 
@@ -155,11 +150,10 @@ display name.</p>
     </li>
     <li>
         <h1>volume</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to include a volume chart below the stock price chart.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -169,11 +163,10 @@ display name.</p>
     </li>
     <li>
         <h1>volumeHeight</h1>
+        <span>number</span>
         <div>
             <p>The height of the volume chart, as a percentage.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>40</code></dd>
                 
@@ -183,11 +176,10 @@ display name.</p>
     </li>
     <li>
         <h1>news</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to include a series of flags for press releases.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -197,11 +189,10 @@ display name.</p>
     </li>
     <li>
         <h1>newsOnLoad</h1>
+        <span>boolean</span>
         <div>
             <p>If <code>news</code> is true, whether to show news flags on initial load.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -211,11 +202,10 @@ display name.</p>
     </li>
     <li>
         <h1>newsLimit</h1>
+        <span>number</span>
         <div>
             <p>If <code>news</code> is true, the maximum number of news items to display.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>200</code></dd>
                 
@@ -225,11 +215,10 @@ display name.</p>
     </li>
     <li>
         <h1>newsLength</h1>
+        <span>number</span>
         <div>
             <p>If <code>news</code> is true, the maximum length of each news headline.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>75</code></dd>
                 
@@ -239,12 +228,11 @@ display name.</p>
     </li>
     <li>
         <h1>newsCategory</h1>
+        <span>string</span>
         <div>
             <p>If <code>news</code> is true, the news category ID to use.
 The default is to load all categories.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></dd>
                 
@@ -254,11 +242,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>newsTags</h1>
+        <span>Array&lt;string&gt;</span>
         <div>
             <p>If <code>news</code> is true, an array of tags to filter news releases by.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;string&gt;</em></dd>
                 
                 
                 
@@ -267,11 +254,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>events</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to include a series of flags for events.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -281,11 +267,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>eventsOnLoad</h1>
+        <span>boolean</span>
         <div>
             <p>If <code>events</code> is true, whether to show event flags on initial load.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -295,11 +280,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>eventsLimit</h1>
+        <span>number</span>
         <div>
             <p>If <code>events</code> is true, the maximum number of events to display.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>100</code></dd>
                 
@@ -309,11 +293,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>stockOpts</h1>
+        <span>Object</span>
         <div>
             <p>A set of Highcharts options for the stock price series.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -322,11 +305,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>volumeOpts</h1>
+        <span>Object</span>
         <div>
             <p>A set of Highcharts options for the volume series.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -335,11 +317,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>newsOpts</h1>
+        <span>Object</span>
         <div>
             <p>A set of Highcharts options for the press release series.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -348,11 +329,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>eventsOpts</h1>
+        <span>Object</span>
         <div>
             <p>A set of Highcharts options for the event series.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -361,11 +341,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>highstock</h1>
+        <span>Object</span>
         <div>
             <p>A set of general Highcharts options to use for the chart.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 <dt>Default value</dt>
                     <dd><code>{chart: {height: 400, marginTop: 60}, legend: {enabled: true, align: &#39;left&#39;, verticalAlign: &#39;top&#39;, floating: true}, rangeSelector: {enabled: true, selected: 1}, navigator: {height: 40}, credits: {enabled: true, text: &quot;Q4 Web Systems&quot;, href: &quot;http:&#x2F;&#x2F;www.q4websystems.com&quot;}}</code></dd>
                 
@@ -375,11 +354,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>highchartsOpts</h1>
+        <span>Object</span>
         <div>
             <p>A set of Highcharts configuration options.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 <dt>Default value</dt>
                     <dd><code>{global: {useUTC: false}}</code></dd>
                 
@@ -389,11 +367,10 @@ The default is to load all categories.</p>
     </li>
     <li>
         <h1>onComplete</h1>
+        <span>function</span>
         <div>
             <p>A callback that is fired after the chart is rendered.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 

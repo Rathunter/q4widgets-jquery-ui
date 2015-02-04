@@ -1,4 +1,4 @@
-body { margin: 0; color: #444; font-family: 'open sans', helvetica, arial, sans-serif; }
+body { margin: 0; color: #444; background: #f8f8f8; font-family: 'open sans', helvetica, arial, sans-serif; }
 
 a { color: #5f8fbf; text-decoration: none; }
 a:hover { color: #527ca5; }
@@ -10,33 +10,32 @@ dt { float: left; }
 dd { margin: 0.5rem 0; }
 dd ul { padding: 0; list-style: none; }
 
-body > header { overflow: auto; background: #eee; text-align: center; }
+body > header { overflow: auto; background: #222; text-align: center; }
+body > header a { color: #ddd; }
+body > header a:hover { color: #eee; }
 
-nav { float: left; width: 200px; padding: 20px 10px; background: #f8f8f8; }
-nav h1 { margin: 0 0 10px; padding: 0 10px; color: #666; font-size: 1rem; text-transform: uppercase; }
-nav a { display: block; padding: 5px 10px; border-radius: 3px; }
+nav { float: left; width: 200px; padding: 30px 10px; }
+nav h1 { margin: 1rem 0; padding: 0 .6rem; color: #666; font-size: 1rem; text-transform: uppercase; }
+nav a { display: block; padding: .3rem .6rem; border-radius: 3px; }
 nav a:hover { background: #eee; }
 
-main { margin-left: 250px; }
+main { margin-left: 220px; padding: 30px; background: #fff; }
 header p { font-size: 1.25rem; }
 
-section { margin: 2.5rem 0; }
-
-#index ul { list-style: none; }
-#index ul li a { font-weight: bold; }
-#index ul li p { display: inline-block; margin: 0; }
+section { margin-bottom: 2.5rem; }
 
 #details dl dt { font-weight: bold; }
 #details dl dd { margin-left: 200px; }
 
-section > ul { padding: 0; list-style: none; }
+section > ul { margin: 0; padding: 0; list-style: none; }
 section > ul > li { overflow: auto; padding: 1rem; }
 section > ul > li:nth-child(2n+1) { background: #f8f8f8; }
-section > ul li h1 { float: left; margin: 0; font-size: 1rem; }
-section > ul li div { margin-left: 200px; }
-section > ul li div p { margin: 0 0 .5rem; }
-section > ul li div dt { font-weight: normal; }
-section > ul li div dd { margin-left: 125px; }
+section > ul > li > h1 { float: left; margin: 0; font-size: 1rem; }
+section > ul > li > span { float: left; clear: left; color: #999; }
+section > ul > li > div { margin-left: 200px; }
+section > ul > li > div p { margin: 0 0 .5rem; }
+section > ul > li > div dt { font-weight: normal; }
+section > ul > li > div dd { margin-left: 125px; }
 
 #methods dd strong, #methods dd em { float: left; width: 100px; }
 #methods dd p { margin-left: 200px; }

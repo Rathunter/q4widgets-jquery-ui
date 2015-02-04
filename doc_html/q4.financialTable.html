@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -41,6 +41,8 @@ Each year can have links to documents for each quarter.</p>
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.financialtable.js#L2' target='_blank'>q4.financialtable.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.financialtable.1.1.1.min.js' target='_blank'>q4.financialtable.1.1.1.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -55,12 +57,11 @@ Each year can have links to documents for each quarter.</p>
     <ul>
     <li>
         <h1>columns</h1>
+        <span>number</span>
         <div>
             <p>The number of year columns to display.
 Set to zero to show all columns (default).</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 
                 
                 
@@ -69,12 +70,11 @@ Set to zero to show all columns (default).</p>
     </li>
     <li>
         <h1>firstYear</h1>
+        <span>number&#x2F;string</span>
         <div>
             <p>The earliest year to display; previous years will be ignored.
 Set to zero to show all years (default).</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number&#x2F;string</em></dd>
                 
                 
                 
@@ -83,12 +83,11 @@ Set to zero to show all years (default).</p>
     </li>
     <li>
         <h1>categories</h1>
+        <span>Array&lt;Object&gt;</span>
         <div>
             <p>An array of document categories that will appear as rows
 in the table.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;Object&gt;</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -110,11 +109,10 @@ in the table.</p>
     </li>
     <li>
         <h1>shortTypes</h1>
+        <span>Object</span>
         <div>
             <p>A map of short names for each report subtype.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -123,6 +121,7 @@ in the table.</p>
     </li>
     <li>
         <h1>template</h1>
+        <span>string</span>
         <div>
             <p>A mustache.js template for the financial report list.
 Use {{#years}} to loop through document years.
@@ -143,8 +142,6 @@ Documents can have these tags:</p>
 <li><code>{{year}}</code>: the fiscal year of the report.</li>
 </ul>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -167,11 +164,10 @@ Documents can have these tags:</p>
     </li>
     <li>
         <h1>complete</h1>
+        <span>function</span>
         <div>
             <p>A callback fired when rendering is completed.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 

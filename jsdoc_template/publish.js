@@ -32,7 +32,9 @@ exports.publish = function (data, opts) {
             classes[clss] = {
                 name: clss,
                 description: doclet.description,
+                version: doclet.version,
                 file: doclet.meta.filename,
+                distfile: doclet.meta.filename.replace(/js$/, doclet.version + '.min.js'),
                 line: doclet.meta.lineno,
                 author: doclet.author,
                 examples: (doclet.examples || []).filter(single_line),
@@ -73,9 +75,12 @@ exports.publish = function (data, opts) {
     });
 
     for (clss in classes) {
-        // reference child classes
         classes[clss].extends.forEach(function (parent) {
+            // add reference to parent class
             classes[parent].children.push(clss);
+            // inherit version and dist file from parent
+            classes[clss].version = classes[parent].version;
+            classes[clss].distfile = classes[parent].distfile;
         });
     }
 

@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -40,9 +40,11 @@
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L2' target='_blank'>q4.api.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.1.0.min.js' target='_blank'>q4.api.1.1.0.min.js</a></dd>
         
         <dt>Derived classes</dt>
-            <dd><ul><li><a href='q4.events.html'>q4.events</a></li><li><a href='q4.financials.html'>q4.financials</a></li><li><a href='q4.presentations.html'>q4.presentations</a></li><li><a href='q4.news.html'>q4.news</a></li></ul>See these documentation pages for more options and methods</dd>
+            <dd><ul><li><a href='q4.events.html'>q4.events</a></li><li><a href='q4.financials.html'>q4.financials</a></li><li><a href='q4.presentations.html'>q4.presentations</a></li><li><a href='q4.news.html'>q4.news</a></li></ul>See these documentation pages for more options and methods.</dd>
         <dt>Author(s)</dt>
             <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
         <dt>Requires</dt>
@@ -55,11 +57,10 @@
     <ul>
     <li>
         <h1>url</h1>
+        <span>string</span>
         <div>
             <p>The base URL to use for API calls.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -68,11 +69,10 @@
     </li>
     <li>
         <h1>limit</h1>
+        <span>number</span>
         <div>
             <p>The maximum number of results to fetch from the server.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -82,11 +82,10 @@
     </li>
     <li>
         <h1>skip</h1>
+        <span>number</span>
         <div>
             <p>The number of results to skip. Used for pagination.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -96,12 +95,11 @@
     </li>
     <li>
         <h1>fetchAllYears</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to fetch data from all years, or just the most recent.
 If <code>showAllYears</code> is true, this is assumed to be true also.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -111,14 +109,13 @@ If <code>showAllYears</code> is true, this is assumed to be true also.</p>
     </li>
     <li>
         <h1>showAllYears</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to include an &quot;all years&quot; option in template data
 and year selectors. If true, the widget will display
 all year data by default on first load; otherwise it will
 start with data from the most recent year.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -128,11 +125,10 @@ start with data from the most recent year.</p>
     </li>
     <li>
         <h1>allYearsText</h1>
+        <span>string</span>
         <div>
             <p>The text to use for the &quot;all years&quot; option.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;All&quot;</code></dd>
                 
@@ -142,13 +138,12 @@ start with data from the most recent year.</p>
     </li>
     <li>
         <h1>startYear</h1>
+        <span>number</span>
         <div>
             <p>The year to display first. Default is to display all years if
 that option is enabled, otherwise the most recent year.
 A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 
                 
                 
@@ -157,11 +152,10 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
     </li>
     <li>
         <h1>forceStartYear</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to start with startYear even if there are no documents for that year.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -171,11 +165,10 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
     </li>
     <li>
         <h1>showFuture</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to fetch items dated in the future.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
                 
@@ -185,11 +178,10 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
     </li>
     <li>
         <h1>showPast</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to fetch items dated in the past.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
                 
@@ -199,11 +191,10 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
     </li>
     <li>
         <h1>tags</h1>
+        <span>Array&lt;string&gt;</span>
         <div>
             <p>A list of tags to filter by.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;string&gt;</em></dd>
                 
                 
                 
@@ -212,11 +203,10 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
     </li>
     <li>
         <h1>titleLength</h1>
+        <span>number</span>
         <div>
             <p>The maximum length of an item's title. Zero for no limit.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -226,6 +216,7 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
     </li>
     <li>
         <h1>dateFormat</h1>
+        <span>string</span>
         <div>
             <p>A date format string, which can be used in the template
 as <code>{{date}}</code>. Can alternately be an object of format strings,
@@ -233,8 +224,6 @@ which can be accessed with <code>{{date.key}}</code> (where key is the
 object key corresponding to the string you want to use).
 By default, dates are formatted using jQuery UI's datepicker.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;mm&#x2F;dd&#x2F;yy&quot;</code></dd>
                 
@@ -244,12 +233,11 @@ By default, dates are formatted using jQuery UI's datepicker.</p>
     </li>
     <li>
         <h1>useMoment</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to use Moment.js to format dates instead of datepicker.
 Only takes effect if the Moment.js library has been included.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -259,12 +247,11 @@ Only takes effect if the Moment.js library has been included.</p>
     </li>
     <li>
         <h1>years</h1>
+        <span>Array&lt;number&gt;</span>
         <div>
             <p>An array of years to filter by. If passed, no items will
 be displayed unless they are dated to a year in this list.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;number&gt;</em></dd>
                 
                 
                 
@@ -273,11 +260,10 @@ be displayed unless they are dated to a year in this list.</p>
     </li>
     <li>
         <h1>maxYear</h1>
+        <span>number</span>
         <div>
             <p>The latest year to display items from.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 
                 
                 
@@ -286,11 +272,10 @@ be displayed unless they are dated to a year in this list.</p>
     </li>
     <li>
         <h1>minYear</h1>
+        <span>number</span>
         <div>
             <p>The earliest year to display items from.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 
                 
                 
@@ -299,11 +284,10 @@ be displayed unless they are dated to a year in this list.</p>
     </li>
     <li>
         <h1>defaultThumb</h1>
+        <span>string</span>
         <div>
             <p>A URL to a default thumbnail, in case an item has none.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -312,12 +296,11 @@ be displayed unless they are dated to a year in this list.</p>
     </li>
     <li>
         <h1>append</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to append the widget to the container, or replace its
 contents entirely.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
                 
@@ -327,11 +310,10 @@ contents entirely.</p>
     </li>
     <li>
         <h1>template</h1>
+        <span>string</span>
         <div>
             <p>A Mustache.js template for the overall widget.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -348,12 +330,11 @@ contents entirely.</p>
     </li>
     <li>
         <h1>loadingMessage</h1>
+        <span>string&#x2F;boolean</span>
         <div>
             <p>A message or HTML string to display while loading the widget.
 Set to <code>false</code> to disable this feature.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string&#x2F;boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;Loading...&quot;</code></dd>
                 
@@ -363,12 +344,11 @@ Set to <code>false</code> to disable this feature.</p>
     </li>
     <li>
         <h1>yearTrigger</h1>
+        <span>string</span>
         <div>
             <p>An optional selector for year trigger links in the main template.
 If passed, click events will be bound here.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -377,12 +357,11 @@ If passed, click events will be bound here.</p>
     </li>
     <li>
         <h1>yearSelect</h1>
+        <span>string</span>
         <div>
             <p>An optional selector for a year selectbox in the main template.
 If passed, change events will be bound here.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -391,11 +370,10 @@ If passed, change events will be bound here.</p>
     </li>
     <li>
         <h1>activeClass</h1>
+        <span>string</span>
         <div>
             <p>The CSS class to use for a selected year trigger.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;active&quot;</code></dd>
                 
@@ -405,12 +383,11 @@ If passed, change events will be bound here.</p>
     </li>
     <li>
         <h1>itemContainer</h1>
+        <span>string</span>
         <div>
             <p>An optional selector for the items container. You must also
 pass <code>itemTemplate</code> for this to have any effect.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -419,14 +396,13 @@ pass <code>itemTemplate</code> for this to have any effect.</p>
     </li>
     <li>
         <h1>itemTemplate</h1>
+        <span>string</span>
         <div>
             <p>An optional template for the items container. If <code>itemContainer</code>
 is also passed, this will be used to render the items list.
 Also, when the year is changed, only the items list will be
 rerendered, instead of the entire widget.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -440,13 +416,12 @@ rerendered, instead of the entire widget.</p>
     </li>
     <li>
         <h1>itemLoadingMessage</h1>
+        <span>string</span>
         <div>
             <p>A message or HTML string to display while loading items.
 By default it is the same as <code>loadingMessage</code>.
 Set to <code>false</code> to disable this feature.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -455,12 +430,11 @@ Set to <code>false</code> to disable this feature.</p>
     </li>
     <li>
         <h1>itemNotFoundMessage</h1>
+        <span>string</span>
         <div>
             <p>A message or HTML string to display in the items container
 if no items are found.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;No items found.&quot;</code></dd>
                 
@@ -470,11 +444,10 @@ if no items are found.</p>
     </li>
     <li>
         <h1>onYearChange</h1>
+        <span>function</span>
         <div>
             <p>A callback that fires when a year trigger or selectbox changes.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 
@@ -483,11 +456,10 @@ if no items are found.</p>
     </li>
     <li>
         <h1>beforeRender</h1>
+        <span>function</span>
         <div>
             <p>A callback that fires before the full widget is rendered.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 
@@ -496,11 +468,10 @@ if no items are found.</p>
     </li>
     <li>
         <h1>beforeRenderItems</h1>
+        <span>function</span>
         <div>
             <p>A callback that fires before the items are rendered.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 
@@ -509,11 +480,10 @@ if no items are found.</p>
     </li>
     <li>
         <h1>itemsComplete</h1>
+        <span>function</span>
         <div>
             <p>A callback that fires after the item list is rendered.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 
@@ -522,11 +492,10 @@ if no items are found.</p>
     </li>
     <li>
         <h1>complete</h1>
+        <span>function</span>
         <div>
             <p>A callback that fires after the entire widget is rendered.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 

@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -40,6 +40,8 @@
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.timeline.js#L2' target='_blank'>q4.timeline.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.timeline.1.0.1.min.js' target='_blank'>q4.timeline.1.0.1.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -54,6 +56,7 @@
     <ul>
     <li>
         <h1>content</h1>
+        <span>Object</span>
         <div>
             <p>An array of event groups. Each group has these properties:
 - <code>heading</code> The heading for the category.
@@ -63,8 +66,6 @@
     - <code>cssClass</code> An optional CSS class to use in the template.
     - <code>text</code>     Text to display for the event.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -101,12 +102,11 @@
     </li>
     <li>
         <h1>navCarousel</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to render a navigation carousel.
 This is generally used to display the groups.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -116,11 +116,10 @@ This is generally used to display the groups.</p>
     </li>
     <li>
         <h1>navContainer</h1>
+        <span>string</span>
         <div>
             <p>A selector for the navigation carousel.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;.timeline-nav&quot;</code></dd>
                 
@@ -130,12 +129,11 @@ This is generally used to display the groups.</p>
     </li>
     <li>
         <h1>navTemplate</h1>
+        <span>string</span>
         <div>
             <p>A Mustache template to use for the navigation carousel.
 All properties from <code>content</code> are available as tags.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -150,12 +148,11 @@ All properties from <code>content</code> are available as tags.</p>
     </li>
     <li>
         <h1>navSelector</h1>
+        <span>string</span>
         <div>
             <p>A selector for each group's slide in the navigation carousel.
 When clicked, this will move the main carousel to that group.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;li&quot;</code></dd>
                 
@@ -165,12 +162,11 @@ When clicked, this will move the main carousel to that group.</p>
     </li>
     <li>
         <h1>navOptions</h1>
+        <span>Object</span>
         <div>
             <p>Options to pass directly to the nav carousel's Slick object.
 See Slick's documentation for details.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -179,12 +175,11 @@ See Slick's documentation for details.</p>
     </li>
     <li>
         <h1>mainCarousel</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to render a main carousel.
 This is generally used to display the individual timeline items.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
                 
@@ -194,11 +189,10 @@ This is generally used to display the individual timeline items.</p>
     </li>
     <li>
         <h1>mainContainer</h1>
+        <span>string</span>
         <div>
             <p>A selector for the main carousel.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;.timeline-main&quot;</code></dd>
                 
@@ -208,14 +202,13 @@ This is generally used to display the individual timeline items.</p>
     </li>
     <li>
         <h1>mainTemplate</h1>
+        <span>string</span>
         <div>
             <p>A Mustache template to use for the main carousel.
 All properties from <code>content</code> are available as tags.
 Items also have a {{group}} tag with the index # of their
 containing group.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -230,12 +223,11 @@ containing group.</p>
     </li>
     <li>
         <h1>mainSelector</h1>
+        <span>string</span>
         <div>
             <p>A selector for each item's slide in the main carousel.
 When clicked, this will move the nav carousel to this item's group.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;li&quot;</code></dd>
                 
@@ -245,12 +237,11 @@ When clicked, this will move the nav carousel to this item's group.</p>
     </li>
     <li>
         <h1>mainOptions</h1>
+        <span>Object</span>
         <div>
             <p>Options to pass directly to the main carousel's Slick object.
 See Slick's documentation for details.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Object</em></dd>
                 
                 
                 
@@ -259,11 +250,10 @@ See Slick's documentation for details.</p>
     </li>
     <li>
         <h1>afterNavChange</h1>
+        <span>function</span>
         <div>
             <p>A callback fired after a change in the nav carousel.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 
@@ -272,11 +262,10 @@ See Slick's documentation for details.</p>
     </li>
     <li>
         <h1>afterMainChange</h1>
+        <span>function</span>
         <div>
             <p>A callback fired after a change in the main carousel.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 
@@ -285,11 +274,10 @@ See Slick's documentation for details.</p>
     </li>
     <li>
         <h1>complete</h1>
+        <span>function</span>
         <div>
             <p>A callback fired after rendering is complete.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 

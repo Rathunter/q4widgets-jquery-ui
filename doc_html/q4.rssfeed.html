@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -40,6 +40,8 @@
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.rssfeed.js#L2' target='_blank'>q4.rssfeed.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.rssfeed.1.0.1.min.js' target='_blank'>q4.rssfeed.1.0.1.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -54,11 +56,10 @@
     <ul>
     <li>
         <h1>url</h1>
+        <span>string</span>
         <div>
             <p>The URL of the RSS feed.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 
@@ -67,11 +68,10 @@
     </li>
     <li>
         <h1>limit</h1>
+        <span>number</span>
         <div>
             <p>The maximum number of items to display, or zero for unlimited.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -81,11 +81,10 @@
     </li>
     <li>
         <h1>dateFormat</h1>
+        <span>string</span>
         <div>
             <p>A Moment.js date format string to use when rendering.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
                 
@@ -95,11 +94,10 @@
     </li>
     <li>
         <h1>summaryLength</h1>
+        <span>number</span>
         <div>
             <p>The maximum length for each item's summary, or zero for unlimited.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>500</code></dd>
                 
@@ -109,6 +107,7 @@
     </li>
     <li>
         <h1>template</h1>
+        <span>string</span>
         <div>
             <p>A Mustache template for the widget, with these tags:
 - {{title}} The title of the feed.
@@ -122,8 +121,6 @@
     - {{summary}}   The plaintext body content, truncated to <code>summaryLength</code>.
     - {{firstLine}} The plaintext body content, up to the first line break.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 
                 
                 <dt>Example</dt>
@@ -145,11 +142,10 @@
     </li>
     <li>
         <h1>complete</h1>
+        <span>function</span>
         <div>
             <p>A callback fired after rendering is complete.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 
                 
                 

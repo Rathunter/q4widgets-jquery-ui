@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Q4Widgets API Documentation</h1>
+        <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
     <nav>
         <h1>Widgets</h1>
@@ -41,6 +41,8 @@ chronological list.</p>
     <dl>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.mashfeed.js#L2' target='_blank'>q4.mashfeed.js</a>, line 2</dd>
+        <dt>Script link</dt>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.mashfeed.1.0.0.min.js' target='_blank'>q4.mashfeed.1.0.0.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
@@ -55,11 +57,10 @@ chronological list.</p>
     <ul>
     <li>
         <h1>limit</h1>
+        <span>number</span>
         <div>
             <p>The global maximum number of items, or zero for unlimited.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -69,11 +70,10 @@ chronological list.</p>
     </li>
     <li>
         <h1>dateFormat</h1>
+        <span>string</span>
         <div>
             <p>A Moment.js format for dates.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
                 
@@ -83,11 +83,10 @@ chronological list.</p>
     </li>
     <li>
         <h1>fromNow</h1>
+        <span>boolean</span>
         <div>
             <p>Whether to display dates using Moment's fromNow function.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>boolean</em></dd>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
                 
@@ -97,11 +96,10 @@ chronological list.</p>
     </li>
     <li>
         <h1>titleLength</h1>
+        <span>number</span>
         <div>
             <p>The maximum character length of a title, or zero for unlimited.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>80</code></dd>
                 
@@ -111,11 +109,10 @@ chronological list.</p>
     </li>
     <li>
         <h1>summaryLength</h1>
+        <span>number</span>
         <div>
             <p>The maximum character length of a summary, or zero for unlimited.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>number</em></dd>
                 <dt>Default value</dt>
                     <dd><code>500</code></dd>
                 
@@ -125,6 +122,7 @@ chronological list.</p>
     </li>
     <li>
         <h1>feeds</h1>
+        <span>Array&lt;Object&gt;</span>
         <div>
             <p>An array of feeds to fetch. Each feed is an object of options
 for that feed. Some feed options override global options.
@@ -143,8 +141,6 @@ Valid options for all feed types are:</p>
 </ul>
 <p>See <code>feedTypes</code> for type-specific options.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;Object&gt;</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -154,12 +150,11 @@ Valid options for all feed types are:</p>
     </li>
     <li>
         <h1>filter</h1>
+        <span>Array&lt;string&gt;</span>
         <div>
             <p>A list of feed names. If this list is not empty,
 only the feeds named in the list will be parsed.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>Array&lt;string&gt;</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -169,12 +164,11 @@ only the feeds named in the list will be parsed.</p>
     </li>
     <li>
         <h1>template</h1>
+        <span>string</span>
         <div>
             <p>A default Mustache template for a single feed item.
 Can be overridden for individual feed types.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>string</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 
@@ -189,11 +183,10 @@ Can be overridden for individual feed types.</p>
     </li>
     <li>
         <h1>complete</h1>
+        <span>function</span>
         <div>
             <p>A callback that fires after rendering is finished.</p>
             <dl>
-                <dt>Type</dt>
-                    <dd><em>function</em></dd>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
                 

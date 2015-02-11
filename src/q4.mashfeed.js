@@ -45,16 +45,16 @@
              * for that feed. Some feed options override global options.
              * Valid options for all feed types are:
              *
-             * - name: The name of the feed.
-             * - type: The type, as listed in `feedTypes` (e.g. `rss`, `youtube`).
-             * - template: A Mustache template for a single feed item
+             * - `name`          The name of the feed.
+             * - `type`          The type, as listed in `feedTypes` (e.g. `rss`, `youtube`).
+             * - `template`      A Mustache template for a single feed item
              *     (overrides the default template).
-             * - limit: The maximum number of items from this feed.
-             * - titleLength: The maximum character length of a title.
-             * - summaryLength: The maximum character length of a summary.
-             * - fetch: A function overriding the feed type's `fetch` method.
-             * - getItems: A function overriding the feed type's `getItems` method.
-             * - parseItem: A function overriding the feed type's `parseItem` method.
+             * - `limit`         The maximum number of items from this feed.
+             * - `titleLength`   The maximum character length of a title.
+             * - `summaryLength` The maximum character length of a summary.
+             * - `fetch`         A function overriding the feed type's `fetch` method.
+             * - `getItems`      A function overriding the feed type's `getItems` method.
+             * - `parseItem`     A function overriding the feed type's `parseItem` method.
              *
              * See `feedTypes` for type-specific options.
              * @type {Array<Object>}

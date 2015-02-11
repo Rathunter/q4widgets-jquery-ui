@@ -57,16 +57,16 @@
              *
              * Valid sizes:
              *
-             * - Square:        75 x 75
-             * - LargeSquare:  150 x 150
-             * - Thumbnail:    100 x 75
-             * - Small:        240 x 180
-             * - Small320:     320 x 240
-             * - Medium:       500 x 375
-             * - Medium640:    640 x 480
-             * - Medium800:    800 x 600
-             * - Large:       1024 x 768
-             * - Original:    2400 x 1800
+             * - `Square`        75 x 75
+             * - `LargeSquare`  150 x 150
+             * - `Thumbnail`    100 x 75
+             * - `Small`        240 x 180
+             * - `Small320`     320 x 240
+             * - `Medium`       500 x 375
+             * - `Medium640`    640 x 480
+             * - `Medium800`    800 x 600
+             * - `Large`       1024 x 768
+             * - `Original`    2400 x 1800
              * @example
              * '{{#albums}}' +
              *     '<h3>{{albumTitle}}</h3>' +

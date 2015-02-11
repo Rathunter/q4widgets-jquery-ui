@@ -34,16 +34,17 @@
             summaryLength: 500,
             /**
              * A Mustache template for the widget, with these tags:
-             * - {{title}} The title of the feed.
-             * - {{url}}   The URL of the feed.
-             * - {{date}}  The last updated date of the feed.
-             * - {{items}} An array of items with these tags:
-             *     - {{title}}     The item's title.
-             *     - {{url}}       The item's URL.
-             *     - {{date}}      The item's publication date.
-             *     - {{body}}      The item's body content.
-             *     - {{summary}}   The plaintext body content, truncated to `summaryLength`.
-             *     - {{firstLine}} The plaintext body content, up to the first line break.
+             *
+             * - `{{title}}` The title of the feed.
+             * - `{{url}} `  The URL of the feed.
+             * - `{{date}}`  The last updated date of the feed.
+             * - `{{items}}` An array of items with these tags:
+             *     - `{{title}}`     The item's title.
+             *     - `{{url}}`       The item's URL.
+             *     - `{{date}}`      The item's publication date.
+             *     - `{{body}}`      The item's body content.
+             *     - `{{summary}}`   The plaintext body content, truncated to `summaryLength`.
+             *     - `{{firstLine}}` The plaintext body content, up to the first line break.
              * @type {string}
              * @example
              * '<header>' +

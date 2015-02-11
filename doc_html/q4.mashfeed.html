@@ -27,6 +27,7 @@
         <a href='q4.pager.html'>q4.pager</a>
         <a href='q4.presentations.html'>q4.presentations</a>
         <a href='q4.rssfeed.html'>q4.rssfeed</a>
+        <a href='q4.sec.html'>q4.sec</a>
         <a href='q4.timeline.html'>q4.timeline</a>
         <a href='q4.treemenu.html'>q4.treemenu</a>
     </nav>
@@ -128,16 +129,16 @@ chronological list.</p>
 for that feed. Some feed options override global options.
 Valid options for all feed types are:</p>
 <ul>
-<li>name: The name of the feed.</li>
-<li>type: The type, as listed in <code>feedTypes</code> (e.g. <code>rss</code>, <code>youtube</code>).</li>
-<li>template: A Mustache template for a single feed item
+<li><code>name</code>          The name of the feed.</li>
+<li><code>type</code>          The type, as listed in <code>feedTypes</code> (e.g. <code>rss</code>, <code>youtube</code>).</li>
+<li><code>template</code>      A Mustache template for a single feed item
   (overrides the default template).</li>
-<li>limit: The maximum number of items from this feed.</li>
-<li>titleLength: The maximum character length of a title.</li>
-<li>summaryLength: The maximum character length of a summary.</li>
-<li>fetch: A function overriding the feed type's <code>fetch</code> method.</li>
-<li>getItems: A function overriding the feed type's <code>getItems</code> method.</li>
-<li>parseItem: A function overriding the feed type's <code>parseItem</code> method.</li>
+<li><code>limit</code>         The maximum number of items from this feed.</li>
+<li><code>titleLength</code>   The maximum character length of a title.</li>
+<li><code>summaryLength</code> The maximum character length of a summary.</li>
+<li><code>fetch</code>         A function overriding the feed type's <code>fetch</code> method.</li>
+<li><code>getItems</code>      A function overriding the feed type's <code>getItems</code> method.</li>
+<li><code>parseItem</code>     A function overriding the feed type's <code>parseItem</code> method.</li>
 </ul>
 <p>See <code>feedTypes</code> for type-specific options.</p>
             <dl>

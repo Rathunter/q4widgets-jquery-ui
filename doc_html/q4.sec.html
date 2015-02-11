@@ -33,14 +33,14 @@
     </nav>
     <main>
 <header>
-    <h1>q4.events</h1>
-    <p>Fetches and displays events from the Q4 private API.</p>
+    <h1>q4.sec</h1>
+    <p>Fetches and displays SEC filings from the Q4 private API.</p>
 </header>
 
 <section id='details'>
     <dl>
         <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L620' target='_blank'>q4.api.js</a>, line 620</dd>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L951' target='_blank'>q4.api.js</a>, line 951</dd>
         <dt>Script link</dt>
             <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.2.0.min.js' target='_blank'>q4.api.1.2.0.min.js</a></dd>
         <dt>Extends</dt>
@@ -55,10 +55,46 @@
     <h1>Options</h1>
     <ul>
     <li>
-        <h1>sortAscending</h1>
+        <h1>exchange</h1>
+        <span>string</span>
+        <div>
+            <p>The exchange of the stock symbol to look up.</p>
+            <dl>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>symbol</h1>
+        <span>string</span>
+        <div>
+            <p>The stock symbol to look up.</p>
+            <dl>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>filingTypes</h1>
+        <span>Array&lt;number&gt;</span>
+        <div>
+            <p>An array of numeric filing types to filter by, or an empty list to skip filtering.</p>
+            <dl>
+                
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>excludeNoDocuments</h1>
         <span>boolean</span>
         <div>
-            <p>Whether to sort the events in ascending chronological order.</p>
+            <p>Whether to exclude filings that have no associated documents.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>

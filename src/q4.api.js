@@ -1,8 +1,9 @@
 (function ($) {
     /**
      * Base widget for accessing Q4 private API data.
+     * Not meant to be used directly; instead use any of the widgets derived from this one.
      * @class q4.api
-     * @version 1.1.0
+     * @version 1.2.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires Mustache.js
@@ -428,15 +429,15 @@
             }
         },
 
-        _parseItem: function (item) {
+        _parseItem: function (rawItem) {
             return {};
         },
 
-        _parseItems: function (items) {
+        _parseItems: function (rawItems) {
             var _ = this;
 
-            return $.map(items, function (item) {
-                return _._parseItem(item);
+            return $.map(rawItems, function (rawItem) {
+                return _._parseItem(rawItem);
             });
         },
 
@@ -940,6 +941,67 @@
                 docSize: result.DocumentFileSize,
                 docType: result.DocumentFileType,
                 thumb: result.ThumbnailPath || o.defaultThumb
+            };
+        }
+    });
+
+
+    /* SEC Filing Widget */
+
+    /**
+     * Fetches and displays SEC filings from the Q4 private API.
+     * @class q4.sec
+     * @extends q4.api
+     */
+    $.widget('q4.sec', $.q4.api, /** @lends q4.sec */ {
+        options: {
+            /**
+             * The exchange of the stock symbol to look up.
+             * @type {string}
+             */
+            exchange: '',
+            /**
+             * The stock symbol to look up.
+             * @type {string}
+             */
+            symbol: '',
+            /**
+             * An array of numeric filing types to filter by, or an empty list to skip filtering.
+             * @type {Array<number>}
+             */
+            filingTypes: [],
+            /**
+             * Whether to exclude filings that have no associated documents.
+             * @type {boolean}
+             * @default
+             */
+            excludeNoDocuments: false,
+        },
+
+        dataUrl: '/Services/SECFilingService.svc/GetEdgarFilingList',
+        yearsUrl: '/Services/SECFilingService.svc/GetEdgarFilingYearList',
+        itemsResultField: 'GetEdgarFilingListResult',
+        yearsResultField: 'GetEdgarFilingYearListResult',
+        dateField: 'FilingDate',
+
+        _buildParams: function () {
+            var o = this.options;
+
+            return $.extend(this._super(), {
+                exchange: o.exchange,
+                symbol: o.symbol,
+                formGroupIdList: o.filingTypes.join(',')
+            });
+        },
+
+        _parseItem: function (result) {
+            var o = this.options;
+
+            return {
+                title: this._truncate(result.FilingDescription, o.titleLength),
+                url: result.LinkToDetailPage,
+                date: this._formatDate(result.FilingDate),
+                agent: result.FilingAgentName
             };
         }
     });

@@ -105,6 +105,7 @@
             bodyItemTemplate: '',
             /**
              * A nested array of menu item objects, each with these properties:
+             *
              * - `title`   The title to display in the menu.
              * - `content` The body content to display when an item is clicked.
              * - `items`   An optional array of child menu items.

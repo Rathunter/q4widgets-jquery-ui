@@ -38,15 +38,16 @@
              * (e.g. countries or states), which are grouped into categories.
              * Each category has a colour, and an entry in that view's legend.
              * View objects have these properties:
-             * - label: The name of the view.
-             * - cssClass: An optional class to add to the trigger.
-             * - legend: Whether to display a legend. Defaults to true.
-             * - text: Some optional text to display.
-             * - categories: An array of category objects with these properties:
-             *     - label: The name of the category.
-             *     - colour: The CSS colour to use for elements in this category.
-             *     - elements: An array of map elements that are in this category.
-             *     - cssClass: An optional class to add to the legend item.
+             *
+             * - `label`    The name of the view.
+             * - `cssClass` An optional class to add to the trigger.
+             * - `legend`   Whether to display a legend. Defaults to true.
+             * - `text`     Some optional text to display.
+             * - `categories`   An array of category objects with these properties:
+             *     - `label`    The name of the category.
+             *     - `colour`   The CSS colour to use for elements in this category.
+             *     - `elements` An array of map elements that are in this category.
+             *     - `cssClass` An optional class to add to the legend item.
              * @type {Array<Object>}
              */
             views: [],

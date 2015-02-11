@@ -11,6 +11,7 @@
         options: {
             /**
              * An array of event groups. Each group has these properties:
+             *
              * - `heading` The heading for the category.
              * - `text`    Text to display for the category.
              * - `items`   An array of items with these properties:

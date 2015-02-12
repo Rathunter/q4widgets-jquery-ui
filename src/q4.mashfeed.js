@@ -1,9 +1,8 @@
 (function ($) {
     /**
-     * Grab a number of content feeds and mix them together into a single
-     * chronological list.
+     * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.0.0
+     * @version 1.0.1
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js
@@ -257,9 +256,12 @@
 
             // when all feeds have been fetched, parse the results
             return $.when.apply($, fetches).done(function () {
+                // jquery returns an array of responses only if multiple promises were passed
+                var responses = fetches.length > 1 ? arguments : [arguments];
+
                 // iterate through the ajax calls
-                $.each(arguments, function (i, arg) {
-                    var data = arg[0],
+                $.each(responses, function (i, jqxhr) {
+                    var data = jqxhr[0],
                         feed = o.feeds[i],
                         feedType = _.feedTypes[feed.type],
                         // call the custom getItems method if available

@@ -106,7 +106,9 @@
 
         _sliceSummary: function (text) {
             var limit = this.options.summaryLength;
-            return limit && text.length > limit ? text.slice(0, limit) + '...' : text;
+            if (!limit || text.length < limit) return text;
+            // truncate and return up to the last space to ensure whole words
+            return text.slice(0, limit).split(/\s+/).slice(0, -1).join(' ') + '...';
         },
 
         _parseXMLFeed: function (data) {

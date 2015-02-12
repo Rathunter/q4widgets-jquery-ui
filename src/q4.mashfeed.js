@@ -301,8 +301,10 @@
             // normalize the filter list
             if (!$.isArray(o.filter)) o.filter = [o.filter];
 
-            function truncate(text, length) {
-                return length && text.length > length ? text.slice(0, length) + '...' : text;
+            function truncate(text, limit) {
+                if (!limit || text.length < limit) return text;
+                // truncate and return up to the last space to ensure whole words
+                return text.slice(0, limit).split(/\s+/).slice(0, -1).join(' ') + '...';
             }
 
             $.each(this.items, function (i, item) {

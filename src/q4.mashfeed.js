@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.0.1
+     * @version 1.0.2
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js
@@ -271,15 +271,17 @@
                         );
 
                     // limit the array to the maximum number of entries
-                    if (o.limit > 0) feedItems = feedItems.slice(0, o.limit);
-                    if (feed.limit > 0) feedItems = feedItems.slice(0, feed.limit);
+                    if (o.limit) feedItems = feedItems.slice(0, o.limit);
+                    if (feed.limit) feedItems = feedItems.slice(0, feed.limit);
 
-                    // get the formatted item, and add a reference to the feed
+                    // add this feed's items to the aggregated list
                     $.each(feedItems, function (i, feedItem) {
+                        // add a reference to the feed
                         _.items.push($.extend({
                             feed: feed
+                        },
                         // call the custom parseItem method if available
-                        }, (typeof feed.parseItem === 'function' ?
+                        (typeof feed.parseItem === 'function' ?
                             feed.parseItem.call(_, feedItem) :
                             feedType.parseItem.call(_, feedItem))
                         ));
@@ -301,35 +303,34 @@
             // normalize the filter list
             if (!$.isArray(o.filter)) o.filter = [o.filter];
 
+            // if filter list isn't empty, filter the items
+            var items = $.grep(this.items, function (item) {
+                return !o.filter.length || $.inArray(item.feed.name, o.filter) > -1;
+            });
+
             function truncate(text, limit) {
                 if (!limit || text.length < limit) return text;
                 // truncate and return up to the last space to ensure whole words
                 return text.slice(0, limit).split(/\s+/).slice(0, -1).join(' ') + '...';
             }
 
-            $.each(this.items, function (i, item) {
-                // skip this item if the filter list isn't empty and this feed isn't in it
-                if (o.filter.length && $.inArray(item.feed.name, o.filter) == -1) return true;
-
-                // check if we've hit the maximum number of items
-                if (o.limit > 0 && count == o.limit) return false;
-                count++;
-
-                // some final formatting
+            $.each(o.limit ? items.slice(0, o.limit) : items, function (i, item) {
+                // some final formatting - use a new object so we don't overwrite the original
+                var formatted = {};
                 if ('title' in item) {
-                    item.title = truncate(item.title, item.feed.titleLength || o.titleLength);
+                    formatted.title = truncate(item.title, item.feed.titleLength || o.titleLength);
                 }
                 if ('date' in item) {
-                    item.date = o.fromNow ? item.date.fromNow() : item.date.format(o.dateFormat);
+                    formatted.date = o.fromNow ? item.date.fromNow() : item.date.format(o.dateFormat);
                 }
                 if ('content' in item) {
                     var text = $.trim($('<div>').html(item.content).text());
-                    item.summary = truncate(text, item.feed.summaryLength || o.summaryLength);
-                    item.firstLine = text.split('\n')[0];
+                    formatted.summary = truncate(text, item.feed.summaryLength || o.summaryLength);
+                    formatted.firstLine = text.split('\n')[0];
                 }
 
                 // render item
-                $e.append(Mustache.render(item.feed.template || o.template, item));
+                $e.append(Mustache.render(item.feed.template || o.template, $.extend({}, item, formatted)));
             });
 
             this._trigger('complete');

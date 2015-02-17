@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.0.2
+     * @version 1.1.0
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js
@@ -88,15 +88,15 @@
         /**
          * A hash of feed types, indexed by id.
          * Each is an object with the following properties:
-         * - fetch: A function that takes a feed object and returns
-         *     an AJAX call to the feed.
-         * - getItems: A function that takes raw feed data and returns the
-         *     array of raw items found in that feed.
-         * - parseItem: A function that takes a raw feed item and returns
-         *     a formatted item object for the template.
-         * Note that some of these (twitter, facebook, youtube) are pretty
-         * tightly coupled to specific Q4 APIs, but others (rss, custom_jsonp)
-         * are more generic and should be more generally useful.
+         *
+         * - `fetch`     A function that takes a feed object and returns an AJAX call to the feed.
+         * - `getItems`  A function that takes raw feed data and returns an array of raw items.
+         * - `parseItem` A function that takes a raw feed item and formats it for the template.
+         *
+         * The Twitter and Facebook feed types are designed to parse a JSON feed
+         * proxied from those sites' APIs. YouTube and StockTwits call the APIs directly.
+         * The RSS and custom_jsonp feed types are more generic,
+         * and useful when one or more of their functions are overridden.
          */
         feedTypes: {
             /* Options for rss:
@@ -146,6 +146,31 @@
                 }
             },
 
+            /**
+             * Options for StockTwits:
+             * - symbol: Stock symbol / "cashtag" to look up.
+             */
+            stocktwits: {
+                fetch: function (feed) {
+                    return $.ajax({
+                        url: '//api.stocktwits.com/api/2/streams/symbol/' + feed.symbol + '.json',
+                        dataType: 'jsonp'
+                    });
+                },
+                getItems: function (data) {
+                    return data.messages;
+                },
+                parseItem: function (item) {
+                    return {
+                        user: item.user.username,
+                        username: item.user.name,
+                        content: item.body,
+                        date: moment(item.created_at),
+                        id: item.id
+                    };
+                }
+            },
+
             /* Options for facebook:
              *   url: The url of the JSON feed.
              */
@@ -157,15 +182,16 @@
                     });
                 },
                 getItems: function (data) {
-                    return data.entries;
+                    return data;
                 },
                 parseItem: function (item) {
                     return {
-                        title: item.title,
-                        url: item.alternate,
+                        url: item.link,
                         id: item.id,
-                        date: moment(item.published),
-                        content: item.text
+                        date: moment(item.created_time),
+                        type: item.type,
+                        content: item.message,
+                        thumb: item.picture
                     };
                 }
             },
@@ -191,7 +217,7 @@
                         id: item.id.$t.split('/').pop(),
                         date: moment(item.updated.$t),
                         content: item.content.$t,
-                        thumb: $(item.content.$t).find('img').eq(0).attr('src')
+                        thumb: $(item.content.$t).find('img').first().attr('src')
                     };
                 }
             },

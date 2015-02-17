@@ -139,7 +139,11 @@
                     return {
                         user: item.user.screen_name,
                         username: item.user.name,
-                        content: item.text,
+                        content: (item.text
+                            .replace(/https?:\/\/[\S]+/gi, '<a href="$&" target="_blank">$&</a>')
+                            .replace(/#(\w*)/g, '<a href="//twitter.com/hashtag/$1" target="_blank">#$1</a>')
+                            .replace(/@(\w*)/g, '<a href="//twitter.com/$1" target="_blank">@$1</a>')
+                            ),
                         date: moment(item.created_at, 'ddd MMM DD hh:mm:ss ZZ YYYY'),
                         id: item.id_str
                     };

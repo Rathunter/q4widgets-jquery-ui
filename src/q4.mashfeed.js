@@ -105,7 +105,7 @@
             rss: {
                 fetch: function (feed) {
                     return $.ajax({
-                        url: '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=' + encodeURIComponent(feed.url),
+                        url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=' + encodeURIComponent(feed.url),
                         dataType: 'jsonp'
                     });
                 },
@@ -141,8 +141,8 @@
                         username: item.user.name,
                         content: (item.text
                             .replace(/https?:\/\/[\S]+/gi, '<a href="$&" target="_blank">$&</a>')
-                            .replace(/#(\w*)/g, '<a href="//twitter.com/hashtag/$1" target="_blank">#$1</a>')
-                            .replace(/@(\w*)/g, '<a href="//twitter.com/$1" target="_blank">@$1</a>')
+                            .replace(/#(\w*)/g, '<a href="https://twitter.com/hashtag/$1" target="_blank">#$1</a>')
+                            .replace(/@(\w*)/g, '<a href="https://twitter.com/$1" target="_blank">@$1</a>')
                             ),
                         date: moment(item.created_at, 'ddd MMM DD hh:mm:ss ZZ YYYY'),
                         id: item.id_str
@@ -157,7 +157,7 @@
             stocktwits: {
                 fetch: function (feed) {
                     return $.ajax({
-                        url: '//api.stocktwits.com/api/2/streams/symbol/' + feed.symbol + '.json',
+                        url: 'https://api.stocktwits.com/api/2/streams/symbol/' + feed.symbol + '.json',
                         dataType: 'jsonp'
                     });
                 },
@@ -207,7 +207,7 @@
             youtube: {
                 fetch: function (feed) {
                     return $.ajax({
-                        url: '//gdata.youtube.com/feeds/users/' + feed.username + '/uploads?alt=json-in-script&callback=?',
+                        url: 'https://gdata.youtube.com/feeds/users/' + feed.username + '/uploads?alt=json-in-script&callback=?',
                         dataType: 'jsonp'
                     });
                 },

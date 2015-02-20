@@ -2,7 +2,7 @@
     /**
      * An interactive calendar with links to events.
      * @class q4.calendar
-     * @version 1.0.1
+     * @version 1.1.0
      * @example
      * $("#clndr").calendar({
      *     news: true,
@@ -11,9 +11,9 @@
      *     slideshare: "Q4WebSystems"
      * });
      * @author jasonm@q4websystems.com
-     * @requires CLNDR.js
-     * @requires Moment.js
      * @requires Underscore.js
+     * @requires Moment.js
+     * @requires CLNDR.js
      */
     $.widget("q4.calendar", /** @lends q4.calendar */ {
         options: {
@@ -280,28 +280,11 @@
         myCalendar.addEvents(additionalEventsArray);
         */
         _create: function() {
-            var inst = this;
-
             $.ajaxSetup({ cache: true });
-
-            $.when(
-                $.getScript("//q4widgets.q4web.com/Calendar/js/underscore.js"),
-                $.getScript("//q4widgets.q4web.com/Calendar/js/moment.js"),
-                $.getScript("//q4widgets.q4web.com/Calendar/js/clndr.js"),
-                $.Deferred(function(deferred){
-                    $(deferred.resolve);
-                })
-            ).done(function(){
-                inst.loaded = true;
-                inst.callClndr();
-            });
         },
 
         _init: function(){
-            var inst = this;
-
-            if (inst.loaded)
-                inst.callClndr();
+            this.callClndr();
         },
 
         publicEventParams: function() {

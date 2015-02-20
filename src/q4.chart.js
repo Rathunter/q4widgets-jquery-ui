@@ -2,7 +2,7 @@
     /**
      * A preconfigured stock chart, using the Highstock plugin.
      * @class q4.chart
-     * @version 1.0.0
+     * @version 1.1.0
      * @author jasonm@q4websystems.com
      * @author marcusk@q4websystems.com
      * @requires Highstock
@@ -20,7 +20,7 @@
              * @type {boolean}
              * @default
              */
-            usePublic: true,
+            usePublic: false,
             /**
              * If `usePublic` is `true`, the API key to use for public feeds.
              * @type {string}
@@ -42,6 +42,12 @@
              * @default
              */
             lockStock: false,
+            /**
+             * Whether to show the legend.
+             * @type {boolean}
+             * @default
+             */
+            legend: true,
             /**
              * Whether to show the stock quote in the chart legend.
              * @type {boolean}
@@ -145,13 +151,43 @@
              * @type {Object}
              * @default
              */
-            highstock: {
+            highstockOpts: {},
+            /**
+             * A set of Highcharts configuration options.
+             * @type {Object}
+             * @default
+             */
+            highchartsOpts: {},
+            /**
+             * A callback that is fired after the chart is rendered.
+             * @type {function}
+             * @param {Event} [event] The event object.
+             */
+            onComplete: function () {}
+        },
+
+        startDate: null,
+        chart: null,
+
+        _setDefaults: function () {
+            var _ = this,
+                o = this.options;
+
+            // general Highcharts options
+            this.highchartsDefaults = {
+                global: {
+                    useUTC: false
+                }
+            };
+
+            // general Highstock options for the constructor
+            this.highstockDefaults = {
                 chart: {
                     height: 400,
-                    marginTop: 60
+                    marginTop: o.legend ? 60 : 0
                 },
                 legend: {
-                    enabled: true,
+                    enabled: o.legend,
                     align: 'left',
                     verticalAlign: 'top',
                     floating: true
@@ -168,27 +204,85 @@
                     text: "Q4 Web Systems",
                     href: "http://www.q4websystems.com"
                 }
-            },
-            /**
-             * A set of Highcharts configuration options.
-             * @type {Object}
-             * @default
-             */
-            highchartsOpts: {
-                global: {
-                    useUTC: false
-                }
-            },
-            /**
-             * A callback that is fired after the chart is rendered.
-             * @type {function}
-             * @param {Event} [event] The event object.
-             */
-            onComplete: function () {}
-        },
+            };
 
-        startDate: null,
-        chart: null,
+            // options for each stock quote series
+            this.stockDefaults = {
+                type: 'areaspline',
+                showInLegend: o.showSymbolInLegend,
+                turboThreshold: 0,
+                tooltip: {
+                    valueDecimals: 2
+                },
+                events: {
+                    legendItemClick: function () {
+                        _._toggleStock(this);
+                    }
+                }
+            };
+
+            // options for each stock quote's volume series
+            this.volumeDefaults = {
+                type: 'column',
+                turboThreshold: 0,
+                showInLegend: false,
+                yAxis: 1
+            };
+
+            // options for news flags
+            this.newsDefaults = {
+                type: 'flags',
+                name: 'News',
+                id: 'news',
+                onSeries: 'price0',
+                shape: 'circlepin',
+                width: 3,
+                height: 3,
+                y: -10,
+                turboThreshold: 0,
+                visible: o.newsOnLoad,
+                point: {
+                    events: {
+                        click: function () {
+                            // open news url on click
+                            window.location = this.url;
+                        }
+                    }
+                },
+                events: {
+                    legendItemClick: function () {
+                        _._toggleFlags(this);
+                    }
+                }
+            };
+
+            // options for event flags
+            this.eventsDefaults = {
+                type: 'flags',
+                name: 'Events',
+                id: 'events',
+                onSeries: 'price0',
+                shape: 'circlepin',
+                width: 3,
+                height: 3,
+                y: -25,
+                turboThreshold: 0,
+                visible: o.eventsOnLoad,
+                point: {
+                    events: {
+                        click: function () {
+                            // open event url on click
+                            window.location = this.url;
+                        }
+                    }
+                },
+                events: {
+                    legendItemClick: function () {
+                        _._toggleFlags(this);
+                    }
+                }
+            };
+        },
 
         _create: function () {
             var _ = this,
@@ -198,9 +292,7 @@
             // strip trailing slash from domain
             o.url = o.url.replace(/\/$/, '');
 
-            Highcharts.setOptions(o.highchartsOpts);
-
-            // Request stock data for the first series before chart is initialized
+            // request stock data for the first series before chart is initialized
             this._getStockData(o.stocks[0]).done(function (data) {
                 if (!data.GetStockQuoteHistoricalListResult.length) {
                     $e.html('There is currently no stock data, please check back later.');
@@ -219,20 +311,25 @@
             // this should be a 2-tuple of stock price and volume data
             var stockData = this._parseStockData(data);
 
+            // initialize and set options
+            this._setDefaults();
+            Highcharts.setOptions($.extend({}, this.highchartsDefaults, o.highchartsOpts));
+            var highstockOpts = $.extend({}, this.highstockDefaults, o.highstockOpts);
+
             // build the series objects for stock price, volume, news, events
-            o.highstock.series = this._buildSeries();
+            highstockOpts.series = this._buildSeries();
 
             // add the first symbol's stock price data as the first series
-            o.highstock.series[0].data = stockData[0];
+            highstockOpts.series[0].data = stockData[0];
             if (o.volume) {
                 // add the first symbol's volume data as the second series
-                o.highstock.series[1].data = stockData[1];
+                highstockOpts.series[1].data = stockData[1];
                 // add a second y-axis
-                o.highstock.yAxis = [o.highstock.yAxis || {}, {}];
+                highstockOpts.yAxis = [highstockOpts.yAxis || {}, {}];
             }
 
             // initialize Highstock
-            this.chart = $e.highcharts('StockChart', o.highstock).highcharts();
+            this.chart = $e.highcharts('StockChart', highstockOpts).highcharts();
 
             if (o.volume) {
                 // rescale the volume y-axis according to volumeHeight
@@ -256,65 +353,6 @@
             this._trigger('onComplete');
         },
 
-        _toggleStock: function (series) {
-            var _ = this,
-                o = this.options,
-                i = o.volume ? series._i / 2 : series._i;
-
-            if (o.lockStock) return false;
-
-            // Load the stock price/volume data if it hasn't been already
-            if (!series.data.length) {
-                this.chart.showLoading();
-                this._getStockData(o.stocks[i]).done(function (data) {
-                    // this should be a 2-tuple of stock price and volume data
-                    var stockData = _._parseStockData(data);
-
-                    // load data into this symbol's price/volume series
-                    series.setData(stockData[0]);
-                    if (o.volume) {
-                        _.chart.get('volume' + i).setData(stockData[1]);
-                    }
-
-                    _.chart.hideLoading();
-                });
-
-            } else {
-                // Toggle the volume chart along with the stock price chart
-                if (o.volume) {
-                    var volSeries = this.chart.get('volume' + i);
-                    if (volSeries.visible) {
-                        volSeries.hide();
-                    } else {
-                        volSeries.show();
-                    }
-                }
-            }
-        },
-
-        _toggleFlags: function (series) {
-            var _ = this,
-                o = this.options;
-
-            // Load the news/event data if it hasn't been already
-            if (!series.data.length) {
-                this.chart.showLoading();
-
-                if (series.options.id == 'news') {
-                    this._getNewsData().done(function (data) {
-                        _.chart.get('news').setData(_._parseNewsData(data));
-                        _.chart.hideLoading();
-                    });
-
-                } else {
-                    this._getEventsData().done(function (data) {
-                        _.chart.get('events').setData(_._parseEventsData(data));
-                        _.chart.hideLoading();
-                    });
-                }
-            }
-        },
-
         _buildSeries: function () {
             var _ = this,
                 o = _.options,
@@ -329,94 +367,25 @@
                     symbol = exsymbol[1],
                     name = stock.length > 1 && stock[1] ? stock[1] : stock[0];
 
-                // Stock Price Series
-                series.push($.extend({
-                    type: 'areaspline',
+                // stock price series
+                series.push($.extend({}, _.stockDefaults, {
                     name: name,
                     id: 'price' + i,
-                    visible: i === 0,
-                    showInLegend: o.showSymbolInLegend,
-                    turboThreshold: 0,
-                    tooltip: {
-                        valueDecimals: 2
-                    },
-                    events: {
-                        legendItemClick: function () {
-                            _._toggleStock(this);
-                        }
-                    }
+                    visible: i == 0,
                 }, o.stockOpts));
 
-                // Volume Series
-                if (o.volume) {
-                    series.push($.extend({
-                        type: 'column',
-                        name: exchange + ':Volume',
-                        id: 'volume' + i,
-                        turboThreshold: 0,
-                        showInLegend: false,
-                        yAxis: 1
-                    }, o.volumeOpts));
-                }
+                // volume series
+                if (o.volume) series.push($.extend({}, _.volumeDefaults, {
+                    name: exchange + ':Volume',
+                    id: 'volume' + i
+                }, o.volumeOpts));
             });
 
-            // News Series
-            if (o.news) {
-                series.push($.extend({
-                    type: 'flags',
-                    name: 'News',
-                    id: 'news',
-                    onSeries: 'price0',
-                    shape: 'circlepin',
-                    width: 3,
-                    height: 3,
-                    y: -10,
-                    turboThreshold: 0,
-                    visible: o.newsOnLoad,
-                    point: {
-                        events: {
-                            click: function () {
-                                // open news url on click
-                                window.location = this.url;
-                            }
-                        }
-                    },
-                    events: {
-                        legendItemClick: function () {
-                            _._toggleFlags(this);
-                        }
-                    }
-                }, o.newsOpts));
-            }
+            // news series
+            if (o.news) series.push($.extend({}, this.newsDefaults, o.newsOpts));
 
-            // Events Series
-            if (o.events) {
-                series.push($.extend({
-                    type: 'flags',
-                    name: 'Events',
-                    id: 'events',
-                    onSeries: 'price0',
-                    shape: 'circlepin',
-                    width: 3,
-                    height: 3,
-                    y: -25,
-                    turboThreshold: 0,
-                    visible: o.eventsOnLoad,
-                    point: {
-                        events: {
-                            click: function () {
-                                // open event url on click
-                                window.location = this.url;
-                            }
-                        }
-                    },
-                    events: {
-                        legendItemClick: function () {
-                            _._toggleFlags(this);
-                        }
-                    }
-                }, o.eventsOpts));
-            }
+            // events series
+            if (o.events) series.push($.extend({}, this.eventsDefaults, o.eventsOpts));
 
             return series;
         },
@@ -621,6 +590,65 @@
                 if (a.x > b.x) return 1;
                 return 0;
             });
+        },
+
+        _toggleStock: function (series) {
+            var _ = this,
+                o = this.options,
+                i = o.volume ? series._i / 2 : series._i;
+
+            if (o.lockStock) return false;
+
+            // Load the stock price/volume data if it hasn't been already
+            if (!series.data.length) {
+                this.chart.showLoading();
+                this._getStockData(o.stocks[i]).done(function (data) {
+                    // this should be a 2-tuple of stock price and volume data
+                    var stockData = _._parseStockData(data);
+
+                    // load data into this symbol's price/volume series
+                    series.setData(stockData[0]);
+                    if (o.volume) {
+                        _.chart.get('volume' + i).setData(stockData[1]);
+                    }
+
+                    _.chart.hideLoading();
+                });
+
+            } else {
+                // Toggle the volume chart along with the stock price chart
+                if (o.volume) {
+                    var volSeries = this.chart.get('volume' + i);
+                    if (volSeries.visible) {
+                        volSeries.hide();
+                    } else {
+                        volSeries.show();
+                    }
+                }
+            }
+        },
+
+        _toggleFlags: function (series) {
+            var _ = this,
+                o = this.options;
+
+            // Load the news/event data if it hasn't been already
+            if (!series.data.length) {
+                this.chart.showLoading();
+
+                if (series.options.id == 'news') {
+                    this._getNewsData().done(function (data) {
+                        _.chart.get('news').setData(_._parseNewsData(data));
+                        _.chart.hideLoading();
+                    });
+
+                } else {
+                    this._getEventsData().done(function (data) {
+                        _.chart.get('events').setData(_._parseEventsData(data));
+                        _.chart.hideLoading();
+                    });
+                }
+            }
         }
     });
 })(jQuery);

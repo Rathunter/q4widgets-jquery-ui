@@ -33,7 +33,8 @@ section > ul > li:nth-child(2n+1) { background: #f8f8f8; }
 section > ul > li > h1 { float: left; margin: 0; font-size: 1rem; }
 section > ul > li > span { float: left; clear: left; color: #999; }
 section > ul > li > div { margin-left: 200px; }
-section > ul > li > div p { margin: 0 0 .5rem; }
+section > ul > li > div p,
+section > ul > li > div ul { margin: 0 0 .5rem; }
 section > ul > li > div dt { font-weight: normal; }
 section > ul > li > div dd { margin-left: 125px; }
 

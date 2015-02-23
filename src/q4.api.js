@@ -132,7 +132,77 @@
              */
             append: true,
             /**
-             * A Mustache.js template for the overall widget.
+             * A Mustache.js template for the overall widget. Uses the following tags:
+             *
+             * - `{{#years}}` An array of years for the navigation. Each year has these tags:
+             *
+             *   - `{{year}}`   The display label of the year (e.g. `"2015"`, `"All Years"`)
+             *   - `{{value}}`  The internal value of the year (e.g. `2015`, `-1`)
+             *   - `{{#items}}` An array of items for that year, with the same format as the
+             *       global items array.
+             * - `{{#items}}` An array of all items. Item tags for each type of widget
+             *     are as follows:
+             *
+             *   - *Events:*
+             *
+             *     - `{{title}}`    The title of the event.
+             *     - `{{url}}`      The URL of the details page.
+             *     - `{{date}}`     The starting date of the event.
+             *     - `{{endDate}}`  The ending date of the event.
+             *     - `{{timeZone}}` The timezone of the start/end dates.
+             *     - `{{location}}` The location of the event.
+             *     - `{{#tags}}`    An array of tags for this event.
+             *     - `{{body}}`     The body of the event details.
+             *     - `{{#docs}}`    An array of attached documents, with the following tags:
+             *
+             *       - `{{title}}`     The title of the document.
+             *       - `{{url}}`       The URL of the document.
+             *       - `{{type}}`      The type of document as specified in the CMS.
+             *       - `{{extension}}` The extension of the document file name.
+             *       - `{{size}}`      The size of the document file.
+             *   - *Financial reports:*
+             *
+             *     - `{{title}}` The title (i.e. subtype and year) of the financial report.
+             *     - `{{year}}`  The fiscal year of the financial report.
+             *     - `{{date}}`  The filing date of the financial report.
+             *     - `{{type}}`  The subtype of the report (e.g. `First Quarter`, `Annual Report`).
+             *     - `{{shortType}}` A shortened name for the financial report's subtype
+             *       (e.g. `Q1`, `Annual`). These can be customized with the `shortTypes` option.
+             *     - `{{coverUrl}}`  The URL of the cover image, if any.
+             *     - `{{#docs}}` An array of documents for this report, with these tags:
+             *
+             *       - `{{docTitle}}`    The title of the document.
+             *       - `{{docUrl}}`      The URL of the document file.
+             *       - `{{docCategory}}` The category of the document.
+             *       - `{{docSize}}`     The file size of the document.
+             *       - `{{docThumb}}`    The URL of the thumbnail image, if any.
+             *       - `{{docType}}`     The file type of the document.
+             *   - *Presentations:*
+             *
+             *     - `{{title}}`  The title of the presentation.
+             *     - `{{url}}`    The URL of the details page.
+             *     - `{{date}}`   The date of the presentation.
+             *     - `{{#tags}}`  An array of tags for this presentation.
+             *     - `{{body}}`   The body of the presentation details.
+             *     - `{{docUrl}}` The URL of the presentation document.
+             *   - *Press releases:*
+             *
+             *     - `{{title}}`   The title of the press release.
+             *     - `{{url}}`     The URL of the details page.
+             *     - `{{date}}`    The date of the press release.
+             *     - `{{#tags}}`   An array of tags for this press release.
+             *     - `{{body}}`    The body of the press release (truncated to `bodyLength`).
+             *     - `{{shortBody}}` The short body of the release (truncated to `shortBodyLength`).
+             *     - `{{docUrl}}`  The URL of the related document, if any.
+             *     - `{{docSize}}` The size of the related document, if any.
+             *     - `{{docType}}` The file type of the related document, if any.
+             *     - `{{thumb}}`   The URL of the thumbnail image, if any.
+             *   - *SEC filings:*
+             *
+             *     - `{{title}}` The title of the filing.
+             *     - `{{url}}`   The URL of the details page.
+             *     - `{{date}}`  The date of the filing.
+             *     - `{{agent}}` The name of the filing agent.
              * @type {string}
              * @example
              * '<ul class="years">' +
@@ -675,6 +745,7 @@
                 endDate: this._formatDate(result.EndDate),
                 timeZone: result.TimeZone,
                 location: result.Location,
+                tags: result.TagsList,
                 body: this._truncate(result.Body, o.bodyLength),
                 docs: $.map(result.Attachments, function (doc) {
                     return {

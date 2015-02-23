@@ -314,7 +314,96 @@ contents entirely.</p>
         <h1>template</h1>
         <span>string</span>
         <div>
-            <p>A Mustache.js template for the overall widget.</p>
+            <p>A Mustache.js template for the overall widget. Uses the following tags:</p>
+<ul>
+<li><p><code>{{#years}}</code> An array of years for the navigation. Each year has these tags:</p>
+<ul>
+<li><code>{{year}}</code>   The display label of the year (e.g. <code>&quot;2015&quot;</code>, <code>&quot;All Years&quot;</code>)</li>
+<li><code>{{value}}</code>  The internal value of the year (e.g. <code>2015</code>, <code>-1</code>)</li>
+<li><code>{{#items}}</code> An array of items for that year, with the same format as the
+  global items array.</li>
+</ul>
+</li>
+<li><p><code>{{#items}}</code> An array of all items. Item tags for each type of widget
+  are as follows:</p>
+<ul>
+<li><p><em>Events:</em></p>
+<ul>
+<li><code>{{title}}</code>    The title of the event.</li>
+<li><code>{{url}}</code>      The URL of the details page.</li>
+<li><code>{{date}}</code>     The starting date of the event.</li>
+<li><code>{{endDate}}</code>  The ending date of the event.</li>
+<li><code>{{timeZone}}</code> The timezone of the start/end dates.</li>
+<li><code>{{location}}</code> The location of the event.</li>
+<li><code>{{#tags}}</code>    An array of tags for this event.</li>
+<li><code>{{body}}</code>     The body of the event details.</li>
+<li><p><code>{{#docs}}</code>    An array of attached documents, with the following tags:</p>
+<ul>
+<li><code>{{title}}</code>     The title of the document.</li>
+<li><code>{{url}}</code>       The URL of the document.</li>
+<li><code>{{type}}</code>      The type of document as specified in the CMS.</li>
+<li><code>{{extension}}</code> The extension of the document file name.</li>
+<li><code>{{size}}</code>      The size of the document file.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>Financial reports:</em></p>
+<ul>
+<li><code>{{title}}</code> The title (i.e. subtype and year) of the financial report.</li>
+<li><code>{{year}}</code>  The fiscal year of the financial report.</li>
+<li><code>{{date}}</code>  The filing date of the financial report.</li>
+<li><code>{{type}}</code>  The subtype of the report (e.g. <code>First Quarter</code>, <code>Annual Report</code>).</li>
+<li><code>{{shortType}}</code> A shortened name for the financial report's subtype
+(e.g. <code>Q1</code>, <code>Annual</code>). These can be customized with the <code>shortTypes</code> option.</li>
+<li><code>{{coverUrl}}</code>  The URL of the cover image, if any.</li>
+<li><p><code>{{#docs}}</code> An array of documents for this report, with these tags:</p>
+<ul>
+<li><code>{{docTitle}}</code>    The title of the document.</li>
+<li><code>{{docUrl}}</code>      The URL of the document file.</li>
+<li><code>{{docCategory}}</code> The category of the document.</li>
+<li><code>{{docSize}}</code>     The file size of the document.</li>
+<li><code>{{docThumb}}</code>    The URL of the thumbnail image, if any.</li>
+<li><code>{{docType}}</code>     The file type of the document.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>Presentations:</em></p>
+<ul>
+<li><code>{{title}}</code>  The title of the presentation.</li>
+<li><code>{{url}}</code>    The URL of the details page.</li>
+<li><code>{{date}}</code>   The date of the presentation.</li>
+<li><code>{{#tags}}</code>  An array of tags for this presentation.</li>
+<li><code>{{body}}</code>   The body of the presentation details.</li>
+<li><code>{{docUrl}}</code> The URL of the presentation document.</li>
+</ul>
+</li>
+<li><p><em>Press releases:</em></p>
+<ul>
+<li><code>{{title}}</code>   The title of the press release.</li>
+<li><code>{{url}}</code>     The URL of the details page.</li>
+<li><code>{{date}}</code>    The date of the press release.</li>
+<li><code>{{#tags}}</code>   An array of tags for this press release.</li>
+<li><code>{{body}}</code>    The body of the press release (truncated to <code>bodyLength</code>).</li>
+<li><code>{{shortBody}}</code> The short body of the release (truncated to <code>shortBodyLength</code>).</li>
+<li><code>{{docUrl}}</code>  The URL of the related document, if any.</li>
+<li><code>{{docSize}}</code> The size of the related document, if any.</li>
+<li><code>{{docType}}</code> The file type of the related document, if any.</li>
+<li><code>{{thumb}}</code>   The URL of the thumbnail image, if any.</li>
+</ul>
+</li>
+<li><p><em>SEC filings:</em></p>
+<ul>
+<li><code>{{title}}</code> The title of the filing.</li>
+<li><code>{{url}}</code>   The URL of the details page.</li>
+<li><code>{{date}}</code>  The date of the filing.</li>
+<li><code>{{agent}}</code> The name of the filing agent.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
             <dl>
                 
                 

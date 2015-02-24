@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.1.0
+     * @version 1.1.1
      * @author marcusk@q4websystems.com
      * @requires Moment.js
      * @requires Mustache.js
@@ -145,7 +145,8 @@
                             .replace(/@(\w*)/g, '<a href="https://twitter.com/$1" target="_blank">@$1</a>')
                             ),
                         date: moment(item.created_at, 'ddd MMM DD hh:mm:ss ZZ YYYY'),
-                        id: item.id_str
+                        id: item.id_str,
+                        url: 'https://twitter.com/' + item.user.name + '/status/' + item.id_str
                     };
                 }
             },

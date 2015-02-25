@@ -1,417 +1,197 @@
 (function($) {
     /**
+     * Retrieves price and volume information for a stock on a specific date.
      * @class q4.historical
-     * @version 1.0.0
-     * @author jasonm@q4websystems.com
+     * @version 2.0.0
+     * @author marcusk@q4websystems.com
+     * @requires Mustache.js
      */
-    $.widget("q4.historical", /** @lends q4.historical */ {
+    $.widget('q4.historical', /** @lends q4.historical */ {
         options: {
             /**
-             * The client's symbol
-             * If this is left blank it will call an additional service and load this from the indices
-             */
-            symbol: '',
-            /**
-             * The exchange the client trades on
-             * If this is left blank it will call an additional service and load this from the indices
+             * The stock exchange to use.
+             * If this is not specified, the widget will look for `?Indice=EXCH:SYM` in the URL.
+             * @type {string}
              */
             exchange: '',
             /**
-             * markup to use between ajax calls
+             * The stock symbol to use.
+             * If this is not specified, the widget will look for `?Indice=EXCH:SYM` in the URL.
+             * @type {string}
              */
-            loading: '<img src="//q4widgets.q4web.com/historicalQuote/img/ajax-loader.gif" alt="loading..." />',
+            symbol: '',
             /**
-             * message to show if the date range was incorrect
+             * A date format string to use with jQuery UI's Datepicker.
+             * @type {string}
+             * @default
              */
-            invalidText: '<span>Invalid date range</span>',
+            dateFormat: 'M d, yy',
             /**
-             * message to show if no data is returned
+             * The earliest date that will be available as an option. Default is Jan 1, 1970.
+             * @type {Date}
+             * @type {string}
              */
-            noDataText: '<span>There is no data for the selected date.</span>',
+            startDate: null,
             /**
-             * If set to true a date range will be used (start date - end date)
+             * The latest date that will be available as an option. Default is the current day.
+             * @type {Date}
+             * @type {string}
              */
-            range: false,
+            endDate: null,
             /**
-             * The max number of items you want to load when a range is used. -1 will load 3000 items (12.5 years)
+             * A selector for the element to use as a datepicker. Usually an `<input>`.
+             * @type {string}
+             * @default
              */
-            maxItems: -1,
+            datepicker: 'input:first',
             /**
-             * Using jQuery UI's datepicker, this will configure the date format
+             * A set of options to pass directly to the datepicker constructor.
+             * @type {Object}
              */
-            dateFormat: 'mm/dd/yy',
-            selects: {
-                /**
-                 * This will define how many years are in the selecct. default is 10 years from current year (example: 2015-10)
-                 */
-                startYear: new Date().getFullYear() - 10,
-                /**
-                 * A simple class name for the look up button. This is set here because it's used inside the plugin
-                 */
-                btnCLs: 'lookup',
-                /**
-                 * This is the data used for creating the selects
-                 */
-                data: [
-                    {name: 'Jan', num: 1, days: 31},
-                    {name: 'Feb', num: 2, days: function(year){
-                        if ( new Date(year, 1, 29).getMonth() == 1 ){
-                            return 29;
-                        } else {
-                            return 28;
-                        }
-                    }},
-                    {name: 'Mar', num: 3, days: 31},
-                    {name: 'Apr', num: 4, days: 30},
-                    {name: 'May', num: 5, days: 31},
-                    {name: 'Jun', num: 6, days: 30},
-                    {name: 'Jul', num: 7, days: 31},
-                    {name: 'Aug', num: 8, days: 31},
-                    {name: 'Sep', num: 9, days: 30},
-                    {name: 'Oct', num: 10, days: 31},
-                    {name: 'Nov', num: 11, days: 30},
-                    {name: 'Dec', num: 12, days: 31}
-                ],
-                /**
-                 * Template for month select
-                 * TODO: Test as a <ul/>
-                 */
-                monthTpl:
-                '<select class="month">' +
-                    '{{#data}}' +
-                        '<option value="{{num}}">' +
-                                '{{name}}' +
-                        '</option>' +
-                    '{{/data}}' +
-                '</select>',
-                /**
-                 * fired when a user changes the month
-                 * @param {Object} this
-                 */
-                onMonthChange: function(inst){
-                    var o = inst.options,
-                        $select = o.range ? [inst.element.find('.stock-start select'), inst.element.find('.stock-end select')] : [inst.element.find('.stock-selects select')];
-
-                    $.each($select, function(i, selector){
-                        selector.not('.day').on('change', function(){
-                            var n = o.selects.data[ parseInt(selector.filter('.month').val()) - 1 ];
-
-                            if (n.days !== undefined && typeof(n.days) === 'function') {
-                                n = n.days( selector.filter('.year').val() );
-                            } else {
-                                n = n.days;
-                            }
-
-                            selector.filter('select.day').html(Mustache.render( o.selects.dayTpl, inst.buildArrayAdd( 1, n ) ));
-
-                            // A callback fired each time to select updates.
-
-                            if (inst.options.onSelectUpdate !== undefined && typeof(inst.options.onSelectUpdate) === 'function') {
-                                inst.options.onSelectUpdate();
-                            }
-                        });
-                    });
-                },
-                /**
-                 * Template for day select
-                 * TODO: Test as a <ul/>
-                 */
-                dayTpl:
-                '<select class="day">' +
-                    '{{#count}}' +
-                        '<option value="{{.}}">' +
-                                '{{.}}' +
-                        '</option>' +
-                    '{{/count}}' +
-                '</select>',
-                yearTpl:
-                /**
-                 * Template for year select
-                 * TODO: Test as a <ul/>
-                 */
-                '<select class="year">' +
-                    '{{#count}}' +
-                        '<option value="{{.}}">' +
-                                '{{.}}' +
-                        '</option>' +
-                    '{{/count}}' +
-                '</select>'
-            },
+            datepickerOpts: {},
             /**
-             * The parent class used for the returned data
+             * A selector for a trigger element that will perform the lookup when clicked.
+             * If this is not specified, the lookup will occur when the `datepicker` element's
+             * value changes.
+             * @type {string}
              */
-            stockTableClass: 'stock-table',
+            trigger: '',
             /**
-             * This template is used when range is set to true.
-             * @param {string} markup for month, day, year
+             * A selector for the container that will be filled with the lookup results.
+             * @type {string}
+             * @default
              */
-            rangeTpl: function(month, day, year){
-                return '<div class="stock-historical">' +
-                    '<div class="stock-selects">' +
-                        '<div class="stock-start">' +
-                            '<span class="text">Start Date:</span>' +
-                            month + day + year +
-                        '</div>' +
-                        '<div class="stock-end">' +
-                            '<span class="text">End Date:</span>' +
-                            month + day + year +
-                        '</div>' +
-                        '<button class="'+ this.selects.btnCLs +'">Look Up</button>' +
-                    '</div>' +
-                    '<div class="'+ this.stockTableClass +'">'+ this.loading +'</div>' +
-                '</div>';
-            },
+            quoteContainer: '.quote',
             /**
-             * This template is used when range is set to false.
-             * @param {string} markup for month, day, year
+             * A Mustache template used to render the lookup results in the quote container.
+             * The following tags are available:
+             *
+             * - `{{date}}`   The date of the historical stock quote.
+             * - `{{volume}}` The trading volume of the stock on that date.
+             * - `{{open}}`   The opening stock price on that date.
+             * - `{{close}}`  The closing stock price on that date.
+             * - `{{high}}`   The stock's highest trading price on that date.
+             * - `{{low}}`    The stock's lowest trading price on that date.
+             * @type {string}
+             * @example
+             * 'Date: {{date}}<br>' +
+             * 'Volume: {{volume}}<br>' +
+             * 'Open: {{open}}<br>' +
+             * 'Close: {{close}}<br>' +
+             * 'High: {{high}}<br>' +
+             * 'Low: {{low}}'
              */
-            moduleTpl: function(month, day, year){
-                return '<div class="stock-historical">' +
-                    '<div class="stock-selects">' +
-                        '<span class="text">Lookup Date</span>' +
-                        month + day + year +
-                        '<button class="'+ this.selects.btnCLs +'">Look Up</button>' +
-                    '</div>' +
-                    '<div class="'+ this.stockTableClass +'">'+ this.loading +'</div>' +
-                '</div>';
-            },
+            quoteTemplate: '',
             /**
-             * If you wish to add a non repeating header with your stockTpl. Example: could be used in a table layout with <tr><th>
+             * A message to display in the quote container in case no results were found.
+             * @type {string}
+             * @default
              */
-            stockHeader: '',
-            /**
-             * Template to use for returned stock data
-             */
-            stockTpl:
-            '<ul class="list-group">' +
-                '<li class="list-group-item"><span class="text">Date</span><span class="badge">{{Day}}</span></li>' +
-                '<li class="list-group-item"><span class="text">Day\'s High</span><span class="badge">{{High}}</span></li>' +
-                '<li class="list-group-item alt"><span class="text">Day\'s Low</span><span class="badge">{{Low}}</span></li>' +
-                '<li class="list-group-item"><span class="text">Volume</span><span class="badge">{{Volume}}</span></li>' +
-                '<li class="list-group-item alt"><span class="text">Open</span><span class="badge">{{Open}}</span></li>' +
-                '<li class="list-group-item"><span class="text">Closing Price</span><span class="badge">{{Last}}</span></li>' +
-            '</ul>',
-            /**
-             * a callback fired each time the historical ajax call completes
-             * @param {Object} data
-             */
-            onDataLoad: function(data){},
-            /**
-             * a callback fired after the html is generated
-             * @param {Object} this
-             */
-            onFirstLoad: function(inst){},
-            /**
-             * a simple callback with no arguments.
-             * fired anytime a select updates
-             */
-            onSelectUpdate: function(){},
-            /**
-             * @param {Object} this
-             * fired before each ajax call happens
-             */
-            beforeAjaxCall: function(inst){}
+            notFoundMessage: 'No stock data is available for this date.'
         },
 
-        _create: function(){
-            this.buildHTML();
-        },
-
-        _init: function(){
-            this.getHistoricalData();
-        },
-
-        _loaded: false,
-
-        addCommas: function(nStr) {
-            nStr += '';
-            x = nStr.split('.');
-            x1 = x[0];
-            x2 = x.length > 1 ? '.' + x[1] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
-        },
-
-        queryStringToObj: function(query){
-            var qryStringArr = query.split('&');
-            var obj = {}, paramvalue = '';
-            for(i=0; i<qryStringArr.length; i++){
-                paramvalue = qryStringArr[i].split('=');
-                obj[paramvalue[0]] = paramvalue[1];
-            }
-            return obj;
-        },
-
-        onRangeRefresh: function(date){
-            var _ = this, o = _.options,
-                $select = o.range ? [_.element.find('.stock-start'), _.element.find('.stock-end')] : [_.element.find('.stock-selects')];
-
-            _.element.find('button.' + o.selects.btnCLs).on('click', function(e){
-                var dates = [];
-                e.preventDefault();
-                $('.'+ _.options.stockTableClass).html(_.options.loading);
-
-                $.each($select, function(i, selector){
-                    dates.push( new Date( $(this).find('.month').val() +'/'+ $(this).find('.day').val() +'/'+ $(this).find('.year').val() ) );
-                });
-
-                if (o.range) {
-                    _.getHistoricalData('/Date('+ dates[0].setHours(0,0,0,0) +')/', '/Date('+ dates[1].setHours(1,0,0,0) +')/');
-                } else {
-                    _.getHistoricalData('/Date('+ dates[0].setHours(0,0,0,0) +')/', '/Date('+ dates[0].setHours(1,0,0,0) +')/');
-                }
-
-            });
-        },
-
-        setSelectDate: function(date){
-            this.element.find('select.month').val(parseInt(date.split('/')[0]));
-            this.element.find('select.day').val(parseInt(date.split('/')[1]));
-        },
-
-        buildArrayAdd: function(first, last){
-            var num = [];
-
-            for (i = first; i <= last; i++) {
-                num.push(i);
-            }
-
-            return data = {
-                count: num
-            };
-        },
-
-        buildArraySub: function(first, last){
-            var num = [];
-
-            for (i = first; i >= last; i--) {
-                num.push(i);
-            }
-
-            return data = {
-                count: num
-            };
-        },
-
-        dataDto: function(){
-            return dataObj = {
-                serviceDto: {
-                    RevisionNumber: GetRevisionNumber(),
-                    LanguageId: GetLanguageId(),
-                    Signature: GetSignature(),
-                    ViewType: GetViewType(),
-                    ViewDate: GetViewDate(),
-                    StartIndex: 0,
-                    ItemCount: 1
-                },
-                exchange: this.options.exchange,
-                symbol: this.options.symbol
-            };
-        },
-
-        buildHTML: function(){
-            var _ = this, o = _.options.selects,
-                month = Mustache.render( o.monthTpl, o ),
-                day = Mustache.render( o.dayTpl, _.buildArrayAdd( 1, o.data[ new Date().getMonth() ].days ) ),
-                year = Mustache.render( o.yearTpl, _.buildArraySub( new Date().getFullYear(), o.startYear ) );
-
-            if (_.options.range){
-                _.element.html( this.options.rangeTpl(month, day, year) );
-            } else {
-                _.element.html( this.options.moduleTpl(month, day, year) );
-            }
-
-            o.onMonthChange(_);
-
-            if (_.options.onFirstLoad !== undefined && typeof(_.options.onFirstLoad) === 'function') {
-                _.options.onFirstLoad(_);
-            }
-        },
-
-        getHistoricalData: function(startDate, endDate){
+        _init: function () {
             var _ = this,
-                stockData = _.dataDto(),
-                query = _.queryStringToObj(location.href.toLowerCase().split('?').pop());
+                o = this.options,
+                $e = this.element;
 
-            // Overwrite the default indice if one is set through a query string ?Indice=EX:SYM
-
-            if (query.indice !== undefined){
-                stockData.exchange = query.indice.split(':').shift()
-                stockData.symbol = query.indice.split(':').pop()
-            }
-
-            if (startDate !== undefined){
-                stockData.startDate = startDate;
-                stockData.endDate = endDate;
-            }
-
-            // Set a max amount of items after first load
-
-            if (_.options.range && _._loaded) {
-                stockData.serviceDto.ItemCount = _.options.maxItems;
-            }
-
-            if (_.options.beforeAjaxCall !== undefined && typeof(_.options.beforeAjaxCall) === 'function') {
-                _.options.beforeAjaxCall(_);
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/services/StockQuoteService.svc/GetStockQuoteHistoricalList",
-                data: JSON.stringify( stockData ),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function(data){
-                    data = data.GetStockQuoteHistoricalListResult;
-
-                    _.buildStockTable(data);
-
-                    if ( !_._loaded && data.length ){
-                        _._loaded = true;
-                        _.setSelectDate(data[0].HistoricalDate.split(' ').shift());
-                        _.onRangeRefresh();
-                    }
-
-                    if (_.options.onDataLoad !== undefined && typeof(_.options.onDataLoad) === 'function') {
-                        _.options.onDataLoad(_, data);
-                    }
-                },
-                error: function (){
-                    _.element.find('.' + _.options.stockTableClass).html(_.options.invalidText);
+            // get exchange and symbol from query string if not in options
+            if (!o.exchange || !o.symbol) {
+                var m = document.location.search.match(/(?:^|&)Indice=([a-z]+):([a-z]+)(?:$|&)/i);
+                if (!m) {
+                    console.log('Error initializing stock historical chart: no exchange/symbol found.');
+                    return;
                 }
+                o.exchange = o.exchange || m[1];
+                o.symbol = o.symbol || m[2];
+            }
+
+            // set up the date picker
+            var $picker = $(o.datepicker, $e).val('').datepicker($.extend({}, {
+                minDate: o.startDate === null ? null : new Date(o.startDate),
+                maxDate: o.endDate === null ? 0 : new Date(o.endDate),
+                dateFormat: o.dateFormat,
+                changeMonth: true,
+                changeYear: true
+            }, o.datepickerOpts));
+
+            // event handler
+            function getQuote(e) {
+                e.preventDefault();
+                var date = $picker.datepicker('getDate');
+                if (date === null) return;
+                _._fetchQuote(date).done(function (data) {
+                    _._renderQuote(data);
+                });
+            }
+
+            // assign a click event if a trigger has been specified; otherwise use a change event
+            var $trigger = $(o.trigger, $e);
+            if (o.trigger && $trigger.length) $trigger.click(getQuote);
+            else $picker.change(getQuote);
+
+            // fetch and render today's quote
+            _._fetchQuote(new Date()).done(function (data) {
+                _._renderQuote(data);
             });
         },
 
-        buildStockTable: function(data){
-            var _ = this, table = _.options.stockHeader;
+        _fetchQuote: function (date) {
+            var o = this.options;
 
-            if (data !== undefined && data.length){
-                $.each(data, function(i, stock){
-                    stock.Day = $.datepicker.formatDate(_.options.dateFormat, new Date(stock.HistoricalDate));
-                    stock.High = stock.High.toFixed(2);
-                    stock.Last = stock.Last.toFixed(2);
-                    stock.Low  = stock.Low.toFixed(2);
-                    stock.Open = stock.Open.toFixed(2);
-                    stock.Volume = _.addCommas(stock.Volume);
+            return $.ajax({
+                type: 'POST',
+                url: '/services/StockQuoteService.svc/GetStockQuoteHistoricalList',
+                data: JSON.stringify({
+                    serviceDto: {
+                        RevisionNumber: GetRevisionNumber(),
+                        LanguageId: GetLanguageId(),
+                        Signature: GetSignature(),
+                        ViewType: GetViewType(),
+                        ViewDate: GetViewDate(),
+                        StartIndex: 0,
+                        ItemCount: 1
+                    },
+                    exchange: o.exchange,
+                    symbol: o.symbol,
+                    endDate: '/Date(' + date.getTime() + ')/'
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            });
+        },
 
-                    table += Mustache.render(_.options.stockTpl, stock);
-                });
-            } else {
-                table = _.options.noDataText;
+        _renderQuote: function (data) {
+            var o = this.options,
+                $e = this.element;
+
+            if (!data.GetStockQuoteHistoricalListResult.length) {
+                $(o.quoteContainer, $e).html(o.notFoundMessage);
+                return;
             }
 
-            _.element.find('.' + _.options.stockTableClass).html(table);
+            data = data.GetStockQuoteHistoricalListResult[0];
+
+            $(o.quoteContainer, $e).html(Mustache.render(o.quoteTemplate, {
+                date: $.datepicker.formatDate(o.dateFormat, new Date(data.HistoricalDate)),
+                high: data.High,
+                low: data.Low,
+                open: data.Open,
+                close: data.Last,
+                volume: this._addCommas(data.Volume)
+            }));
         },
 
-        destroy: function() {
-            this.element.html('');
-        },
+        _addCommas: function (val) {
+            var parts = ('' + val).split('.'),
+                whole = parts[0],
+                dec = parts[1],
+                rgx = /(\d+)(\d{3})/;
 
-        _setOption: function(option, value) {
-            this._superApply(arguments);
+            while (rgx.test(whole)) {
+                whole = whole.replace(rgx, '$1,$2');
+            }
+            return whole + (dec ? '.' + dec : '');
         }
     });
 })(jQuery);

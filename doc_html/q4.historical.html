@@ -34,7 +34,7 @@
     <main>
 <header>
     <h1>q4.historical</h1>
-    
+    <p>Retrieves price and volume information for a stock on a specific date.</p>
 </header>
 
 <section id='details'>
@@ -42,12 +42,13 @@
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
         <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.1.0.0.min.js' target='_blank'>q4.historical.1.0.0.min.js</a></dd>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.0.0.min.js' target='_blank'>q4.historical.2.0.0.min.js</a></dd>
         
         
         <dt>Author(s)</dt>
-            <dd><ul><li>jasonm@q4websystems.com</li></ul></dd>
-        
+            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
+        <dt>Requires</dt>
+            <dd><ul><li>Mustache.js</li></ul></dd>
     </dl>
 </section>
 
@@ -55,24 +56,11 @@
     <h1>Options</h1>
     <ul>
     <li>
-        <h1>symbol</h1>
-        <span></span>
-        <div>
-            <p>The client's symbol
-If this is left blank it will call an additional service and load this from the indices</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
         <h1>exchange</h1>
-        <span></span>
+        <span>string</span>
         <div>
-            <p>The exchange the client trades on
-If this is left blank it will call an additional service and load this from the indices</p>
+            <p>The stock exchange to use.
+If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code> in the URL.</p>
             <dl>
                 
                 
@@ -81,58 +69,11 @@ If this is left blank it will call an additional service and load this from the 
         </div>
     </li>
     <li>
-        <h1>loading</h1>
-        <span></span>
+        <h1>symbol</h1>
+        <span>string</span>
         <div>
-            <p>markup to use between ajax calls</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>invalidText</h1>
-        <span></span>
-        <div>
-            <p>message to show if the date range was incorrect</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>noDataText</h1>
-        <span></span>
-        <div>
-            <p>message to show if no data is returned</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>range</h1>
-        <span></span>
-        <div>
-            <p>If set to true a date range will be used (start date - end date)</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>maxItems</h1>
-        <span></span>
-        <div>
-            <p>The max number of items you want to load when a range is used. -1 will load 3000 items (12.5 years)</p>
+            <p>The stock symbol to use.
+If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code> in the URL.</p>
             <dl>
                 
                 
@@ -142,9 +83,22 @@ If this is left blank it will call an additional service and load this from the 
     </li>
     <li>
         <h1>dateFormat</h1>
-        <span></span>
+        <span>string</span>
         <div>
-            <p>Using jQuery UI's datepicker, this will configure the date format</p>
+            <p>A date format string to use with jQuery UI's Datepicker.</p>
+            <dl>
+                <dt>Default value</dt>
+                    <dd><code>&quot;M d, yy&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>startDate</h1>
+        <span>string</span>
+        <div>
+            <p>The earliest date that will be available as an option. Default is Jan 1, 1970.</p>
             <dl>
                 
                 
@@ -153,10 +107,10 @@ If this is left blank it will call an additional service and load this from the 
         </div>
     </li>
     <li>
-        <h1>stockTableClass</h1>
-        <span></span>
+        <h1>endDate</h1>
+        <span>string</span>
         <div>
-            <p>The parent class used for the returned data</p>
+            <p>The latest date that will be available as an option. Default is the current day.</p>
             <dl>
                 
                 
@@ -165,10 +119,23 @@ If this is left blank it will call an additional service and load this from the 
         </div>
     </li>
     <li>
-        <h1>rangeTpl</h1>
-        <span></span>
+        <h1>datepicker</h1>
+        <span>string</span>
         <div>
-            <p>This template is used when range is set to true.</p>
+            <p>A selector for the element to use as a datepicker. Usually an <code>&lt;input&gt;</code>.</p>
+            <dl>
+                <dt>Default value</dt>
+                    <dd><code>&quot;input:first&quot;</code></dd>
+                
+                
+            </dl>
+        </div>
+    </li>
+    <li>
+        <h1>datepickerOpts</h1>
+        <span>Object</span>
+        <div>
+            <p>A set of options to pass directly to the datepicker constructor.</p>
             <dl>
                 
                 
@@ -177,10 +144,12 @@ If this is left blank it will call an additional service and load this from the 
         </div>
     </li>
     <li>
-        <h1>moduleTpl</h1>
-        <span></span>
+        <h1>trigger</h1>
+        <span>string</span>
         <div>
-            <p>This template is used when range is set to false.</p>
+            <p>A selector for a trigger element that will perform the lookup when clicked.
+If this is not specified, the lookup will occur when the <code>datepicker</code> element's
+value changes.</p>
             <dl>
                 
                 
@@ -189,74 +158,53 @@ If this is left blank it will call an additional service and load this from the 
         </div>
     </li>
     <li>
-        <h1>stockHeader</h1>
-        <span></span>
+        <h1>quoteContainer</h1>
+        <span>string</span>
         <div>
-            <p>If you wish to add a non repeating header with your stockTpl. Example: could be used in a table layout with <tr><th></p>
+            <p>A selector for the container that will be filled with the lookup results.</p>
             <dl>
-                
+                <dt>Default value</dt>
+                    <dd><code>&quot;.quote&quot;</code></dd>
                 
                 
             </dl>
         </div>
     </li>
     <li>
-        <h1>stockTpl</h1>
-        <span></span>
+        <h1>quoteTemplate</h1>
+        <span>string</span>
         <div>
-            <p>Template to use for returned stock data</p>
+            <p>A Mustache template used to render the lookup results in the quote container.
+The following tags are available:</p>
+<ul>
+<li><code>{{date}}</code>   The date of the historical stock quote.</li>
+<li><code>{{volume}}</code> The trading volume of the stock on that date.</li>
+<li><code>{{open}}</code>   The opening stock price on that date.</li>
+<li><code>{{close}}</code>  The closing stock price on that date.</li>
+<li><code>{{high}}</code>   The stock's highest trading price on that date.</li>
+<li><code>{{low}}</code>    The stock's lowest trading price on that date.</li>
+</ul>
             <dl>
                 
                 
-                
+                <dt>Example</dt>
+                    <dd><pre>&#39;Date: {{date}}&lt;br&gt;&#39; +
+&#39;Volume: {{volume}}&lt;br&gt;&#39; +
+&#39;Open: {{open}}&lt;br&gt;&#39; +
+&#39;Close: {{close}}&lt;br&gt;&#39; +
+&#39;High: {{high}}&lt;br&gt;&#39; +
+&#39;Low: {{low}}&#39;</pre></dd>
             </dl>
         </div>
     </li>
     <li>
-        <h1>onDataLoad</h1>
-        <span></span>
+        <h1>notFoundMessage</h1>
+        <span>string</span>
         <div>
-            <p>a callback fired each time the historical ajax call completes</p>
+            <p>A message to display in the quote container in case no results were found.</p>
             <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>onFirstLoad</h1>
-        <span></span>
-        <div>
-            <p>a callback fired after the html is generated</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>onSelectUpdate</h1>
-        <span></span>
-        <div>
-            <p>a simple callback with no arguments.
-fired anytime a select updates</p>
-            <dl>
-                
-                
-                
-            </dl>
-        </div>
-    </li>
-    <li>
-        <h1>beforeAjaxCall</h1>
-        <span></span>
-        <div>
-            <p>The client's symbol
-If this is left blank it will call an additional service and load this from the indices</p>
-            <dl>
-                
+                <dt>Default value</dt>
+                    <dd><code>&quot;No stock data is available for this date.&quot;</code></dd>
                 
                 
             </dl>

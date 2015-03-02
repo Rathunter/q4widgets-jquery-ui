@@ -4,8 +4,8 @@
      * @class q4.mashfeed
      * @version 1.1.1
      * @author marcusk@q4websystems.com
-     * @requires Moment.js
-     * @requires Mustache.js
+     * @requires [Moment.js](lib/moment.min.js)
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.mashfeed', /** @lends q4.mashfeed */ {
         options: {

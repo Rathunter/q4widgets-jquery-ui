@@ -5,25 +5,46 @@
 
 <section id='details'>
     <dl>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/{{file}}#L{{line}}' target='_blank'>{{file}}</a>, line {{line}}</dd>
         <dt>Script link</dt>
             <dd><a href='https://q4widgets.q4web.com/q4widgets/{{distfile}}' target='_blank'>{{distfile}}</a></dd>
-        {{#extends.0}}<dt>Extends</dt>
-            <dd><ul>{{#extends}}<li><a href='{{.}}.html'>{{.}}</a> - see this documentation page for more options and methods.</li>{{/extends}}</ul></dd>{{/extends.0}}
-        {{#children.0}}<dt>Derived classes</dt>
-            <dd><ul>{{#children}}<li><a href='{{.}}.html'>{{.}}</a></li>{{/children}}</ul>See these documentation pages for more options and methods.</dd>{{/children.0}}
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/{{file}}#L{{line}}' target='_blank'>{{file}}</a>, line {{line}}</dd>
         {{#author.0}}<dt>Author(s)</dt>
             <dd><ul>{{#author}}<li>{{.}}</li>{{/author}}</ul></dd>{{/author.0}}
         {{#requires.0}}<dt>Requires</dt>
-            <dd><ul>{{#requires}}<li>{{.}}</li>{{/requires}}</ul></dd>{{/requires.0}}
+            <dd><ul>{{#requires}}<li><a href='https://q4widgets.q4web.com/q4widgets/{{{url}}}' target='_blank'>{{name}}</a></li>{{/requires}}</ul></dd>{{/requires.0}}
     </dl>
+    {{#abstract}}
+    <p>
+        This is an <em>abstract</em> widget; it isn't meant to be instantiated directly.
+        Use one of its child widgets.
+    </p>
+    {{/abstract}}
+    {{#extends.0}}
+    <p>
+        This widget <em>extends</em> the <a href='{{.}}.html'>{{.}}</a> widget.
+        It has all the options and methods of the parent widget, in addition to those below.
+        See the parent widget's documentation for details.
+    </p>
+    {{/extends.0}}
+    {{#children.0}}
+    <p>
+        Child widgets have all the options and methods of this widget, but may add their own as well.
+        See the child widget's documentation for additional options or methods.
+        This widget has the following child widgets:
+    </p>
+    <ul>
+        {{#children}}
+        <li><a href='{{.}}.html'>{{.}}</a></li>
+        {{/children}}
+    </ul>
+    {{/children.0}}
 </section>
 
 {{#options.0}}
 <section id='options'>
     <h1>Options</h1>
-    <ul>
+    <ul class='major'>
     {{#options}}
     <li>
         <h1>{{name}}</h1>
@@ -48,7 +69,7 @@
 {{#methods.0}}
 <section id='methods'>
     <h1>Methods</h1>
-    <ul>
+    <ul class='major'>
     {{#methods}}
     <li>
         <h1>{{name}}</h1>

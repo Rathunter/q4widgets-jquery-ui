@@ -4,7 +4,7 @@
      * @class q4.treemenu
      * @version 1.0.1
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.treemenu', /** @lends q4.treemenu */ {
         options: {

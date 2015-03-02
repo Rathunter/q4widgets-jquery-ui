@@ -34,29 +34,41 @@
     <main>
 <header>
     <h1>q4.api</h1>
-    <p>Base widget for accessing Q4 private API data.
-Not meant to be used directly; instead use any of the widgets derived from this one.</p>
+    <p>Base widget for accessing Q4 private API data.</p>
 </header>
 
 <section id='details'>
     <dl>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L2' target='_blank'>q4.api.js</a>, line 2</dd>
         <dt>Script link</dt>
             <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.2.0.min.js' target='_blank'>q4.api.1.2.0.min.js</a></dd>
-        
-        <dt>Derived classes</dt>
-            <dd><ul><li><a href='q4.events.html'>q4.events</a></li><li><a href='q4.financials.html'>q4.financials</a></li><li><a href='q4.presentations.html'>q4.presentations</a></li><li><a href='q4.news.html'>q4.news</a></li><li><a href='q4.sec.html'>q4.sec</a></li></ul>See these documentation pages for more options and methods.</dd>
+        <dt>Source file</dt>
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L2' target='_blank'>q4.api.js</a>, line 2</dd>
         <dt>Author(s)</dt>
             <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
         <dt>Requires</dt>
-            <dd><ul><li>Mustache.js</li><li>Moment.js</li></ul></dd>
+            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js (optional)</a></li></ul></dd>
     </dl>
+    <p>
+        This is an <em>abstract</em> widget; it isn't meant to be instantiated directly.
+        Use one of its child widgets.
+    </p>
+    <p>
+        Child widgets have all the options and methods of this widget, but may add their own as well.
+        See the child widget's documentation for additional options or methods.
+        This widget has the following child widgets:
+    </p>
+    <ul>
+        <li><a href='q4.events.html'>q4.events</a></li>
+        <li><a href='q4.financials.html'>q4.financials</a></li>
+        <li><a href='q4.presentations.html'>q4.presentations</a></li>
+        <li><a href='q4.news.html'>q4.news</a></li>
+        <li><a href='q4.sec.html'>q4.sec</a></li>
+    </ul>
 </section>
 
 <section id='options'>
     <h1>Options</h1>
-    <ul>
+    <ul class='major'>
     <li>
         <h1>url</h1>
         <span>string</span>
@@ -598,7 +610,7 @@ if no items are found.</p>
 
 <section id='methods'>
     <h1>Methods</h1>
-    <ul>
+    <ul class='major'>
     <li>
         <h1>setYear</h1>
         <div>

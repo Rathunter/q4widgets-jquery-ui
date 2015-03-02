@@ -10,7 +10,7 @@
      *     reportSubType: ['Annual Report', 'Supplemental Report']
      * });
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.financialTable', /** @lends q4.financialTable */ {
         options: {

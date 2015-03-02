@@ -4,8 +4,9 @@
      * @class q4.timeline
      * @version 1.0.1
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
-     * @requires slick
+     * @requires [Mustache.js](lib/mustache.min.js)
+     * @requires [Slick](lib/slick.min.js)
+     * @requires [Slick_CSS](lib/slick.css)
      */
     $.widget('q4.timeline', /** @lends q4.timeline */ {
         options: {

@@ -5,9 +5,9 @@
      * @class q4.library
      * @version 1.0.1
      * @author marcusk@q4websystems.com
-     * @requires Moment.js
-     * @requires Mustache.js
-     * @requires q4.pager
+     * @requires [Moment.js](lib/moment.min.js)
+     * @requires [Mustache.js](lib/mustache.min.js)
+     * @requires [q4.pager](q4.pager.js)
      */
     $.widget('q4.library', /** @lends q4.library */ {
         options: {

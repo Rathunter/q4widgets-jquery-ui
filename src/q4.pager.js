@@ -4,7 +4,7 @@
      * @class q4.pager
      * @version 1.0.0
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.pager', /** @lends q4.pager */ {
         options: {

@@ -4,7 +4,7 @@
      * @class q4.historical
      * @version 2.0.0
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.historical', /** @lends q4.historical */ {
         options: {

@@ -11,9 +11,9 @@
      *     slideshare: "Q4WebSystems"
      * });
      * @author jasonm@q4websystems.com
-     * @requires Underscore.js
-     * @requires Moment.js
-     * @requires CLNDR.js
+     * @requires [Underscore.js](lib/underscore-min.js)
+     * @requires [Moment.js](lib/moment.min.js)
+     * @requires [CLNDR.js](lib/clndr.min.js)
      */
     $.widget("q4.calendar", /** @lends q4.calendar */ {
         options: {

@@ -3,7 +3,7 @@
      * Creates an expanding and collapsing accordion from sections of content.
      * @class q4.accordion
      * @version 1.0.1
-     * @requires Mustache.js
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.accordion', /** @lends q4.accordion */ {
         options: {

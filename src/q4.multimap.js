@@ -4,8 +4,9 @@
      * @class q4.multiMap
      * @version 1.0.0
      * @author marcusk@q4websystems.com
-     * @requires jVectorMap
-     * @requires Mustache.js
+     * @requires [jVectorMap](lib/jquery-jvectormap-2.0.1.min.js)
+     * @requires [jVectorMap_CSS](lib/jquery-jvectormap-2.0.1.css)
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.multiMap', /** @lends q4.multiMap */ {
         options: {

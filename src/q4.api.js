@@ -1,13 +1,12 @@
 (function ($) {
     /**
      * Base widget for accessing Q4 private API data.
-     * Not meant to be used directly; instead use any of the widgets derived from this one.
      * @class q4.api
      * @version 1.2.0
      * @abstract
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
-     * @requires Moment.js (optional)
+     * @requires [Mustache.js](lib/mustache.min.js)
+     * @requires [Moment.js_(optional)](lib/moment.min.js)
      */
     $.widget('q4.api', /** @lends q4.api */ {
         options: {

@@ -23,20 +23,21 @@ main { margin-left: 220px; padding: 30px; background: #fff; }
 header p { font-size: 1.25rem; }
 
 section { margin-bottom: 2.5rem; }
+section h2 { font-size: inherit; }
 
 #details dl dt { font-weight: bold; }
 #details dl dd { margin-left: 200px; }
 
-section > ul { margin: 0; padding: 0; list-style: none; }
-section > ul > li { overflow: auto; padding: 1rem; }
-section > ul > li:nth-child(2n+1) { background: #f8f8f8; }
-section > ul > li > h1 { float: left; margin: 0; font-size: 1rem; }
-section > ul > li > span { float: left; clear: left; color: #999; }
-section > ul > li > div { margin-left: 200px; }
-section > ul > li > div p,
-section > ul > li > div ul { margin: 0 0 .5rem; }
-section > ul > li > div dt { font-weight: normal; }
-section > ul > li > div dd { margin-left: 125px; }
+ul.major { margin: 0; padding: 0; list-style: none; }
+ul.major > li { overflow: auto; padding: 1rem; }
+ul.major > li:nth-child(2n+1) { background: #f8f8f8; }
+ul.major > li > h1 { float: left; margin: 0; font-size: 1rem; }
+ul.major > li > span { float: left; clear: left; color: #999; }
+ul.major > li > div { margin-left: 200px; }
+ul.major > li > div p,
+ul.major > li > div ul { margin: 0 0 .5rem; }
+ul.major > li > div dt { font-weight: normal; }
+ul.major > li > div dd { margin-left: 125px; }
 
 #methods dd strong, #methods dd em { float: left; width: 100px; }
 #methods dd p { margin-left: 200px; }

@@ -11,7 +11,7 @@
      *     albums: ['First Photo Album', 'Second Photo Album']
      * });
      * @author marcusk@q4websystems.com
-     * @requires Mustache.js
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.flickrGallery', /** @lends q4.flickrGallery */ {
         options: {

@@ -5,7 +5,7 @@
      * @version 1.1.0
      * @author jasonm@q4websystems.com
      * @author marcusk@q4websystems.com
-     * @requires Highstock
+     * @requires [Highstock](lib/highstock.js)
      */
     $.widget('q4.chart', /** @lends q4.chart */ {
         options: {

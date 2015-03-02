@@ -5,8 +5,8 @@
      * @class q4.rssfeed
      * @version 1.1.0
      * @author marcusk@q4websystems.com
-     * @requires Moment.js
-     * @requires Mustache.js
+     * @requires [Moment.js](lib/moment.min.js)
+     * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.rssfeed', /** @lends q4.rssfeed */ {
         options: {

@@ -1,8 +1,12 @@
 var fs = require('fs'),
     mustache = require('../node_modules/mustache');
 
-function strip_module(req) {
-    return req.split('module:')[1];
+function parse_markdown_link(link) {
+    var m = link.match(/\[(.*)\]\((.*)\)/);
+    return {
+        name: m[1].replace(/_/g, ' '),
+        url: m[2]
+    };
 }
 
 function stringify_type(param) {
@@ -41,10 +45,12 @@ exports.publish = function (data, opts) {
                 exblocks: (doclet.examples || []).filter(multi_line),
                 options: [],
                 methods: [],
-                requires: (doclet.requires || []).map(strip_module),
+                requires: (doclet.requires || []).map(parse_markdown_link),
+                abstract: doclet.virtual,
                 extends: doclet.augments || [],
                 children: []
             };
+            console.log(doclet);
         }
 
         // option

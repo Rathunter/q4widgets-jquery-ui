@@ -42,9 +42,7 @@
         <dt>Script link</dt>
             <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.2.0.min.js' target='_blank'>q4.api.1.2.0.min.js</a></dd>
         <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L689' target='_blank'>q4.api.js</a>, line 689</dd>
-        
-        
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L662' target='_blank'>q4.api.js</a>, line 662</dd>
     </dl>
     <p>
         This widget <em>extends</em> the <a href='q4.api.html'>q4.api</a> widget.
@@ -56,7 +54,7 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-sortAscending'>
         <h1>sortAscending</h1>
         <span>boolean</span>
         <div>
@@ -64,8 +62,39 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
+            </dl>
+        </div>
+    </li>
+    <li id='option-template'>
+        <h1>template</h1>
+        <span>string</span>
+        <div>
+            <p>A Mustache.js template for the overall widget.
+All the tags documented in the <a href="q4.api.html#option-template">q4.api</a>
+parent widget are available here.
+In addition, the <code>{{#items}}</code> array contains these tags:</p>
+<ul>
+<li><code>{{title}}</code>    The title of the event.</li>
+<li><code>{{url}}</code>      The URL of the details page.</li>
+<li><code>{{date}}</code>     The starting date of the event.</li>
+<li><code>{{endDate}}</code>  The ending date of the event.</li>
+<li><code>{{timeZone}}</code> The timezone of the start/end dates.</li>
+<li><code>{{location}}</code> The location of the event.</li>
+<li><code>{{#tags}}</code>    An array of tags for this event.</li>
+<li><code>{{body}}</code>     The body of the event details.</li>
+<li><p><code>{{#docs}}</code>    An array of attached documents, with the following tags:</p>
+<ul>
+<li><code>{{title}}</code>     The title of the document.</li>
+<li><code>{{url}}</code>       The URL of the document.</li>
+<li><code>{{type}}</code>      The type of document as specified in the CMS.</li>
+<li><code>{{extension}}</code> The extension of the document file name.</li>
+<li><code>{{size}}</code>      The size of the document file.</li>
+</ul>
+</li>
+</ul>
+            <dl>
+                <dt>Default value</dt>
+                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>

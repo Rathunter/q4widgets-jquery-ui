@@ -42,9 +42,7 @@
         <dt>Script link</dt>
             <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.2.0.min.js' target='_blank'>q4.api.1.2.0.min.js</a></dd>
         <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L781' target='_blank'>q4.api.js</a>, line 781</dd>
-        
-        
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L778' target='_blank'>q4.api.js</a>, line 778</dd>
     </dl>
     <p>
         This widget <em>extends</em> the <a href='q4.api.html'>q4.api</a> widget.
@@ -56,7 +54,7 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-reportTypes'>
         <h1>reportTypes</h1>
         <span>Array&lt;string&gt;</span>
         <div>
@@ -71,36 +69,59 @@ Valid values are:</p>
 <li><code>Fourth Quarter</code></li>
 </ul>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-docCategories'>
         <h1>docCategories</h1>
         <span>Array&lt;string&gt;</span>
         <div>
             <p>A list of document categories to display.
 Use an empty list to display all.</p>
             <dl>
-                
                 <dt>Example</dt>
                     <dd><code> [&quot;Financial Report&quot;, &quot;MD&amp;A&quot;, &quot;Earnings Press Release&quot;]</code></dd>
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-shortTypes'>
         <h1>shortTypes</h1>
         <span>Object</span>
         <div>
             <p>A map of short names for each report subtype,
 for use in the template.</p>
             <dl>
-                
-                
-                
+            </dl>
+        </div>
+    </li>
+    <li id='option-template'>
+        <h1>template</h1>
+        <span>string</span>
+        <div>
+            <p>A Mustache.js template for the overall widget.
+All the tags documented in the <a href="q4.api.html#option-template">q4.api</a>
+parent widget are available here.
+In addition, the <code>{{#items}}</code> array contains these tags:</p>
+<ul>
+<li><code>{{title}}</code> The title (i.e. subtype and year) of the financial report.</li>
+<li><code>{{year}}</code>  The fiscal year of the financial report.</li>
+<li><code>{{date}}</code>  The filing date of the financial report.</li>
+<li><code>{{type}}</code>  The subtype of the report (e.g. <code>First Quarter</code>, <code>Annual Report</code>).</li>
+<li><code>{{shortType}}</code> A shortened name for the financial report's subtype
+(e.g. <code>Q1</code>, <code>Annual</code>). These can be customized with the <code>shortTypes</code> option.</li>
+<li><code>{{coverUrl}}</code>  The URL of the cover image, if any.</li>
+<li><p><code>{{#docs}}</code> An array of documents for this report, with these tags:</p>
+<ul>
+<li><code>{{docTitle}}</code>    The title of the document.</li>
+<li><code>{{docUrl}}</code>      The URL of the document file.</li>
+<li><code>{{docCategory}}</code> The category of the document.</li>
+<li><code>{{docSize}}</code>     The file size of the document.</li>
+<li><code>{{docThumb}}</code>    The URL of the thumbnail image, if any.</li>
+<li><code>{{docType}}</code>     The file type of the document.</li>
+</ul>
+</li>
+</ul>
+            <dl>
             </dl>
         </div>
     </li>

@@ -9,10 +9,14 @@
             <dd><a href='https://q4widgets.q4web.com/q4widgets/{{distfile}}' target='_blank'>{{distfile}}</a></dd>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/{{file}}#L{{line}}' target='_blank'>{{file}}</a>, line {{line}}</dd>
-        {{#author.0}}<dt>Author(s)</dt>
-            <dd><ul>{{#author}}<li>{{.}}</li>{{/author}}</ul></dd>{{/author.0}}
-        {{#requires.0}}<dt>Requires</dt>
-            <dd><ul>{{#requires}}<li><a href='https://q4widgets.q4web.com/q4widgets/{{{url}}}' target='_blank'>{{name}}</a></li>{{/requires}}</ul></dd>{{/requires.0}}
+        {{#author.0}}
+        <dt>Author(s)</dt>
+            <dd><ul>{{#author}}<li>{{.}}</li>{{/author}}</ul></dd>
+        {{/author.0}}
+        {{#requires.0}}
+        <dt>Requires</dt>
+            <dd><ul>{{#requires}}<li><a href='https://q4widgets.q4web.com/q4widgets/{{{url}}}' target='_blank'>{{name}}</a></li>{{/requires}}</ul></dd>
+        {{/requires.0}}
     </dl>
     {{#abstract}}
     <p>
@@ -46,18 +50,24 @@
     <h1>Options</h1>
     <ul class='major'>
     {{#options}}
-    <li>
+    <li id='option-{{name}}'>
         <h1>{{name}}</h1>
-        <span>{{type}}</span>
+        {{#type}}<span>{{.}}</span>{{/type}}
         <div>
             {{{description}}}
             <dl>
-                {{#defaultval}}<dt>Default value</dt>
-                    <dd><code>{{defaultval}}</code></dd>{{/defaultval}}
-                {{#examples}}<dt>Example</dt>
-                    <dd><code>{{.}}</code></dd>{{/examples}}
-                {{#exblocks}}<dt>Example</dt>
-                    <dd><pre>{{.}}</pre></dd>{{/exblocks}}
+                {{#defaultval}}
+                <dt>Default value</dt>
+                    <dd><code>{{.}}</code></dd>
+                {{/defaultval}}
+                {{#examples}}
+                <dt>Example</dt>
+                    <dd><code>{{.}}</code></dd>
+                {{/examples}}
+                {{#exblocks}}
+                <dt>Example</dt>
+                    <dd><pre>{{.}}</pre></dd>
+                {{/exblocks}}
             </dl>
         </div>
     </li>
@@ -71,7 +81,7 @@
     <h1>Methods</h1>
     <ul class='major'>
     {{#methods}}
-    <li>
+    <li id='method-{{name}}'>
         <h1>{{name}}</h1>
         <div>
             {{{description}}}

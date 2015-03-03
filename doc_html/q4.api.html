@@ -69,19 +69,17 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-url'>
         <h1>url</h1>
         <span>string</span>
         <div>
-            <p>The base URL to use for API calls.</p>
+            <p>The base URL to use for API calls.
+By default this uses the current domain, so it's usually not necessary.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-limit'>
         <h1>limit</h1>
         <span>number</span>
         <div>
@@ -89,12 +87,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-skip'>
         <h1>skip</h1>
         <span>number</span>
         <div>
@@ -102,42 +98,37 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-fetchAllYears'>
         <h1>fetchAllYears</h1>
         <span>boolean</span>
         <div>
             <p>Whether to fetch data from all years, or just the most recent.
+Note that setting this to true doesn't necessarily display all the items,
+but will fetch them all from the server in case you want to do something with them.
 If <code>showAllYears</code> is true, this is assumed to be true also.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-showAllYears'>
         <h1>showAllYears</h1>
         <span>boolean</span>
         <div>
-            <p>Whether to include an &quot;all years&quot; option in template data
-and year selectors. If true, the widget will display
-all year data by default on first load; otherwise it will
-start with data from the most recent year.</p>
+            <p>Whether to include an &quot;all years&quot; option in template data and year selectors.
+If true, the widget will display all year data by default on first load;
+otherwise it will start with data from the most recent year.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-allYearsText'>
         <h1>allYearsText</h1>
         <span>string</span>
         <div>
@@ -145,39 +136,34 @@ start with data from the most recent year.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;All&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-startYear'>
         <h1>startYear</h1>
         <span>number</span>
         <div>
-            <p>The year to display first. Default is to display all years if
-that option is enabled, otherwise the most recent year.
-A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
+            <p>The year to display when the widget first loads.
+Default is to display items from all years if that option is enabled,
+otherwise the most recent year.
+A useful value you might want to pass is <code>(new Date()).getFullYear()</code>,
+which will display items from the current calendar year.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-forceStartYear'>
         <h1>forceStartYear</h1>
         <span>boolean</span>
         <div>
-            <p>Whether to start with startYear even if there are no documents for that year.</p>
+            <p>Whether to start with <code>startYear</code> even if there are no documents for that year.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-showFuture'>
         <h1>showFuture</h1>
         <span>boolean</span>
         <div>
@@ -185,12 +171,10 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-showPast'>
         <h1>showPast</h1>
         <span>boolean</span>
         <div>
@@ -198,24 +182,19 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-tags'>
         <h1>tags</h1>
         <span>Array&lt;string&gt;</span>
         <div>
             <p>A list of tags to filter by.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-titleLength'>
         <h1>titleLength</h1>
         <span>number</span>
         <div>
@@ -223,29 +202,34 @@ A useful value to pass is <code>(new Date()).getFullYear()</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-dateFormat'>
         <h1>dateFormat</h1>
-        <span>string</span>
+        <span>string</span><span>Object</span>
         <div>
-            <p>A date format string, which can be used in the template
-as <code>{{date}}</code>. Can alternately be an object of format strings,
+            <p>A date format string, which can be used in the template as <code>{{date}}</code>.
+Can alternately be an object of format strings,
 which can be accessed with <code>{{date.key}}</code> (where key is the
 object key corresponding to the string you want to use).
 By default, dates are formatted using jQuery UI's datepicker.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;mm&#x2F;dd&#x2F;yy&quot;</code></dd>
-                
-                
+                <dt>Example</dt>
+                    <dd><code> &#39;MM d, yy&#39;</code></dd>
+                <dt>Example</dt>
+                    <dd><pre>{
+    full: &#39;MM d, yy&#39;,
+    short: &#39;mm&#x2F;dd&#x2F;y&#39;,
+    month: &#39;MM&#39;,
+    day: &#39;d&#39;
+}</pre></dd>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-useMoment'>
         <h1>useMoment</h1>
         <span>boolean</span>
         <div>
@@ -254,171 +238,84 @@ Only takes effect if the Moment.js library has been included.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-years'>
         <h1>years</h1>
         <span>Array&lt;number&gt;</span>
         <div>
             <p>An array of years to filter by. If passed, no items will
 be displayed unless they are dated to a year in this list.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-maxYear'>
         <h1>maxYear</h1>
         <span>number</span>
         <div>
             <p>The latest year to display items from.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-minYear'>
         <h1>minYear</h1>
         <span>number</span>
         <div>
             <p>The earliest year to display items from.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-defaultThumb'>
         <h1>defaultThumb</h1>
         <span>string</span>
         <div>
             <p>A URL to a default thumbnail, in case an item has none.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-append'>
         <h1>append</h1>
         <span>boolean</span>
         <div>
-            <p>Whether to append the widget to the container, or replace its
-contents entirely.</p>
+            <p>Whether to append the widget to the container, or replace its contents entirely.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-template'>
         <h1>template</h1>
         <span>string</span>
         <div>
             <p>A Mustache.js template for the overall widget. Uses the following tags:</p>
 <ul>
-<li><p><code>{{#years}}</code> An array of years for the navigation. Each year has these tags:</p>
+<li><p><code>{{#years}}</code> An array of years for the navigation. Each year has these subtags:</p>
 <ul>
 <li><code>{{year}}</code>   The display label of the year (e.g. <code>&quot;2015&quot;</code>, <code>&quot;All Years&quot;</code>)</li>
 <li><code>{{value}}</code>  The internal value of the year (e.g. <code>2015</code>, <code>-1</code>)</li>
-<li><code>{{#items}}</code> An array of items for that year, with the same format as the
-  global items array.</li>
+<li><code>{{#items}}</code> An array of items for this year, with the same format as the
+  &quot;all items&quot; array.</li>
 </ul>
 </li>
-<li><p><code>{{#items}}</code> An array of all items. Item tags for each type of widget
-  are as follows:</p>
+<li><p><code>{{#items}}</code> An array of all items. Each item has a number of available subtags,
+which vary depending which child widget you are using.
+For a list, check the documentation for the specific child widget:</p>
 <ul>
-<li><p><em>Events:</em></p>
-<ul>
-<li><code>{{title}}</code>    The title of the event.</li>
-<li><code>{{url}}</code>      The URL of the details page.</li>
-<li><code>{{date}}</code>     The starting date of the event.</li>
-<li><code>{{endDate}}</code>  The ending date of the event.</li>
-<li><code>{{timeZone}}</code> The timezone of the start/end dates.</li>
-<li><code>{{location}}</code> The location of the event.</li>
-<li><code>{{#tags}}</code>    An array of tags for this event.</li>
-<li><code>{{body}}</code>     The body of the event details.</li>
-<li><p><code>{{#docs}}</code>    An array of attached documents, with the following tags:</p>
-<ul>
-<li><code>{{title}}</code>     The title of the document.</li>
-<li><code>{{url}}</code>       The URL of the document.</li>
-<li><code>{{type}}</code>      The type of document as specified in the CMS.</li>
-<li><code>{{extension}}</code> The extension of the document file name.</li>
-<li><code>{{size}}</code>      The size of the document file.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><em>Financial reports:</em></p>
-<ul>
-<li><code>{{title}}</code> The title (i.e. subtype and year) of the financial report.</li>
-<li><code>{{year}}</code>  The fiscal year of the financial report.</li>
-<li><code>{{date}}</code>  The filing date of the financial report.</li>
-<li><code>{{type}}</code>  The subtype of the report (e.g. <code>First Quarter</code>, <code>Annual Report</code>).</li>
-<li><code>{{shortType}}</code> A shortened name for the financial report's subtype
-(e.g. <code>Q1</code>, <code>Annual</code>). These can be customized with the <code>shortTypes</code> option.</li>
-<li><code>{{coverUrl}}</code>  The URL of the cover image, if any.</li>
-<li><p><code>{{#docs}}</code> An array of documents for this report, with these tags:</p>
-<ul>
-<li><code>{{docTitle}}</code>    The title of the document.</li>
-<li><code>{{docUrl}}</code>      The URL of the document file.</li>
-<li><code>{{docCategory}}</code> The category of the document.</li>
-<li><code>{{docSize}}</code>     The file size of the document.</li>
-<li><code>{{docThumb}}</code>    The URL of the thumbnail image, if any.</li>
-<li><code>{{docType}}</code>     The file type of the document.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><em>Presentations:</em></p>
-<ul>
-<li><code>{{title}}</code>  The title of the presentation.</li>
-<li><code>{{url}}</code>    The URL of the details page.</li>
-<li><code>{{date}}</code>   The date of the presentation.</li>
-<li><code>{{#tags}}</code>  An array of tags for this presentation.</li>
-<li><code>{{body}}</code>   The body of the presentation details.</li>
-<li><code>{{docUrl}}</code> The URL of the presentation document.</li>
-</ul>
-</li>
-<li><p><em>Press releases:</em></p>
-<ul>
-<li><code>{{title}}</code>   The title of the press release.</li>
-<li><code>{{url}}</code>     The URL of the details page.</li>
-<li><code>{{date}}</code>    The date of the press release.</li>
-<li><code>{{#tags}}</code>   An array of tags for this press release.</li>
-<li><code>{{body}}</code>    The body of the press release (truncated to <code>bodyLength</code>).</li>
-<li><code>{{shortBody}}</code> The short body of the release (truncated to <code>shortBodyLength</code>).</li>
-<li><code>{{docUrl}}</code>  The URL of the related document, if any.</li>
-<li><code>{{docSize}}</code> The size of the related document, if any.</li>
-<li><code>{{docType}}</code> The file type of the related document, if any.</li>
-<li><code>{{thumb}}</code>   The URL of the thumbnail image, if any.</li>
-</ul>
-</li>
-<li><p><em>SEC filings:</em></p>
-<ul>
-<li><code>{{title}}</code> The title of the filing.</li>
-<li><code>{{url}}</code>   The URL of the details page.</li>
-<li><code>{{date}}</code>  The date of the filing.</li>
-<li><code>{{agent}}</code> The name of the filing agent.</li>
-</ul>
-</li>
+<li><a href="q4.events.html#option-template">q4.events</a></li>
+<li><a href="q4.financials.html#option-template">q4.financials</a></li>
+<li><a href="q4.presentations.html#option-template">q4.presentations</a></li>
+<li><a href="q4.news.html#option-template">q4.news</a></li>
+<li><a href="q4.sec.html#option-template">q4.sec</a></li>
 </ul>
 </li>
 </ul>
             <dl>
-                
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;ul class=&quot;years&quot;&gt;&#39; +
     &#39;{{#years}}&lt;li&gt;{{year}}&lt;&#x2F;li&gt;{{&#x2F;years}}&#39; +
@@ -431,83 +328,82 @@ contents entirely.</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-loadingMessage'>
         <h1>loadingMessage</h1>
-        <span>string&#x2F;boolean</span>
+        <span>string</span><span>boolean</span>
         <div>
-            <p>A message or HTML string to display while loading the widget.
-Set to <code>false</code> to disable this feature.</p>
+            <p>A message or HTML string to display while first loading the widget.
+Set to <code>false</code> to disable this feature. See also <code>itemLoadingMessage</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;Loading...&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-yearTrigger'>
         <h1>yearTrigger</h1>
         <span>string</span>
         <div>
-            <p>An optional selector for year trigger links in the main template.
-If passed, click events will be bound here.</p>
+            <p>A CSS selector for year trigger links.
+If passed, any elements in the main template matching this selector will
+become clickable links that filter the displayed items by year.
+Usually you'll want to point this to an element in the template's <code>{{years}}</code> loop.</p>
+<p>Note that this doesn't automatically generate the year links;
+you can do that in the template.</p>
             <dl>
-                
-                
-                
+                <dt>Example</dt>
+                    <dd><code> &#39;a.yearLink&#39;</code></dd>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-yearSelect'>
         <h1>yearSelect</h1>
         <span>string</span>
         <div>
-            <p>An optional selector for a year selectbox in the main template.
-If passed, change events will be bound here.</p>
+            <p>A CSS selector for a year selectbox.
+This behaves like the <code>yearTrigger</code> option, except instead of pointing to
+individual links, it should point to a <code>&lt;select&gt;</code> or similar form element.</p>
+<p>Note that this doesn't automatically fill the box with <code>&lt;option&gt;</code>s;
+you can do that in the template.</p>
             <dl>
-                
-                
-                
+                <dt>Example</dt>
+                    <dd><code> &#39;select.yearsDropdown&#39;</code></dd>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-activeClass'>
         <h1>activeClass</h1>
         <span>string</span>
         <div>
-            <p>The CSS class to use for a selected year trigger.</p>
+            <p>The CSS class to add to a selected year trigger.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;active&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-itemContainer'>
         <h1>itemContainer</h1>
         <span>string</span>
         <div>
-            <p>An optional selector for the items container. You must also
-pass <code>itemTemplate</code> for this to have any effect.</p>
+            <p>A selector for the items container.
+Use this if you want to redraw only the item list when the year is updated,
+instead of redrawing the entire widget.
+You must also pass <code>itemTemplate</code> for this to have any effect.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-itemTemplate'>
         <h1>itemTemplate</h1>
         <span>string</span>
         <div>
-            <p>An optional template for the items container. If <code>itemContainer</code>
-is also passed, this will be used to render the items list.
-Also, when the year is changed, only the items list will be
-rerendered, instead of the entire widget.</p>
+            <p>A template for the items container.
+If this and <code>itemContainer</code> are passed, this will be used to render the items list,
+and it will be attached to the main template at <code>itemContainer</code>.
+When the year changes, only this part of the widget will be redrawn,
+instead of the entire thing.</p>
             <dl>
-                
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;li&gt;&#39; +
     &#39;&lt;img class=&quot;thumb&quot; src=&quot;{{thumb}}&quot;&gt;&#39; +
@@ -517,91 +413,73 @@ rerendered, instead of the entire widget.</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-itemLoadingMessage'>
         <h1>itemLoadingMessage</h1>
         <span>string</span>
         <div>
             <p>A message or HTML string to display while loading items.
 By default it is the same as <code>loadingMessage</code>.
+You must also pass <code>itemContainer</code> and <code>itemTemplate</code> for this to have any effect.
 Set to <code>false</code> to disable this feature.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-itemNotFoundMessage'>
         <h1>itemNotFoundMessage</h1>
         <span>string</span>
         <div>
-            <p>A message or HTML string to display in the items container
-if no items are found.</p>
+            <p>A message or HTML string to display in the items container if no items are found.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;No items found.&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-onYearChange'>
         <h1>onYearChange</h1>
         <span>function</span>
         <div>
-            <p>A callback that fires when a year trigger or selectbox changes.</p>
+            <p>A callback that fires when the active year changes.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-beforeRender'>
         <h1>beforeRender</h1>
         <span>function</span>
         <div>
             <p>A callback that fires before the full widget is rendered.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-beforeRenderItems'>
         <h1>beforeRenderItems</h1>
         <span>function</span>
         <div>
-            <p>A callback that fires before the items are rendered.</p>
+            <p>A callback that fires before the items list is rendered.
+This only fires if <code>itemContainer</code> and <code>itemTemplate</code> are set.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-itemsComplete'>
         <h1>itemsComplete</h1>
         <span>function</span>
         <div>
-            <p>A callback that fires after the item list is rendered.</p>
+            <p>A callback that fires after the item list is rendered.
+This only fires if <code>itemContainer</code> and <code>itemTemplate</code> are set.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-complete'>
         <h1>complete</h1>
         <span>function</span>
         <div>
             <p>A callback that fires after the entire widget is rendered.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
@@ -611,7 +489,7 @@ if no items are found.</p>
 <section id='methods'>
     <h1>Methods</h1>
     <ul class='major'>
-    <li>
+    <li id='method-setYear'>
         <h1>setYear</h1>
         <div>
             <p>Display items from a particular year. This will refetch the list of items if necessary.</p>

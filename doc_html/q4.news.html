@@ -42,9 +42,7 @@
         <dt>Script link</dt>
             <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.2.0.min.js' target='_blank'>q4.api.1.2.0.min.js</a></dd>
         <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L946' target='_blank'>q4.api.js</a>, line 946</dd>
-        
-        
+            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L982' target='_blank'>q4.api.js</a>, line 982</dd>
     </dl>
     <p>
         This widget <em>extends</em> the <a href='q4.api.html'>q4.api</a> widget.
@@ -56,19 +54,16 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-category'>
         <h1>category</h1>
         <span>string</span>
         <div>
             <p>The ID of the PR category to fetch. Defaults to all.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-loadBody'>
         <h1>loadBody</h1>
         <span>boolean</span>
         <div>
@@ -76,12 +71,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-loadShortBody'>
         <h1>loadShortBody</h1>
         <span>boolean</span>
         <div>
@@ -89,12 +82,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-bodyLength'>
         <h1>bodyLength</h1>
         <span>number</span>
         <div>
@@ -102,12 +93,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-shortBodyLength'>
         <h1>shortBodyLength</h1>
         <span>number</span>
         <div>
@@ -115,8 +104,30 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
+            </dl>
+        </div>
+    </li>
+    <li id='option-template'>
+        <h1>template</h1>
+        <span>string</span>
+        <div>
+            <p>A Mustache.js template for the overall widget.
+All the tags documented in the <a href="q4.api.html#option-template">q4.api</a>
+parent widget are available here.
+In addition, the <code>{{#items}}</code> array contains these tags:</p>
+<ul>
+<li><code>{{title}}</code>   The title of the press release.</li>
+<li><code>{{url}}</code>     The URL of the details page.</li>
+<li><code>{{date}}</code>    The date of the press release.</li>
+<li><code>{{#tags}}</code>   An array of tags for this press release.</li>
+<li><code>{{body}}</code>    The body of the press release (truncated to <code>bodyLength</code>).</li>
+<li><code>{{shortBody}}</code> The short body of the release (truncated to <code>shortBodyLength</code>).</li>
+<li><code>{{docUrl}}</code>  The URL of the related document, if any.</li>
+<li><code>{{docSize}}</code> The size of the related document, if any.</li>
+<li><code>{{docType}}</code> The file type of the related document, if any.</li>
+<li><code>{{thumb}}</code>   The URL of the thumbnail image, if any.</li>
+</ul>
+            <dl>
             </dl>
         </div>
     </li>

@@ -53,44 +53,35 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-count'>
         <h1>count</h1>
         <span>number</span>
         <div>
             <p>The number of items to page through.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-perPage'>
         <h1>perPage</h1>
         <span>number</span>
         <div>
             <p>The number of items per page.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-pages'>
         <h1>pages</h1>
-        <span>Array.&lt;string&gt;&#x2F;Array.&lt;number&gt;</span>
+        <span>Array.&lt;string&gt;</span><span>Array.&lt;number&gt;</span>
         <div>
             <p>A list of page numbers or labels. If this is empty, page numbers
 will be generated from <code>count</code> and <code>perPage</code>.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-startPage'>
         <h1>startPage</h1>
         <span>number</span>
         <div>
@@ -98,12 +89,10 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>1</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-showFirstLast'>
         <h1>showFirstLast</h1>
         <span>boolean</span>
         <div>
@@ -111,12 +100,10 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-showPrevNext'>
         <h1>showPrevNext</h1>
         <span>boolean</span>
         <div>
@@ -124,12 +111,10 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-trigger'>
         <h1>trigger</h1>
         <span>string</span>
         <div>
@@ -137,12 +122,10 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;&gt; *&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-template'>
         <h1>template</h1>
         <span>string</span>
         <div>
@@ -150,44 +133,33 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;&lt;span&gt;{{page}}&lt;&#x2F;span&gt;&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-labels'>
         <h1>labels</h1>
         <span>Object</span>
         <div>
             <p>The text to display for first/last/previous/next page triggers.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-beforeChange'>
         <h1>beforeChange</h1>
         <span>function</span>
         <div>
             <p>A callback fired after a trigger is clicked.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-afterChange'>
         <h1>afterChange</h1>
         <span>function</span>
         <div>
             <p>A callback fired after updating the pager.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
@@ -197,7 +169,7 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
 <section id='methods'>
     <h1>Methods</h1>
     <ul class='major'>
-    <li>
+    <li id='method-changePage'>
         <h1>changePage</h1>
         <div>
             <p>Set the current page displayed on the pager.</p>

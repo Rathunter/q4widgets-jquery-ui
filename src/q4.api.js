@@ -12,6 +12,7 @@
         options: {
             /**
              * The base URL to use for API calls.
+             * By default this uses the current domain, so it's usually not necessary.
              * @type {string}
              */
             url: '',
@@ -29,16 +30,17 @@
             skip: 0,
             /**
              * Whether to fetch data from all years, or just the most recent.
+             * Note that setting this to true doesn't necessarily display all the items,
+             * but will fetch them all from the server in case you want to do something with them.
              * If `showAllYears` is true, this is assumed to be true also.
              * @type {boolean}
              * @default
              */
             fetchAllYears: false,
             /**
-             * Whether to include an "all years" option in template data
-             * and year selectors. If true, the widget will display
-             * all year data by default on first load; otherwise it will
-             * start with data from the most recent year.
+             * Whether to include an "all years" option in template data and year selectors.
+             * If true, the widget will display all year data by default on first load;
+             * otherwise it will start with data from the most recent year.
              * @type {boolean}
              * @default
              */
@@ -50,14 +52,16 @@
              */
             allYearsText: 'All',
             /**
-             * The year to display first. Default is to display all years if
-             * that option is enabled, otherwise the most recent year.
-             * A useful value to pass is `(new Date()).getFullYear()`.
+             * The year to display when the widget first loads.
+             * Default is to display items from all years if that option is enabled,
+             * otherwise the most recent year.
+             * A useful value you might want to pass is `(new Date()).getFullYear()`,
+             * which will display items from the current calendar year.
              * @type {?number}
              */
             startYear: null,
             /**
-             * Whether to start with startYear even if there are no documents for that year.
+             * Whether to start with `startYear` even if there are no documents for that year.
              * @type {boolean}
              * @default
              */
@@ -86,12 +90,20 @@
              */
             titleLength: 0,
             /**
-             * A date format string, which can be used in the template
-             * as `{{date}}`. Can alternately be an object of format strings,
+             * A date format string, which can be used in the template as `{{date}}`.
+             * Can alternately be an object of format strings,
              * which can be accessed with `{{date.key}}` (where key is the
              * object key corresponding to the string you want to use).
              * By default, dates are formatted using jQuery UI's datepicker.
-             * @type {string}
+             * @example 'MM d, yy'
+             * @example
+             * {
+             *     full: 'MM d, yy',
+             *     short: 'mm/dd/y',
+             *     month: 'MM',
+             *     day: 'd'
+             * }
+             * @type {string|Object}
              * @default
              */
             dateFormat: 'mm/dd/yy',
@@ -124,8 +136,7 @@
              */
             defaultThumb: '',
             /**
-             * Whether to append the widget to the container, or replace its
-             * contents entirely.
+             * Whether to append the widget to the container, or replace its contents entirely.
              * @type {boolean}
              * @default
              */
@@ -133,75 +144,21 @@
             /**
              * A Mustache.js template for the overall widget. Uses the following tags:
              *
-             * - `{{#years}}` An array of years for the navigation. Each year has these tags:
+             * - `{{#years}}` An array of years for the navigation. Each year has these subtags:
              *
              *   - `{{year}}`   The display label of the year (e.g. `"2015"`, `"All Years"`)
              *   - `{{value}}`  The internal value of the year (e.g. `2015`, `-1`)
-             *   - `{{#items}}` An array of items for that year, with the same format as the
-             *       global items array.
-             * - `{{#items}}` An array of all items. Item tags for each type of widget
-             *     are as follows:
+             *   - `{{#items}}` An array of items for this year, with the same format as the
+             *       "all items" array.
+             * - `{{#items}}` An array of all items. Each item has a number of available subtags,
+             *   which vary depending which child widget you are using.
+             *   For a list, check the documentation for the specific child widget:
              *
-             *   - *Events:*
-             *
-             *     - `{{title}}`    The title of the event.
-             *     - `{{url}}`      The URL of the details page.
-             *     - `{{date}}`     The starting date of the event.
-             *     - `{{endDate}}`  The ending date of the event.
-             *     - `{{timeZone}}` The timezone of the start/end dates.
-             *     - `{{location}}` The location of the event.
-             *     - `{{#tags}}`    An array of tags for this event.
-             *     - `{{body}}`     The body of the event details.
-             *     - `{{#docs}}`    An array of attached documents, with the following tags:
-             *
-             *       - `{{title}}`     The title of the document.
-             *       - `{{url}}`       The URL of the document.
-             *       - `{{type}}`      The type of document as specified in the CMS.
-             *       - `{{extension}}` The extension of the document file name.
-             *       - `{{size}}`      The size of the document file.
-             *   - *Financial reports:*
-             *
-             *     - `{{title}}` The title (i.e. subtype and year) of the financial report.
-             *     - `{{year}}`  The fiscal year of the financial report.
-             *     - `{{date}}`  The filing date of the financial report.
-             *     - `{{type}}`  The subtype of the report (e.g. `First Quarter`, `Annual Report`).
-             *     - `{{shortType}}` A shortened name for the financial report's subtype
-             *       (e.g. `Q1`, `Annual`). These can be customized with the `shortTypes` option.
-             *     - `{{coverUrl}}`  The URL of the cover image, if any.
-             *     - `{{#docs}}` An array of documents for this report, with these tags:
-             *
-             *       - `{{docTitle}}`    The title of the document.
-             *       - `{{docUrl}}`      The URL of the document file.
-             *       - `{{docCategory}}` The category of the document.
-             *       - `{{docSize}}`     The file size of the document.
-             *       - `{{docThumb}}`    The URL of the thumbnail image, if any.
-             *       - `{{docType}}`     The file type of the document.
-             *   - *Presentations:*
-             *
-             *     - `{{title}}`  The title of the presentation.
-             *     - `{{url}}`    The URL of the details page.
-             *     - `{{date}}`   The date of the presentation.
-             *     - `{{#tags}}`  An array of tags for this presentation.
-             *     - `{{body}}`   The body of the presentation details.
-             *     - `{{docUrl}}` The URL of the presentation document.
-             *   - *Press releases:*
-             *
-             *     - `{{title}}`   The title of the press release.
-             *     - `{{url}}`     The URL of the details page.
-             *     - `{{date}}`    The date of the press release.
-             *     - `{{#tags}}`   An array of tags for this press release.
-             *     - `{{body}}`    The body of the press release (truncated to `bodyLength`).
-             *     - `{{shortBody}}` The short body of the release (truncated to `shortBodyLength`).
-             *     - `{{docUrl}}`  The URL of the related document, if any.
-             *     - `{{docSize}}` The size of the related document, if any.
-             *     - `{{docType}}` The file type of the related document, if any.
-             *     - `{{thumb}}`   The URL of the thumbnail image, if any.
-             *   - *SEC filings:*
-             *
-             *     - `{{title}}` The title of the filing.
-             *     - `{{url}}`   The URL of the details page.
-             *     - `{{date}}`  The date of the filing.
-             *     - `{{agent}}` The name of the filing agent.
+             *   - [q4.events](q4.events.html#option-template)
+             *   - [q4.financials](q4.financials.html#option-template)
+             *   - [q4.presentations](q4.presentations.html#option-template)
+             *   - [q4.news](q4.news.html#option-template)
+             *   - [q4.sec](q4.sec.html#option-template)
              * @type {string}
              * @example
              * '<ul class="years">' +
@@ -215,41 +172,55 @@
              */
             template: '',
             /**
-             * A message or HTML string to display while loading the widget.
-             * Set to `false` to disable this feature.
-             * @type {(string|boolean)}
+             * A message or HTML string to display while first loading the widget.
+             * Set to `false` to disable this feature. See also `itemLoadingMessage`.
+             * @type {?(string|boolean)}
              * @default
              */
             loadingMessage: 'Loading...',
             /**
-             * An optional selector for year trigger links in the main template.
-             * If passed, click events will be bound here.
+             * A CSS selector for year trigger links.
+             * If passed, any elements in the main template matching this selector will
+             * become clickable links that filter the displayed items by year.
+             * Usually you'll want to point this to an element in the template's `{{years}}` loop.
+             *
+             * Note that this doesn't automatically generate the year links;
+             * you can do that in the template.
+             * @example 'a.yearLink'
              * @type {?string}
              */
             yearTrigger: null,
             /**
-             * An optional selector for a year selectbox in the main template.
-             * If passed, change events will be bound here.
+             * A CSS selector for a year selectbox.
+             * This behaves like the `yearTrigger` option, except instead of pointing to
+             * individual links, it should point to a `<select>` or similar form element.
+             *
+             * Note that this doesn't automatically fill the box with `<option>`s;
+             * you can do that in the template.
+             * @example 'select.yearsDropdown'
              * @type {?string}
              */
             yearSelect: null,
             /**
-             * The CSS class to use for a selected year trigger.
+             * The CSS class to add to a selected year trigger.
              * @type {string}
              * @default
              */
             activeClass: 'active',
             /**
-             * An optional selector for the items container. You must also
-             * pass `itemTemplate` for this to have any effect.
+             * A selector for the items container.
+             * Use this if you want to redraw only the item list when the year is updated,
+             * instead of redrawing the entire widget.
+             * You must also pass `itemTemplate` for this to have any effect.
              * @type {?string}
              */
             itemContainer: null,
             /**
-             * An optional template for the items container. If `itemContainer`
-             * is also passed, this will be used to render the items list.
-             * Also, when the year is changed, only the items list will be
-             * rerendered, instead of the entire widget.
+             * A template for the items container.
+             * If this and `itemContainer` are passed, this will be used to render the items list,
+             * and it will be attached to the main template at `itemContainer`.
+             * When the year changes, only this part of the widget will be redrawn,
+             * instead of the entire thing.
              * @type {string}
              * @example
              * '<li>' +
@@ -262,19 +233,19 @@
             /**
              * A message or HTML string to display while loading items.
              * By default it is the same as `loadingMessage`.
+             * You must also pass `itemContainer` and `itemTemplate` for this to have any effect.
              * Set to `false` to disable this feature.
              * @type {?string}
              */
             itemLoadingMessage: null,
             /**
-             * A message or HTML string to display in the items container
-             * if no items are found.
+             * A message or HTML string to display in the items container if no items are found.
              * @type {string}
              * @default
              */
             itemNotFoundMessage: 'No items found.',
             /**
-             * A callback that fires when a year trigger or selectbox changes.
+             * A callback that fires when the active year changes.
              * @type {function}
              * @param {Event} [event] The triggering event object.
              */
@@ -287,7 +258,8 @@
              */
             beforeRender: function (e, tplData) {},
             /**
-             * A callback that fires before the items are rendered.
+             * A callback that fires before the items list is rendered.
+             * This only fires if `itemContainer` and `itemTemplate` are set.
              * @type {function}
              * @param {Event} [event] The event object.
              * @param {Object} [templateData] Template data for the items list.
@@ -295,6 +267,7 @@
             beforeRenderItems: function (e, tplData) {},
             /**
              * A callback that fires after the item list is rendered.
+             * This only fires if `itemContainer` and `itemTemplate` are set.
              * @type {function}
              * @param {Event} [event] The event object.
              */
@@ -698,7 +671,31 @@
              * @type {boolean}
              * @default
              */
-            sortAscending: false
+            sortAscending: false,
+            /**
+             * A Mustache.js template for the overall widget.
+             * All the tags documented in the [q4.api](q4.api.html#option-template)
+             * parent widget are available here.
+             * In addition, the `{{#items}}` array contains these tags:
+             *
+             * - `{{title}}`    The title of the event.
+             * - `{{url}}`      The URL of the details page.
+             * - `{{date}}`     The starting date of the event.
+             * - `{{endDate}}`  The ending date of the event.
+             * - `{{timeZone}}` The timezone of the start/end dates.
+             * - `{{location}}` The location of the event.
+             * - `{{#tags}}`    An array of tags for this event.
+             * - `{{body}}`     The body of the event details.
+             * - `{{#docs}}`    An array of attached documents, with the following tags:
+             *
+             *   - `{{title}}`     The title of the document.
+             *   - `{{url}}`       The URL of the document.
+             *   - `{{type}}`      The type of document as specified in the CMS.
+             *   - `{{extension}}` The extension of the document file name.
+             *   - `{{size}}`      The size of the document file.
+             * @type {string}
+             */
+            template: ''
         },
 
         dataUrl: '/Services/EventService.svc/GetEventList',
@@ -820,6 +817,30 @@
                 'Third Quarter': 'Q3',
                 'Fourth Quarter': 'Q4'
             },
+            /**
+             * A Mustache.js template for the overall widget.
+             * All the tags documented in the [q4.api](q4.api.html#option-template)
+             * parent widget are available here.
+             * In addition, the `{{#items}}` array contains these tags:
+             *
+             * - `{{title}}` The title (i.e. subtype and year) of the financial report.
+             * - `{{year}}`  The fiscal year of the financial report.
+             * - `{{date}}`  The filing date of the financial report.
+             * - `{{type}}`  The subtype of the report (e.g. `First Quarter`, `Annual Report`).
+             * - `{{shortType}}` A shortened name for the financial report's subtype
+             *   (e.g. `Q1`, `Annual`). These can be customized with the `shortTypes` option.
+             * - `{{coverUrl}}`  The URL of the cover image, if any.
+             * - `{{#docs}}` An array of documents for this report, with these tags:
+             *
+             *   - `{{docTitle}}`    The title of the document.
+             *   - `{{docUrl}}`      The URL of the document file.
+             *   - `{{docCategory}}` The category of the document.
+             *   - `{{docSize}}`     The file size of the document.
+             *   - `{{docThumb}}`    The URL of the thumbnail image, if any.
+             *   - `{{docType}}`     The file type of the document.
+             * @type {string}
+             */
+            template: ''
         },
 
         dataUrl: '/Services/FinancialReportService.svc/GetFinancialReportList',
@@ -910,6 +931,21 @@
      */
     $.widget('q4.presentations', $.q4.api, /** @lends q4.presentations */ {
         options: {
+            /**
+             * A Mustache.js template for the overall widget.
+             * All the tags documented in the [q4.api](q4.api.html#option-template)
+             * parent widget are available here.
+             * In addition, the `{{#items}}` array contains these tags:
+             *
+             * - `{{title}}`  The title of the presentation.
+             * - `{{url}}`    The URL of the details page.
+             * - `{{date}}`   The date of the presentation.
+             * - `{{#tags}}`  An array of tags for this presentation.
+             * - `{{body}}`   The body of the presentation details.
+             * - `{{docUrl}}` The URL of the presentation document.
+             * @type {string}
+             */
+            template: ''
         },
 
         dataUrl: '/Services/PresentationService.svc/GetPresentationList',
@@ -978,7 +1014,26 @@
              * @type {number}
              * @default
              */
-            shortBodyLength: 0
+            shortBodyLength: 0,
+            /**
+             * A Mustache.js template for the overall widget.
+             * All the tags documented in the [q4.api](q4.api.html#option-template)
+             * parent widget are available here.
+             * In addition, the `{{#items}}` array contains these tags:
+             *
+             * - `{{title}}`   The title of the press release.
+             * - `{{url}}`     The URL of the details page.
+             * - `{{date}}`    The date of the press release.
+             * - `{{#tags}}`   An array of tags for this press release.
+             * - `{{body}}`    The body of the press release (truncated to `bodyLength`).
+             * - `{{shortBody}}` The short body of the release (truncated to `shortBodyLength`).
+             * - `{{docUrl}}`  The URL of the related document, if any.
+             * - `{{docSize}}` The size of the related document, if any.
+             * - `{{docType}}` The file type of the related document, if any.
+             * - `{{thumb}}`   The URL of the thumbnail image, if any.
+             * @type {string}
+             */
+            template: ''
         },
 
         dataUrl: '/Services/PressReleaseService.svc/GetPressReleaseList',
@@ -1046,6 +1101,19 @@
              * @default
              */
             excludeNoDocuments: false,
+            /**
+             * A Mustache.js template for the overall widget.
+             * All the tags documented in the [q4.api](q4.api.html#option-template)
+             * parent widget are available here.
+             * In addition, the `{{#items}}` array contains these tags:
+             *
+             * - `{{title}}` The title of the filing.
+             * - `{{url}}`   The URL of the details page.
+             * - `{{date}}`  The date of the filing.
+             * - `{{agent}}` The name of the filing agent.
+             * @type {string}
+             */
+            template: ''
         },
 
         dataUrl: '/Services/SECFilingService.svc/GetEdgarFilingList',

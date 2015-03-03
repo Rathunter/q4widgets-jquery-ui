@@ -50,7 +50,6 @@ exports.publish = function (data, opts) {
                 extends: doclet.augments || [],
                 children: []
             };
-            console.log(doclet);
         }
 
         // option
@@ -59,7 +58,7 @@ exports.publish = function (data, opts) {
                 name: doclet.name,
                 description: doclet.description,
                 line: doclet.meta.lineno,
-                type: 'type' in doclet ? doclet.type.names.join('/') : undefined,
+                type: 'type' in doclet ? doclet.type.names : [],
                 params: (doclet.params || []).map(stringify_type),
                 defaultval: doclet.defaultvalue,
                 examples: (doclet.examples || []).filter(single_line),

@@ -53,7 +53,7 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-openMultipleItems'>
         <h1>openMultipleItems</h1>
         <span>boolean</span>
         <div>
@@ -61,12 +61,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-menuContainer'>
         <h1>menuContainer</h1>
         <span>string</span>
         <div>
@@ -74,12 +72,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;.menu&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-bodyContainer'>
         <h1>bodyContainer</h1>
         <span>string</span>
         <div>
@@ -87,12 +83,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;.body&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-submenu'>
         <h1>submenu</h1>
         <span>string</span>
         <div>
@@ -100,12 +94,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;.submenu&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-trigger'>
         <h1>trigger</h1>
         <span>string</span>
         <div>
@@ -113,12 +105,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;.itemLink&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-expandTrigger'>
         <h1>expandTrigger</h1>
         <span>string</span>
         <div>
@@ -126,12 +116,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;.itemExpand&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-expandText'>
         <h1>expandText</h1>
         <span>string</span>
         <div>
@@ -139,12 +127,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;[ + ]&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-collapseText'>
         <h1>collapseText</h1>
         <span>string</span>
         <div>
@@ -152,12 +138,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;[ - ]&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-itemClass'>
         <h1>itemClass</h1>
         <span>string</span>
         <div>
@@ -165,12 +149,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;treemenu-item&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-activeClass'>
         <h1>activeClass</h1>
         <span>string</span>
         <div>
@@ -178,12 +160,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;treemenu-active&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-expandedClass'>
         <h1>expandedClass</h1>
         <span>string</span>
         <div>
@@ -191,12 +171,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;treemenu-expanded&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-template'>
         <h1>template</h1>
         <span>string</span>
         <div>
@@ -204,14 +182,13 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;ul class=&quot;menu&quot;&gt;&lt;&#x2F;ul&gt;&#39; +
 &#39;&lt;div class=&quot;body&quot;&gt;&lt;&#x2F;div&gt;&#39;</pre></dd>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-menuItemTemplate'>
         <h1>menuItemTemplate</h1>
         <span>string</span>
         <div>
@@ -219,7 +196,6 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;li&gt;&#39; +
     &#39;&lt;span class=&quot;itemExpand&quot;&gt;&lt;&#x2F;span&gt;&#39; +
@@ -229,7 +205,7 @@
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-bodyItemTemplate'>
         <h1>bodyItemTemplate</h1>
         <span>string</span>
         <div>
@@ -237,7 +213,6 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;div&gt;&#39; +
     &#39;&lt;h4&gt;{{title}}&lt;&#x2F;h4&gt;&#39; +
@@ -246,9 +221,9 @@
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-content'>
         <h1>content</h1>
-        <span>boolean</span>
+        
         <div>
             <p>A nested array of menu item objects, each with these properties:</p>
 <ul>
@@ -259,7 +234,6 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
                 <dt>Example</dt>
                     <dd><pre>[
     {

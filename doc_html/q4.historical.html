@@ -53,33 +53,27 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-exchange'>
         <h1>exchange</h1>
         <span>string</span>
         <div>
             <p>The stock exchange to use.
 If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code> in the URL.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-symbol'>
         <h1>symbol</h1>
         <span>string</span>
         <div>
             <p>The stock symbol to use.
 If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code> in the URL.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-dateFormat'>
         <h1>dateFormat</h1>
         <span>string</span>
         <div>
@@ -87,36 +81,28 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;M d, yy&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-startDate'>
         <h1>startDate</h1>
         <span>string</span>
         <div>
             <p>The earliest date that will be available as an option. Default is Jan 1, 1970.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-endDate'>
         <h1>endDate</h1>
         <span>string</span>
         <div>
             <p>The latest date that will be available as an option. Default is the current day.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-datepicker'>
         <h1>datepicker</h1>
         <span>string</span>
         <div>
@@ -124,24 +110,19 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;input:first&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-datepickerOpts'>
         <h1>datepickerOpts</h1>
         <span>Object</span>
         <div>
             <p>A set of options to pass directly to the datepicker constructor.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-trigger'>
         <h1>trigger</h1>
         <span>string</span>
         <div>
@@ -149,13 +130,10 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
 If this is not specified, the lookup will occur when the <code>datepicker</code> element's
 value changes.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-quoteContainer'>
         <h1>quoteContainer</h1>
         <span>string</span>
         <div>
@@ -163,12 +141,10 @@ value changes.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;.quote&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-quoteTemplate'>
         <h1>quoteTemplate</h1>
         <span>string</span>
         <div>
@@ -183,8 +159,6 @@ The following tags are available:</p>
 <li><code>{{low}}</code>    The stock's lowest trading price on that date.</li>
 </ul>
             <dl>
-                
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;Date: {{date}}&lt;br&gt;&#39; +
 &#39;Volume: {{volume}}&lt;br&gt;&#39; +
@@ -195,7 +169,7 @@ The following tags are available:</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-notFoundMessage'>
         <h1>notFoundMessage</h1>
         <span>string</span>
         <div>
@@ -203,8 +177,6 @@ The following tags are available:</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;No stock data is available for this date.&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>

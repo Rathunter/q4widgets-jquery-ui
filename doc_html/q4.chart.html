@@ -53,20 +53,18 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-url'>
         <h1>url</h1>
         <span>string</span>
         <div>
             <p>The base URL of the Q4 website.</p>
             <dl>
-                
                 <dt>Example</dt>
                     <dd><code> &#x2F;&#x2F;feeds.q4websystems.com</code></dd>
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-usePublic'>
         <h1>usePublic</h1>
         <span>boolean</span>
         <div>
@@ -74,41 +72,35 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-apiKey'>
         <h1>apiKey</h1>
         <span>string</span>
         <div>
             <p>If <code>usePublic</code> is <code>true</code>, the API key to use for public feeds.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-stocks'>
         <h1>stocks</h1>
-        <span>string&#x2F;Array.&lt;string&gt;</span>
+        <span>string</span><span>Array.&lt;string&gt;</span>
         <div>
             <p>An array of stock symbols to use on the stock price chart.
 Each symbol can be a string of the format &quot;EXCHANGE:SYMBOL&quot;,
 or an array containing &quot;EXCHANGE:SYMBOL&quot; and a custom
 display name.</p>
             <dl>
-                
                 <dt>Example</dt>
-                    <dd><code> &#39;NYSE:XXX&#39;</code></dd><dt>Example</dt>
+                    <dd><code> &#39;NYSE:XXX&#39;</code></dd>
+                <dt>Example</dt>
                     <dd><code> [&#39;NYSE:XXX&#39;, &#39;New York: XXX&#39;]</code></dd>
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-lockStock'>
         <h1>lockStock</h1>
         <span>boolean</span>
         <div>
@@ -116,12 +108,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-legend'>
         <h1>legend</h1>
         <span>boolean</span>
         <div>
@@ -129,12 +119,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-showSymbolInLegend'>
         <h1>showSymbolInLegend</h1>
         <span>boolean</span>
         <div>
@@ -142,12 +130,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>true</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-stockLimit'>
         <h1>stockLimit</h1>
         <span>number</span>
         <div>
@@ -155,12 +141,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>1500</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-volume'>
         <h1>volume</h1>
         <span>boolean</span>
         <div>
@@ -168,12 +152,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-volumeHeight'>
         <h1>volumeHeight</h1>
         <span>number</span>
         <div>
@@ -181,12 +163,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>40</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-news'>
         <h1>news</h1>
         <span>boolean</span>
         <div>
@@ -194,12 +174,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-newsOnLoad'>
         <h1>newsOnLoad</h1>
         <span>boolean</span>
         <div>
@@ -207,12 +185,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-newsLimit'>
         <h1>newsLimit</h1>
         <span>number</span>
         <div>
@@ -220,12 +196,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>200</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-newsLength'>
         <h1>newsLength</h1>
         <span>number</span>
         <div>
@@ -233,12 +207,10 @@ display name.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>75</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-newsCategory'>
         <h1>newsCategory</h1>
         <span>string</span>
         <div>
@@ -247,24 +219,19 @@ The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-newsTags'>
         <h1>newsTags</h1>
         <span>Array&lt;string&gt;</span>
         <div>
             <p>If <code>news</code> is true, an array of tags to filter news releases by.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-events'>
         <h1>events</h1>
         <span>boolean</span>
         <div>
@@ -272,12 +239,10 @@ The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-eventsOnLoad'>
         <h1>eventsOnLoad</h1>
         <span>boolean</span>
         <div>
@@ -285,12 +250,10 @@ The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-eventsLimit'>
         <h1>eventsLimit</h1>
         <span>number</span>
         <div>
@@ -298,60 +261,46 @@ The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>100</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-stockOpts'>
         <h1>stockOpts</h1>
         <span>Object</span>
         <div>
             <p>A set of Highcharts options for the stock price series.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-volumeOpts'>
         <h1>volumeOpts</h1>
         <span>Object</span>
         <div>
             <p>A set of Highcharts options for the volume series.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-newsOpts'>
         <h1>newsOpts</h1>
         <span>Object</span>
         <div>
             <p>A set of Highcharts options for the press release series.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-eventsOpts'>
         <h1>eventsOpts</h1>
         <span>Object</span>
         <div>
             <p>A set of Highcharts options for the event series.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-highstockOpts'>
         <h1>highstockOpts</h1>
         <span>Object</span>
         <div>
@@ -359,12 +308,10 @@ The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>{}</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-highchartsOpts'>
         <h1>highchartsOpts</h1>
         <span>Object</span>
         <div>
@@ -372,20 +319,15 @@ The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>{}</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-onComplete'>
         <h1>onComplete</h1>
         <span>function</span>
         <div>
             <p>A callback that is fired after the chart is rendered.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>

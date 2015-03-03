@@ -54,41 +54,33 @@ Each year can have links to documents for each quarter.</p>
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-columns'>
         <h1>columns</h1>
         <span>number</span>
         <div>
             <p>The number of year columns to display.
 Set to zero to show all columns (default).</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-firstYear'>
         <h1>firstYear</h1>
-        <span>number&#x2F;string</span>
+        <span>number</span><span>string</span>
         <div>
             <p>The earliest year to display; previous years will be ignored.
 Set to zero to show all years (default).</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-categories'>
         <h1>categories</h1>
         <span>Array&lt;Object&gt;</span>
         <div>
             <p>An array of document categories that will appear as rows
 in the table.</p>
             <dl>
-                
-                
                 <dt>Example</dt>
                     <dd><pre>[
     {
@@ -106,19 +98,16 @@ in the table.</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-shortTypes'>
         <h1>shortTypes</h1>
         <span>Object</span>
         <div>
             <p>A map of short names for each report subtype.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-template'>
         <h1>template</h1>
         <span>string</span>
         <div>
@@ -141,8 +130,6 @@ Documents can have these tags:</p>
 <li><code>{{year}}</code>      The fiscal year of the report.</li>
 </ul>
             <dl>
-                
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;ul class=&quot;ftHeader&quot;&gt;&#39; +
     &#39;&lt;li&gt;Document&lt;&#x2F;li&gt;&#39; +
@@ -161,15 +148,12 @@ Documents can have these tags:</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-complete'>
         <h1>complete</h1>
         <span>function</span>
         <div>
             <p>A callback fired when rendering is completed.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>

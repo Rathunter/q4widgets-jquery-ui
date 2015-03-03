@@ -53,44 +53,35 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-apiKey'>
         <h1>apiKey</h1>
         <span>string</span>
         <div>
             <p>A Flickr API key.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-userId'>
         <h1>userId</h1>
         <span>string</span>
         <div>
             <p>A Flickr user ID.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-albums'>
         <h1>albums</h1>
         <span>Array&lt;string&gt;</span>
         <div>
             <p>An array of photo album names to fetch.
 If the list is empty (default), fetch all photo albums.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-perPage'>
         <h1>perPage</h1>
         <span>number</span>
         <div>
@@ -99,14 +90,12 @@ This can be up to 500.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>500</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-template'>
         <h1>template</h1>
-        <span>string</span>
+        
         <div>
             <p>A mustache.js template for all photo albums.
 An album has these tags:</p>
@@ -140,8 +129,6 @@ Each photo has these tags:</p>
 <li><code>Original</code>    2400 x 1800</li>
 </ul>
             <dl>
-                
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;{{#albums}}&#39; +
     &#39;&lt;h3&gt;{{albumTitle}}&lt;&#x2F;h3&gt;&#39; +
@@ -159,15 +146,12 @@ Each photo has these tags:</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-complete'>
         <h1>complete</h1>
         <span>function</span>
         <div>
             <p>A callback fired when rendering is completed.</p>
             <dl>
-                
-                
-                
             </dl>
         </div>
     </li>

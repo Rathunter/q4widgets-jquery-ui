@@ -53,7 +53,7 @@
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
-    <li>
+    <li id='option-limit'>
         <h1>limit</h1>
         <span>number</span>
         <div>
@@ -61,12 +61,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-dateFormat'>
         <h1>dateFormat</h1>
         <span>string</span>
         <div>
@@ -74,12 +72,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-fromNow'>
         <h1>fromNow</h1>
         <span>boolean</span>
         <div>
@@ -87,12 +83,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>false</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-titleLength'>
         <h1>titleLength</h1>
         <span>number</span>
         <div>
@@ -100,12 +94,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>80</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-summaryLength'>
         <h1>summaryLength</h1>
         <span>number</span>
         <div>
@@ -113,12 +105,10 @@
             <dl>
                 <dt>Default value</dt>
                     <dd><code>500</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-feeds'>
         <h1>feeds</h1>
         <span>Array&lt;Object&gt;</span>
         <div>
@@ -141,12 +131,10 @@ Valid options for all feed types are:</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-filter'>
         <h1>filter</h1>
         <span>Array&lt;string&gt;</span>
         <div>
@@ -155,12 +143,10 @@ only the feeds named in the list will be parsed.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-template'>
         <h1>template</h1>
         <span>string</span>
         <div>
@@ -169,7 +155,6 @@ Can be overridden for individual feed types.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
                 <dt>Example</dt>
                     <dd><pre>&#39;&lt;li&gt;&#39; +
     &#39;&lt;h2&gt;&lt;a href=&quot;{{url}}&quot;&gt;{{title}}&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;&#39; +
@@ -179,7 +164,7 @@ Can be overridden for individual feed types.</p>
             </dl>
         </div>
     </li>
-    <li>
+    <li id='option-complete'>
         <h1>complete</h1>
         <span>function</span>
         <div>
@@ -187,8 +172,6 @@ Can be overridden for individual feed types.</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>0</code></dd>
-                
-                
             </dl>
         </div>
     </li>
@@ -198,7 +181,7 @@ Can be overridden for individual feed types.</p>
 <section id='methods'>
     <h1>Methods</h1>
     <ul class='major'>
-    <li>
+    <li id='method-updateFilter'>
         <h1>updateFilter</h1>
         <div>
             <p>Update the <code>filter</code> option.</p>

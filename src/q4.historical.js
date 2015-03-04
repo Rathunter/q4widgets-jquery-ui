@@ -2,7 +2,7 @@
     /**
      * Retrieves price and volume information for a stock on a specific date.
      * @class q4.historical
-     * @version 2.0.0
+     * @version 2.1.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      */
@@ -50,6 +50,19 @@
              */
             datepickerOpts: {},
             /**
+             * Whether to update the datepicker field after fetching the stock quote.
+             * If there is no data for the selected date, this option will clear the field.
+             * @type {boolean}
+             * @default
+             */
+            updateDatepicker: true,
+            /**
+             * Whether to fetch today's stock quote when the table is initialized.
+             * @type {boolean}
+             * @default
+             */
+            fetchOnInit: true,
+            /**
              * A selector for a trigger element that will perform the lookup when clicked.
              * If this is not specified, the lookup will occur when the `datepicker` element's
              * value changes.
@@ -87,7 +100,13 @@
              * @type {string}
              * @default
              */
-            notFoundMessage: 'No stock data is available for this date.'
+            notFoundMessage: 'No stock data is available for this date.',
+            /**
+             * A CSS class to add to the widget while data is loading.
+             * This can be used to show and hide elements within the widget.
+             * @type {string}
+             */
+            loadingClass: '',
         },
 
         _init: function () {
@@ -115,25 +134,30 @@
                 changeYear: true
             }, o.datepickerOpts));
 
+            // fetch and render
+            function updateQuote(date) {
+                $e.addClass(o.loadingClass);
+                _._fetchQuote(date).done(function (data) {
+                    _._renderQuote(data);
+                    $e.removeClass(o.loadingClass);
+                });
+            }
+
             // event handler
-            function getQuote(e) {
+            function handleEvent(e) {
                 e.preventDefault();
                 var date = $picker.datepicker('getDate');
                 if (date === null) return;
-                _._fetchQuote(date).done(function (data) {
-                    _._renderQuote(data);
-                });
+                updateQuote(date);
             }
 
             // assign a click event if a trigger has been specified; otherwise use a change event
             var $trigger = $(o.trigger, $e);
-            if (o.trigger && $trigger.length) $trigger.click(getQuote);
-            else $picker.change(getQuote);
+            if (o.trigger && $trigger.length) $trigger.click(handleEvent);
+            else $picker.change(handleEvent);
 
             // fetch and render today's quote
-            _._fetchQuote(new Date()).done(function (data) {
-                _._renderQuote(data);
-            });
+            if (o.fetchOnInit) updateQuote(new Date());
         },
 
         _fetchQuote: function (date) {
@@ -167,19 +191,28 @@
 
             if (!data.GetStockQuoteHistoricalListResult.length) {
                 $(o.quoteContainer, $e).html(o.notFoundMessage);
+                if (o.correctDatepicker) {
+                    $(o.datepicker, $e).datepicker('setDate', null);
+                }
                 return;
             }
 
             data = data.GetStockQuoteHistoricalListResult[0];
 
+            var date = new Date(data.HistoricalDate);
+
             $(o.quoteContainer, $e).html(Mustache.render(o.quoteTemplate, {
-                date: $.datepicker.formatDate(o.dateFormat, new Date(data.HistoricalDate)),
+                date: $.datepicker.formatDate(o.dateFormat, date),
                 high: data.High,
                 low: data.Low,
                 open: data.Open,
                 close: data.Last,
                 volume: this._addCommas(data.Volume)
             }));
+
+            if (o.updateDatepicker) {
+                $(o.datepicker, $e).datepicker('setDate', date);
+            }
         },
 
         _addCommas: function (val) {

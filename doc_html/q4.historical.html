@@ -40,7 +40,7 @@
 <section id='details'>
     <dl>
         <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.0.0.min.js' target='_blank'>q4.historical.2.0.0.min.js</a></dd>
+            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.1.0.min.js' target='_blank'>q4.historical.2.1.0.min.js</a></dd>
         <dt>Source file</dt>
             <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
         <dt>Author(s)</dt>
@@ -122,6 +122,29 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
             </dl>
         </div>
     </li>
+    <li id='option-updateDatepicker'>
+        <h1>updateDatepicker</h1>
+        <span>boolean</span>
+        <div>
+            <p>Whether to update the datepicker field after fetching the stock quote.
+If there is no data for the selected date, this option will clear the field.</p>
+            <dl>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+            </dl>
+        </div>
+    </li>
+    <li id='option-fetchOnInit'>
+        <h1>fetchOnInit</h1>
+        <span>boolean</span>
+        <div>
+            <p>Whether to fetch today's stock quote when the table is initialized.</p>
+            <dl>
+                <dt>Default value</dt>
+                    <dd><code>true</code></dd>
+            </dl>
+        </div>
+    </li>
     <li id='option-trigger'>
         <h1>trigger</h1>
         <span>string</span>
@@ -177,6 +200,16 @@ The following tags are available:</p>
             <dl>
                 <dt>Default value</dt>
                     <dd><code>&quot;No stock data is available for this date.&quot;</code></dd>
+            </dl>
+        </div>
+    </li>
+    <li id='option-loadingClass'>
+        <h1>loadingClass</h1>
+        <span>string</span>
+        <div>
+            <p>A CSS class to add to the widget while data is loading.
+This can be used to show and hide elements within the widget.</p>
+            <dl>
             </dl>
         </div>
     </li>

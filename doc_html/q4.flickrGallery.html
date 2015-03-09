@@ -35,6 +35,11 @@
 <header>
     <h1>q4.flickrGallery</h1>
     <p>Fetches and displays photo albums from a user on Flickr.</p>
+    <ul>
+        <li><a href='#examples'>Examples</a></li>
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -48,6 +53,19 @@
         <dt>Requires</dt>
             <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
+</section>
+
+<section id='examples'>
+    <h1>Examples</h1>
+    <div>
+        
+        <pre>$("#gallery").flickrGallery({
+    apiKey: 'abcdef1234567890',
+    userId: '11111111@N01',
+    perPage: 100,
+    albums: ['First Photo Album', 'Second Photo Album']
+});</pre>
+    </div>
 </section>
 
 <section id='options'>
@@ -89,7 +107,7 @@ If the list is empty (default), fetch all photo albums.</p>
 This can be up to 500.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>500</code></dd>
+                    <dd><code><span class="hljs-number">500</span></code></dd>
             </dl>
         </div>
     </li>
@@ -130,19 +148,19 @@ Each photo has these tags:</p>
 </ul>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;{{#albums}}&#39; +
-    &#39;&lt;h3&gt;{{albumTitle}}&lt;&#x2F;h3&gt;&#39; +
-    &#39;&lt;ul class=&quot;album&quot;&gt;&#39; +
-        &#39;{{#photos}}&#39; +
-        &#39;&lt;li class=&quot;col-xs-4 col-sm-3 col-md-2 col-lg-2&quot;&gt;&#39; +
-            &#39;&lt;a class=&quot;fancybox&quot; rel=&quot;fncbx&quot; title=&quot;{{photoTitle}}&quot; href=&quot;{{photoUrl}}&quot;&gt;&#39; +
-               &#39;&lt;img src=&quot;{{thumbUrl}}&quot; alt=&quot;{{photoTitle}}&quot;&gt;&#39; +
-                &#39;&lt;span class=&quot;title&quot;&gt;{{photoTitle}}&lt;&#x2F;span&gt;&#39; +
-            &#39;&lt;&#x2F;a&gt;&#39; +
-        &#39;&lt;&#x2F;li&gt;&#39; +
-        &#39;{{&#x2F;photos}}&#39; +
-    &#39;&lt;&#x2F;ul&gt;&#39; +
-&#39;{{&#x2F;albums}}&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'{{#albums}}'</span> +
+    <span class="hljs-string">'&lt;h3&gt;{{albumTitle}}&lt;/h3&gt;'</span> +
+    <span class="hljs-string">'&lt;ul class="album"&gt;'</span> +
+        <span class="hljs-string">'{{#photos}}'</span> +
+        <span class="hljs-string">'&lt;li class="col-xs-4 col-sm-3 col-md-2 col-lg-2"&gt;'</span> +
+            <span class="hljs-string">'&lt;a class="fancybox" rel="fncbx" title="{{photoTitle}}" href="{{photoUrl}}"&gt;'</span> +
+               <span class="hljs-string">'&lt;img src="{{thumbUrl}}" alt="{{photoTitle}}"&gt;'</span> +
+                <span class="hljs-string">'&lt;span class="title"&gt;{{photoTitle}}&lt;/span&gt;'</span> +
+            <span class="hljs-string">'&lt;/a&gt;'</span> +
+        <span class="hljs-string">'&lt;/li&gt;'</span> +
+        <span class="hljs-string">'{{/photos}}'</span> +
+    <span class="hljs-string">'&lt;/ul&gt;'</span> +
+<span class="hljs-string">'{{/albums}}'</span></pre></dd>
             </dl>
         </div>
     </li>

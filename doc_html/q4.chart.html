@@ -35,6 +35,11 @@
 <header>
     <h1>q4.chart</h1>
     <p>A preconfigured stock chart, using the Highstock plugin.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -50,6 +55,7 @@
     </dl>
 </section>
 
+
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
@@ -60,7 +66,7 @@
             <p>The base URL of the Q4 website.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><code> &#x2F;&#x2F;feeds.q4websystems.com</code></dd>
+                    <dd><code> <span class="hljs-comment">//feeds.q4websystems.com</span></code></dd>
             </dl>
         </div>
     </li>
@@ -71,7 +77,7 @@
             <p>Whether to use the public feed (true) or the private API (false).</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -94,9 +100,9 @@ or an array containing &quot;EXCHANGE:SYMBOL&quot; and a custom
 display name.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><code> &#39;NYSE:XXX&#39;</code></dd>
+                    <dd><code> <span class="hljs-string">'NYSE:XXX'</span></code></dd>
                 <dt>Example</dt>
-                    <dd><code> [&#39;NYSE:XXX&#39;, &#39;New York: XXX&#39;]</code></dd>
+                    <dd><code> [<span class="hljs-string">'NYSE:XXX'</span>, <span class="hljs-string">'New York: XXX'</span>]</code></dd>
             </dl>
         </div>
     </li>
@@ -107,7 +113,7 @@ display name.</p>
             <p>Whether to prevent stock price charts from being toggled off.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -118,7 +124,7 @@ display name.</p>
             <p>Whether to show the legend.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -129,7 +135,7 @@ display name.</p>
             <p>Whether to show the stock quote in the chart legend.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -140,7 +146,7 @@ display name.</p>
             <p>The maximum number of data points to fetch for the stock chart.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>1500</code></dd>
+                    <dd><code><span class="hljs-number">1500</span></code></dd>
             </dl>
         </div>
     </li>
@@ -151,7 +157,7 @@ display name.</p>
             <p>Whether to include a volume chart below the stock price chart.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -162,7 +168,7 @@ display name.</p>
             <p>The height of the volume chart, as a percentage.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>40</code></dd>
+                    <dd><code><span class="hljs-number">40</span></code></dd>
             </dl>
         </div>
     </li>
@@ -173,7 +179,7 @@ display name.</p>
             <p>Whether to include a series of flags for press releases.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -184,7 +190,7 @@ display name.</p>
             <p>If <code>news</code> is true, whether to show news flags on initial load.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -195,7 +201,7 @@ display name.</p>
             <p>If <code>news</code> is true, the maximum number of news items to display.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>200</code></dd>
+                    <dd><code><span class="hljs-number">200</span></code></dd>
             </dl>
         </div>
     </li>
@@ -206,7 +212,7 @@ display name.</p>
             <p>If <code>news</code> is true, the maximum length of each news headline.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>75</code></dd>
+                    <dd><code><span class="hljs-number">75</span></code></dd>
             </dl>
         </div>
     </li>
@@ -218,7 +224,7 @@ display name.</p>
 The default is to load all categories.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'00000000-0000-0000-0000-000000000000'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -238,7 +244,7 @@ The default is to load all categories.</p>
             <p>Whether to include a series of flags for events.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -249,7 +255,7 @@ The default is to load all categories.</p>
             <p>If <code>events</code> is true, whether to show event flags on initial load.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -260,7 +266,7 @@ The default is to load all categories.</p>
             <p>If <code>events</code> is true, the maximum number of events to display.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>100</code></dd>
+                    <dd><code><span class="hljs-number">100</span></code></dd>
             </dl>
         </div>
     </li>

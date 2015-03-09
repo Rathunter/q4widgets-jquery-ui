@@ -35,6 +35,11 @@
 <header>
     <h1>q4.mashfeed</h1>
     <p>Grab a number of content feeds and mix them together into a single chronological list.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        <li><a href='#methods'>Methods</a></li>
+    </ul>
 </header>
 
 <section id='details'>
@@ -50,6 +55,7 @@
     </dl>
 </section>
 
+
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
@@ -60,7 +66,7 @@
             <p>The global maximum number of items, or zero for unlimited.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>0</code></dd>
+                    <dd><code><span class="hljs-number">0</span></code></dd>
             </dl>
         </div>
     </li>
@@ -71,7 +77,7 @@
             <p>A Moment.js format for dates.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'MMM D, YYYY h:mm A'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -82,7 +88,7 @@
             <p>Whether to display dates using Moment's fromNow function.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -93,7 +99,7 @@
             <p>The maximum character length of a title, or zero for unlimited.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>80</code></dd>
+                    <dd><code><span class="hljs-number">80</span></code></dd>
             </dl>
         </div>
     </li>
@@ -104,7 +110,7 @@
             <p>The maximum character length of a summary, or zero for unlimited.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>500</code></dd>
+                    <dd><code><span class="hljs-number">500</span></code></dd>
             </dl>
         </div>
     </li>
@@ -129,8 +135,6 @@ Valid options for all feed types are:</p>
 </ul>
 <p>See <code>feedTypes</code> for type-specific options.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>0</code></dd>
             </dl>
         </div>
     </li>
@@ -141,8 +145,6 @@ Valid options for all feed types are:</p>
             <p>A list of feed names. If this list is not empty,
 only the feeds named in the list will be parsed.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>0</code></dd>
             </dl>
         </div>
     </li>
@@ -153,14 +155,12 @@ only the feeds named in the list will be parsed.</p>
             <p>A default Mustache template for a single feed item.
 Can be overridden for individual feed types.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>0</code></dd>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;li&gt;&#39; +
-    &#39;&lt;h2&gt;&lt;a href=&quot;{{url}}&quot;&gt;{{title}}&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;&#39; +
-    &#39;&lt;p&gt;{{date}}&lt;&#x2F;p&gt;&#39; +
-    &#39;{{summary}}&#39; +
-&#39;&lt;&#x2F;li&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;li&gt;'</span> +
+    <span class="hljs-string">'&lt;h2&gt;&lt;a href="{{url}}"&gt;{{title}}&lt;/a&gt;&lt;/h2&gt;'</span> +
+    <span class="hljs-string">'&lt;p&gt;{{date}}&lt;/p&gt;'</span> +
+    <span class="hljs-string">'{{summary}}'</span> +
+<span class="hljs-string">'&lt;/li&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -170,8 +170,6 @@ Can be overridden for individual feed types.</p>
         <div>
             <p>A callback that fires after rendering is finished.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>0</code></dd>
             </dl>
         </div>
     </li>

@@ -35,6 +35,11 @@
 <header>
     <h1>q4.historical</h1>
     <p>Retrieves price and volume information for a stock on a specific date.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -49,6 +54,7 @@
             <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
 </section>
+
 
 <section id='options'>
     <h1>Options</h1>
@@ -80,7 +86,7 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
             <p>A date format string to use with jQuery UI's Datepicker.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;M d, yy&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'M d, yy'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -109,7 +115,7 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
             <p>A selector for the element to use as a datepicker. Usually an <code>&lt;input&gt;</code>.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;input:first&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'input:first'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -130,7 +136,7 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
 If there is no data for the selected date, this option will clear the field.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -141,7 +147,7 @@ If there is no data for the selected date, this option will clear the field.</p>
             <p>Whether to fetch today's stock quote when the table is initialized.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -163,7 +169,7 @@ value changes.</p>
             <p>A selector for the container that will be filled with the lookup results.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.quote&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.quote'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -183,12 +189,12 @@ The following tags are available:</p>
 </ul>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;Date: {{date}}&lt;br&gt;&#39; +
-&#39;Volume: {{volume}}&lt;br&gt;&#39; +
-&#39;Open: {{open}}&lt;br&gt;&#39; +
-&#39;Close: {{close}}&lt;br&gt;&#39; +
-&#39;High: {{high}}&lt;br&gt;&#39; +
-&#39;Low: {{low}}&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'Date: {{date}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Volume: {{volume}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Open: {{open}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Close: {{close}}&lt;br&gt;'</span> +
+<span class="hljs-string">'High: {{high}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Low: {{low}}'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -199,7 +205,7 @@ The following tags are available:</p>
             <p>A message to display in the quote container in case no results were found.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;No stock data is available for this date.&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'No stock data is available for this date.'</span></code></dd>
             </dl>
         </div>
     </li>

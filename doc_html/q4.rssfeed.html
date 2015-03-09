@@ -36,6 +36,11 @@
     <h1>q4.rssfeed</h1>
     <p>Fetch, format and display a single RSS feed.
 Note that you can also do this with the q4.mashfeed widget; this one is just simpler.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -50,6 +55,7 @@ Note that you can also do this with the q4.mashfeed widget; this one is just sim
             <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
 </section>
+
 
 <section id='options'>
     <h1>Options</h1>
@@ -70,7 +76,7 @@ Note that you can also do this with the q4.mashfeed widget; this one is just sim
             <p>The maximum number of items to display, or zero for unlimited.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>0</code></dd>
+                    <dd><code><span class="hljs-number">0</span></code></dd>
             </dl>
         </div>
     </li>
@@ -81,7 +87,7 @@ Note that you can also do this with the q4.mashfeed widget; this one is just sim
             <p>A Moment.js date format string to use when rendering.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;MMM D, YYYY h:mm A&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'MMM D, YYYY h:mm A'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -92,7 +98,7 @@ Note that you can also do this with the q4.mashfeed widget; this one is just sim
             <p>The maximum length for each item's summary, or zero for unlimited.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>500</code></dd>
+                    <dd><code><span class="hljs-number">500</span></code></dd>
             </dl>
         </div>
     </li>
@@ -103,7 +109,7 @@ Note that you can also do this with the q4.mashfeed widget; this one is just sim
             <p>Whether to use a JSON proxy to fetch the RSS feed.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -128,19 +134,19 @@ Note that you can also do this with the q4.mashfeed widget; this one is just sim
 </ul>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;header&gt;&#39; +
-    &#39;&lt;h1&gt;&lt;a href=&quot;{{url}}&quot; target=&quot;_blank&quot;&gt;{{title}}&lt;&#x2F;a&gt;&lt;&#x2F;h1&gt;&#39; +
-    &#39;&lt;p&gt;Last updated: {{date}}&lt;&#x2F;p&gt;&#39; +
-&#39;&lt;&#x2F;header&gt;&#39; +
-&#39;{{#items}}&#39; +
-&#39;&lt;article&gt;&#39; +
-    &#39;&lt;header&gt;&#39; +
-        &#39;&lt;h2&gt;&lt;a href=&quot;{{url}}&quot; target=&quot;_blank&quot;&gt;{{{title}}}&lt;&#x2F;a&gt;&lt;&#x2F;h2&gt;&#39; +
-        &#39;&lt;p&gt;{{date}}&lt;&#x2F;p&gt;&#39; +
-    &#39;&lt;&#x2F;header&gt;&#39; +
-    &#39;{{{body}}}&#39; +
-&#39;&lt;&#x2F;article&gt;&#39; +
-&#39;{{&#x2F;items}}&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;header&gt;'</span> +
+    <span class="hljs-string">'&lt;h1&gt;&lt;a href="{{url}}" target="_blank"&gt;{{title}}&lt;/a&gt;&lt;/h1&gt;'</span> +
+    <span class="hljs-string">'&lt;p&gt;Last updated: {{date}}&lt;/p&gt;'</span> +
+<span class="hljs-string">'&lt;/header&gt;'</span> +
+<span class="hljs-string">'{{#items}}'</span> +
+<span class="hljs-string">'&lt;article&gt;'</span> +
+    <span class="hljs-string">'&lt;header&gt;'</span> +
+        <span class="hljs-string">'&lt;h2&gt;&lt;a href="{{url}}" target="_blank"&gt;{{{title}}}&lt;/a&gt;&lt;/h2&gt;'</span> +
+        <span class="hljs-string">'&lt;p&gt;{{date}}&lt;/p&gt;'</span> +
+    <span class="hljs-string">'&lt;/header&gt;'</span> +
+    <span class="hljs-string">'{{{body}}}'</span> +
+<span class="hljs-string">'&lt;/article&gt;'</span> +
+<span class="hljs-string">'{{/items}}'</span></pre></dd>
             </dl>
         </div>
     </li>

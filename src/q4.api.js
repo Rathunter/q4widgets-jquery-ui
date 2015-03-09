@@ -2,17 +2,95 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.2.0
+     * @version 1.3.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
+     * @example
+     * This example uses an overall template.
+     *
+     * - It uses multiple date formats, and the Moment.js library instead of Datepicker.
+     * - Since it is a Past Events widget, `showFuture` is set to `false`.
+     *   However, `showAllYears` is `true` so that users can choose to see all past events at once.
+     * - It also uses the `sortAscending` option, which is exclusive to the events widget.
+     * ---
+     * <div id='events'></div>
+     *
+     * <script>
+     * $('#events').events({
+     *     dateFormat: {
+     *         date: 'MMMM Do, YYYY',
+     *         time: 'h:mm:ss A'
+     *     },
+     *     useMoment: true,
+     *     showAllYears: true,
+     *     showFuture: false,
+     *     sortAscending: true,
+     *     yearTrigger: '.years li',
+     *     template: (
+     *         '<h1>Past Events</h1>' +
+     *         '<ul class="years">{{#years}}<li>{{year}}</li>{{/years}}</ul>' +
+     *         '<ul class="items">' +
+     *             '{{#items}}' +
+     *             '<li>' +
+     *                 '<a href="{{url}}">{{title}}</a>' +
+     *                 '<span class="date">{{date.date}}</span>' +
+     *                 '<span class="time">{{date.time}}</span>' +
+     *                 '<ul class="docs">' +
+     *                 '{{#docs}}' +
+     *                     '<a href="{{url}}">{{title}}</a>' +
+     *                 '{{/docs}}' +
+     *                 '</ul>' +
+     *             '</li>' +
+     *             '{{/items}}' +
+     *         '</ul>'
+     *     )
+     * });
+     * </script>
+     * @example
+     * This example uses the year and item templates instead of the main template.
+     *
+     * - It uses `minYear` to show only the past 5 years of financial reports.
+     * - It uses a selectbox instead of triggers for the year navigation.
+     * - It also displays annual reports' short type as `"FY"` instead of `"Annual"`.
+     * ---
+     * <div id='financials'>
+     *     <h1>Financial Reports</h1>
+     *     <select class="years"></select>
+     *     <ul class="items"></select>
+     * </div>
+     *
+     * <script>
+     * $('#financials').financials({
+     *     minYear: (new Date()).getFullYear() - 4,
+     *     dateFormat: 'M d, yy',
+     *     shortTypes: {
+     *         'Annual Report': 'FY'
+     *     },
+     *     yearSelect: '.years',
+     *     yearContainer: '.years',
+     *     yearTemplate: '<option value="{{value}}">{{year}}</option>' +
+     *     itemContainer: '.items',
+     *     itemLoadingMessage: '<p class="loading">Loading financial reports for the selected year...</p>',
+     *     itemTemplate: (
+     *         '<li>' +
+     *             '<h2>{{shortType}} {{year}}</h2>' +
+     *             '<ul class="docs">' +
+     *             '{{#docs}}' +
+     *                 '<li><a href="{{docUrl}}" class="{{docType}}">{{docTitle}}</a></li>' +
+     *             '{{/docs}}' +
+     *             '</ul>' +
+     *         '</li>'
+     *     )
+     * });
+     * </script>
      */
     $.widget('q4.api', /** @lends q4.api */ {
         options: {
             /**
              * The base URL to use for API calls.
-             * By default this uses the current domain, so it's usually not necessary.
+             * By default, calls go to the current domain, so this option is usually unnecessary.
              * @type {string}
              */
             url: '',
@@ -136,13 +214,11 @@
              */
             defaultThumb: '',
             /**
-             * Whether to append the widget to the container, or replace its contents entirely.
-             * @type {boolean}
-             * @default
-             */
-            append: true,
-            /**
-             * A Mustache.js template for the overall widget. Uses the following tags:
+             * A Mustache.js template for the overall widget.
+             * This option is not required; you can also use `yearTemplate` and/or `itemTemplate`
+             * to build the widget on top of existing layout.
+             *
+             * The following tags are available:
              *
              * - `{{#years}}` An array of years for the navigation. Each year has these subtags:
              *
@@ -159,6 +235,7 @@
              *   - [q4.presentations](q4.presentations.html#option-template)
              *   - [q4.news](q4.news.html#option-template)
              *   - [q4.sec](q4.sec.html#option-template)
+             *
              * @type {string}
              * @example
              * '<ul class="years">' +
@@ -172,6 +249,13 @@
              */
             template: '',
             /**
+             * Whether to append the main template to the widget container,
+             * or replace the widget's contents entirely.
+             * @type {boolean}
+             * @default
+             */
+            append: true,
+            /**
              * A message or HTML string to display while first loading the widget.
              * Set to `false` to disable this feature. See also `itemLoadingMessage`.
              * @type {?(string|boolean)}
@@ -179,8 +263,26 @@
              */
             loadingMessage: 'Loading...',
             /**
+             * A selector for the year navigation container.
+             * Use this if you don't want to use the `template` option to draw the widget,
+             * but you still want to generate a list of years.
+             * You must also pass `yearTemplate` for this to have any effect.
+             * @type {?string}
+             */
+            yearContainer: null,
+            /**
+             * A Mustache.js template for a single year.
+             * If this and `yearContainer` are passed, this will be used to render each option in
+             * the year navigation, which will be attached to the widget at `yearContainer`.
+             * See the `template` option for available tags.
+             * @type {?string}
+             * @example '<li>{{year}}</li>'
+             * @example '<option value="{{value}}">{{year}}</option>'
+             */
+            yearTemplate: null,
+            /**
              * A CSS selector for year trigger links.
-             * If passed, any elements in the main template matching this selector will
+             * If passed, any elements in the widget matching this selector will
              * become clickable links that filter the displayed items by year.
              * Usually you'll want to point this to an element in the template's `{{years}}` loop.
              *
@@ -209,18 +311,19 @@
             activeClass: 'active',
             /**
              * A selector for the items container.
-             * Use this if you want to redraw only the item list when the year is updated,
-             * instead of redrawing the entire widget.
+             * Use this if you want to redraw only the item list at initialization
+             * and when the year is updated, instead of redrawing the entire widget.
              * You must also pass `itemTemplate` for this to have any effect.
              * @type {?string}
              */
             itemContainer: null,
             /**
-             * A template for the items container.
+             * A Mustache.js template for a single item.
              * If this and `itemContainer` are passed, this will be used to render the items list,
-             * and it will be attached to the main template at `itemContainer`.
+             * and it will be attached to the widget at `itemContainer`.
              * When the year changes, only this part of the widget will be redrawn,
              * instead of the entire thing.
+             * See the `template` option for available tags.
              * @type {string}
              * @example
              * '<li>' +
@@ -568,6 +671,14 @@
             // clear previous contents and render entire widget
             this.$widget.remove();
             this.$widget = $(Mustache.render(o.template, tplData)).appendTo($e);
+
+            // render years separately if applicable
+            if (o.yearContainer && o.yearTemplate) {
+                $(o.yearContainer, $e).empty();
+                $.each(tplData.years, function (i, tplYear) {
+                    $(o.yearContainer, $e).append(Mustache.render(o.yearTemplate, tplYear));
+                });
+            }
 
             // render items separately if applicable
             if (o.itemContainer && o.itemTemplate) {

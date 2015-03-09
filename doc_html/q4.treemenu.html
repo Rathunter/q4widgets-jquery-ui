@@ -35,6 +35,11 @@
 <header>
     <h1>q4.treemenu</h1>
     <p>An expanding tree-style table of contents for a set of content.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -50,6 +55,7 @@
     </dl>
 </section>
 
+
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
@@ -60,7 +66,7 @@
             <p>Whether opening a menu item will close its sibling items.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -71,7 +77,7 @@
             <p>A selector in the main template for the menu.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.menu&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.menu'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -82,7 +88,7 @@
             <p>A selector in the main template the body content.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.body&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.body'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -93,7 +99,7 @@
             <p>A selector in the menu item template for child menu items.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.submenu&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.submenu'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -104,7 +110,7 @@
             <p>A selector in the menu item template to display the content.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.itemLink&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.itemLink'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -115,7 +121,7 @@
             <p>A selector in the menu item template to toggle child items.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.itemExpand&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.itemExpand'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -126,7 +132,7 @@
             <p>The text to display in a collapsed menu item's trigger.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;[ + ]&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'[ + ]'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -137,7 +143,7 @@
             <p>The text to display in an expanded menu item's trigger.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;[ - ]&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'[ - ]'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -148,7 +154,7 @@
             <p>A class to add to each menu item.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;treemenu-item&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'treemenu-item'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -159,7 +165,7 @@
             <p>A class to add to each menu item.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;treemenu-active&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'treemenu-active'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -170,7 +176,7 @@
             <p>A class to add to an expanded menu item.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;treemenu-expanded&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'treemenu-expanded'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -180,11 +186,9 @@
         <div>
             <p>A Mustache template for the overall widget.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;ul class=&quot;menu&quot;&gt;&lt;&#x2F;ul&gt;&#39; +
-&#39;&lt;div class=&quot;body&quot;&gt;&lt;&#x2F;div&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;ul class="menu"&gt;&lt;/ul&gt;'</span> +
+<span class="hljs-string">'&lt;div class="body"&gt;&lt;/div&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -194,14 +198,12 @@
         <div>
             <p>A recursive Mustache template for each menu item.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;li&gt;&#39; +
-    &#39;&lt;span class=&quot;itemExpand&quot;&gt;&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;a class=&quot;itemLink&quot; href=&quot;#&quot;&gt;{{title}}&lt;&#x2F;a&gt;&#39; +
-    &#39;&lt;ul class=&quot;submenu&quot;&gt;&lt;&#x2F;ul&gt;&#39; +
-&#39;&lt;&#x2F;li&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;li&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="itemExpand"&gt;&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;a class="itemLink" href="#"&gt;{{title}}&lt;/a&gt;'</span> +
+    <span class="hljs-string">'&lt;ul class="submenu"&gt;&lt;/ul&gt;'</span> +
+<span class="hljs-string">'&lt;/li&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -211,13 +213,11 @@
         <div>
             <p>A Mustache template for each item's body content.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;div&gt;&#39; +
-    &#39;&lt;h4&gt;{{title}}&lt;&#x2F;h4&gt;&#39; +
-    &#39;&lt;div class=&quot;itemContent&quot;&gt;{{{content}}}&lt;&#x2F;div&gt;&#39; +
-&#39;&lt;&#x2F;div&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;div&gt;'</span> +
+    <span class="hljs-string">'&lt;h4&gt;{{title}}&lt;/h4&gt;'</span> +
+    <span class="hljs-string">'&lt;div class="itemContent"&gt;{{{content}}}&lt;/div&gt;'</span> +
+<span class="hljs-string">'&lt;/div&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -232,17 +232,15 @@
 <li><code>items</code>   An optional array of child menu items.</li>
 </ul>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
                 <dt>Example</dt>
                     <dd><pre>[
     {
-        title: &#39;Item 1&#39;,
-        content: &#39;Item 1 content&#39;,
+        title: <span class="hljs-string">'Item 1'</span>,
+        content: <span class="hljs-string">'Item 1 content'</span>,
         items: [
             {
-                title: &#39;Item 1.1&#39;,
-                content: &#39;Item 1.1 content&#39;
+                title: <span class="hljs-string">'Item 1.1'</span>,
+                content: <span class="hljs-string">'Item 1.1 content'</span>
             }
         ]
     }

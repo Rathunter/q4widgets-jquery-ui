@@ -35,6 +35,11 @@
 <header>
     <h1>q4.accordion</h1>
     <p>Creates an expanding and collapsing accordion from sections of content.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -48,6 +53,7 @@
     </dl>
 </section>
 
+
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
@@ -58,7 +64,7 @@
             <p>Whether opening an accordion section will close the others.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -69,7 +75,7 @@
             <p>Whether the first accordion item should be open at init.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -80,7 +86,7 @@
             <p>A selector for the trigger to open/close a section.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.accordionTrigger&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.accordionTrigger'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -91,7 +97,7 @@
             <p>A selector for the expand/collapse message.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.accordionTriggerText&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.accordionTriggerText'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -102,7 +108,7 @@
             <p>A selector for the container to show/hide.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.accordionContent&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.accordionContent'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -113,7 +119,7 @@
             <p>The indicator text for a closed section.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;EXPAND [ + ]&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'EXPAND [ + ]'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -124,7 +130,7 @@
             <p>The indicator text for an open section.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;CLOSE [ – ]&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'CLOSE [ – ]'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -135,7 +141,7 @@
             <p>A class to add to an open section.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;active&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'active'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -146,7 +152,7 @@
             <p>A class to add to each section.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;accordion-item&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'accordion-item'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -156,16 +162,14 @@
         <div>
             <p>A Mustache template for each section.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;div class=&quot;accordionItem&quot;&gt;&#39; +
-    &#39;&lt;h3 class=&quot;accordionTrigger&quot;&gt;&#39; +
-        &#39;&lt;span class=&quot;accordionTriggerText&quot;&gt;&lt;&#x2F;span&gt;&#39; +
-        &#39;{{{title}}}&#39; +
-    &#39;&lt;&#x2F;h3&gt;&#39; +
-    &#39;&lt;div class=&quot;accordionContent&quot;&gt;{{{content}}}&lt;&#x2F;div&gt;&#39; +
-&#39;&lt;&#x2F;div&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;div class="accordionItem"&gt;'</span> +
+    <span class="hljs-string">'&lt;h3 class="accordionTrigger"&gt;'</span> +
+        <span class="hljs-string">'&lt;span class="accordionTriggerText"&gt;&lt;/span&gt;'</span> +
+        <span class="hljs-string">'{{{title}}}'</span> +
+    <span class="hljs-string">'&lt;/h3&gt;'</span> +
+    <span class="hljs-string">'&lt;div class="accordionContent"&gt;{{{content}}}&lt;/div&gt;'</span> +
+<span class="hljs-string">'&lt;/div&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -175,8 +179,6 @@
         <div>
             <p>A list of objects representing sections.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>

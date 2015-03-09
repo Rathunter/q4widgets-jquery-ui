@@ -1,4 +1,6 @@
 var fs = require('fs'),
+    highlight = require('../node_modules/highlight.js').highlight,
+    marked = require('../node_modules/grunt-jsdoc/node_modules/jsdoc/node_modules/marked'),
     mustache = require('../node_modules/mustache');
 
 function parse_markdown_link(link) {
@@ -6,6 +8,26 @@ function parse_markdown_link(link) {
     return {
         name: m[1].replace(/_/g, ' '),
         url: m[2]
+    };
+}
+
+function single_quote(code) {
+    return code.replace(/^"|"$/g, "'");
+}
+
+function highlight_js(code) {
+    return highlight('js', code).value;
+}
+
+function highlight_html(code) {
+    return highlight('html', code).value;
+}
+
+function captioned_example(example) {
+    var m = example.match(/^(?:([\s\S]*?)\s*\n---\n\s*)?([\s\S]*)$/);
+    return {
+        caption: marked(m[1] || ''),
+        code: highlight_html(m[2])
     };
 }
 
@@ -41,8 +63,7 @@ exports.publish = function (data, opts) {
                 distfile: doclet.meta.filename.replace(/js$/, doclet.version + '.min.js'),
                 line: doclet.meta.lineno,
                 author: doclet.author,
-                examples: (doclet.examples || []).filter(single_line),
-                exblocks: (doclet.examples || []).filter(multi_line),
+                examples: (doclet.examples || []).map(captioned_example),
                 options: [],
                 methods: [],
                 requires: (doclet.requires || []).map(parse_markdown_link),
@@ -60,9 +81,9 @@ exports.publish = function (data, opts) {
                 line: doclet.meta.lineno,
                 type: 'type' in doclet ? doclet.type.names : [],
                 params: (doclet.params || []).map(stringify_type),
-                defaultval: doclet.defaultvalue,
-                examples: (doclet.examples || []).filter(single_line),
-                exblocks: (doclet.examples || []).filter(multi_line)
+                defaultval: highlight_js(single_quote(doclet.defaultvalue || '')),
+                examples: (doclet.examples || []).filter(single_line).map(highlight_js),
+                exblocks: (doclet.examples || []).filter(multi_line).map(highlight_js)
             });
         }
 

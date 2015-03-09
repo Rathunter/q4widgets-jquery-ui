@@ -35,6 +35,11 @@
 <header>
     <h1>q4.calendar</h1>
     <p>An interactive calendar with links to events.</p>
+    <ul>
+        <li><a href='#examples'>Examples</a></li>
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -50,6 +55,19 @@
     </dl>
 </section>
 
+<section id='examples'>
+    <h1>Examples</h1>
+    <div>
+        
+        <pre>$("#clndr").calendar({
+    news: true,
+    presentations: true,
+    eventSize: 50,
+    slideshare: "Q4WebSystems"
+});</pre>
+    </div>
+</section>
+
 <section id='options'>
     <h1>Options</h1>
     <ul class='major'>
@@ -61,7 +79,7 @@
 Requires url and apiKey to be set in the configuration.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -72,8 +90,6 @@ Requires url and apiKey to be set in the configuration.</p>
             <p>A URL to a Q4 hosted website.
 This is only required if <code>publicFeed</code> is true.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>
@@ -85,8 +101,6 @@ This is only required if <code>publicFeed</code> is true.</p>
 in the admin of any Q4 website.
 This is only required if <code>publicFeed</code> is true.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>
@@ -97,7 +111,7 @@ This is only required if <code>publicFeed</code> is true.</p>
             <p>Whether to include all related press releases.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -108,7 +122,7 @@ This is only required if <code>publicFeed</code> is true.</p>
             <p>Whether to include all related presentations.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -119,8 +133,6 @@ This is only required if <code>publicFeed</code> is true.</p>
             <p>Can be set to a SlideShare username.
 This will add SlideShare presentations as events.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>
@@ -130,8 +142,6 @@ This will add SlideShare presentations as events.</p>
         <div>
             <p>A callback fired after events are loaded.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>
@@ -141,8 +151,6 @@ This will add SlideShare presentations as events.</p>
         <div>
             <p>A callback fired after SlideShare has loaded.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>
@@ -153,7 +161,7 @@ This will add SlideShare presentations as events.</p>
             <p>The maximum number of events to add to the calendar.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>25</code></dd>
+                    <dd><code><span class="hljs-number">25</span></code></dd>
             </dl>
         </div>
     </li>
@@ -163,8 +171,6 @@ This will add SlideShare presentations as events.</p>
         <div>
             <p>An array of tags used to filter events.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
             </dl>
         </div>
     </li>
@@ -175,19 +181,17 @@ This will add SlideShare presentations as events.</p>
             <p>An options object to pass directly to the CLNDR.js instance.
 See that module's documentation for details.</p>
             <dl>
-                <dt>Default value</dt>
-                    <dd><code>false</code></dd>
                 <dt>Example</dt>
                     <dd><pre>{
-    adjacentDaysChangeMonth: true,
-    daysOfTheWeek: [&#39;Su&#39;,&#39;Mo&#39;,&#39;Tu&#39;,&#39;We&#39;,&#39;Th&#39;,&#39;Fi&#39;,&#39;Sa&#39;],
-    showAdjacentMonths: false,
-    weekOffset: 1,
-    doneRendering: function () {
-        console.log(&#39;done rendering&#39;)
+    adjacentDaysChangeMonth: <span class="hljs-literal">true</span>,
+    daysOfTheWeek: [<span class="hljs-string">'Su'</span>,<span class="hljs-string">'Mo'</span>,<span class="hljs-string">'Tu'</span>,<span class="hljs-string">'We'</span>,<span class="hljs-string">'Th'</span>,<span class="hljs-string">'Fi'</span>,<span class="hljs-string">'Sa'</span>],
+    showAdjacentMonths: <span class="hljs-literal">false</span>,
+    weekOffset: <span class="hljs-number">1</span>,
+    doneRendering: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'done rendering'</span>)
     },
-    ready: function () {
-        console.log(&#39;calendar is ready&#39;)
+    ready: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'calendar is ready'</span>)
     }
 }</pre></dd>
             </dl>

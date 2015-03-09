@@ -36,6 +36,11 @@
     <h1>q4.library</h1>
     <p>A collection of many different document types in the same widget.
 Documents can be filtered by title, tag, or date.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        <li><a href='#methods'>Methods</a></li>
+    </ul>
 </header>
 
 <section id='details'>
@@ -50,6 +55,7 @@ Documents can be filtered by title, tag, or date.</p>
             <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.js' target='_blank'>q4.pager</a></li></ul></dd>
     </dl>
 </section>
+
 
 <section id='options'>
     <h1>Options</h1>
@@ -70,7 +76,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>The number of items to display per page, or 0 for unlimited.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>0</code></dd>
+                    <dd><code><span class="hljs-number">0</span></code></dd>
             </dl>
         </div>
     </li>
@@ -81,7 +87,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>Whether to divide the documents by year, or show all at once.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -92,7 +98,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>If using a years filter, whether to show an &quot;all years&quot; option.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -103,7 +109,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>The label for the &quot;all years&quot; option.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;All&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'All'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -114,9 +120,9 @@ Documents can be filtered by title, tag, or date.</p>
             <p>The year to display first. Default is &quot;all&quot;, or most recent.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>null</code></dd>
+                    <dd><code><span class="hljs-literal">null</span></code></dd>
                 <dt>Example</dt>
-                    <dd><code> `new Date().getFullYear()`</code></dd>
+                    <dd><code> `<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getFullYear()`</code></dd>
             </dl>
         </div>
     </li>
@@ -127,7 +133,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>A Moment.js date format string.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;MM&#x2F;DD&#x2F;YYYY&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'MM/DD/YYYY'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -138,16 +144,16 @@ Documents can be filtered by title, tag, or date.</p>
             <p>An overall template for the timeline.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre> &#39;&lt;ul class=&quot;content-types&quot;&gt;&lt;&#x2F;ul&gt;&#39; +
- &#39;&lt;ul class=&quot;tags&quot;&gt;&lt;&#x2F;ul&gt;&#39; +
- &#39;&lt;p&gt;&#39; +
-     &#39;&lt;input type=&quot;text&quot; class=&quot;search&quot;&gt;&#39; +
-     &#39;Year: &lt;select class=&quot;years&quot;&gt;&lt;&#x2F;select&gt;&#39; +
-     &#39;Documents per page: &lt;select class=&quot;perpage&quot;&gt;&lt;&#x2F;select&gt;&#39; +
- &#39;&lt;&#x2F;p&gt;&#39; +
- &#39;&lt;p class=&quot;docsfound&quot;&gt;&lt;&#x2F;p&gt;&#39; +
- &#39;&lt;ul class=&quot;documents&quot;&gt;&lt;&#x2F;ul&gt;&#39; +
- &#39;&lt;ul class=&quot;pager&quot;&gt;&lt;&#x2F;ul&gt;&#39;</pre></dd>
+                    <dd><pre> <span class="hljs-string">'&lt;ul class="content-types"&gt;&lt;/ul&gt;'</span> +
+ <span class="hljs-string">'&lt;ul class="tags"&gt;&lt;/ul&gt;'</span> +
+ <span class="hljs-string">'&lt;p&gt;'</span> +
+     <span class="hljs-string">'&lt;input type="text" class="search"&gt;'</span> +
+     <span class="hljs-string">'Year: &lt;select class="years"&gt;&lt;/select&gt;'</span> +
+     <span class="hljs-string">'Documents per page: &lt;select class="perpage"&gt;&lt;/select&gt;'</span> +
+ <span class="hljs-string">'&lt;/p&gt;'</span> +
+ <span class="hljs-string">'&lt;p class="docsfound"&gt;&lt;/p&gt;'</span> +
+ <span class="hljs-string">'&lt;ul class="documents"&gt;&lt;/ul&gt;'</span> +
+ <span class="hljs-string">'&lt;ul class="pager"&gt;&lt;/ul&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -158,7 +164,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>An HTML string to display while loading.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;Loading...&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'Loading...'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -169,7 +175,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>A selector for a message about the number of documents found.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.docsfound&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.docsfound'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -188,7 +194,7 @@ Documents can be filtered by title, tag, or date.</p>
 </ul>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;Showing {{docFirst}}–{{docLast}} of {{docTotal}} documents.&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'Showing {{docFirst}}–{{docLast}} of {{docTotal}} documents.'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -199,7 +205,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>An HTML string to display when no documents are found.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;No documents found. Please try broadening your search.&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'No documents found. Please try broadening your search.'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -210,7 +216,7 @@ Documents can be filtered by title, tag, or date.</p>
             <p>A selector for the document list.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.documents&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.documents'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -221,22 +227,22 @@ Documents can be filtered by title, tag, or date.</p>
             <p>A template for a list of single documents.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;h3 class=&quot;docheader single&quot;&gt;&#39; +
-    &#39;&lt;span class=&quot;title&quot;&gt;Title&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;span class=&quot;date&quot;&gt;Date&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;span class=&quot;type&quot;&gt;Type&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;span class=&quot;size&quot;&gt;Size&lt;&#x2F;span&gt;&#39; +
-&#39;&lt;&#x2F;h3&gt;&#39; +
-&#39;&lt;ul class=&quot;doclist&quot;&gt;&#39; +
-    &#39;{{#docs}}&#39; +
-    &#39;&lt;li class=&quot;single&quot;&gt;&lt;a href=&quot;{{url}}&quot; target=&quot;_blank&quot;&gt;&#39; +
-        &#39;&lt;span class=&quot;title&quot;&gt;{{title}}&lt;&#x2F;span&gt;&#39; +
-        &#39;&lt;span class=&quot;date&quot;&gt;{{date}}&lt;&#x2F;span&gt;&#39; +
-        &#39;&lt;span class=&quot;type&quot;&gt;{{type}}&lt;&#x2F;span&gt;&#39; +
-        &#39;&lt;span class=&quot;size&quot;&gt;{{size}}&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;&#39; +
-    &#39;{{&#x2F;docs}}&#39; +
-&#39;&lt;&#x2F;ul&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;h3 class="docheader single"&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="title"&gt;Title&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="date"&gt;Date&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="type"&gt;Type&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="size"&gt;Size&lt;/span&gt;'</span> +
+<span class="hljs-string">'&lt;/h3&gt;'</span> +
+<span class="hljs-string">'&lt;ul class="doclist"&gt;'</span> +
+    <span class="hljs-string">'{{#docs}}'</span> +
+    <span class="hljs-string">'&lt;li class="single"&gt;&lt;a href="{{url}}" target="_blank"&gt;'</span> +
+        <span class="hljs-string">'&lt;span class="title"&gt;{{title}}&lt;/span&gt;'</span> +
+        <span class="hljs-string">'&lt;span class="date"&gt;{{date}}&lt;/span&gt;'</span> +
+        <span class="hljs-string">'&lt;span class="type"&gt;{{type}}&lt;/span&gt;'</span> +
+        <span class="hljs-string">'&lt;span class="size"&gt;{{size}}&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;/a&gt;&lt;/li&gt;'</span> +
+    <span class="hljs-string">'{{/docs}}'</span> +
+<span class="hljs-string">'&lt;/ul&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -247,32 +253,32 @@ Documents can be filtered by title, tag, or date.</p>
             <p>A template for a list of documents with sub-documents.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;h3 class=&quot;docheader multi&quot;&gt;&#39; +
-    &#39;&lt;span class=&quot;title&quot;&gt;Title&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;span class=&quot;date&quot;&gt;Date&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;span class=&quot;type&quot;&gt;Type&lt;&#x2F;span&gt;&#39; +
-    &#39;&lt;span class=&quot;size&quot;&gt;Size&lt;&#x2F;span&gt;&#39; +
-&#39;&lt;&#x2F;h3&gt;&#39; +
-&#39;&lt;ul class=&quot;doclist&quot;&gt;&#39; +
-    &#39;{{#docs}}&#39; +
-    &#39;&lt;li class=&quot;multi&quot;&gt;&#39; +
-        &#39;&lt;div class=&quot;trigger&quot;&gt;&#39; +
-            &#39;&lt;span class=&quot;title&quot;&gt;{{title}}&lt;&#x2F;span&gt;&#39; +
-            &#39;&lt;span class=&quot;date&quot;&gt;{{date}}&lt;&#x2F;span&gt;&#39; +
-        &#39;&lt;&#x2F;div&gt;&#39; +
-        &#39;&lt;ul class=&quot;docs&quot;&gt;&#39; +
-            &#39;{{#subdocs}}&#39; +
-            &#39;&lt;li&gt;&lt;a href=&quot;{{url}}&quot; target=&quot;_blank&quot;&gt;&#39; +
-                &#39;&lt;span class=&quot;title&quot;&gt;{{title}}&lt;&#x2F;span&gt;&#39; +
-                &#39;&lt;span class=&quot;date&quot;&gt;&lt;&#x2F;span&gt;&#39; +
-                &#39;&lt;span class=&quot;type&quot;&gt;{{type}}&lt;&#x2F;span&gt;&#39; +
-                &#39;&lt;span class=&quot;size&quot;&gt;{{size}}&lt;&#x2F;span&gt;&#39; +
-            &#39;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;&#39; +
-            &#39;{{&#x2F;subdocs}}&#39; +
-        &#39;&lt;&#x2F;ul&gt;&#39; +
-    &#39;&lt;&#x2F;li&gt;&#39; +
-    &#39;{{&#x2F;docs}}&#39; +
-&#39;&lt;&#x2F;ul&gt;&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;h3 class="docheader multi"&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="title"&gt;Title&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="date"&gt;Date&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="type"&gt;Type&lt;/span&gt;'</span> +
+    <span class="hljs-string">'&lt;span class="size"&gt;Size&lt;/span&gt;'</span> +
+<span class="hljs-string">'&lt;/h3&gt;'</span> +
+<span class="hljs-string">'&lt;ul class="doclist"&gt;'</span> +
+    <span class="hljs-string">'{{#docs}}'</span> +
+    <span class="hljs-string">'&lt;li class="multi"&gt;'</span> +
+        <span class="hljs-string">'&lt;div class="trigger"&gt;'</span> +
+            <span class="hljs-string">'&lt;span class="title"&gt;{{title}}&lt;/span&gt;'</span> +
+            <span class="hljs-string">'&lt;span class="date"&gt;{{date}}&lt;/span&gt;'</span> +
+        <span class="hljs-string">'&lt;/div&gt;'</span> +
+        <span class="hljs-string">'&lt;ul class="docs"&gt;'</span> +
+            <span class="hljs-string">'{{#subdocs}}'</span> +
+            <span class="hljs-string">'&lt;li&gt;&lt;a href="{{url}}" target="_blank"&gt;'</span> +
+                <span class="hljs-string">'&lt;span class="title"&gt;{{title}}&lt;/span&gt;'</span> +
+                <span class="hljs-string">'&lt;span class="date"&gt;&lt;/span&gt;'</span> +
+                <span class="hljs-string">'&lt;span class="type"&gt;{{type}}&lt;/span&gt;'</span> +
+                <span class="hljs-string">'&lt;span class="size"&gt;{{size}}&lt;/span&gt;'</span> +
+            <span class="hljs-string">'&lt;/a&gt;&lt;/li&gt;'</span> +
+            <span class="hljs-string">'{{/subdocs}}'</span> +
+        <span class="hljs-string">'&lt;/ul&gt;'</span> +
+    <span class="hljs-string">'&lt;/li&gt;'</span> +
+    <span class="hljs-string">'{{/docs}}'</span> +
+<span class="hljs-string">'&lt;/ul&gt;'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -284,7 +290,7 @@ Documents can be filtered by title, tag, or date.</p>
 Used to add an accordion effect.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.multi&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.multi'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -295,7 +301,7 @@ Used to add an accordion effect.</p>
             <p>A selector for the trigger for the multi-doc accordion effect.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.trigger&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.trigger'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -307,7 +313,7 @@ Used to add an accordion effect.</p>
 by the multi-doc accordion.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.docs&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.docs'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -318,7 +324,7 @@ by the multi-doc accordion.</p>
             <p>A selector for the pager.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.pager&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.pager'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -329,7 +335,7 @@ by the multi-doc accordion.</p>
             <p>A selector for each pager link.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;&gt; *&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'&gt; *'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -340,7 +346,7 @@ by the multi-doc accordion.</p>
             <p>A template for individual pager links.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;&lt;li&gt;{{page}}&lt;&#x2F;li&gt;&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'&lt;li&gt;{{page}}&lt;/li&gt;'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -360,7 +366,7 @@ by the multi-doc accordion.</p>
             <p>Options for the &quot;documents per page&quot; control.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>{container: &#39;.perpage&#39;, input: &#39;select&#39;, template: &#39;&lt;option&gt;{{number}}&lt;&#x2F;option&gt;&#39;, trigger: &#39;&gt; *&#39;, allowMulti: false, allowNone: false}</code></dd>
+                    <dd><code>{container: <span class="hljs-string">'.perpage'</span>, input: <span class="hljs-string">'select'</span>, template: <span class="hljs-string">'&lt;option&gt;{{number}}&lt;/option&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">false</span>, allowNone: <span class="hljs-literal">false</span>}</code></dd>
             </dl>
         </div>
     </li>
@@ -371,7 +377,7 @@ by the multi-doc accordion.</p>
             <p>A selector for the search box.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.search&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.search'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -405,7 +411,7 @@ or objects with these properties:</p>
             <p>Options for the category control.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>{container: &#39;.content-types&#39;, input: &#39;trigger&#39;, template: &#39;&lt;li&gt;{{name}}&lt;&#x2F;li&gt;&#39;, trigger: &#39;&gt; *&#39;, allowMulti: false, allowNone: false}</code></dd>
+                    <dd><code>{container: <span class="hljs-string">'.content-types'</span>, input: <span class="hljs-string">'trigger'</span>, template: <span class="hljs-string">'&lt;li&gt;{{name}}&lt;/li&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">false</span>, allowNone: <span class="hljs-literal">false</span>}</code></dd>
             </dl>
         </div>
     </li>
@@ -427,7 +433,7 @@ Tags can be either strings or {name, value} objects.</p>
             <p>Options for the tag filter control.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>{container: &#39;.tags&#39;, input: &#39;trigger&#39;, template: &#39;&lt;li&gt;{{name}}&lt;&#x2F;li&gt;&#39;, trigger: &#39;&gt; *&#39;, allowMulti: true, allowNone: true}</code></dd>
+                    <dd><code>{container: <span class="hljs-string">'.tags'</span>, input: <span class="hljs-string">'trigger'</span>, template: <span class="hljs-string">'&lt;li&gt;{{name}}&lt;/li&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">true</span>, allowNone: <span class="hljs-literal">true</span>}</code></dd>
             </dl>
         </div>
     </li>
@@ -438,7 +444,7 @@ Tags can be either strings or {name, value} objects.</p>
             <p>Options for the year filter control.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>{container: &#39;.years&#39;, input: &#39;select&#39;, template: &#39;&lt;option value=&quot;{{value}}&quot;&gt;{{year}}&lt;&#x2F;option&gt;&#39;, trigger: &#39;&gt; *&#39;, allowMulti: false, allowNone: false}</code></dd>
+                    <dd><code>{container: <span class="hljs-string">'.years'</span>, input: <span class="hljs-string">'select'</span>, template: <span class="hljs-string">'&lt;option value="{{value}}"&gt;{{year}}&lt;/option&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">false</span>, allowNone: <span class="hljs-literal">false</span>}</code></dd>
             </dl>
         </div>
     </li>

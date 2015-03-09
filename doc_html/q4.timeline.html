@@ -35,6 +35,11 @@
 <header>
     <h1>q4.timeline</h1>
     <p>A carousel of events on a timeline, with groups and navigation.</p>
+    <ul>
+        
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -49,6 +54,7 @@
             <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/slick.min.js' target='_blank'>Slick</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/slick.css' target='_blank'>Slick CSS</a></li></ul></dd>
     </dl>
 </section>
+
 
 <section id='options'>
     <h1>Options</h1>
@@ -72,28 +78,28 @@
                 <dt>Example</dt>
                     <dd><pre>[
     {
-        heading: &#39;1980s&#39;,
-        text: &#39;Many things happened in the 1980s.&#39;,
+        heading: <span class="hljs-string">'1980s'</span>,
+        text: <span class="hljs-string">'Many things happened in the 1980s.'</span>,
         items: [
             {
-                heading: 1981,
-                cssClass: &#39;green&#39;,
-                text: &#39;This is the first thing.&#39;
+                heading: <span class="hljs-number">1981</span>,
+                cssClass: <span class="hljs-string">'green'</span>,
+                text: <span class="hljs-string">'This is the first thing.'</span>
             },
             {
-                heading: 1985,
-                cssClass: &#39;blue&#39;,
-                text: &#39;This is the second thing.&#39;
+                heading: <span class="hljs-number">1985</span>,
+                cssClass: <span class="hljs-string">'blue'</span>,
+                text: <span class="hljs-string">'This is the second thing.'</span>
             }
         ]
     },
     {
-        heading: &#39;2000s&#39;,
-        cssClass: &#39;red&#39;,
+        heading: <span class="hljs-string">'2000s'</span>,
+        cssClass: <span class="hljs-string">'red'</span>,
         items: [
             {
-                heading: &#39;January 1, 2000&#39;,
-                text: &#39;In the year 2000, everything changed.&#39;
+                heading: <span class="hljs-string">'January 1, 2000'</span>,
+                text: <span class="hljs-string">'In the year 2000, everything changed.'</span>
             }
         ]
     }
@@ -109,7 +115,7 @@
 This is generally used to display the groups.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>false</code></dd>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
             </dl>
         </div>
     </li>
@@ -120,7 +126,7 @@ This is generally used to display the groups.</p>
             <p>A selector for the navigation carousel.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.timeline-nav&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.timeline-nav'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -132,12 +138,12 @@ This is generally used to display the groups.</p>
 All properties from <code>content</code> are available as tags.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;{{#groups}}&#39; +
-&#39;&lt;li class=&quot;{{cssClass}}&quot;&gt;&#39; +
-    &#39;&lt;h3&gt;{{heading}}&lt;&#x2F;h3&gt;&#39; +
-    &#39;{{{text}}}&#39; +
-&#39;&lt;&#x2F;li&gt;&#39; +
-&#39;{{&#x2F;groups}}&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'{{#groups}}'</span> +
+<span class="hljs-string">'&lt;li class="{{cssClass}}"&gt;'</span> +
+    <span class="hljs-string">'&lt;h3&gt;{{heading}}&lt;/h3&gt;'</span> +
+    <span class="hljs-string">'{{{text}}}'</span> +
+<span class="hljs-string">'&lt;/li&gt;'</span> +
+<span class="hljs-string">'{{/groups}}'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -149,7 +155,7 @@ All properties from <code>content</code> are available as tags.</p>
 When clicked, this will move the main carousel to that group.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;li&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'li'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -171,7 +177,7 @@ See Slick's documentation for details.</p>
 This is generally used to display the individual timeline items.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>true</code></dd>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
             </dl>
         </div>
     </li>
@@ -182,7 +188,7 @@ This is generally used to display the individual timeline items.</p>
             <p>A selector for the main carousel.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;.timeline-main&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'.timeline-main'</span></code></dd>
             </dl>
         </div>
     </li>
@@ -196,12 +202,12 @@ Items also have a {{group}} tag with the index # of their
 containing group.</p>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;{{#items}}&#39; +
-&#39;&lt;li class=&quot;{{cssClass}}&quot; data-group=&quot;{{group}}&quot;&gt;&#39; +
-    &#39;&lt;h3&gt;{{heading}}&lt;&#x2F;h3&gt;&#39; +
-    &#39;&lt;div class=&quot;itemtext&quot;&gt;{{{text}}}&lt;&#x2F;div&gt;&#39; +
-&#39;&lt;&#x2F;li&gt;&#39; +
-&#39;{{&#x2F;items}}&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'{{#items}}'</span> +
+<span class="hljs-string">'&lt;li class="{{cssClass}}" data-group="{{group}}"&gt;'</span> +
+    <span class="hljs-string">'&lt;h3&gt;{{heading}}&lt;/h3&gt;'</span> +
+    <span class="hljs-string">'&lt;div class="itemtext"&gt;{{{text}}}&lt;/div&gt;'</span> +
+<span class="hljs-string">'&lt;/li&gt;'</span> +
+<span class="hljs-string">'{{/items}}'</span></pre></dd>
             </dl>
         </div>
     </li>
@@ -213,7 +219,7 @@ containing group.</p>
 When clicked, this will move the nav carousel to this item's group.</p>
             <dl>
                 <dt>Default value</dt>
-                    <dd><code>&quot;li&quot;</code></dd>
+                    <dd><code><span class="hljs-string">'li'</span></code></dd>
             </dl>
         </div>
     </li>

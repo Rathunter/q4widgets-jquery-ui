@@ -1,6 +1,11 @@
 <header>
     <h1>{{name}}</h1>
     {{{description}}}
+    <ul>
+        {{#examples.0}}<li><a href='#examples'>Examples</a></li>{{/examples.0}}
+        {{#options.0}}<li><a href='#options'>Options</a></li>{{/options.0}}
+        {{#methods.0}}<li><a href='#methods'>Methods</a></li>{{/methods.0}}
+    </ul>
 </header>
 
 <section id='details'>
@@ -45,6 +50,18 @@
     {{/children.0}}
 </section>
 
+{{#examples.0}}
+<section id='examples'>
+    <h1>Examples</h1>
+    {{#examples}}
+    <div>
+        {{{caption}}}
+        <pre>{{{code}}}</pre>
+    </div>
+    {{/examples}}
+</section>
+{{/examples.0}}
+
 {{#options.0}}
 <section id='options'>
     <h1>Options</h1>
@@ -58,15 +75,15 @@
             <dl>
                 {{#defaultval}}
                 <dt>Default value</dt>
-                    <dd><code>{{.}}</code></dd>
+                    <dd><code>{{{.}}}</code></dd>
                 {{/defaultval}}
                 {{#examples}}
                 <dt>Example</dt>
-                    <dd><code>{{.}}</code></dd>
+                    <dd><code>{{{.}}}</code></dd>
                 {{/examples}}
                 {{#exblocks}}
                 <dt>Example</dt>
-                    <dd><pre>{{.}}</pre></dd>
+                    <dd><pre>{{{.}}}</pre></dd>
                 {{/exblocks}}
             </dl>
         </div>

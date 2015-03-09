@@ -36,6 +36,11 @@
     <h1>q4.financialTable</h1>
     <p>A table of different types of financial documents sorted by year.
 Each year can have links to documents for each quarter.</p>
+    <ul>
+        <li><a href='#examples'>Examples</a></li>
+        <li><a href='#options'>Options</a></li>
+        
+    </ul>
 </header>
 
 <section id='details'>
@@ -49,6 +54,17 @@ Each year can have links to documents for each quarter.</p>
         <dt>Requires</dt>
             <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
+</section>
+
+<section id='examples'>
+    <h1>Examples</h1>
+    <div>
+        
+        <pre>$("#financials").financialTable({
+    year: 2014,
+    reportSubType: ['Annual Report', 'Supplemental Report']
+});</pre>
+    </div>
 </section>
 
 <section id='options'>
@@ -84,15 +100,15 @@ in the table.</p>
                 <dt>Example</dt>
                     <dd><pre>[
     {
-         title: &#39;Quarterly Reports&#39;,
-         reportType: [&#39;First Quarter&#39;, &#39;Second Quarter&#39;, &#39;Third Quarter&#39;, &#39;Fourth Quarter&#39;],
-         category: [&#39;Financials&#39;],
-         text: &#39;{{shortType}}&#39;
+         title: <span class="hljs-string">'Quarterly Reports'</span>,
+         reportType: [<span class="hljs-string">'First Quarter'</span>, <span class="hljs-string">'Second Quarter'</span>, <span class="hljs-string">'Third Quarter'</span>, <span class="hljs-string">'Fourth Quarter'</span>],
+         category: [<span class="hljs-string">'Financials'</span>],
+         text: <span class="hljs-string">'{{shortType}}'</span>
     },
     {
-         title: &#39;Annual Reports&#39;,
-         reportType: [&#39;Annual Report&#39;],
-         text: &#39;Annual ({{fileType}})&#39;
+         title: <span class="hljs-string">'Annual Reports'</span>,
+         reportType: [<span class="hljs-string">'Annual Report'</span>],
+         text: <span class="hljs-string">'Annual ({{fileType}})'</span>
     }
 ]</pre></dd>
             </dl>
@@ -131,20 +147,20 @@ Documents can have these tags:</p>
 </ul>
             <dl>
                 <dt>Example</dt>
-                    <dd><pre>&#39;&lt;ul class=&quot;ftHeader&quot;&gt;&#39; +
-    &#39;&lt;li&gt;Document&lt;&#x2F;li&gt;&#39; +
-    &#39;{{#years}}&lt;li&gt;{{year}}&lt;&#x2F;li&gt;{{&#x2F;years}}&#39; +
-&#39;&lt;&#x2F;ul&gt;&#39; +
-&#39;{{#categories}}&#39; +
-&#39;&lt;ul class=&quot;ftRow {{catClass}}&quot;&gt;&#39; +
-    &#39;&lt;li&gt;{{catTitle}}&lt;&#x2F;li&gt;&#39; +
-    &#39;{{#catYears}}&#39; +
-    &#39;&lt;li&gt;&#39; +
-        &#39;{{#docs}}&lt;a href=&quot;{{url}}&quot; class=&quot;docLink {{fileType}}&quot;&gt;{{{text}}}&lt;&#x2F;a&gt;{{&#x2F;docs}}&#39; +
-    &#39;&lt;&#x2F;li&gt;&#39; +
-    &#39;{{&#x2F;catYears}}&#39; +
-&#39;&lt;&#x2F;ul&gt;&#39; +
-&#39;{{&#x2F;categories}}&#39;</pre></dd>
+                    <dd><pre><span class="hljs-string">'&lt;ul class="ftHeader"&gt;'</span> +
+    <span class="hljs-string">'&lt;li&gt;Document&lt;/li&gt;'</span> +
+    <span class="hljs-string">'{{#years}}&lt;li&gt;{{year}}&lt;/li&gt;{{/years}}'</span> +
+<span class="hljs-string">'&lt;/ul&gt;'</span> +
+<span class="hljs-string">'{{#categories}}'</span> +
+<span class="hljs-string">'&lt;ul class="ftRow {{catClass}}"&gt;'</span> +
+    <span class="hljs-string">'&lt;li&gt;{{catTitle}}&lt;/li&gt;'</span> +
+    <span class="hljs-string">'{{#catYears}}'</span> +
+    <span class="hljs-string">'&lt;li&gt;'</span> +
+        <span class="hljs-string">'{{#docs}}&lt;a href="{{url}}" class="docLink {{fileType}}"&gt;{{{text}}}&lt;/a&gt;{{/docs}}'</span> +
+    <span class="hljs-string">'&lt;/li&gt;'</span> +
+    <span class="hljs-string">'{{/catYears}}'</span> +
+<span class="hljs-string">'&lt;/ul&gt;'</span> +
+<span class="hljs-string">'{{/categories}}'</span></pre></dd>
             </dl>
         </div>
     </li>

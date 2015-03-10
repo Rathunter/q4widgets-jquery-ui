@@ -27,6 +27,13 @@ module.exports = function (grunt) {
             }
         },
 
+        less: {
+            default: {
+                src: 'jsdoc_template/style.less',
+                dest: 'doc_html/style.css'
+            }
+        },
+
         jsdoc: {
             default: {
                 src: 'src/*.js',
@@ -40,10 +47,12 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-newer');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     grunt.registerMultiTask('uglify_newer', function () {
+        // generate target filenames based on version numbers
         grunt.config('clean_and_uglify.default.files', this.files.map(function (file) {
             var path = file.src[0],
                 data = fs.readFileSync(path, 'utf8'),
@@ -82,7 +91,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('min', ['uglify_newer']);
-    grunt.registerTask('doc', ['jsdoc']);
+    grunt.registerTask('doc', ['newer:less', 'newer:jsdoc']);
 
     grunt.registerTask('default', ['min', 'doc']);
 };

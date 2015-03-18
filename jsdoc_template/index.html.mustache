@@ -1,17 +1,19 @@
 <section id='index'>
-    <ul class='major'>
+    <dl>
         {{#classes}}
-        <li>
-            <h1>{{name}}</h1>
-            <span>{{version}}</span>
-            <div>
+        <div>
+            <dt>
+                <strong>{{name}}</strong>
+                <span>{{version}}</span>
+            </dt>
+            <dd>
                 {{{description}}}
                 <p>
                     <a href='{{name}}.html'>Documentation</a> –
                     <a href='https://q4widgets.q4web.com/q4widgets/{{distfile}}' target='_blank'>Script link</a>
                 </p>
-            </div>
-        </li>
+            </dd>
+        </div>
         {{/classes}}
-    </ul>
+    </dl>
 </section>

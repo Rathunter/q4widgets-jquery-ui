@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.calendar</h1>
     <p>An interactive calendar with links to events.</p>
     <ul>
@@ -44,15 +24,21 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.calendar.1.1.0.min.js' target='_blank'>q4.calendar.1.1.0.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.calendar.js#L2' target='_blank'>q4.calendar.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>jasonm@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/underscore-min.js' target='_blank'>Underscore.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/clndr.min.js' target='_blank'>CLNDR.js</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.calendar.1.1.0.min.js' target='_blank'>q4.calendar.1.1.0.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.calendar.js#L2' target='_blank'>q4.calendar.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>jasonm@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/underscore-min.js' target='_blank'>Underscore.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/clndr.min.js' target='_blank'>CLNDR.js</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 <section id='examples'>
@@ -70,119 +56,200 @@
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-publicFeed'>
-        <h1>publicFeed</h1>
-        <span>boolean</span>
-        <div>
-            <p>This allows the widget to be placed on a site not hosted by Q4.
+    <dl>
+        <div id='option-publicFeed'>
+            <dt>
+                <strong>publicFeed</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>This allows the widget to be placed on a site not hosted by Q4.
 Requires url and apiKey to be set in the configuration.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-url'>
-        <h1>url</h1>
-        <span>string</span>
-        <div>
-            <p>A URL to a Q4 hosted website.
+        <div id='option-url'>
+            <dt>
+                <strong>url</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A URL to a Q4 hosted website.
 This is only required if <code>publicFeed</code> is true.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-apiKey'>
-        <h1>apiKey</h1>
-        <span>string</span>
-        <div>
-            <p>The API Key can be found under System Admin &gt; Site List &gt; Public Site
+        <div id='option-apiKey'>
+            <dt>
+                <strong>apiKey</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The API Key can be found under System Admin &gt; Site List &gt; Public Site
 in the admin of any Q4 website.
 This is only required if <code>publicFeed</code> is true.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-news'>
-        <h1>news</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to include all related press releases.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-news'>
+            <dt>
+                <strong>news</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to include all related press releases.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-presentations'>
-        <h1>presentations</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to include all related presentations.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-presentations'>
+            <dt>
+                <strong>presentations</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to include all related presentations.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-slideshare'>
-        <h1>slideshare</h1>
-        <span>string</span>
-        <div>
-            <p>Can be set to a SlideShare username.
+        <div id='option-slideshare'>
+            <dt>
+                <strong>slideshare</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>Can be set to a SlideShare username.
 This will add SlideShare presentations as events.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-onEventsLoad'>
-        <h1>onEventsLoad</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after events are loaded.</p>
-            <dl>
-            </dl>
+        <div id='option-onEventsLoad'>
+            <dt>
+                <strong>onEventsLoad</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after events are loaded.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>calendar</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>DOM element, can be used with methods such as .addEvents()</p></dd>
+                        <dt>
+                            <strong>events</strong>
+                            <span>Array</span>
+                        </dt>
+                        <dd><p>An array containing all events</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-onSlideShareLoad'>
-        <h1>onSlideShareLoad</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after SlideShare has loaded.</p>
-            <dl>
-            </dl>
+        <div id='option-onSlideShareLoad'>
+            <dt>
+                <strong>onSlideShareLoad</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after SlideShare has loaded.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>calendar</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>DOM element, can be used with methods such as .addEvents()</p></dd>
+                        <dt>
+                            <strong>events</strong>
+                            <span>Array</span>
+                        </dt>
+                        <dd><p>An array containing slideshare data</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-eventSize'>
-        <h1>eventSize</h1>
-        <span>number</span>
-        <div>
-            <p>The maximum number of events to add to the calendar.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-eventSize'>
+            <dt>
+                <strong>eventSize</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>The maximum number of events to add to the calendar.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">25</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-tags'>
-        <h1>tags</h1>
-        <span>Array&lt;string&gt;</span>
-        <div>
-            <p>An array of tags used to filter events.</p>
-            <dl>
-            </dl>
+        <div id='option-tags'>
+            <dt>
+                <strong>tags</strong>
+                <span>Array&lt;string&gt;</span>
+            </dt>
+            <dd>
+                <p>An array of tags used to filter events.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-calendar'>
-        <h1>calendar</h1>
-        
-        <div>
-            <p>An options object to pass directly to the CLNDR.js instance.
+        <div id='option-calendar'>
+            <dt>
+                <strong>calendar</strong>
+                
+            </dt>
+            <dd>
+                <p>An options object to pass directly to the CLNDR.js instance.
 See that module's documentation for details.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre>{
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre>{
     adjacentDaysChangeMonth: <span class="hljs-literal">true</span>,
     daysOfTheWeek: [<span class="hljs-string">'Su'</span>,<span class="hljs-string">'Mo'</span>,<span class="hljs-string">'Tu'</span>,<span class="hljs-string">'We'</span>,<span class="hljs-string">'Th'</span>,<span class="hljs-string">'Fi'</span>,<span class="hljs-string">'Sa'</span>],
     showAdjacentMonths: <span class="hljs-literal">false</span>,
@@ -194,13 +261,36 @@ See that module's documentation for details.</p>
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'calendar is ready'</span>)
     }
 }</pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

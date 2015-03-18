@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.flickrGallery</h1>
     <p>Fetches and displays photo albums from a user on Flickr.</p>
     <ul>
@@ -44,15 +24,21 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.flickrgallery.1.0.0.min.js' target='_blank'>q4.flickrgallery.1.0.0.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.flickrgallery.js#L2' target='_blank'>q4.flickrgallery.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.flickrgallery.1.0.0.min.js' target='_blank'>q4.flickrgallery.1.0.0.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.flickrgallery.js#L2' target='_blank'>q4.flickrgallery.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>marcusk@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 <section id='examples'>
@@ -70,52 +56,74 @@
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-apiKey'>
-        <h1>apiKey</h1>
-        <span>string</span>
-        <div>
-            <p>A Flickr API key.</p>
-            <dl>
-            </dl>
+    <dl>
+        <div id='option-apiKey'>
+            <dt>
+                <strong>apiKey</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Flickr API key.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-userId'>
-        <h1>userId</h1>
-        <span>string</span>
-        <div>
-            <p>A Flickr user ID.</p>
-            <dl>
-            </dl>
+        <div id='option-userId'>
+            <dt>
+                <strong>userId</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Flickr user ID.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-albums'>
-        <h1>albums</h1>
-        <span>Array&lt;string&gt;</span>
-        <div>
-            <p>An array of photo album names to fetch.
+        <div id='option-albums'>
+            <dt>
+                <strong>albums</strong>
+                <span>Array&lt;string&gt;</span>
+            </dt>
+            <dd>
+                <p>An array of photo album names to fetch.
 If the list is empty (default), fetch all photo albums.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-perPage'>
-        <h1>perPage</h1>
-        <span>number</span>
-        <div>
-            <p>The maximum number of photos to fetch from each album.
+        <div id='option-perPage'>
+            <dt>
+                <strong>perPage</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>The maximum number of photos to fetch from each album.
 This can be up to 500.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">500</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-template'>
-        <h1>template</h1>
-        
-        <div>
-            <p>A mustache.js template for all photo albums.
+        <div id='option-template'>
+            <dt>
+                <strong>template</strong>
+                
+            </dt>
+            <dd>
+                <p>A mustache.js template for all photo albums.
 An album has these tags:</p>
 <ul>
 <li><code>{{albumID}}</code></li>
@@ -146,9 +154,12 @@ Each photo has these tags:</p>
 <li><code>Large</code>       1024 x 768</li>
 <li><code>Original</code>    2400 x 1800</li>
 </ul>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'{{#albums}}'</span> +
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'{{#albums}}'</span> +
     <span class="hljs-string">'&lt;h3&gt;{{albumTitle}}&lt;/h3&gt;'</span> +
     <span class="hljs-string">'&lt;ul class="album"&gt;'</span> +
         <span class="hljs-string">'{{#photos}}'</span> +
@@ -161,22 +172,58 @@ Each photo has these tags:</p>
         <span class="hljs-string">'{{/photos}}'</span> +
     <span class="hljs-string">'&lt;/ul&gt;'</span> +
 <span class="hljs-string">'{{/albums}}'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-complete'>
-        <h1>complete</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired when rendering is completed.</p>
-            <dl>
-            </dl>
+        <div id='option-complete'>
+            <dt>
+                <strong>complete</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired when rendering is completed.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The event object.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

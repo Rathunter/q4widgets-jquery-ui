@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.accordion</h1>
     <p>Creates an expanding and collapsing accordion from sections of content.</p>
     <ul>
@@ -44,148 +24,232 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.accordion.1.0.1.min.js' target='_blank'>q4.accordion.1.0.1.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.accordion.js#L2' target='_blank'>q4.accordion.js</a>, line 2</dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.accordion.1.0.1.min.js' target='_blank'>q4.accordion.1.0.1.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.accordion.js#L2' target='_blank'>q4.accordion.js</a>, line 2</dd>
+
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-openMultipleSections'>
-        <h1>openMultipleSections</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether opening an accordion section will close the others.</p>
-            <dl>
-                <dt>Default value</dt>
+    <dl>
+        <div id='option-openMultipleSections'>
+            <dt>
+                <strong>openMultipleSections</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether opening an accordion section will close the others.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-openFirstItem'>
-        <h1>openFirstItem</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether the first accordion item should be open at init.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-openFirstItem'>
+            <dt>
+                <strong>openFirstItem</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether the first accordion item should be open at init.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-trigger'>
-        <h1>trigger</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the trigger to open/close a section.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-trigger'>
+            <dt>
+                <strong>trigger</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the trigger to open/close a section.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.accordionTrigger'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-indicator'>
-        <h1>indicator</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the expand/collapse message.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-indicator'>
+            <dt>
+                <strong>indicator</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the expand/collapse message.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.accordionTriggerText'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-container'>
-        <h1>container</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the container to show/hide.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-container'>
+            <dt>
+                <strong>container</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the container to show/hide.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.accordionContent'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-expandText'>
-        <h1>expandText</h1>
-        <span>string</span>
-        <div>
-            <p>The indicator text for a closed section.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-expandText'>
+            <dt>
+                <strong>expandText</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The indicator text for a closed section.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'EXPAND [ + ]'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-collapseText'>
-        <h1>collapseText</h1>
-        <span>string</span>
-        <div>
-            <p>The indicator text for an open section.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-collapseText'>
+            <dt>
+                <strong>collapseText</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The indicator text for an open section.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'CLOSE [ – ]'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-activeClass'>
-        <h1>activeClass</h1>
-        <span>string</span>
-        <div>
-            <p>A class to add to an open section.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-activeClass'>
+            <dt>
+                <strong>activeClass</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A class to add to an open section.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'active'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-sectionClass'>
-        <h1>sectionClass</h1>
-        <span>string</span>
-        <div>
-            <p>A class to add to each section.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-sectionClass'>
+            <dt>
+                <strong>sectionClass</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A class to add to each section.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'accordion-item'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-template'>
-        <h1>template</h1>
-        <span>string</span>
-        <div>
-            <p>A Mustache template for each section.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'&lt;div class="accordionItem"&gt;'</span> +
+        <div id='option-template'>
+            <dt>
+                <strong>template</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template for each section.</p>
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'&lt;div class="accordionItem"&gt;'</span> +
     <span class="hljs-string">'&lt;h3 class="accordionTrigger"&gt;'</span> +
         <span class="hljs-string">'&lt;span class="accordionTriggerText"&gt;&lt;/span&gt;'</span> +
         <span class="hljs-string">'{{{title}}}'</span> +
     <span class="hljs-string">'&lt;/h3&gt;'</span> +
     <span class="hljs-string">'&lt;div class="accordionContent"&gt;{{{content}}}&lt;/div&gt;'</span> +
 <span class="hljs-string">'&lt;/div&gt;'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-content'>
-        <h1>content</h1>
-        <span>Array&lt;Object&gt;</span>
-        <div>
-            <p>A list of objects representing sections.</p>
-            <dl>
-            </dl>
+        <div id='option-content'>
+            <dt>
+                <strong>content</strong>
+                <span>Array&lt;Object&gt;</span>
+            </dt>
+            <dd>
+                <p>A list of objects representing sections.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

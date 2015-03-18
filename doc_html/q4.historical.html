@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.historical</h1>
     <p>Retrieves price and volume information for a stock on a specific date.</p>
     <ul>
@@ -44,140 +24,203 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.1.0.min.js' target='_blank'>q4.historical.2.1.0.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.1.0.min.js' target='_blank'>q4.historical.2.1.0.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>marcusk@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-exchange'>
-        <h1>exchange</h1>
-        <span>string</span>
-        <div>
-            <p>The stock exchange to use.
+    <dl>
+        <div id='option-exchange'>
+            <dt>
+                <strong>exchange</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The stock exchange to use.
 If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code> in the URL.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-symbol'>
-        <h1>symbol</h1>
-        <span>string</span>
-        <div>
-            <p>The stock symbol to use.
+        <div id='option-symbol'>
+            <dt>
+                <strong>symbol</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The stock symbol to use.
 If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code> in the URL.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-dateFormat'>
-        <h1>dateFormat</h1>
-        <span>string</span>
-        <div>
-            <p>A date format string to use with jQuery UI's Datepicker.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-dateFormat'>
+            <dt>
+                <strong>dateFormat</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A date format string to use with jQuery UI's Datepicker.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'M d, yy'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-startDate'>
-        <h1>startDate</h1>
-        <span>string</span>
-        <div>
-            <p>The earliest date that will be available as an option. Default is Jan 1, 1970.</p>
-            <dl>
-            </dl>
+        <div id='option-startDate'>
+            <dt>
+                <strong>startDate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The earliest date that will be available as an option. Default is Jan 1, 1970.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-endDate'>
-        <h1>endDate</h1>
-        <span>string</span>
-        <div>
-            <p>The latest date that will be available as an option. Default is the current day.</p>
-            <dl>
-            </dl>
+        <div id='option-endDate'>
+            <dt>
+                <strong>endDate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The latest date that will be available as an option. Default is the current day.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-datepicker'>
-        <h1>datepicker</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the element to use as a datepicker. Usually an <code>&lt;input&gt;</code>.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-datepicker'>
+            <dt>
+                <strong>datepicker</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the element to use as a datepicker. Usually an <code>&lt;input&gt;</code>.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'input:first'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-datepickerOpts'>
-        <h1>datepickerOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of options to pass directly to the datepicker constructor.</p>
-            <dl>
-            </dl>
+        <div id='option-datepickerOpts'>
+            <dt>
+                <strong>datepickerOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of options to pass directly to the datepicker constructor.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-updateDatepicker'>
-        <h1>updateDatepicker</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to update the datepicker field after fetching the stock quote.
+        <div id='option-updateDatepicker'>
+            <dt>
+                <strong>updateDatepicker</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to update the datepicker field after fetching the stock quote.
 If there is no data for the selected date, this option will clear the field.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-fetchOnInit'>
-        <h1>fetchOnInit</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to fetch today's stock quote when the table is initialized.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-fetchOnInit'>
+            <dt>
+                <strong>fetchOnInit</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to fetch today's stock quote when the table is initialized.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-trigger'>
-        <h1>trigger</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for a trigger element that will perform the lookup when clicked.
+        <div id='option-trigger'>
+            <dt>
+                <strong>trigger</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for a trigger element that will perform the lookup when clicked.
 If this is not specified, the lookup will occur when the <code>datepicker</code> element's
 value changes.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-quoteContainer'>
-        <h1>quoteContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the container that will be filled with the lookup results.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-quoteContainer'>
+            <dt>
+                <strong>quoteContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the container that will be filled with the lookup results.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.quote'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-quoteTemplate'>
-        <h1>quoteTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A Mustache template used to render the lookup results in the quote container.
+        <div id='option-quoteTemplate'>
+            <dt>
+                <strong>quoteTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template used to render the lookup results in the quote container.
 The following tags are available:</p>
 <ul>
 <li><code>{{date}}</code>   The date of the historical stock quote.</li>
@@ -187,42 +230,78 @@ The following tags are available:</p>
 <li><code>{{high}}</code>   The stock's highest trading price on that date.</li>
 <li><code>{{low}}</code>    The stock's lowest trading price on that date.</li>
 </ul>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'Date: {{date}}&lt;br&gt;'</span> +
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'Date: {{date}}&lt;br&gt;'</span> +
 <span class="hljs-string">'Volume: {{volume}}&lt;br&gt;'</span> +
 <span class="hljs-string">'Open: {{open}}&lt;br&gt;'</span> +
 <span class="hljs-string">'Close: {{close}}&lt;br&gt;'</span> +
 <span class="hljs-string">'High: {{high}}&lt;br&gt;'</span> +
 <span class="hljs-string">'Low: {{low}}'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-notFoundMessage'>
-        <h1>notFoundMessage</h1>
-        <span>string</span>
-        <div>
-            <p>A message to display in the quote container in case no results were found.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-notFoundMessage'>
+            <dt>
+                <strong>notFoundMessage</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A message to display in the quote container in case no results were found.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'No stock data is available for this date.'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-loadingClass'>
-        <h1>loadingClass</h1>
-        <span>string</span>
-        <div>
-            <p>A CSS class to add to the widget while data is loading.
+        <div id='option-loadingClass'>
+            <dt>
+                <strong>loadingClass</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A CSS class to add to the widget while data is loading.
 This can be used to show and hide elements within the widget.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

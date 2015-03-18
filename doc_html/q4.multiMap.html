@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.multiMap</h1>
     <p>An interactive map with multiple datasets, that you can toggle between.</p>
     <ul>
@@ -44,69 +24,97 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.multimap.1.0.0.min.js' target='_blank'>q4.multimap.1.0.0.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.multimap.js#L2' target='_blank'>q4.multimap.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/jquery-jvectormap-2.0.1.min.js' target='_blank'>jVectorMap</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/jquery-jvectormap-2.0.1.css' target='_blank'>jVectorMap CSS</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.multimap.1.0.0.min.js' target='_blank'>q4.multimap.1.0.0.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.multimap.js#L2' target='_blank'>q4.multimap.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>marcusk@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/jquery-jvectormap-2.0.1.min.js' target='_blank'>jVectorMap</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/jquery-jvectormap-2.0.1.css' target='_blank'>jVectorMap CSS</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-map'>
-        <h1>map</h1>
-        <span>string</span>
-        <div>
-            <p>The name of the map to use from jVectorMap.
+    <dl>
+        <div id='option-map'>
+            <dt>
+                <strong>map</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The name of the map to use from jVectorMap.
 The corresponding JS file must be included.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'us_lcc_en'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-backgroundColour'>
-        <h1>backgroundColour</h1>
-        <span>string</span>
-        <div>
-            <p>The background colour of the map.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-backgroundColour'>
+            <dt>
+                <strong>backgroundColour</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The background colour of the map.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'transparent'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-defaultColour'>
-        <h1>defaultColour</h1>
-        <span>string</span>
-        <div>
-            <p>The colour of map elements that aren't in any category.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-defaultColour'>
+            <dt>
+                <strong>defaultColour</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The colour of map elements that aren't in any category.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'#ffffff'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-elementPrefix'>
-        <h1>elementPrefix</h1>
-        <span>string</span>
-        <div>
-            <p>An optional prefix to add to all element codes.</p>
-            <dl>
-            </dl>
+        <div id='option-elementPrefix'>
+            <dt>
+                <strong>elementPrefix</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>An optional prefix to add to all element codes.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-views'>
-        <h1>views</h1>
-        <span>Array&lt;Object&gt;</span>
-        <div>
-            <p>An array of views. Each view is made up of geographic elements
+        <div id='option-views'>
+            <dt>
+                <strong>views</strong>
+                <span>Array&lt;Object&gt;</span>
+            </dt>
+            <dd>
+                <p>An array of views. Each view is made up of geographic elements
 (e.g. countries or states), which are grouped into categories.
 Each category has a colour, and an entry in that view's legend.
 View objects have these properties:</p>
@@ -123,106 +131,172 @@ View objects have these properties:</p>
 </ul>
 </li>
 </ul>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-viewContainer'>
-        <h1>viewContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the container for view triggers.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-viewContainer'>
+            <dt>
+                <strong>viewContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the container for view triggers.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.views'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-viewTrigger'>
-        <h1>viewTrigger</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for each view trigger in the view container.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-viewTrigger'>
+            <dt>
+                <strong>viewTrigger</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for each view trigger in the view container.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'&gt; li'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-viewTemplate'>
-        <h1>viewTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A template for a single view trigger, corresponding to the
+        <div id='option-viewTemplate'>
+            <dt>
+                <strong>viewTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A template for a single view trigger, corresponding to the
 <code>viewTrigger</code> selector. All the properties of the view
 in the <code>views</code> array are available as tags.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'&lt;li class=\"{{cssClass}}\"&gt;&lt;span&gt;&lt;/span&gt;{{label}}&lt;/li&gt;'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-legendContainer'>
-        <h1>legendContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the container for legend categories.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-legendContainer'>
+            <dt>
+                <strong>legendContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the container for legend categories.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.legend'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-legendTemplate'>
-        <h1>legendTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A template for a single legend category, corresponding to the
+        <div id='option-legendTemplate'>
+            <dt>
+                <strong>legendTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A template for a single legend category, corresponding to the
 <code>legendContainer</code> selector.. All the properties of the category
 in the <code>views</code> array are available as tags.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'&lt;li class=\"{{cssClass}}\"&gt;&lt;span style=\"background-color: {{colour}}\"&gt;&lt;/span&gt;{{label}}&lt;/li&gt;'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-textContainer'>
-        <h1>textContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the container for category text.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-textContainer'>
+            <dt>
+                <strong>textContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the container for category text.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.text'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-mapContainer'>
-        <h1>mapContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the vector map.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-mapContainer'>
+            <dt>
+                <strong>mapContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the vector map.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'#map'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-template'>
-        <h1>template</h1>
-        <span>string</span>
-        <div>
-            <p>An overall template for the widget. This should contain elements
+        <div id='option-template'>
+            <dt>
+                <strong>template</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>An overall template for the widget. This should contain elements
 corresponding to <code>viewContainer</code>, <code>legendContainer</code>,
 <code>textContainer</code> and <code>mapContainer</code>.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

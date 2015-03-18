@@ -1,3 +1,8 @@
+@import (reference) '../node_modules/bootstrap/less/bootstrap.less';
+
+
+// colours
+
 @blue:        hsv(210, 50%, 75%);
 @blue-bkgd:   fadeout(@blue, 94%);
 @blue-shadow: darken(@blue, 5%);
@@ -5,59 +10,58 @@
 @black:       desaturate(darken(@blue, 30%), 35%);
 
 
-body { margin: 0; color: @black; background: @blue-bkgd; font-family: 'open sans', helvetica, arial, sans-serif; }
+// generic elements
+
+h1 { margin: @line-height-computed 0; }
 
 a { color: @blue; text-decoration: none; }
-a:hover { border-radius: 3px; background: @blue-bkgd; color: @blue-shadow; }
+a:hover { border-radius: 3px; background: @blue-bkgd; color: @blue-shadow; text-decoration: none; }
 
-code, pre { background: @blue-bkgd; font-size: 1rem; }
-code { padding: 0 .25rem; }
-pre { margin: 0; padding: .5rem 1rem; line-height: 1.5em; }
+code, pre { background: @blue-bkgd; }
 
-dt { float: left; }
-dd { margin: 0.5rem 0; }
-dd ul { padding: 0; list-style: none; }
+ul.plain { margin: 0; padding: 0; list-style: none; }
 
-body > header { background: @blue; text-align: center; overflow: auto; }
-body > header a { color: fadeout(white, 15%); text-shadow: 1px 2px @blue-shadow; }
-body > header a:hover { background: none; color: fadeout(white, 5%); }
 
-nav { float: left; width: 200px; padding: 30px 10px; }
-nav h1 { margin: 1rem 0; padding: 0 .6rem; font-size: 1rem; text-transform: uppercase; }
-nav a { display: block; padding: .3rem .6rem; }
-nav a:hover { background: @blue-bkgd; }
+// layout
 
-main { margin-left: 220px; padding: 30px; background: white; }
+body { .container-fluid; color: @black; background: @blue-bkgd; font-family: 'open sans', helvetica, arial, sans-serif; }
 
-main header { margin-bottom: 2rem; }
-main header p { font-size: 1.25rem; }
-main header ul { padding: 0; list-style: none; }
-main header ul li { display: inline-block; margin-right: 1rem; }
-
-section { margin-bottom: 2.5rem; }
-section h2 { font-size: inherit; }
-
-#examples div { margin-bottom: 2rem; }
-
-#details dl dt { font-weight: bold; }
-#details dl dd { margin-left: 200px; }
-
-ul.major { margin: 0; padding: 0; list-style: none; }
-ul.major > li { overflow: auto; padding: 1rem; }
-ul.major > li:nth-child(2n+1) { background: @blue-bkgd;
-    code, pre { background: @blue-bkgd; }
+body > header { .make-row; background: @blue; text-align: center; overflow: auto;
+    a { color: fadeout(white, 15%); text-shadow: 1px 3px @blue-shadow; }
+    a:hover { background: none; color: fadeout(white, 5%); }
 }
-ul.major > li > h1 { float: left; margin: 0; font-size: 1rem; }
-ul.major > li > span { float: left; clear: left; color: @grey; }
-ul.major > li > div { margin-left: 200px; overflow: auto; }
-ul.major > li > div p,
-ul.major > li > div ul { margin: 0 0 .5rem; }
-ul.major > li > div dt { color: @grey; font-weight: normal; }
-ul.major > li > div dd { margin-left: 125px; }
 
-#methods dd strong, #methods dd em { float: left; width: 100px; }
-#methods dd em { color: @grey; font-style: normal; }
-#methods dd p { margin-left: 200px; }
+body > div { .make-row; }
+
+nav { .make-sm-column-pull(9); .make-sm-column(3); .make-md-column-pull(10); .make-md-column(2); padding-bottom: 2rem;
+    h1 { font-size: 2rem; text-transform: uppercase; }
+    a { display: block; padding: .3rem .6rem; }
+}
+
+main { .make-sm-column-push(3); .make-sm-column(9); .make-md-column-push(2); .make-md-column(10); background: white; overflow: auto; }
+
+main header, main section, section > div { margin-bottom: 3rem; }
+section > dl { margin-top: @line-height-computed; }
+
+main header {
+    p, ul { font-size: 120%; }
+    ul { padding: 0; list-style: none; }
+    ul li { display: inline-block; margin-right: 1rem; }
+}
+
+dl { .make-row;
+    div { margin: 0 @grid-gutter-width / 2; padding-top: 1.5rem; overflow: auto; }
+    div:nth-child(2n+1) { background: @blue-bkgd; }
+}
+dt { .make-md-column(3); .make-lg-column(2); clear: left; color: @grey; font-weight: normal;
+    strong { display: block; color: @black; }
+    span { display: block; }
+}
+dd { .make-md-column(9); .make-lg-column(10); }
+dt, dd { margin-bottom: 1rem; }
+
+
+// syntax highlighting
 
 .hljs-tag,
 .hljs-built_in  { color: hsv(330, 70%, 65%); }

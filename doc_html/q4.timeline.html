@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.timeline</h1>
     <p>A carousel of events on a timeline, with groups and navigation.</p>
     <ul>
@@ -44,26 +24,34 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.timeline.1.0.1.min.js' target='_blank'>q4.timeline.1.0.1.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.timeline.js#L2' target='_blank'>q4.timeline.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/slick.min.js' target='_blank'>Slick</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/slick.css' target='_blank'>Slick CSS</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.timeline.1.0.1.min.js' target='_blank'>q4.timeline.1.0.1.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.timeline.js#L2' target='_blank'>q4.timeline.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>marcusk@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/slick.min.js' target='_blank'>Slick</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/slick.css' target='_blank'>Slick CSS</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-content'>
-        <h1>content</h1>
-        <span>Object</span>
-        <div>
-            <p>An array of event groups. Each group has these properties:</p>
+    <dl>
+        <div id='option-content'>
+            <dt>
+                <strong>content</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>An array of event groups. Each group has these properties:</p>
 <ul>
 <li><code>heading</code> The heading for the category.</li>
 <li><code>text</code>    Text to display for the category.</li>
@@ -74,9 +62,12 @@
 </ul>
 </li>
 </ul>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre>[
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre>[
     {
         heading: <span class="hljs-string">'1980s'</span>,
         text: <span class="hljs-string">'Many things happened in the 1980s.'</span>,
@@ -104,166 +95,292 @@
         ]
     }
 ]</pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-navCarousel'>
-        <h1>navCarousel</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to render a navigation carousel.
+        <div id='option-navCarousel'>
+            <dt>
+                <strong>navCarousel</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to render a navigation carousel.
 This is generally used to display the groups.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-navContainer'>
-        <h1>navContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the navigation carousel.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-navContainer'>
+            <dt>
+                <strong>navContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the navigation carousel.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.timeline-nav'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-navTemplate'>
-        <h1>navTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A Mustache template to use for the navigation carousel.
+        <div id='option-navTemplate'>
+            <dt>
+                <strong>navTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template to use for the navigation carousel.
 All properties from <code>content</code> are available as tags.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'{{#groups}}'</span> +
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'{{#groups}}'</span> +
 <span class="hljs-string">'&lt;li class="{{cssClass}}"&gt;'</span> +
     <span class="hljs-string">'&lt;h3&gt;{{heading}}&lt;/h3&gt;'</span> +
     <span class="hljs-string">'{{{text}}}'</span> +
 <span class="hljs-string">'&lt;/li&gt;'</span> +
 <span class="hljs-string">'{{/groups}}'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-navSelector'>
-        <h1>navSelector</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for each group's slide in the navigation carousel.
+        <div id='option-navSelector'>
+            <dt>
+                <strong>navSelector</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for each group's slide in the navigation carousel.
 When clicked, this will move the main carousel to that group.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'li'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-navOptions'>
-        <h1>navOptions</h1>
-        <span>Object</span>
-        <div>
-            <p>Options to pass directly to the nav carousel's Slick object.
+        <div id='option-navOptions'>
+            <dt>
+                <strong>navOptions</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>Options to pass directly to the nav carousel's Slick object.
 See Slick's documentation for details.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-mainCarousel'>
-        <h1>mainCarousel</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to render a main carousel.
+        <div id='option-mainCarousel'>
+            <dt>
+                <strong>mainCarousel</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to render a main carousel.
 This is generally used to display the individual timeline items.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-mainContainer'>
-        <h1>mainContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the main carousel.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-mainContainer'>
+            <dt>
+                <strong>mainContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the main carousel.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.timeline-main'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-mainTemplate'>
-        <h1>mainTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A Mustache template to use for the main carousel.
+        <div id='option-mainTemplate'>
+            <dt>
+                <strong>mainTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template to use for the main carousel.
 All properties from <code>content</code> are available as tags.
 Items also have a {{group}} tag with the index # of their
 containing group.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'{{#items}}'</span> +
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'{{#items}}'</span> +
 <span class="hljs-string">'&lt;li class="{{cssClass}}" data-group="{{group}}"&gt;'</span> +
     <span class="hljs-string">'&lt;h3&gt;{{heading}}&lt;/h3&gt;'</span> +
     <span class="hljs-string">'&lt;div class="itemtext"&gt;{{{text}}}&lt;/div&gt;'</span> +
 <span class="hljs-string">'&lt;/li&gt;'</span> +
 <span class="hljs-string">'{{/items}}'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-mainSelector'>
-        <h1>mainSelector</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for each item's slide in the main carousel.
+        <div id='option-mainSelector'>
+            <dt>
+                <strong>mainSelector</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for each item's slide in the main carousel.
 When clicked, this will move the nav carousel to this item's group.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'li'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-mainOptions'>
-        <h1>mainOptions</h1>
-        <span>Object</span>
-        <div>
-            <p>Options to pass directly to the main carousel's Slick object.
+        <div id='option-mainOptions'>
+            <dt>
+                <strong>mainOptions</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>Options to pass directly to the main carousel's Slick object.
 See Slick's documentation for details.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-afterNavChange'>
-        <h1>afterNavChange</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after a change in the nav carousel.</p>
-            <dl>
-            </dl>
+        <div id='option-afterNavChange'>
+            <dt>
+                <strong>afterNavChange</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after a change in the nav carousel.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:
+- <code>element</code> The nav carousel's jQuery element.
+- <code>target</code>  The index of the target group.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-afterMainChange'>
-        <h1>afterMainChange</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after a change in the main carousel.</p>
-            <dl>
-            </dl>
+        <div id='option-afterMainChange'>
+            <dt>
+                <strong>afterMainChange</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after a change in the main carousel.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:
+- <code>element</code> The main carousel's jQuery element.
+- <code>target</code>  The index of the target timeline item.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-complete'>
-        <h1>complete</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after rendering is complete.</p>
-            <dl>
-            </dl>
+        <div id='option-complete'>
+            <dt>
+                <strong>complete</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after rendering is complete.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

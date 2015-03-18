@@ -3,20 +3,23 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        {{#classes}}
-        <a href='{{name}}.html'>{{name}}</a>
-        {{/classes}}
-    </nav>
-    <main>
-{{{content}}}
-    </main>
+    <div>
+        <main>
+    {{{content}}}
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            {{#classes}}
+            <a href='{{name}}.html'>{{name}}</a>
+            {{/classes}}
+        </nav>
+    </div>
 </body>
 </html>

@@ -42,6 +42,21 @@ module.exports = function (grunt) {
                     configure: 'jsdoc.conf.json'
                 }
             }
+        },
+
+        watch: {
+            min: {
+                files: ['src/*.js'],
+                tasks: ['min']
+            },
+            less: {
+                files: ['jsdoc_template/style.less'],
+                tasks: ['less']
+            },
+            jsdoc: {
+                files: ['jsdoc_template/publish.js', 'jsdoc_template/*.mustache', 'src/*.js'],
+                tasks: ['jsdoc']
+            }
         }
     });
 
@@ -50,6 +65,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerMultiTask('uglify_newer', function () {
         // generate target filenames based on version numbers

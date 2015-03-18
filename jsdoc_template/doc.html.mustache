@@ -10,25 +10,30 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/{{distfile}}' target='_blank'>{{distfile}}</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/{{file}}#L{{line}}' target='_blank'>{{file}}</a>, line {{line}}</dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/{{distfile}}' target='_blank'>{{distfile}}</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/{{file}}#L{{line}}' target='_blank'>{{file}}</a>, line {{line}}</dd>
+
         {{#author.0}}
-        <dt>Author(s)</dt>
-            <dd><ul>{{#author}}<li>{{.}}</li>{{/author}}</ul></dd>
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'>{{#author}}<li>{{.}}</li>{{/author}}</ul></dd>
         {{/author.0}}
+
         {{#requires.0}}
-        <dt>Requires</dt>
-            <dd><ul>{{#requires}}<li><a href='https://q4widgets.q4web.com/q4widgets/{{{url}}}' target='_blank'>{{name}}</a></li>{{/requires}}</ul></dd>
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'>{{#requires}}<li><a href='https://q4widgets.q4web.com/q4widgets/{{{url}}}' target='_blank'>{{name}}</a></li>{{/requires}}</ul></dd>
         {{/requires.0}}
     </dl>
+
     {{#abstract}}
     <p>
         This is an <em>abstract</em> widget; it isn't meant to be instantiated directly.
         Use one of its child widgets.
     </p>
     {{/abstract}}
+
     {{#extends.0}}
     <p>
         This widget <em>extends</em> the <a href='{{.}}.html'>{{.}}</a> widget.
@@ -36,6 +41,7 @@
         See the parent widget's documentation for details.
     </p>
     {{/extends.0}}
+
     {{#children.0}}
     <p>
         Child widgets have all the options and methods of this widget, but may add their own as well.
@@ -65,50 +71,77 @@
 {{#options.0}}
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    {{#options}}
-    <li id='option-{{name}}'>
-        <h1>{{name}}</h1>
-        {{#type}}<span>{{.}}</span>{{/type}}
-        <div>
-            {{{description}}}
-            <dl>
-                {{#defaultval}}
-                <dt>Default value</dt>
+    <dl>
+        {{#options}}
+        <div id='option-{{name}}'>
+            <dt>
+                <strong>{{name}}</strong>
+                {{#type}}<span>{{.}}</span>{{/type}}
+            </dt>
+            <dd>
+                {{{description}}}
+                <dl>
+                    {{#defaultval}}
+                    <dt>Default value</dt>
                     <dd><code>{{{.}}}</code></dd>
-                {{/defaultval}}
-                {{#examples}}
-                <dt>Example</dt>
+                    {{/defaultval}}
+
+                    {{#params.0}}
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        {{#params}}
+                        <dt>
+                            <strong>{{name}}</strong>
+                            {{#type}}<span>{{.}}</span>{{/type}}
+                        </dt>
+                        <dd>{{{description}}}</dd>
+                        {{/params}}
+                    </dl></dd>
+                    {{/params.0}}
+
+                    {{#examples}}
+                    <dt>Example</dt>
                     <dd><code>{{{.}}}</code></dd>
-                {{/examples}}
-                {{#exblocks}}
-                <dt>Example</dt>
-                    <dd><pre>{{{.}}}</pre></dd>
-                {{/exblocks}}
-            </dl>
+                    {{/examples}}
+
+                    {{#exblocks}}
+                    <dt>Example</dt>
+                        <dd><pre>{{{.}}}</pre></dd>
+                    {{/exblocks}}
+                </dl>
+            </dd>
         </div>
-    </li>
-    {{/options}}
-    </ul>
+        {{/options}}
+    </dl>
 </section>
 {{/options.0}}
 
 {{#methods.0}}
 <section id='methods'>
     <h1>Methods</h1>
-    <ul class='major'>
-    {{#methods}}
-    <li id='method-{{name}}'>
-        <h1>{{name}}</h1>
-        <div>
-            {{{description}}}
-            <dl>
-                {{#params.0}}<dt>Parameters</dt>
-                    <dd><ul>{{#params}}<li><strong>{{name}}</strong><em>{{type}}</em>{{{description}}}</li>{{/params}}</ul></dd>{{/params.0}}
-            </dl>
+    <dl>
+        {{#methods}}
+        <div id='method-{{name}}'>
+            <dt><strong>{{name}}</strong></dt>
+            <dd>
+                {{{description}}}
+                <dl>
+                    {{#params.0}}
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        {{#params}}
+                        <dt>
+                            <strong>{{name}}</strong>
+                            {{#type}}<span>{{.}}</span>{{/type}}
+                        </dt>
+                        <dd>{{{description}}}</dd>
+                        {{/params}}
+                    </dl></dd>
+                    {{/params.0}}
+                </dl>
+            </dd>
         </div>
-    </li>
-    {{/methods}}
-    </ul>
+        {{/methods}}
+    </dl>
 </section>
 {{/methods.0}}

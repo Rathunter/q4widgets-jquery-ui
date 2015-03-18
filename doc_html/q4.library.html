@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.library</h1>
     <p>A collection of many different document types in the same widget.
 Documents can be filtered by title, tag, or date.</p>
@@ -45,106 +25,152 @@ Documents can be filtered by title, tag, or date.</p>
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.library.1.0.1.min.js' target='_blank'>q4.library.1.0.1.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.library.js#L2' target='_blank'>q4.library.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>marcusk@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.js' target='_blank'>q4.pager</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.library.1.0.1.min.js' target='_blank'>q4.library.1.0.1.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.library.js#L2' target='_blank'>q4.library.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>marcusk@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/moment.min.js' target='_blank'>Moment.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.js' target='_blank'>q4.pager</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-feedUrl'>
-        <h1>feedUrl</h1>
-        <span>string</span>
-        <div>
-            <p>The base URL for the Q4 website.</p>
-            <dl>
-            </dl>
+    <dl>
+        <div id='option-feedUrl'>
+            <dt>
+                <strong>feedUrl</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The base URL for the Q4 website.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-perPage'>
-        <h1>perPage</h1>
-        <span>number</span>
-        <div>
-            <p>The number of items to display per page, or 0 for unlimited.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-perPage'>
+            <dt>
+                <strong>perPage</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>The number of items to display per page, or 0 for unlimited.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">0</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-sortByYear'>
-        <h1>sortByYear</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to divide the documents by year, or show all at once.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-sortByYear'>
+            <dt>
+                <strong>sortByYear</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to divide the documents by year, or show all at once.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-allowAllYears'>
-        <h1>allowAllYears</h1>
-        <span>boolean</span>
-        <div>
-            <p>If using a years filter, whether to show an &quot;all years&quot; option.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-allowAllYears'>
+            <dt>
+                <strong>allowAllYears</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>If using a years filter, whether to show an &quot;all years&quot; option.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-allYearsText'>
-        <h1>allYearsText</h1>
-        <span>string</span>
-        <div>
-            <p>The label for the &quot;all years&quot; option.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-allYearsText'>
+            <dt>
+                <strong>allYearsText</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The label for the &quot;all years&quot; option.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'All'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-startYear'>
-        <h1>startYear</h1>
-        <span>number</span>
-        <div>
-            <p>The year to display first. Default is &quot;all&quot;, or most recent.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-startYear'>
+            <dt>
+                <strong>startYear</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>The year to display first. Default is &quot;all&quot;, or most recent.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">null</span></code></dd>
-                <dt>Example</dt>
+
+
+                    <dt>Example</dt>
                     <dd><code> `<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getFullYear()`</code></dd>
-            </dl>
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-dateFormat'>
-        <h1>dateFormat</h1>
-        <span>string</span>
-        <div>
-            <p>A Moment.js date format string.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-dateFormat'>
+            <dt>
+                <strong>dateFormat</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Moment.js date format string.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'MM/DD/YYYY'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-template'>
-        <h1>template</h1>
-        <span>string</span>
-        <div>
-            <p>An overall template for the timeline.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre> <span class="hljs-string">'&lt;ul class="content-types"&gt;&lt;/ul&gt;'</span> +
+        <div id='option-template'>
+            <dt>
+                <strong>template</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>An overall template for the timeline.</p>
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre> <span class="hljs-string">'&lt;ul class="content-types"&gt;&lt;/ul&gt;'</span> +
  <span class="hljs-string">'&lt;ul class="tags"&gt;&lt;/ul&gt;'</span> +
  <span class="hljs-string">'&lt;p&gt;'</span> +
      <span class="hljs-string">'&lt;input type="text" class="search"&gt;'</span> +
@@ -154,36 +180,48 @@ Documents can be filtered by title, tag, or date.</p>
  <span class="hljs-string">'&lt;p class="docsfound"&gt;&lt;/p&gt;'</span> +
  <span class="hljs-string">'&lt;ul class="documents"&gt;&lt;/ul&gt;'</span> +
  <span class="hljs-string">'&lt;ul class="pager"&gt;&lt;/ul&gt;'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-loadingTemplate'>
-        <h1>loadingTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>An HTML string to display while loading.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-loadingTemplate'>
+            <dt>
+                <strong>loadingTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>An HTML string to display while loading.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'Loading...'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-docsFoundContainer'>
-        <h1>docsFoundContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for a message about the number of documents found.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-docsFoundContainer'>
+            <dt>
+                <strong>docsFoundContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for a message about the number of documents found.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.docsfound'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-docsFoundTemplate'>
-        <h1>docsFoundTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A Mustache template to display the number of documents found.</p>
+        <div id='option-docsFoundTemplate'>
+            <dt>
+                <strong>docsFoundTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template to display the number of documents found.</p>
 <ul>
 <li><code>{{docCount}}</code>:  The number of documents on this page.</li>
 <li><code>{{docTotal}}</code>:  The total number of documents.</li>
@@ -192,42 +230,60 @@ Documents can be filtered by title, tag, or date.</p>
 <li><code>{{page}}</code>:      The page number.</li>
 <li><code>{{pageCount}}</code>: The total number of pages.</li>
 </ul>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'Showing {{docFirst}}–{{docLast}} of {{docTotal}} documents.'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-noDocsMessage'>
-        <h1>noDocsMessage</h1>
-        <span>string</span>
-        <div>
-            <p>An HTML string to display when no documents are found.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-noDocsMessage'>
+            <dt>
+                <strong>noDocsMessage</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>An HTML string to display when no documents are found.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'No documents found. Please try broadening your search.'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-docContainer'>
-        <h1>docContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the document list.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-docContainer'>
+            <dt>
+                <strong>docContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the document list.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.documents'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-singleDocTemplate'>
-        <h1>singleDocTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A template for a list of single documents.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'&lt;h3 class="docheader single"&gt;'</span> +
+        <div id='option-singleDocTemplate'>
+            <dt>
+                <strong>singleDocTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A template for a list of single documents.</p>
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'&lt;h3 class="docheader single"&gt;'</span> +
     <span class="hljs-string">'&lt;span class="title"&gt;Title&lt;/span&gt;'</span> +
     <span class="hljs-string">'&lt;span class="date"&gt;Date&lt;/span&gt;'</span> +
     <span class="hljs-string">'&lt;span class="type"&gt;Type&lt;/span&gt;'</span> +
@@ -243,17 +299,22 @@ Documents can be filtered by title, tag, or date.</p>
     <span class="hljs-string">'&lt;/a&gt;&lt;/li&gt;'</span> +
     <span class="hljs-string">'{{/docs}}'</span> +
 <span class="hljs-string">'&lt;/ul&gt;'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-multiDocTemplate'>
-        <h1>multiDocTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A template for a list of documents with sub-documents.</p>
-            <dl>
-                <dt>Example</dt>
-                    <dd><pre><span class="hljs-string">'&lt;h3 class="docheader multi"&gt;'</span> +
+        <div id='option-multiDocTemplate'>
+            <dt>
+                <strong>multiDocTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A template for a list of documents with sub-documents.</p>
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'&lt;h3 class="docheader multi"&gt;'</span> +
     <span class="hljs-string">'&lt;span class="title"&gt;Title&lt;/span&gt;'</span> +
     <span class="hljs-string">'&lt;span class="date"&gt;Date&lt;/span&gt;'</span> +
     <span class="hljs-string">'&lt;span class="type"&gt;Type&lt;/span&gt;'</span> +
@@ -279,113 +340,160 @@ Documents can be filtered by title, tag, or date.</p>
     <span class="hljs-string">'&lt;/li&gt;'</span> +
     <span class="hljs-string">'{{/docs}}'</span> +
 <span class="hljs-string">'&lt;/ul&gt;'</span></pre></dd>
-            </dl>
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-accordionContainer'>
-        <h1>accordionContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the overall container for multiple-document items.
+        <div id='option-accordionContainer'>
+            <dt>
+                <strong>accordionContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the overall container for multiple-document items.
 Used to add an accordion effect.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.multi'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-accordionTrigger'>
-        <h1>accordionTrigger</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the trigger for the multi-doc accordion effect.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-accordionTrigger'>
+            <dt>
+                <strong>accordionTrigger</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the trigger for the multi-doc accordion effect.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.trigger'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-accordionDocContainer'>
-        <h1>accordionDocContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the list of documents that will be shown/hidden
+        <div id='option-accordionDocContainer'>
+            <dt>
+                <strong>accordionDocContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the list of documents that will be shown/hidden
 by the multi-doc accordion.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.docs'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-pagerContainer'>
-        <h1>pagerContainer</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the pager.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-pagerContainer'>
+            <dt>
+                <strong>pagerContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the pager.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.pager'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-pagerTrigger'>
-        <h1>pagerTrigger</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for each pager link.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-pagerTrigger'>
+            <dt>
+                <strong>pagerTrigger</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for each pager link.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'&gt; *'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-pagerTemplate'>
-        <h1>pagerTemplate</h1>
-        <span>string</span>
-        <div>
-            <p>A template for individual pager links.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-pagerTemplate'>
+            <dt>
+                <strong>pagerTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A template for individual pager links.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'&lt;li&gt;{{page}}&lt;/li&gt;'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-pagerLabels'>
-        <h1>pagerLabels</h1>
-        <span>Object</span>
-        <div>
-            <p>An object with labels for pager navigation items.</p>
-            <dl>
-            </dl>
+        <div id='option-pagerLabels'>
+            <dt>
+                <strong>pagerLabels</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>An object with labels for pager navigation items.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-perPageOptions'>
-        <h1>perPageOptions</h1>
-        <span>Object</span>
-        <div>
-            <p>Options for the &quot;documents per page&quot; control.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-perPageOptions'>
+            <dt>
+                <strong>perPageOptions</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>Options for the &quot;documents per page&quot; control.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code>{container: <span class="hljs-string">'.perpage'</span>, input: <span class="hljs-string">'select'</span>, template: <span class="hljs-string">'&lt;option&gt;{{number}}&lt;/option&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">false</span>, allowNone: <span class="hljs-literal">false</span>}</code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-searchSelector'>
-        <h1>searchSelector</h1>
-        <span>string</span>
-        <div>
-            <p>A selector for the search box.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-searchSelector'>
+            <dt>
+                <strong>searchSelector</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the search box.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'.search'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-categories'>
-        <h1>categories</h1>
-        
-        <div>
-            <p>An array of categories to display.
+        <div id='option-categories'>
+            <dt>
+                <strong>categories</strong>
+                
+            </dt>
+            <dd>
+                <p>An array of categories to display.
 These can be either contentType strings,
 or objects with these properties:</p>
 <ul>
@@ -400,93 +508,181 @@ or objects with these properties:</p>
 </ul>
 </li>
 </ul>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-catOptions'>
-        <h1>catOptions</h1>
-        <span>Object</span>
-        <div>
-            <p>Options for the category control.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-catOptions'>
+            <dt>
+                <strong>catOptions</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>Options for the category control.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code>{container: <span class="hljs-string">'.content-types'</span>, input: <span class="hljs-string">'trigger'</span>, template: <span class="hljs-string">'&lt;li&gt;{{name}}&lt;/li&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">false</span>, allowNone: <span class="hljs-literal">false</span>}</code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-tags'>
-        <h1>tags</h1>
-        <span>Array.&lt;string&gt;</span><span>Array.&lt;object&gt;</span>
-        <div>
-            <p>If <code>tagOptions.input</code> is <code>trigger</code> or <code>select</code>, an array of
+        <div id='option-tags'>
+            <dt>
+                <strong>tags</strong>
+                <span>Array.&lt;string&gt;</span><span>Array.&lt;object&gt;</span>
+            </dt>
+            <dd>
+                <p>If <code>tagOptions.input</code> is <code>trigger</code> or <code>select</code>, an array of
 preset tags to offer as filter options.
 Tags can be either strings or {name, value} objects.</p>
-            <dl>
-            </dl>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-tagOptions'>
-        <h1>tagOptions</h1>
-        <span>Object</span>
-        <div>
-            <p>Options for the tag filter control.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-tagOptions'>
+            <dt>
+                <strong>tagOptions</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>Options for the tag filter control.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code>{container: <span class="hljs-string">'.tags'</span>, input: <span class="hljs-string">'trigger'</span>, template: <span class="hljs-string">'&lt;li&gt;{{name}}&lt;/li&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">true</span>, allowNone: <span class="hljs-literal">true</span>}</code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-yearOptions'>
-        <h1>yearOptions</h1>
-        <span>Object</span>
-        <div>
-            <p>Options for the year filter control.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-yearOptions'>
+            <dt>
+                <strong>yearOptions</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>Options for the year filter control.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code>{container: <span class="hljs-string">'.years'</span>, input: <span class="hljs-string">'select'</span>, template: <span class="hljs-string">'&lt;option value="{{value}}"&gt;{{year}}&lt;/option&gt;'</span>, trigger: <span class="hljs-string">'&gt; *'</span>, allowMulti: <span class="hljs-literal">false</span>, allowNone: <span class="hljs-literal">false</span>}</code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-onFilterUpdate'>
-        <h1>onFilterUpdate</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after a filter control is updated,
+        <div id='option-onFilterUpdate'>
+            <dt>
+                <strong>onFilterUpdate</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after a filter control is updated,
 but before matching documents are loaded.
 Use event.preventDefault() to cancel loading documents.</p>
-            <dl>
-            </dl>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-pageComplete'>
-        <h1>pageComplete</h1>
-        <span>function</span>
-        <div>
-            <p>A callback fired after loading a new page of documents.</p>
-            <dl>
-            </dl>
+        <div id='option-pageComplete'>
+            <dt>
+                <strong>pageComplete</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback fired after loading a new page of documents.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 <section id='methods'>
     <h1>Methods</h1>
-    <ul class='major'>
-    <li id='method-setFilter'>
-        <h1>setFilter</h1>
-        <div>
-            <p>Set the value of one of the filters.</p>
-            <dl>
-                <dt>Parameters</dt>
-                    <dd><ul><li><strong>filter</strong><em>string</em><p>The filter to update.</p></li><li><strong>value</strong><em>number&#x2F;string</em><p>The value to assign to the filter.</p></li><li><strong>reload</strong><em>boolean</em><p>Whether to fetch fresh documents.</p></li></ul></dd>
-            </dl>
+    <dl>
+        <div id='method-setFilter'>
+            <dt><strong>setFilter</strong></dt>
+            <dd>
+                <p>Set the value of one of the filters.</p>
+                <dl>
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>filter</strong>
+                            <span>string</span>
+                        </dt>
+                        <dd><p>The filter to update.</p></dd>
+                        <dt>
+                            <strong>value</strong>
+                            <span>number&#x2F;string</span>
+                        </dt>
+                        <dd><p>The value to assign to the filter.</p></dd>
+                        <dt>
+                            <strong>reload</strong>
+                            <span>boolean</span>
+                        </dt>
+                        <dd><p>Whether to fetch fresh documents.</p></dd>
+                    </dl></dd>
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

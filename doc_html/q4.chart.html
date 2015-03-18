@@ -3,36 +3,16 @@
 <head>
     <title>Q4Widgets API Documentation</title>
     <meta charset='utf-8'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
     <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     <header>
         <h1><a href='index.html'>Q4Widgets API Documentation</a></h1>
     </header>
-    <nav>
-        <h1>Widgets</h1>
-        <a href='q4.accordion.html'>q4.accordion</a>
-        <a href='q4.api.html'>q4.api</a>
-        <a href='q4.calendar.html'>q4.calendar</a>
-        <a href='q4.chart.html'>q4.chart</a>
-        <a href='q4.events.html'>q4.events</a>
-        <a href='q4.financialTable.html'>q4.financialTable</a>
-        <a href='q4.financials.html'>q4.financials</a>
-        <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
-        <a href='q4.historical.html'>q4.historical</a>
-        <a href='q4.library.html'>q4.library</a>
-        <a href='q4.mashfeed.html'>q4.mashfeed</a>
-        <a href='q4.multiMap.html'>q4.multiMap</a>
-        <a href='q4.news.html'>q4.news</a>
-        <a href='q4.pager.html'>q4.pager</a>
-        <a href='q4.presentations.html'>q4.presentations</a>
-        <a href='q4.rssfeed.html'>q4.rssfeed</a>
-        <a href='q4.sec.html'>q4.sec</a>
-        <a href='q4.timeline.html'>q4.timeline</a>
-        <a href='q4.treemenu.html'>q4.treemenu</a>
-    </nav>
-    <main>
-<header>
+    <div>
+        <main>
+    <header>
     <h1>q4.chart</h1>
     <p>A preconfigured stock chart, using the Highstock plugin.</p>
     <ul>
@@ -44,303 +24,470 @@
 
 <section id='details'>
     <dl>
-        <dt>Script link</dt>
-            <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.chart.1.1.0.min.js' target='_blank'>q4.chart.1.1.0.min.js</a></dd>
-        <dt>Source file</dt>
-            <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.chart.js#L2' target='_blank'>q4.chart.js</a>, line 2</dd>
-        <dt>Author(s)</dt>
-            <dd><ul><li>jasonm@q4websystems.com</li><li>marcusk@q4websystems.com</li></ul></dd>
-        <dt>Requires</dt>
-            <dd><ul><li><a href='https://q4widgets.q4web.com/q4widgets/lib/highstock.js' target='_blank'>Highstock</a></li></ul></dd>
+        <dt><strong>Script link</strong></dt>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.chart.1.1.0.min.js' target='_blank'>q4.chart.1.1.0.min.js</a></dd>
+
+        <dt><strong>Source file</strong></dt>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.chart.js#L2' target='_blank'>q4.chart.js</a>, line 2</dd>
+
+        <dt><strong>Author(s)</strong></dt>
+        <dd><ul class='plain'><li>jasonm@q4websystems.com</li><li>marcusk@q4websystems.com</li></ul></dd>
+
+        <dt><strong>Requires</strong></dt>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/highstock.js' target='_blank'>Highstock</a></li></ul></dd>
     </dl>
+
+
+
 </section>
 
 
 <section id='options'>
     <h1>Options</h1>
-    <ul class='major'>
-    <li id='option-url'>
-        <h1>url</h1>
-        <span>string</span>
-        <div>
-            <p>The base URL of the Q4 website.</p>
-            <dl>
-                <dt>Example</dt>
+    <dl>
+        <div id='option-url'>
+            <dt>
+                <strong>url</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The base URL of the Q4 website.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
                     <dd><code> <span class="hljs-comment">//feeds.q4websystems.com</span></code></dd>
-            </dl>
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-usePublic'>
-        <h1>usePublic</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to use the public feed (true) or the private API (false).</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-usePublic'>
+            <dt>
+                <strong>usePublic</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to use the public feed (true) or the private API (false).</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-apiKey'>
-        <h1>apiKey</h1>
-        <span>string</span>
-        <div>
-            <p>If <code>usePublic</code> is <code>true</code>, the API key to use for public feeds.</p>
-            <dl>
-            </dl>
+        <div id='option-apiKey'>
+            <dt>
+                <strong>apiKey</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>If <code>usePublic</code> is <code>true</code>, the API key to use for public feeds.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-stocks'>
-        <h1>stocks</h1>
-        <span>string</span><span>Array.&lt;string&gt;</span>
-        <div>
-            <p>An array of stock symbols to use on the stock price chart.
+        <div id='option-stocks'>
+            <dt>
+                <strong>stocks</strong>
+                <span>string</span><span>Array.&lt;string&gt;</span>
+            </dt>
+            <dd>
+                <p>An array of stock symbols to use on the stock price chart.
 Each symbol can be a string of the format &quot;EXCHANGE:SYMBOL&quot;,
 or an array containing &quot;EXCHANGE:SYMBOL&quot; and a custom
 display name.</p>
-            <dl>
-                <dt>Example</dt>
+                <dl>
+
+
+                    <dt>Example</dt>
                     <dd><code> <span class="hljs-string">'NYSE:XXX'</span></code></dd>
-                <dt>Example</dt>
+                    <dt>Example</dt>
                     <dd><code> [<span class="hljs-string">'NYSE:XXX'</span>, <span class="hljs-string">'New York: XXX'</span>]</code></dd>
-            </dl>
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-lockStock'>
-        <h1>lockStock</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to prevent stock price charts from being toggled off.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-lockStock'>
+            <dt>
+                <strong>lockStock</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to prevent stock price charts from being toggled off.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-legend'>
-        <h1>legend</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to show the legend.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-legend'>
+            <dt>
+                <strong>legend</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to show the legend.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-showSymbolInLegend'>
-        <h1>showSymbolInLegend</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to show the stock quote in the chart legend.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-showSymbolInLegend'>
+            <dt>
+                <strong>showSymbolInLegend</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to show the stock quote in the chart legend.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">true</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-stockLimit'>
-        <h1>stockLimit</h1>
-        <span>number</span>
-        <div>
-            <p>The maximum number of data points to fetch for the stock chart.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-stockLimit'>
+            <dt>
+                <strong>stockLimit</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>The maximum number of data points to fetch for the stock chart.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">1500</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-volume'>
-        <h1>volume</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to include a volume chart below the stock price chart.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-volume'>
+            <dt>
+                <strong>volume</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to include a volume chart below the stock price chart.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-volumeHeight'>
-        <h1>volumeHeight</h1>
-        <span>number</span>
-        <div>
-            <p>The height of the volume chart, as a percentage.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-volumeHeight'>
+            <dt>
+                <strong>volumeHeight</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>The height of the volume chart, as a percentage.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">40</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-news'>
-        <h1>news</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to include a series of flags for press releases.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-news'>
+            <dt>
+                <strong>news</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to include a series of flags for press releases.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-newsOnLoad'>
-        <h1>newsOnLoad</h1>
-        <span>boolean</span>
-        <div>
-            <p>If <code>news</code> is true, whether to show news flags on initial load.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-newsOnLoad'>
+            <dt>
+                <strong>newsOnLoad</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>If <code>news</code> is true, whether to show news flags on initial load.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-newsLimit'>
-        <h1>newsLimit</h1>
-        <span>number</span>
-        <div>
-            <p>If <code>news</code> is true, the maximum number of news items to display.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-newsLimit'>
+            <dt>
+                <strong>newsLimit</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>If <code>news</code> is true, the maximum number of news items to display.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">200</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-newsLength'>
-        <h1>newsLength</h1>
-        <span>number</span>
-        <div>
-            <p>If <code>news</code> is true, the maximum length of each news headline.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-newsLength'>
+            <dt>
+                <strong>newsLength</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>If <code>news</code> is true, the maximum length of each news headline.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">75</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-newsCategory'>
-        <h1>newsCategory</h1>
-        <span>string</span>
-        <div>
-            <p>If <code>news</code> is true, the news category ID to use.
+        <div id='option-newsCategory'>
+            <dt>
+                <strong>newsCategory</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>If <code>news</code> is true, the news category ID to use.
 The default is to load all categories.</p>
-            <dl>
-                <dt>Default value</dt>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'00000000-0000-0000-0000-000000000000'</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-newsTags'>
-        <h1>newsTags</h1>
-        <span>Array&lt;string&gt;</span>
-        <div>
-            <p>If <code>news</code> is true, an array of tags to filter news releases by.</p>
-            <dl>
-            </dl>
+        <div id='option-newsTags'>
+            <dt>
+                <strong>newsTags</strong>
+                <span>Array&lt;string&gt;</span>
+            </dt>
+            <dd>
+                <p>If <code>news</code> is true, an array of tags to filter news releases by.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-events'>
-        <h1>events</h1>
-        <span>boolean</span>
-        <div>
-            <p>Whether to include a series of flags for events.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-events'>
+            <dt>
+                <strong>events</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to include a series of flags for events.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-eventsOnLoad'>
-        <h1>eventsOnLoad</h1>
-        <span>boolean</span>
-        <div>
-            <p>If <code>events</code> is true, whether to show event flags on initial load.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-eventsOnLoad'>
+            <dt>
+                <strong>eventsOnLoad</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>If <code>events</code> is true, whether to show event flags on initial load.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-literal">false</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-eventsLimit'>
-        <h1>eventsLimit</h1>
-        <span>number</span>
-        <div>
-            <p>If <code>events</code> is true, the maximum number of events to display.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-eventsLimit'>
+            <dt>
+                <strong>eventsLimit</strong>
+                <span>number</span>
+            </dt>
+            <dd>
+                <p>If <code>events</code> is true, the maximum number of events to display.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code><span class="hljs-number">100</span></code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-stockOpts'>
-        <h1>stockOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of Highcharts options for the stock price series.</p>
-            <dl>
-            </dl>
+        <div id='option-stockOpts'>
+            <dt>
+                <strong>stockOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of Highcharts options for the stock price series.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-volumeOpts'>
-        <h1>volumeOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of Highcharts options for the volume series.</p>
-            <dl>
-            </dl>
+        <div id='option-volumeOpts'>
+            <dt>
+                <strong>volumeOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of Highcharts options for the volume series.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-newsOpts'>
-        <h1>newsOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of Highcharts options for the press release series.</p>
-            <dl>
-            </dl>
+        <div id='option-newsOpts'>
+            <dt>
+                <strong>newsOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of Highcharts options for the press release series.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-eventsOpts'>
-        <h1>eventsOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of Highcharts options for the event series.</p>
-            <dl>
-            </dl>
+        <div id='option-eventsOpts'>
+            <dt>
+                <strong>eventsOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of Highcharts options for the event series.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-highstockOpts'>
-        <h1>highstockOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of general Highcharts options to use for the chart.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-highstockOpts'>
+            <dt>
+                <strong>highstockOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of general Highcharts options to use for the chart.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code>{}</code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-highchartsOpts'>
-        <h1>highchartsOpts</h1>
-        <span>Object</span>
-        <div>
-            <p>A set of Highcharts configuration options.</p>
-            <dl>
-                <dt>Default value</dt>
+        <div id='option-highchartsOpts'>
+            <dt>
+                <strong>highchartsOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of Highcharts configuration options.</p>
+                <dl>
+                    <dt>Default value</dt>
                     <dd><code>{}</code></dd>
-            </dl>
+
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    <li id='option-onComplete'>
-        <h1>onComplete</h1>
-        <span>function</span>
-        <div>
-            <p>A callback that is fired after the chart is rendered.</p>
-            <dl>
-            </dl>
+        <div id='option-onComplete'>
+            <dt>
+                <strong>onComplete</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback that is fired after the chart is rendered.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The event object.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
         </div>
-    </li>
-    </ul>
+    </dl>
 </section>
 
 
-    </main>
+        </main>
+        <nav>
+            <h1>Widgets</h1>
+            <a href='q4.accordion.html'>q4.accordion</a>
+            <a href='q4.api.html'>q4.api</a>
+            <a href='q4.calendar.html'>q4.calendar</a>
+            <a href='q4.chart.html'>q4.chart</a>
+            <a href='q4.events.html'>q4.events</a>
+            <a href='q4.financialTable.html'>q4.financialTable</a>
+            <a href='q4.financials.html'>q4.financials</a>
+            <a href='q4.flickrGallery.html'>q4.flickrGallery</a>
+            <a href='q4.historical.html'>q4.historical</a>
+            <a href='q4.library.html'>q4.library</a>
+            <a href='q4.mashfeed.html'>q4.mashfeed</a>
+            <a href='q4.multiMap.html'>q4.multiMap</a>
+            <a href='q4.news.html'>q4.news</a>
+            <a href='q4.pager.html'>q4.pager</a>
+            <a href='q4.presentations.html'>q4.presentations</a>
+            <a href='q4.rssfeed.html'>q4.rssfeed</a>
+            <a href='q4.sec.html'>q4.sec</a>
+            <a href='q4.timeline.html'>q4.timeline</a>
+            <a href='q4.treemenu.html'>q4.treemenu</a>
+        </nav>
+    </div>
 </body>
 </html>

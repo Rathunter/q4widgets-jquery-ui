@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.1.1
+     * @version 1.1.2
      * @author marcusk@q4websystems.com
      * @requires [Moment.js](lib/moment.min.js)
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -101,11 +101,13 @@
         feedTypes: {
             /* Options for rss:
              *   url: The url of the feed.
+             * The default limit for Google's AJAX feeds API is 4 entries.
+             * We have increased the default to 25.
              */
             rss: {
                 fetch: function (feed) {
                     return $.ajax({
-                        url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&q=' + encodeURIComponent(feed.url),
+                        url: 'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=' + (feed.limit || 25) + '&q=' + encodeURIComponent(feed.url),
                         dataType: 'jsonp'
                     });
                 },
@@ -278,6 +280,8 @@
 
             // get promise objects for the ajax call to each feed
             var fetches = $.map(o.feeds, function (feed) {
+                if (typeof feed.limit === 'undefined') feed.limit = o.limit;
+
                 // call the custom fetch method if available
                 return (typeof feed.fetch === 'function' ?
                     feed.fetch.call(_, feed) :

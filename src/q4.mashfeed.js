@@ -146,6 +146,7 @@
                             .replace(/#(\w+)/g, '<a href="https://twitter.com/hashtag/$1" target="_blank">#$1</a>')
                             .replace(/@(\w+)/g, '<a href="https://twitter.com/$1" target="_blank">@$1</a>')
                             ),
+                        text: item.text,
                         date: moment(item.created_at, 'ddd MMM DD hh:mm:ss ZZ YYYY'),
                         id: item.id_str,
                         url: 'https://twitter.com/' + item.user.name + '/status/' + item.id_str
@@ -210,7 +211,7 @@
             youtube: {
                 fetch: function (feed) {
                     return $.ajax({
-                        url: 'https://gdata.youtube.com/feeds/users/' + feed.username + '/uploads?alt=json-in-script&callback=?',
+                        url: 'https://gdata.youtube.com/feeds/users/' + feed.username + '/uploads?alt=json',
                         dataType: 'jsonp'
                     });
                 },

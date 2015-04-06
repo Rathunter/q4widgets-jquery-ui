@@ -386,28 +386,22 @@
         years: null,
         $widget: null,
 
-        dataUrl: '',
+        itemsUrl: '',
         yearsUrl: '',
         itemsResultField: '',
         yearsResultField: '',
-        dateField: '',
-
-        _create: function () {
-            this._normalizeOptions();
-        },
 
         _init: function () {
             var _ = this,
                 o = this.options,
                 $e = this.element;
 
+            this._normalizeOptions();
+
             // clear the element if applicable
             if (!o.append) $e.empty();
             // save a reference to the widget and append the loading message
             this.$widget = $(o.loadingMessage || '').appendTo($e);
-
-            // if "all years" is enabled and it's the default, fetch all years
-            if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
 
             // get years (and possibly items at the same time)
             this._getYears().done(function (years, items) {
@@ -420,43 +414,35 @@
                     _._renderWidget(items, activeYear);
                 }
                 else {
-                    _._fetchItems(o.fetchAllYears ? -1 : activeYear).done(function (data) {
-                        _._renderWidget(data[_.itemsResultField], activeYear);
+                    _._fetchItems(o.fetchAllYears ? -1 : activeYear).done(function (items) {
+                        _._renderWidget(items, activeYear);
                     });
                 }
             });
         },
 
         _getYears: function () {
-            var _ = this,
-                o = this.options,
-                gotYears = $.Deferred();
+            var o = this.options;
 
             // if we're fetching all docs for all years, skip fetching the year list
             if (o.fetchAllYears && !o.limit) {
-                // get items for all years
-                this._fetchItems(-1).done(function (data) {
-                    var items = data[_.itemsResultField];
+                var gotYears = $.Deferred();
 
+                // get items for all years
+                this._fetchItems(-1).done(function (items) {
                     // get list of years from items
                     var years = [];
                     $.each(items, function (i, item) {
-                        var year = (new Date(item[_.dateField])).getFullYear();
-                        if ($.inArray(year, years) == -1) years.push(year);
+                        if ($.inArray(item.year, years) == -1) years.push(item.year);
                     });
 
                     // return years and items
                     gotYears.resolve(years, items);
                 });
-            }
-            else {
-                this._fetchYears().done(function (data) {
-                    // just return years
-                    gotYears.resolve(data[_.yearsResultField]);
-                });
-            }
 
-            return gotYears;
+                return gotYears;
+            }
+            else return this._fetchYears();
         },
 
         _filterYears: function (years) {
@@ -520,6 +506,19 @@
                 if (!/<|>/.test(o.template)) o.template = '<div>' + o.template + '</div>';
                 if (!/<|>/.test(o.loadingMessage)) o.loadingMessage = '<div>' + o.loadingMessage + '</div>';
             }
+
+            // GetEventYearList doesn't accept EventSelection for some reason
+            // so we need this as a workaround
+            var thisYear = new Date().getFullYear();
+            if (o.showPast && !o.showFuture) {
+                o.maxYear = Math.min(thisYear, o.maxYear || thisYear);
+            }
+            else if (o.showFuture && !o.showPast) {
+                o.minYear = Math.max(thisYear, o.minYear || thisYear);
+            }
+
+            // if "all years" is enabled and it's the default, fetch all years
+            if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
         },
 
         _buildParams: function () {
@@ -547,19 +546,27 @@
         },
 
         _fetchYears: function () {
-            var o = this.options;
+            var _ = this,
+                o = this.options,
+                gotYears = $.Deferred();
 
-            return this._callApi(this.yearsUrl, $.extend(true, this._buildParams(), {
+            this._callApi(this.yearsUrl, $.extend(true, this._buildParams(), {
                 serviceDto: {
                     TagList: !o.tags.length ? null : o.tags
                 }
-            }));
+            })).done(function (data) {
+                gotYears.resolve(data[_.yearsResultField]);
+            });
+
+            return gotYears;
         },
 
         _fetchItems: function (year) {
-            var o = this.options;
+            var _ = this,
+                o = this.options,
+                gotItems = $.Deferred();
 
-            return this._callApi(this.dataUrl, $.extend(true, this._buildParams(), {
+            this._callApi(this.itemsUrl, $.extend(true, this._buildParams(), {
                 serviceDto: {
                     ItemCount: o.limit || -1,
                     StartIndex: o.skip,
@@ -567,7 +574,13 @@
                     IncludeTags: true
                 },
                 year: year
-            }));
+            })).done(function (data) {
+                gotItems.resolve($.map(data[_.itemsResultField], function (rawItem) {
+                    return _._parseItem(rawItem);
+                }));
+            });
+
+            return gotItems;
         },
 
         _truncate: function (text, length) {
@@ -598,18 +611,11 @@
         },
 
         _parseItem: function (rawItem) {
+            // this function should be overridden by a child widget
             return {};
         },
 
-        _parseItems: function (rawItems) {
-            var _ = this;
-
-            return $.map(rawItems, function (rawItem) {
-                return _._parseItem(rawItem);
-            });
-        },
-
-        _buildTemplateData: function (rawItems) {
+        _buildTemplateData: function (items) {
             var _ = this,
                 o = this.options,
                 itemsByYear = {},
@@ -618,18 +624,14 @@
                     years: []
                 };
 
-            $.each(rawItems, function (i, rawItem) {
-                var date = new Date(rawItem[_.dateField]),
-                    year = date.getFullYear();
-
+            $.each(items, function (i, item) {
                 // only save items that are in the years array
-                if ($.inArray(year, _.years) == -1) return true;
-                if (!(year in itemsByYear)) itemsByYear[year] = [];
+                if ($.inArray(item.year, _.years) == -1) return true;
+                if (!(item.year in itemsByYear)) itemsByYear[item.year] = [];
 
-                // parse item as template data
-                var item = _._parseItem(rawItem);
+                // add item to template data
                 tplData.items.push(item);
-                itemsByYear[year].push(item);
+                itemsByYear[item.year].push(item);
             });
 
             // build per-year data for template
@@ -671,13 +673,13 @@
             this._trigger('itemsComplete');
         },
 
-        _renderWidget: function (rawItems, activeYear) {
+        _renderWidget: function (items, activeYear) {
             var _ = this,
                 o = this.options,
                 $e = this.element;
 
             // get template data
-            var tplData = this._buildTemplateData(rawItems);
+            var tplData = this._buildTemplateData(items);
 
             var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
@@ -777,14 +779,14 @@
             }
 
             // get items for selected year
-            this._fetchItems(year).done(function (data) {
+            this._fetchItems(year).done(function (items) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
-                    _._renderItems(_._parseItems(data[_.itemsResultField]));
+                    _._renderItems(items);
                 }
                 else {
                     // rerender entire widget
-                    _._renderWidget(data[_.itemsResultField], year);
+                    _._renderWidget(items, year);
                 }
             });
         }
@@ -832,27 +834,10 @@
             template: ''
         },
 
-        dataUrl: '/Services/EventService.svc/GetEventList',
+        itemsUrl: '/Services/EventService.svc/GetEventList',
         yearsUrl: '/Services/EventService.svc/GetEventYearList',
         itemsResultField: 'GetEventListResult',
         yearsResultField: 'GetEventYearListResult',
-        dateField: 'StartDate',
-
-        _normalizeOptions: function () {
-            var o = this.options;
-
-            // GetEventYearList doesn't accept EventSelection for some reason
-            // so we need this as a workaround
-            var thisYear = new Date().getFullYear();
-            if (o.showPast && !o.showFuture) {
-                o.maxYear = Math.min(thisYear, o.maxYear || thisYear);
-            }
-            else if (o.showFuture && !o.showPast) {
-                o.minYear = Math.max(thisYear, o.minYear || thisYear);
-            }
-
-            this._super();
-        },
 
         _buildParams: function () {
             var o = this.options;
@@ -871,6 +856,7 @@
             var item = {
                 title: this._truncate(result.Title, o.titleLength),
                 url: result.LinkToDetailPage,
+                year: new Date(result.StartDate).getFullYear(),
                 date: this._formatDate(result.StartDate),
                 endDate: this._formatDate(result.EndDate),
                 timeZone: result.TimeZone,
@@ -977,11 +963,10 @@
             template: ''
         },
 
-        dataUrl: '/Services/FinancialReportService.svc/GetFinancialReportList',
+        itemsUrl: '/Services/FinancialReportService.svc/GetFinancialReportList',
         yearsUrl: '/Services/FinancialReportService.svc/GetFinancialReportYearList',
         itemsResultField: 'GetFinancialReportListResult',
         yearsResultField: 'GetFinancialReportYearListResult',
-        dateField: 'ReportDate',
 
         _buildParams: function () {
             var o = this.options;
@@ -997,9 +982,10 @@
 
             return {
                 coverUrl: result.CoverImagePath,
-                date: this._formatDate(result.ReportDate),
                 title: result.ReportTitle,
-                year: result.ReportYear,
+                fiscalYear: result.ReportYear,
+                year: new Date(result.ReportDate).getFullYear(),
+                date: this._formatDate(result.ReportDate),
                 type: result.ReportSubType,
                 shortType: o.shortTypes[result.ReportSubType],
                 docs: $.map(result.Documents, function (doc) {
@@ -1015,38 +1001,38 @@
             };
         },
 
-        _buildTemplateData: function (rawItems) {
+        _sortItemsByType: function (items) {
+            var types = [],
+                itemsByType = {};
+
+            // create an object of items sorted by type
+            $.each(items, function (i, item) {
+                if ($.inArray(item.type, types) == -1) {
+                    // keep an array of types to preserve order
+                    types.push(item.type);
+                    itemsByType[item.type] = [];
+                }
+                $.each(item.docs, function (i, doc) {
+                    itemsByType[item.type].push(doc);
+                });
+            });
+
+            // return the types object
+            return $.map(types, function (type, i) {
+                return {
+                    type: type,
+                    shortType: o.shortTypes[type],
+                    items: itemsByType[type]
+                };
+            });
+        },
+
+        _buildTemplateData: function (items) {
             var o = this.options,
-                tplData = this._super(rawItems);
-
-            function sortItemsByType(items) {
-                var types = [],
-                    itemsByType = {};
-
-                // create an object of items sorted by type
-                $.each(items, function (i, item) {
-                    if ($.inArray(item.type, types) == -1) {
-                        // keep an array of types to preserve order
-                        types.push(item.type);
-                        itemsByType[item.type] = [];
-                    }
-                    $.each(item.docs, function (i, doc) {
-                        itemsByType[item.type].push(doc);
-                    });
-                });
-
-                // return the types object
-                return $.map(types, function (type, i) {
-                    return {
-                        type: type,
-                        shortType: o.shortTypes[type],
-                        items: itemsByType[type]
-                    };
-                });
-            }
+                tplData = this._super(items);
 
             // add types object to all items, and each year's items
-            tplData.types = sortItemsByType(tplData.items);
+            tplData.types = this._sortItemsByType(tplData.items);
             $.each(tplData.years, function (i, tplYear) {
                 tplYear.types = sortItemsByType(tplYear.items);
             });
@@ -1082,11 +1068,10 @@
             template: ''
         },
 
-        dataUrl: '/Services/PresentationService.svc/GetPresentationList',
+        itemsUrl: '/Services/PresentationService.svc/GetPresentationList',
         yearsUrl: '/Services/PresentationService.svc/GetPresentationYearList',
         itemsResultField: 'GetPresentationListResult',
         yearsResultField: 'GetPresentationYearListResult',
-        dateField: 'PresentationDate',
 
         _buildParams: function () {
             var o = this.options;
@@ -1102,6 +1087,7 @@
             return {
                 title: this._truncate(result.Title, o.titleLength),
                 url: result.LinkToDetailPage,
+                year: new Date(result.PresentationDate).getFullYear(),
                 date: this._formatDate(result.PresentationDate),
                 tags: result.TagsList,
                 body: this._truncate(result.Body, o.bodyLength),
@@ -1170,11 +1156,10 @@
             template: ''
         },
 
-        dataUrl: '/Services/PressReleaseService.svc/GetPressReleaseList',
+        itemsUrl: '/Services/PressReleaseService.svc/GetPressReleaseList',
         yearsUrl: '/Services/PressReleaseService.svc/GetPressReleaseYearList',
         itemsResultField: 'GetPressReleaseListResult',
         yearsResultField: 'GetPressReleaseYearListResult',
-        dateField: 'PressReleaseDate',
 
         _buildParams: function () {
             var o = this.options;
@@ -1192,6 +1177,7 @@
             return {
                 title: this._truncate(result.Headline, o.titleLength),
                 url: result.LinkToDetailPage,
+                year: new Date(result.PressReleaseDate).getFullYear(),
                 date: this._formatDate(result.PressReleaseDate),
                 tags: result.TagsList,
                 body: this._truncate(result.Body, o.bodyLength),
@@ -1250,11 +1236,10 @@
             template: ''
         },
 
-        dataUrl: '/Services/SECFilingService.svc/GetEdgarFilingList',
+        itemsUrl: '/Services/SECFilingService.svc/GetEdgarFilingList',
         yearsUrl: '/Services/SECFilingService.svc/GetEdgarFilingYearList',
         itemsResultField: 'GetEdgarFilingListResult',
         yearsResultField: 'GetEdgarFilingYearListResult',
-        dateField: 'FilingDate',
 
         _buildParams: function () {
             var o = this.options;
@@ -1272,6 +1257,7 @@
             return {
                 title: this._truncate(result.FilingDescription, o.titleLength),
                 url: result.LinkToDetailPage,
+                year: new Date(result.FilingDate).getFullYear(),
                 date: this._formatDate(result.FilingDate),
                 agent: result.FilingAgentName
             };

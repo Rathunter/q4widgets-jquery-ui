@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.3.0
+     * @version 1.3.1
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -399,9 +399,7 @@
         _init: function () {
             var _ = this,
                 o = this.options,
-                $e = this.element,
-                gotItems = $.Deferred(),
-                gotYears = $.Deferred();
+                $e = this.element;
 
             // clear the element if applicable
             if (!o.append) $e.empty();
@@ -411,63 +409,88 @@
             // if "all years" is enabled and it's the default, fetch all years
             if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
 
+            // get years (and possibly items at the same time)
+            this._getYears().done(function (years, items) {
+                // filter years and get the active year
+                _.years = _._filterYears(years);
+                var activeYear = _._getActiveYear(_.years);
+
+                // if we got items as side-effect of getting years, skip straight to rendering
+                if (items !== undefined) {
+                    _._renderWidget(items, activeYear);
+                }
+                else {
+                    _._fetchItems(o.fetchAllYears ? -1 : activeYear).done(function (data) {
+                        _._renderWidget(data[_.itemsResultField], activeYear);
+                    });
+                }
+            });
+        },
+
+        _getYears: function () {
+            var _ = this,
+                o = this.options,
+                gotYears = $.Deferred();
+
             // if we're fetching all docs for all years, skip fetching the year list
             if (o.fetchAllYears && !o.limit) {
                 // get items for all years
-                this._getItems(-1).done(function (data) {
+                this._fetchItems(-1).done(function (data) {
                     var items = data[_.itemsResultField];
-                    gotItems.resolve(items);
 
                     // get list of years from items
-                    gotYears.resolve($.map(items, function (result) {
-                        return (new Date(result[_.dateField])).getFullYear();
-                    }));
+                    var years = [];
+                    $.each(items, function (i, item) {
+                        var year = (new Date(item[_.dateField])).getFullYear();
+                        if ($.inArray(year, years) == -1) years.push(year);
+                    });
+
+                    // return years and items
+                    gotYears.resolve(years, items);
                 });
             }
             else {
-                this._getYears().done(function (data) {
+                this._fetchYears().done(function (data) {
+                    // just return years
                     gotYears.resolve(data[_.yearsResultField]);
                 });
             }
 
-            gotYears.done(function (years) {
-                // filter years
-                _.years = $.grep(years, function (year) {
-                    return (
-                        (!o.maxYear || year <= o.maxYear) &&
-                        (!o.minYear || year >= o.minYear) &&
-                        (!o.years.length || $.inArray(year, o.years) > -1)
-                    );
-                });
+            return gotYears;
+        },
 
-                // force startYear onto the years array if requested
-                if (o.forceStartYear && $.inArray(o.startYear, _.years) == -1)
-                    _.years.push(o.startYear);
+        _filterYears: function (years) {
+            var o = this.options;
 
-                // sort the years in descending order
-                _.years.sort(function (a, b) { return b - a });
-
-                // get starting year
-                var activeYear = -1;
-                if (_.years.length) {
-                    // if o.startYear is specified and it exists, use it
-                    if ($.inArray(o.startYear, _.years) > -1) activeYear = o.startYear;
-                    // otherwise if "all" is not enabled, use the most recent
-                    else if (!o.showAllYears) activeYear = _.years[0];
-                }
-
-                // if we didn't fetch items before, get them now that we have the starting year
-                if (!gotItems.isResolved()) {
-                    _._getItems(o.fetchAllYears ? -1 : activeYear).done(function (data) {
-                        gotItems.resolve(data[_.itemsResultField]);
-                    });
-                }
-
-                // once we have the items, render the widget
-                gotItems.done(function (items) {
-                    _._renderWidget(items, activeYear);
-                });
+            // filter years
+            years = $.grep(years, function (year) {
+                return (
+                    (!o.maxYear || year <= o.maxYear) &&
+                    (!o.minYear || year >= o.minYear) &&
+                    (!o.years.length || $.inArray(year, o.years) > -1)
+                );
             });
+
+            // force startYear onto the years array if requested
+            if (o.forceStartYear && $.inArray(o.startYear, years) == -1)
+                years.push(o.startYear);
+
+            // sort the years in descending order
+            years.sort(function (a, b) { return b - a });
+
+            return years;
+        },
+
+        _getActiveYear: function (years) {
+            var o = this.options;
+
+            if (years.length) {
+                // if o.startYear is specified and it exists, use it
+                if ($.inArray(o.startYear, years) > -1) return o.startYear;
+                // otherwise if "all" is not enabled, use the most recent
+                else if (!o.showAllYears) return years[0];
+            }
+            return -1;
         },
 
         _setOption: function (key, value) {
@@ -523,7 +546,7 @@
             });
         },
 
-        _getYears: function () {
+        _fetchYears: function () {
             var o = this.options;
 
             return this._callApi(this.yearsUrl, $.extend(true, this._buildParams(), {
@@ -533,7 +556,7 @@
             }));
         },
 
-        _getItems: function (year) {
+        _fetchItems: function (year) {
             var o = this.options;
 
             return this._callApi(this.dataUrl, $.extend(true, this._buildParams(), {
@@ -754,7 +777,7 @@
             }
 
             // get items for selected year
-            this._getItems(year).done(function (data) {
+            this._fetchItems(year).done(function (data) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
                     _._renderItems(_._parseItems(data[_.itemsResultField]));

@@ -13,8 +13,8 @@
     <div>
         <main>
     <header>
-    <h1>q4.events</h1>
-    <p>Fetches and displays events from the Q4 private API.</p>
+    <h1>q4.downloads</h1>
+    <p>Fetches and displays downloads from the Q4 private API.</p>
     <ul>
         
         <li><a href='#options'>Options</a></li>
@@ -28,7 +28,7 @@
         <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.4.0.min.js' target='_blank'>q4.api.1.4.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
-        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L799' target='_blank'>q4.api.js</a>, line 799</dd>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L899' target='_blank'>q4.api.js</a>, line 899</dd>
 
 
     </dl>
@@ -46,22 +46,6 @@
 <section id='options'>
     <h1>Options</h1>
     <dl>
-        <div id='option-sortAscending'>
-            <dt>
-                <strong>sortAscending</strong>
-                <span>boolean</span>
-            </dt>
-            <dd>
-                <p>Whether to sort the events in ascending chronological order.</p>
-                <dl>
-                    <dt>Default value</dt>
-                    <dd><code><span class="hljs-literal">false</span></code></dd>
-
-
-
-                </dl>
-            </dd>
-        </div>
         <div id='option-template'>
             <dt>
                 <strong>template</strong>
@@ -73,23 +57,14 @@ All the tags documented in the <a href="q4.api.html#option-template">q4.api</a>
 parent widget are available here.
 In addition, the <code>{{#items}}</code> array contains these tags:</p>
 <ul>
-<li><code>{{title}}</code>    The title of the event.</li>
-<li><code>{{url}}</code>      The URL of the details page.</li>
-<li><code>{{date}}</code>     The starting date of the event.</li>
-<li><code>{{endDate}}</code>  The ending date of the event.</li>
-<li><code>{{timeZone}}</code> The timezone of the start/end dates.</li>
-<li><code>{{location}}</code> The location of the event.</li>
-<li><code>{{#tags}}</code>    An array of tags for this event.</li>
-<li><code>{{body}}</code>     The body of the event details.</li>
-<li><p><code>{{#docs}}</code>    An array of attached documents, with the following tags:</p>
-<ul>
-<li><code>{{title}}</code>     The title of the document.</li>
-<li><code>{{url}}</code>       The URL of the document.</li>
-<li><code>{{type}}</code>      The type of document as specified in the CMS.</li>
-<li><code>{{extension}}</code> The extension of the document file name.</li>
-<li><code>{{size}}</code>      The size of the document file.</li>
-</ul>
-</li>
+<li><code>{{title}}</code>       The title of the download.</li>
+<li><code>{{description}}</code> The download description.</li>
+<li><code>{{url}}</code>         The URL of the document.</li>
+<li><code>{{date}}</code>        The date of the download.</li>
+<li><code>{{type}}</code>        The download type.</li>
+<li><code>{{icon}}</code>        The URL of the document's icon.</li>
+<li><code>{{thumb}}</code>       The URL of the document's thumbnail image.</li>
+<li><code>{{#tags}}</code>       An array of tags for this download.</li>
 </ul>
                 <dl>
 

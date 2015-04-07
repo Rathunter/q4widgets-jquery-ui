@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.3.1
+     * @version 1.4.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -230,6 +230,7 @@
              *   which vary depending which child widget you are using.
              *   For a list, check the documentation for the specific child widget:
              *
+             *   - [q4.downloads](q4.downloads.html#option-template)
              *   - [q4.events](q4.events.html#option-template)
              *   - [q4.financials](q4.financials.html#option-template)
              *   - [q4.presentations](q4.presentations.html#option-template)
@@ -765,7 +766,7 @@
             if (!this._trigger('onYearChange', e)) return;
 
             // default value if year is invalid
-            if (!$.inArray(year, this.years)) year = o.showAllYears ? -1 : this.years[0];
+            if ($.inArray(year, this.years) == -1) year = o.showAllYears ? -1 : this.years[0];
 
             this._updateYearControls(year);
 
@@ -889,6 +890,66 @@
                 };
             }
             return item;
+        }
+    });
+
+
+    /* Download Widget */
+
+    /**
+     * Fetches and displays downloads from the Q4 private API.
+     * @class q4.downloads
+     * @extends q4.api
+     */
+    $.widget('q4.downloads', $.q4.api, /** @lends q4.downloads */ {
+        options: {
+            /**
+             * A Mustache.js template for the overall widget.
+             * All the tags documented in the [q4.api](q4.api.html#option-template)
+             * parent widget are available here.
+             * In addition, the `{{#items}}` array contains these tags:
+             *
+             * - `{{title}}`       The title of the download.
+             * - `{{description}}` The download description.
+             * - `{{url}}`         The URL of the document.
+             * - `{{date}}`        The date of the download.
+             * - `{{type}}`        The download type.
+             * - `{{icon}}`        The URL of the document's icon.
+             * - `{{thumb}}`       The URL of the document's thumbnail image.
+             * - `{{#tags}}`       An array of tags for this download.
+             * @type {string}
+             */
+            template: ''
+        },
+
+        itemsUrl: '/Services/ContentAssetService.svc/GetContentAssetList',
+        yearsUrl: '/Services/ContentAssetService.svc/GetContentAssetYearList',
+        itemsResultField: 'GetContentAssetListResult',
+        yearsResultField: 'GetContentAssetYearListResult',
+
+        _buildParams: function () {
+            var o = this.options;
+
+            return $.extend(this._super(), {
+                assetType: o.downloadType,
+            });
+        },
+
+        _parseItem: function (result) {
+            var o = this.options;
+
+            return {
+                title: this._truncate(result.Title, o.titleLength),
+                url: result.FilePath,
+                dateObj: new Date(result.ContentAssetDate),
+                year: new Date(result.ContentAssetDate).getFullYear(),
+                date: this._formatDate(result.ContentAssetDate),
+                type: result.Type,
+                icon: result.IconPath,
+                thumb: result.ThumbnailPath,
+                tags: result.TagsList,
+                description: this._truncate(result.Description, o.bodyLength)
+            };
         }
     });
 

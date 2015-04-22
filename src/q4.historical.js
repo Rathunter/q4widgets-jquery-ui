@@ -2,12 +2,28 @@
     /**
      * Retrieves price and volume information for a stock on a specific date.
      * @class q4.historical
-     * @version 2.1.0
+     * @version 2.2.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      */
     $.widget('q4.historical', /** @lends q4.historical */ {
         options: {
+            /**
+             * The base URL of the Q4 website.
+             * @type {string}
+             * @example //feeds.q4websystems.com
+             */
+            url: '',
+            /**
+             * Whether to use public feeds for data. This requires the `apiKey` option.
+             * @type {boolean}
+             */
+            usePublic: false,
+            /**
+             * The Q4 API key. Required if `usePublic` is `true`, otherwise ignored.
+             * @type {string}
+             */
+            apiKey: '',
             /**
              * The stock exchange to use.
              * If this is not specified, the widget will look for `?Indice=EXCH:SYM` in the URL.
@@ -114,6 +130,9 @@
                 o = this.options,
                 $e = this.element;
 
+            // strip trailing slash from domain
+            o.url = o.url.replace(/\/$/, '');
+
             // get exchange and symbol from query string if not in options
             if (!o.exchange || !o.symbol) {
                 var m = document.location.search.match(/(?:^|&)Indice=([a-z]+):([a-z]+)(?:$|&)/i);
@@ -163,26 +182,43 @@
         _fetchQuote: function (date) {
             var o = this.options;
 
-            return $.ajax({
-                type: 'POST',
-                url: '/services/StockQuoteService.svc/GetStockQuoteHistoricalList',
-                data: JSON.stringify({
-                    serviceDto: {
-                        RevisionNumber: GetRevisionNumber(),
-                        LanguageId: GetLanguageId(),
-                        Signature: GetSignature(),
-                        ViewType: GetViewType(),
-                        ViewDate: GetViewDate(),
-                        StartIndex: 0,
-                        ItemCount: 1
+            if (o.usePublic) {
+                return $.ajax({
+                    type: 'GET',
+                    url: o.url + '/feed/StockQuote.svc/GetStockQuoteHistoricalList',
+                    data: {
+                        apiKey: o.apiKey,
+                        pageSize: 1,
+                        exchange: o.exchange,
+                        symbol: o.symbol,
+                        endDate: $.datepicker.formatDate('M-dd-yy', date)
                     },
-                    exchange: o.exchange,
-                    symbol: o.symbol,
-                    endDate: '/Date(' + date.getTime() + ')/'
-                }),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json'
-            });
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'jsonp'
+                });
+            }
+            else {
+                return $.ajax({
+                    type: 'POST',
+                    url: o.url + '/services/StockQuoteService.svc/GetStockQuoteHistoricalList',
+                    data: JSON.stringify({
+                        serviceDto: {
+                            RevisionNumber: GetRevisionNumber(),
+                            LanguageId: GetLanguageId(),
+                            Signature: GetSignature(),
+                            ViewType: GetViewType(),
+                            ViewDate: GetViewDate(),
+                            StartIndex: 0,
+                            ItemCount: 1
+                        },
+                        exchange: o.exchange,
+                        symbol: o.symbol,
+                        endDate: '/Date(' + date.getTime() + ')/'
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json'
+                });
+            }
         },
 
         _renderQuote: function (data) {

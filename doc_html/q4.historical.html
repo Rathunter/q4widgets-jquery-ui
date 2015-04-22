@@ -25,7 +25,7 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.1.0.min.js' target='_blank'>q4.historical.2.1.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.2.0.min.js' target='_blank'>q4.historical.2.2.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
         <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
@@ -45,6 +45,50 @@
 <section id='options'>
     <h1>Options</h1>
     <dl>
+        <div id='option-url'>
+            <dt>
+                <strong>url</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The base URL of the Q4 website.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code> <span class="hljs-comment">//feeds.q4websystems.com</span></code></dd>
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-usePublic'>
+            <dt>
+                <strong>usePublic</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to use public feeds for data. This requires the <code>apiKey</code> option.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-apiKey'>
+            <dt>
+                <strong>apiKey</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The Q4 API key. Required if <code>usePublic</code> is <code>true</code>, otherwise ignored.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
         <div id='option-exchange'>
             <dt>
                 <strong>exchange</strong>

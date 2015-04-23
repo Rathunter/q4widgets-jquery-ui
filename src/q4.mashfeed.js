@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.1.2
+     * @version 1.2.0
      * @author marcusk@q4websystems.com
      * @requires [Moment.js](lib/moment.min.js)
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -206,26 +206,27 @@
 
             /**
              * Options for youtube:
-             * - username: The username of the YouTube account to fetch from.
+             * - channelId: the ID of the user's channel.
+             * - apiKey: the API key for Youtube Data API v3.
              */
             youtube: {
                 fetch: function (feed) {
                     return $.ajax({
-                        url: 'https://gdata.youtube.com/feeds/users/' + feed.username + '/uploads?alt=json',
+                        url: 'https://www.googleapis.com/youtube/v3/search?part=id,snippet&channelId=' + feed.channelId + '&key=' + feed.apiKey,
                         dataType: 'jsonp'
                     });
                 },
                 getItems: function (data) {
-                    return data.feed.entry;
+                    return data.items;
                 },
                 parseItem: function (item) {
                     return {
-                        title: item.title.$t,
-                        url: item.link[0].href,
-                        id: item.id.$t.split('/').pop(),
-                        date: moment(item.updated.$t),
-                        content: item.content.$t,
-                        thumb: $(item.content.$t).find('img').first().attr('src')
+                        title: item.snippet.title,
+                        url: 'https://www.youtube.com/watch?v=' + item.id.videoId,
+                        id: item.id.videoId,
+                        date: moment(item.snippet.publishedAt),
+                        content: item.snippet.description,
+                        thumb: item.snippet.thumbnails.medium.url
                     };
                 }
             },

@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.4.0
+     * @version 1.5.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -20,6 +20,12 @@
              * @prop limit   {number} The maximum number of items to fetch for this source.
              */
             contentSources: {},
+            /**
+             * The ID of the content source to display when the widget is initialized.
+             * If this value is false or unset, display all sources.
+             * @type {string}
+             */
+            startSource: null,
             /**
              * The base URL to use for API calls.
              * By default, calls go to the current domain, so this option is usually unnecessary.
@@ -285,6 +291,12 @@
              */
             onYearChange: function (e) {},
             /**
+             * A callback that fires when the active content source changes.
+             * @type {function}
+             * @param {Event} [event] The triggering event object.
+             */
+            onContentSourceChange: function (e) {},
+            /**
              * A callback that fires before the full widget is rendered.
              * @type {function}
              * @param {Event} [event] The event object.
@@ -316,6 +328,7 @@
 
         years: null,
         $widget: null,
+        activeSource: null,
 
         _init: function () {
             var o = this.options,
@@ -328,7 +341,7 @@
             // save a reference to the widget and append the loading message
             this.$widget = $(o.loadingMessage || '').appendTo($e);
 
-            this._initWidget();
+            this._initWidget(o.startSource);
         },
 
         _setOption: function (key, value) {
@@ -345,6 +358,9 @@
             // convert strings to arrays
             o.years = o.years ? [].concat(o.years).sort(function (a, b) { return b - a; }) : [];
             o.tags = o.tags ? [].concat(o.tags) : [];
+
+            // ensure starting content source ID is in the list of content sources
+            if (o.startSource && !(o.startSource in o.contentSources)) o.startSource = null;
 
             // convert strings to ints
             if (typeof o.startYear == 'string' && o.startYear.length) o.startYear = parseInt(o.startYear);
@@ -363,20 +379,29 @@
             if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
         },
 
-        _initWidget: function () {
+        _initWidget: function (contentSourceID) {
             var _ = this,
                 o = this.options;
+
+            // store this for later re-renders when year is changed
+            this.activeSource = contentSourceID;
 
             var sourceList = [],
                 yearPromises = [];
             // get years (and possibly items at the same time) for each content source
             $.each(o.contentSources, function (id) {
+                // if a source ID was passed, filter sources
+                if (contentSourceID && contentSourceID != id) return true;
+
+                // save an ordered list of sources for reference as promises are resolved
                 sourceList.push(id);
+
                 yearPromises.push(_._getYears(id));
             });
 
             $.when.apply(null, yearPromises).done(function () {
                 // if multiple promises were passed, each argument will be a set of results
+                // first argument is a list of years, second is an optional list of items
                 var results = (yearPromises.length > 1 ? arguments : [arguments]);
 
                 // aggregate years from each content source
@@ -411,14 +436,14 @@
             });
         },
 
-        _getYears: function (contentSource) {
+        _getYears: function (contentSourceID) {
             var o = this.options,
                 gotYears = $.Deferred();
 
             // if we're fetching all docs for all years, skip fetching the year list
             if (o.fetchAllYears && !o.limit) {
                 // get items for all years
-                this._fetchItems(contentSource, -1).done(function (items) {
+                this._fetchItems(contentSourceID, -1).done(function (items) {
                     // get list of years from items
                     var years = [];
                     $.each(items, function (i, item) {
@@ -430,7 +455,7 @@
                 });
             }
             else {
-                this._fetchYears(contentSource).done(function (years) {
+                this._fetchYears(contentSourceID).done(function (years) {
                     gotYears.resolve(years, null);
                 });
             }
@@ -519,7 +544,7 @@
             return gotYears;
         },
 
-        _fetchAllItems: function (year) {
+        _fetchAllItems: function (year, contentSourceID) {
             var _ = this,
                 o = this.options,
                 gotItems = $.Deferred();
@@ -527,6 +552,9 @@
             // fetch items for each content source
             var itemPromises = [];
             $.each(o.contentSources, function (id) {
+                // if a source ID was passed, filter sources
+                if (contentSourceID && contentSourceID != id) return true;
+
                 itemPromises.push(_._fetchItems(id, year));
             });
 
@@ -772,7 +800,7 @@
             var contentType = this.contentTypes[this.contentType];
 
             // get items for selected year
-            this._fetchAllItems(year).done(function (items) {
+            this._fetchAllItems(year, this.activeSource).done(function (items) {
                 if (o.itemContainer) {
                     // rerender item section
                     _._renderItems(items);
@@ -782,6 +810,18 @@
                     _._renderWidget(items, year);
                 }
             });
+        },
+
+        setContentSource: function (contentSourceID, e) {
+            var _ = this,
+                o = this.options,
+                $e = this.element;
+
+            // fire callback, cancel event if default action is prevented
+            if (!this._trigger('onContentSourceChange', e)) return;
+
+            this.activeSource = contentSourceID;
+            this._initWidget(contentSourceID);
         },
 
         contentTypes: {

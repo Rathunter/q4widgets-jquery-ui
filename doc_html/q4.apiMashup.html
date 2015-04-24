@@ -25,7 +25,7 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.apimashup.1.4.0.min.js' target='_blank'>q4.apimashup.1.4.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.apimashup.1.5.0.min.js' target='_blank'>q4.apimashup.1.5.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
         <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.apimashup.js#L2' target='_blank'>q4.apimashup.js</a>, line 2</dd>
@@ -55,6 +55,21 @@
 Each content source object consists of the following options,
 plus any additional options made available by the specific content type.
 These are listed at the end of the file.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-startSource'>
+            <dt>
+                <strong>startSource</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>The ID of the content source to display when the widget is initialized.
+If this value is false or unset, display all sources.</p>
                 <dl>
 
 
@@ -616,6 +631,28 @@ Set to <code>false</code> to disable this feature.</p>
             </dt>
             <dd>
                 <p>A callback that fires when the active year changes.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event object.</p></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-onContentSourceChange'>
+            <dt>
+                <strong>onContentSourceChange</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback that fires when the active content source changes.</p>
                 <dl>
 
                     <dt>Parameters</dt>

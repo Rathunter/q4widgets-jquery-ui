@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.4.0
+     * @version 1.4.1
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -1063,7 +1063,8 @@
         },
 
         _sortItemsByType: function (items) {
-            var types = [],
+            var o = this.options,
+                types = [],
                 itemsByType = {};
 
             // create an object of items sorted by type
@@ -1089,13 +1090,13 @@
         },
 
         _buildTemplateData: function (items) {
-            var o = this.options,
+            var _ = this,
                 tplData = this._super(items);
 
             // add types object to all items, and each year's items
             tplData.types = this._sortItemsByType(tplData.items);
             $.each(tplData.years, function (i, tplYear) {
-                tplYear.types = sortItemsByType(tplYear.items);
+                tplYear.types = _._sortItemsByType(tplYear.items);
             });
 
             return tplData;

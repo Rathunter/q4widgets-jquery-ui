@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.4.1
+     * @version 1.4.2
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -1053,7 +1053,7 @@
                     return {
                         docCategory: doc.DocumentCategory,
                         docSize: doc.DocumentFileSize,
-                        docThumb: doc.DocumentThumbnailPath,
+                        docThumb: doc.ThumbnailPath,
                         docTitle: _._truncate(doc.DocumentTitle, o.titleLength),
                         docType: doc.DocumentFileType,
                         docUrl: doc.DocumentPath

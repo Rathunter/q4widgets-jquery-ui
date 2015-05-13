@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.5.0
+     * @version 1.5.1
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -441,7 +441,8 @@
                 gotYears = $.Deferred();
 
             // if we're fetching all docs for all years, skip fetching the year list
-            if (o.fetchAllYears && !o.limit) {
+            // also skip the year list if this source has a limit on item count
+            if ((o.fetchAllYears && !o.limit) || o.contentSources[contentSourceID].limit) {
                 // get items for all years
                 this._fetchItems(contentSourceID, -1).done(function (items) {
                     // get list of years from items

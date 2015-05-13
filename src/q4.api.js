@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.4.2
+     * @version 1.5.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -914,6 +914,8 @@
              * - `{{url}}`         The URL of the document.
              * - `{{date}}`        The date of the download.
              * - `{{type}}`        The download type.
+             * - `{{fileType}}`    The file type.
+             * - `{{size}}`        The file size.
              * - `{{icon}}`        The URL of the document's icon.
              * - `{{thumb}}`       The URL of the document's thumbnail image.
              * - `{{#tags}}`       An array of tags for this download.
@@ -945,6 +947,8 @@
                 year: new Date(result.ContentAssetDate).getFullYear(),
                 date: this._formatDate(result.ContentAssetDate),
                 type: result.Type,
+                fileType: result.FileType,
+                size: result.FileSize,
                 icon: result.IconPath,
                 thumb: result.ThumbnailPath,
                 tags: result.TagsList,
@@ -1125,6 +1129,8 @@
              * - `{{#tags}}`  An array of tags for this presentation.
              * - `{{body}}`   The body of the presentation details.
              * - `{{docUrl}}` The URL of the presentation document.
+             * - `{{docSize}}` The size of the presentation document.
+             * - `{{docType}}` The file type of the presentation document.
              * @type {string}
              */
             template: ''
@@ -1153,7 +1159,9 @@
                 date: this._formatDate(result.PresentationDate),
                 tags: result.TagsList,
                 body: this._truncate(result.Body, o.bodyLength),
-                docUrl: result.DocumentPath
+                docUrl: result.DocumentPath,
+                docSize: result.DocumentFileSize,
+                docType: result.DocumentFileType
             };
         }
     });

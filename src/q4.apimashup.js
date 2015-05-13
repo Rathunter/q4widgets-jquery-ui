@@ -840,6 +840,8 @@
                      * - `{{url}}`         The URL of the document.
                      * - `{{date}}`        The date of the download.
                      * - `{{type}}`        The download type.
+                     * - `{{fileType}}`    The file type.
+                     * - `{{size}}`        The file size.
                      * - `{{icon}}`        The URL of the document's icon.
                      * - `{{thumb}}`       The URL of the document's thumbnail image.
                      * - `{{#tags}}`       An array of tags for this download.
@@ -866,6 +868,8 @@
                         year: new Date(result.ContentAssetDate).getFullYear(),
                         date: this._formatDate(result.ContentAssetDate),
                         type: result.Type,
+                        fileType: result.FileType,
+                        size: result.FileSize,
                         icon: result.IconPath,
                         thumb: result.ThumbnailPath,
                         tags: result.TagsList,
@@ -954,17 +958,116 @@
                 }
             },
 
+            financials: {
+                options: {
+                    /**
+                     * A list of report subtypes to display, or an empty list to display all.
+                     * Valid values are:
+                     *
+                     * - `Annual Report`
+                     * - `Supplemental Report`
+                     * - `First Quarter`
+                     * - `Second Quarter`
+                     * - `Third Quarter`
+                     * - `Fourth Quarter`
+                     * @type {Array<string>}
+                     * @default
+                     */
+                    reportTypes: [],
+                    /**
+                     * A list of document categories to display.
+                     * Use an empty list to display all.
+                     * @type {Array<string>}
+                     * @example ["Financial Report", "MD&A", "Earnings Press Release"]
+                     * @default
+                     */
+                    docCategories: [],
+                    /**
+                     * A map of short names for each report subtype,
+                     * for use in the template.
+                     * @type {Object}
+                     */
+                    shortTypes: {
+                        'Annual Report': 'Annual',
+                        'Supplemental Report': 'Supplemental',
+                        'First Quarter': 'Q1',
+                        'Second Quarter': 'Q2',
+                        'Third Quarter': 'Q3',
+                        'Fourth Quarter': 'Q4'
+                    },
+                    /**
+                     * A Mustache.js template for the overall widget.
+                     * All the tags documented in the [q4.api](q4.api.html#option-template)
+                     * parent widget are available here.
+                     * In addition, the `{{#items}}` array contains these tags:
+                     *
+                     * - `{{title}}` The title (i.e. subtype and year) of the financial report.
+                     * - `{{year}}`  The fiscal year of the financial report.
+                     * - `{{date}}`  The filing date of the financial report.
+                     * - `{{type}}`  The subtype of the report (e.g. `First Quarter`, `Annual Report`).
+                     * - `{{shortType}}` A shortened name for the financial report's subtype
+                     *   (e.g. `Q1`, `Annual`). These can be customized with the `shortTypes` option.
+                     * - `{{coverUrl}}`  The URL of the cover image, if any.
+                     * - `{{#docs}}` An array of documents for this report, with these tags:
+                     *
+                     *   - `{{docTitle}}`    The title of the document.
+                     *   - `{{docUrl}}`      The URL of the document file.
+                     *   - `{{docCategory}}` The category of the document.
+                     *   - `{{docSize}}`     The file size of the document.
+                     *   - `{{docThumb}}`    The URL of the thumbnail image, if any.
+                     *   - `{{docType}}`     The file type of the document.
+                     * @type {string}
+                     */
+                    template: ''
+                },
+
+                itemsUrl: '/Services/FinancialReportService.svc/GetFinancialReportList',
+                yearsUrl: '/Services/FinancialReportService.svc/GetFinancialReportYearList',
+                itemsResultField: 'GetFinancialReportListResult',
+                yearsResultField: 'GetFinancialReportYearListResult',
+
+                buildParams: function (o) {
+                    return {
+                        reportSubTypeList: o.reportTypes
+                    };
+                },
+
+                parseItem: function (o, result) {
+                    return {
+                        coverUrl: result.CoverImagePath,
+                        title: result.ReportTitle,
+                        fiscalYear: result.ReportYear,
+                        year: new Date(result.ReportDate).getFullYear(),
+                        date: this._formatDate(result.ReportDate),
+                        type: result.ReportSubType,
+                        shortType: o.shortTypes[result.ReportSubType],
+                        docs: $.map(result.Documents, function (doc) {
+                            return {
+                                docCategory: doc.DocumentCategory,
+                                docSize: doc.DocumentFileSize,
+                                docThumb: doc.ThumbnailPath,
+                                docTitle: _._truncate(doc.DocumentTitle, o.titleLength),
+                                docType: doc.DocumentFileType,
+                                docUrl: doc.DocumentPath
+                            };
+                        })
+                    };
+                }
+            },
+
             presentations: {
                 options: {
                     /**
                      * A Mustache.js template for a single presentation, with these tags:
                      *
-                     * - `{{title}}`  The title of the presentation.
-                     * - `{{url}}`    The URL of the details page.
-                     * - `{{date}}`   The date of the presentation.
-                     * - `{{#tags}}`  An array of tags for this presentation.
-                     * - `{{body}}`   The body of the presentation details.
-                     * - `{{docUrl}}` The URL of the presentation document.
+                     * - `{{title}}`   The title of the presentation.
+                     * - `{{url}}`     The URL of the details page.
+                     * - `{{date}}`    The date of the presentation.
+                     * - `{{#tags}}`   An array of tags for this presentation.
+                     * - `{{body}}`    The body of the presentation details.
+                     * - `{{docUrl}}`  The URL of the presentation document.
+                     * - `{{docSize}}` The size of the presentation document.
+                     * - `{{docType}}` The file type of the presentation document.
                      * @type {string}
                      */
                     template: ''
@@ -990,7 +1093,9 @@
                         date: this._formatDate(result.PresentationDate),
                         tags: result.TagsList,
                         body: this._truncate(result.Body, o.bodyLength),
-                        docUrl: result.DocumentPath
+                        docUrl: result.DocumentPath,
+                        docSize: result.DocumentFileSize,
+                        docType: result.DocumentFileType
                     };
                 }
             },

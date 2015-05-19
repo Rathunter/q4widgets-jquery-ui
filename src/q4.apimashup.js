@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.5.1
+     * @version 1.5.2
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -785,6 +785,7 @@
             if (!this._trigger('onYearChange', e)) return;
 
             // default value if year is invalid
+            year = parseInt(year);
             if ($.inArray(year, this.years) == -1) year = o.showAllYears ? -1 : this.years[0];
 
             this._updateYearControls(year);

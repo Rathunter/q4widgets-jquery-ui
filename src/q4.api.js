@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.5.0
+     * @version 1.5.1
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -766,6 +766,7 @@
             if (!this._trigger('onYearChange', e)) return;
 
             // default value if year is invalid
+            year = parseInt(year);
             if ($.inArray(year, this.years) == -1) year = o.showAllYears ? -1 : this.years[0];
 
             this._updateYearControls(year);

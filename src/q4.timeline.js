@@ -142,6 +142,7 @@
              * @type {function}
              * @param {Event}  [event] The triggering event.
              * @param {Object} [data]  A data object with these properties:
+             *
              * - `element` The nav carousel's jQuery element.
              * - `target`  The index of the target group.
              */
@@ -151,6 +152,7 @@
              * @type {function}
              * @param {Event} [event] The triggering event.
              * @param {Object} [data]  A data object with these properties:
+             *
              * - `element` The main carousel's jQuery element.
              * - `target`  The index of the target timeline item.
              */

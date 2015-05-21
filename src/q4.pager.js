@@ -2,17 +2,61 @@
     /**
      * A navigator for any kind of paginated content.
      * @class q4.pager
-     * @version 1.0.0
+     * @version 1.1.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
+     * @example
+     * This example uses the pager in conjunction with the [q4.api](q4.api.html) widget.
+     * It uses the `content` option to automatically show and hide each page of events.
+     * ---
+     * <div id='#events'></div>
+     * <ul id='#pager'></ul>
+     *
+     * <script>
+     * $('#events').events({
+     *     template: (
+     *         '<ul class="years">{{#years}}<li>{{year}}</li>{{/years}}</ul>' +
+     *         '<ul class="items">' +
+     *             '{{#items}}' +
+     *             '<li>' +
+     *                 '<span class="date">{{date}}</span>' +
+     *                 '<a href="{{url}}">{{title}}</a>' +
+     *             '</li>' +
+     *             '{{/items}}' +
+     *         '</ul>'
+     *     ),
+     *     yearTrigger: '.years li',
+     *     complete: function () {
+     *         $('#pager').pager({
+     *             content: $('#events .items li'),
+     *             perPage: 10,
+     *             template: (
+     *                 '<li>{{page}}</li>'
+     *             ),
+     *             append: false,
+     *             trigger: 'li'
+     *         });
+     *     }
+     * });
+     * </script>
      */
     $.widget('q4.pager', /** @lends q4.pager */ {
         options: {
             /**
-             * The number of items to page through.
+             * A jQuery object (or a selector for one) containing a number of elements.
+             * If this is passed, then when the page changes, the pager will show the elements
+             * on the current page and hide the others.
+             *
+             * Note: if the number of elements changes, you will need to reinitialize the pager.
+             * @type {(string|jQuery)}
+             */
+            content: null,
+            /**
+             * The number of items to page through. If `items` is passed, this will be overridden
+             * by the number of elements in that jQuery object.
              * @type {number}
              */
-            count: 95,
+            count: 0,
             /**
              * The number of items per page.
              * @type {number}
@@ -43,6 +87,12 @@
              */
             showPrevNext: true,
             /**
+             * Whether to show page number triggers.
+             * @type {boolean}
+             * @default
+             */
+            showPages: true,
+            /**
              * A selector for each trigger.
              * @type {string}
              * @default
@@ -54,6 +104,13 @@
              * @default
              */
             template: '<span>{{page}}</span>',
+            /**
+             * Whether to append the template to the widget container,
+             * or replace the container's contents entirely.
+             * @type {boolean}
+             * @default
+             */
+            append: true,
             /**
              * The text to display for first/last/previous/next page triggers.
              * @type {Object}
@@ -88,6 +145,7 @@
             afterChange: function (e, data) {}
         },
 
+        $items: null,
         pages: [],
         currentPage: null,
 
@@ -96,7 +154,7 @@
          * @param {(number|string)} page    The page number or label to go to.
          * @param {Event}           [event] The event that triggered this change.
          */
-        changePage: function (page, event) {
+        changePage: function (page, e) {
             var o = this.options,
                 data = {
                     page: page,
@@ -107,7 +165,7 @@
             this._trigger('beforeChange', e, data);
 
             // set the actual page
-            this.setPage(page);
+            this._setPage(page);
 
             // fire after callback
             this._trigger('afterChange', e, data);
@@ -139,6 +197,10 @@
                 pageCount,
                 startPage = null;
 
+            // get jQuery object if possible
+            if (typeof o.content == 'string') this.$items = $(o.content);
+            else if (o.content instanceof jQuery) this.$items = o.content;
+
             if ($.isArray(o.pages) && o.pages.length) {
                 // initialize pages from a fixed list
                 this.pages = o.pages;
@@ -146,8 +208,9 @@
                 if (o.startPage && $.inArray(o.startPage, this.pages) > -1) startPage = o.startPage;
 
             } else {
-                // initialize pages by number of items
-                pageCount = Math.ceil(o.count / (o.perPage ? o.perPage : 1));
+                // initialize pages by number of elements, or count option
+                pageCount = Math.ceil((this.$items ? this.$items.length : o.count) / (o.perPage || 1));
+
                 this.pages = [];
                 for (var page = 1; page <= pageCount; page++) {
                     this.pages.push(page)
@@ -155,12 +218,16 @@
                 if (o.startPage) startPage = Math.max(1, Math.min(pageCount + 1, o.startPage));
             }
 
+            if (!o.append) $e.empty();
+
             // draw pager
             if (o.showFirstLast) $(Mustache.render(o.template, {page: o.labels.first})).addClass('pager-first').data('page', 1).appendTo($e);
             if (o.showPrevNext) $(Mustache.render(o.template, {page: o.labels.prev})).addClass('pager-prev pager-disabled').appendTo($e);
-            $.each(this.pages, function (index, page) {
-                $(Mustache.render(o.template, {page: page})).addClass('pager-page').data('page', page).appendTo($e);
-            });
+            if (o.showPages) {
+                $.each(this.pages, function (index, page) {
+                    $(Mustache.render(o.template, {page: page})).addClass('pager-page').data('page', page).appendTo($e);
+                });
+            }
             if (o.showPrevNext) $(Mustache.render(o.template, {page: o.labels.next})).addClass('pager-next pager-disabled').appendTo($e);
             if (o.showFirstLast) $(Mustache.render(o.template, {page: o.labels.last})).addClass('pager-last').data('page', pageCount).appendTo($e);
 
@@ -175,11 +242,11 @@
             var $e = this.element,
                 o = this.options;
 
-            // abort if page doesn't exist
-            if ($.inArray(page, this.pages) == -1) return;
-
             var index = $.inArray(page, this.pages),
                 last = this.pages.length - 1;
+
+            // abort if page doesn't exist
+            if (index == -1) return;
 
             // update first/last/prev/next triggers
             $('.pager-first, .pager-prev', $e).toggleClass('pager-disabled', index == 0);
@@ -191,6 +258,12 @@
             $('.pager-page', $e).removeClass('pager-active').filter(function () {
                 return $(this).data('page') == page;
             }).addClass('pager-active');
+
+            // show/hide content pages if applicable
+            if (this.$items) {
+                var skip = index * o.perPage;
+                this.$items.hide().slice(skip, skip + o.perPage).show();
+            }
 
             // store current page
             this.currentPage = page;

@@ -16,7 +16,7 @@
     <h1>q4.pager</h1>
     <p>A navigator for any kind of paginated content.</p>
     <ul>
-        
+        <li><a href='#examples'>Examples</a></li>
         <li><a href='#options'>Options</a></li>
         <li><a href='#methods'>Methods</a></li>
     </ul>
@@ -25,7 +25,7 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.1.0.0.min.js' target='_blank'>q4.pager.1.0.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.1.1.0.min.js' target='_blank'>q4.pager.1.1.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
         <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.pager.js#L2' target='_blank'>q4.pager.js</a>, line 2</dd>
@@ -41,17 +41,73 @@
 
 </section>
 
+<section id='examples'>
+    <h1>Examples</h1>
+    <div>
+        <p>This example uses the pager in conjunction with the <a href="q4.api.html">q4.api</a> widget.
+It uses the <code>content</code> option to automatically show and hide each page of events.</p>
+
+        <pre><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'#events'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'#pager'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+$(<span class="hljs-string">'#events'</span>).events({
+    template: (
+        <span class="hljs-string">'&lt;ul class="years"&gt;{{#years}}&lt;li&gt;{{year}}&lt;/li&gt;{{/years}}&lt;/ul&gt;'</span> +
+        <span class="hljs-string">'&lt;ul class="items"&gt;'</span> +
+            <span class="hljs-string">'{{#items}}'</span> +
+            <span class="hljs-string">'&lt;li&gt;'</span> +
+                <span class="hljs-string">'&lt;span class="date"&gt;{{date}}&lt;/span&gt;'</span> +
+                <span class="hljs-string">'&lt;a href="{{url}}"&gt;{{title}}&lt;/a&gt;'</span> +
+            <span class="hljs-string">'&lt;/li&gt;'</span> +
+            <span class="hljs-string">'{{/items}}'</span> +
+        <span class="hljs-string">'&lt;/ul&gt;'</span>
+    ),
+    yearTrigger: <span class="hljs-string">'.years li'</span>,
+    complete: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $(<span class="hljs-string">'#pager'</span>).pager({
+            content: $(<span class="hljs-string">'#events .items li'</span>),
+            perPage: <span class="hljs-number">10</span>,
+            template: (
+                <span class="hljs-string">'&lt;li&gt;{{page}}&lt;/li&gt;'</span>
+            ),
+            append: <span class="hljs-literal">false</span>,
+            trigger: <span class="hljs-string">'li'</span>
+        });
+    }
+});
+</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
+    </div>
+</section>
 
 <section id='options'>
     <h1>Options</h1>
     <dl>
+        <div id='option-content'>
+            <dt>
+                <strong>content</strong>
+                <span>string</span><span>jQuery</span>
+            </dt>
+            <dd>
+                <p>A jQuery object (or a selector for one) containing a number of elements.
+If this is passed, then when the page changes, the pager will show the elements
+on the current page and hide the others.</p>
+<p>Note: if the number of elements changes, you will need to reinitialize the pager.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
         <div id='option-count'>
             <dt>
                 <strong>count</strong>
                 <span>number</span>
             </dt>
             <dd>
-                <p>The number of items to page through.</p>
+                <p>The number of items to page through. If <code>items</code> is passed, this will be overridden
+by the number of elements in that jQuery object.</p>
                 <dl>
 
 
@@ -136,6 +192,22 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
                 </dl>
             </dd>
         </div>
+        <div id='option-showPages'>
+            <dt>
+                <strong>showPages</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to show page number triggers.</p>
+                <dl>
+                    <dt>Default value</dt>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
+
+
+
+                </dl>
+            </dd>
+        </div>
         <div id='option-trigger'>
             <dt>
                 <strong>trigger</strong>
@@ -162,6 +234,23 @@ will be generated from <code>count</code> and <code>perPage</code>.</p>
                 <dl>
                     <dt>Default value</dt>
                     <dd><code><span class="hljs-string">'&lt;span&gt;{{page}}&lt;/span&gt;'</span></code></dd>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-append'>
+            <dt>
+                <strong>append</strong>
+                <span>boolean</span>
+            </dt>
+            <dd>
+                <p>Whether to append the template to the widget container,
+or replace the container's contents entirely.</p>
+                <dl>
+                    <dt>Default value</dt>
+                    <dd><code><span class="hljs-literal">true</span></code></dd>
 
 
 

@@ -2,7 +2,7 @@
     /**
      * A preconfigured stock chart, using the Highstock plugin.
      * @class q4.chart
-     * @version 1.1.0
+     * @version 1.1.1
      * @author jasonm@q4websystems.com
      * @author marcusk@q4websystems.com
      * @requires [Highstock](lib/highstock.js)
@@ -127,35 +127,35 @@
              */
             eventsLimit: 100,
             /**
-             * A set of Highcharts options for the stock price series.
+             * A set of Highstock options for the stock price series.
              * @type {Object}
              */
             stockOpts: {},
             /**
-             * A set of Highcharts options for the volume series.
+             * A set of Highstock options for the volume series.
              * @type {Object}
              */
             volumeOpts: {},
             /**
-             * A set of Highcharts options for the press release series.
+             * A set of Highstock options for the press release series.
              * @type {Object}
              */
             newsOpts: {},
             /**
-             * A set of Highcharts options for the event series.
+             * A set of Highstock options for the event series.
              * @type {Object}
              */
             eventsOpts: {},
             /**
-             * A set of general Highcharts options to use for the chart.
+             * A set of Highstock options for the chart in general.
+             * You can configure the individual chart series with
+             * `stockOpts`, `volumeOpts`, `newsOpts` and `eventsOpts`.
              * @type {Object}
-             * @default
              */
             highstockOpts: {},
             /**
-             * A set of Highcharts configuration options.
+             * A set of (non-Highstock) Highcharts options.
              * @type {Object}
-             * @default
              */
             highchartsOpts: {},
             /**
@@ -313,8 +313,8 @@
 
             // initialize and set options
             this._setDefaults();
-            Highcharts.setOptions($.extend({}, this.highchartsDefaults, o.highchartsOpts));
-            var highstockOpts = $.extend({}, this.highstockDefaults, o.highstockOpts);
+            Highcharts.setOptions($.extend(true, {}, this.highchartsDefaults, o.highchartsOpts));
+            var highstockOpts = $.extend(true, {}, this.highstockDefaults, o.highstockOpts);
 
             // build the series objects for stock price, volume, news, events
             highstockOpts.series = this._buildSeries();
@@ -368,24 +368,24 @@
                     name = stock.length > 1 && stock[1] ? stock[1] : stock[0];
 
                 // stock price series
-                series.push($.extend({}, _.stockDefaults, {
+                series.push($.extend(true, {}, _.stockDefaults, {
                     name: name,
                     id: 'price' + i,
                     visible: i == 0,
                 }, o.stockOpts));
 
                 // volume series
-                if (o.volume) series.push($.extend({}, _.volumeDefaults, {
+                if (o.volume) series.push($.extend(true, {}, _.volumeDefaults, {
                     name: exchange + ':Volume',
                     id: 'volume' + i
                 }, o.volumeOpts));
             });
 
             // news series
-            if (o.news) series.push($.extend({}, this.newsDefaults, o.newsOpts));
+            if (o.news) series.push($.extend(true, {}, this.newsDefaults, o.newsOpts));
 
             // events series
-            if (o.events) series.push($.extend({}, this.eventsDefaults, o.eventsOpts));
+            if (o.events) series.push($.extend(true, {}, this.eventsDefaults, o.eventsOpts));
 
             return series;
         },

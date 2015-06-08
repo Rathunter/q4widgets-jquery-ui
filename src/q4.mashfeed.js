@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.2.0
+     * @version 1.2.1
      * @author marcusk@q4websystems.com
      * @requires [Moment.js](lib/moment.min.js)
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -314,14 +314,25 @@
                     // add this feed's items to the aggregated list
                     $.each(feedItems, function (i, feedItem) {
                         // add a reference to the feed
-                        _.items.push($.extend({
-                            feed: feed
+                        var item = $.extend({
+                            _feed: feed
                         },
                         // call the custom parseItem method if available
                         (typeof feed.parseItem === 'function' ?
                             feed.parseItem.call(_, feedItem) :
                             feedType.parseItem.call(_, feedItem))
-                        ));
+                        );
+
+                        // we can't use items with no date field
+                        if (!item.date) {
+                            console.log('No "date" field found in parsed', feed.name, 'item.');
+                            return true;
+                        }
+
+                        // convert any string dates to moment dates
+                        if (typeof item.date == 'string') item.date = moment(item.date);
+
+                        _.items.push(item);
                     });
                 });
 
@@ -334,15 +345,14 @@
 
         _renderFeeds: function () {
             var o = this.options,
-                $e = this.element.empty(),
-                count = 0;
+                $e = this.element.empty();
 
             // normalize the filter list
             if (!$.isArray(o.filter)) o.filter = [o.filter];
 
             // if filter list isn't empty, filter the items
             var items = $.grep(this.items, function (item) {
-                return !o.filter.length || $.inArray(item.feed.name, o.filter) > -1;
+                return !o.filter.length || $.inArray(item._feed.name, o.filter) > -1;
             });
 
             function truncate(text, limit) {
@@ -355,19 +365,19 @@
                 // some final formatting - use a new object so we don't overwrite the original
                 var formatted = {};
                 if ('title' in item) {
-                    formatted.title = truncate(item.title, item.feed.titleLength || o.titleLength);
+                    formatted.title = truncate(item.title, item._feed.titleLength || o.titleLength);
                 }
                 if ('date' in item) {
                     formatted.date = o.fromNow ? item.date.fromNow() : item.date.format(o.dateFormat);
                 }
                 if ('content' in item) {
                     var text = $.trim($('<div>').html(item.content).text());
-                    formatted.summary = truncate(text, item.feed.summaryLength || o.summaryLength);
+                    formatted.summary = truncate(text, item._feed.summaryLength || o.summaryLength);
                     formatted.firstLine = text.split('\n')[0];
                 }
 
                 // render item
-                $e.append(Mustache.render(item.feed.template || o.template, $.extend({}, item, formatted)));
+                $e.append(Mustache.render(item._feed.template || o.template, $.extend({}, item, formatted)));
             });
 
             this._trigger('complete');

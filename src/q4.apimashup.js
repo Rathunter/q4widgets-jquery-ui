@@ -1029,6 +1029,7 @@
                 },
 
                 parseItem: function (o, result) {
+                    var _ = this;
                     return {
                         coverUrl: result.CoverImagePath,
                         title: result.ReportTitle,

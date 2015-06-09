@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.5.2
+     * @version 1.5.3
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -400,14 +400,10 @@
             });
 
             $.when.apply(null, yearPromises).done(function () {
-                // if multiple promises were passed, each argument will be a set of results
-                // first argument is a list of years, second is an optional list of items
-                var results = (yearPromises.length > 1 ? arguments : [arguments]);
-
                 // aggregate years from each content source
                 var years = [];
-                $.each(results, function (i, result) {
-                    $.each(result[0], function (j, year) {
+                $.each(arguments, function (i, result) {
+                    $.each(result.years, function (j, year) {
                         if ($.inArray(year, years) == -1) years.push(year);
                     });
                 });
@@ -416,10 +412,10 @@
 
                 // fetch items for each content source
                 var itemPromises = [];
-                $.each(results, function (i, result) {
+                $.each(arguments, function (i, result) {
                     // if items were returned, add them as a resolved promise
                     // otherwise add a promise from fetchItems
-                    itemPromises.push(result[1] !== null ? result[1] :
+                    itemPromises.push(result.items !== null ? result.items :
                         _._fetchItems(sourceList[i], o.fetchAllYears ? -1 : activeYear));
                 });
 
@@ -452,12 +448,12 @@
                     });
 
                     // return years and items
-                    gotYears.resolve(years, items);
+                    gotYears.resolve({years: years, items: items});
                 });
             }
             else {
                 this._fetchYears(contentSourceID).done(function (years) {
-                    gotYears.resolve(years, null);
+                    gotYears.resolve({years: years, items: null});
                 });
             }
 
@@ -559,9 +555,9 @@
                 itemPromises.push(_._fetchItems(id, year));
             });
 
-            $.when.apply(null, itemPromises).done(function (results) {
+            $.when.apply(null, itemPromises).done(function () {
                 // merge item arrays, sort by date and slice to global limit
-                var items = Array.prototype.concat.apply([], results);
+                var items = Array.prototype.concat.apply([], arguments);
                 items.sort(function (a, b) {
                     return a.dateObj - b.dateObj;
                 });
@@ -798,8 +794,6 @@
                 this.$widget.remove();
                 this.$widget = $(o.loadingMessage).appendTo($e);
             }
-
-            var contentType = this.contentTypes[this.contentType];
 
             // get items for selected year
             this._fetchAllItems(year, this.activeSource).done(function (items) {

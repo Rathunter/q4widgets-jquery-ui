@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.5.3
+     * @version 1.5.4
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -329,6 +329,7 @@
         years: null,
         $widget: null,
         activeSource: null,
+        activeYear: null,
 
         _init: function () {
             var o = this.options,
@@ -383,7 +384,7 @@
             var _ = this,
                 o = this.options;
 
-            // store this for later re-renders when year is changed
+            // store the active source for later re-renders when year is changed
             this.activeSource = contentSourceID;
 
             var sourceList = [],
@@ -408,7 +409,19 @@
                     });
                 });
                 _.years = _._filterYears(years);
-                var activeYear = _._getActiveYear(_.years);
+
+                // figure out the starting year to display
+                var activeYear = -1;
+                if (_.years.length) {
+                    // if the previously selected year exists for this source, use it
+                    if ($.inArray(_.activeYear, _.years) > -1) activeYear = _.activeYear;
+                    // if o.startYear is specified and it exists for this source, use it
+                    if ($.inArray(o.startYear, _.years) > -1) activeYear = o.startYear;
+                    // otherwise if "all" is not enabled, use the most recent
+                    else if (!o.showAllYears) activeYear = _.years[0];
+                }
+                // store the active year for later re-renders
+                _.activeYear = activeYear;
 
                 // fetch items for each content source
                 var itemPromises = [];
@@ -423,7 +436,7 @@
                     // merge item arrays, sort by date and slice to global limit
                     var items = Array.prototype.concat.apply([], arguments);
                     items.sort(function (a, b) {
-                        return a.dateObj - b.dateObj;
+                        return b.dateObj - a.dateObj;
                     });
                     if (o.limit) items = items.slice(0, o.limit);
 
@@ -480,18 +493,6 @@
             years.sort(function (a, b) { return b - a });
 
             return years;
-        },
-
-        _getActiveYear: function (years) {
-            var o = this.options;
-
-            if (years.length) {
-                // if o.startYear is specified and it exists, use it
-                if ($.inArray(o.startYear, years) > -1) return o.startYear;
-                // otherwise if "all" is not enabled, use the most recent
-                else if (!o.showAllYears) return years[0];
-            }
-            return -1;
         },
 
         _buildParams: function () {
@@ -559,7 +560,7 @@
                 // merge item arrays, sort by date and slice to global limit
                 var items = Array.prototype.concat.apply([], arguments);
                 items.sort(function (a, b) {
-                    return a.dateObj - b.dateObj;
+                    return b.dateObj - a.dateObj;
                 });
                 if (o.limit) items = items.slice(0, o.limit);
                 gotItems.resolve(items);
@@ -784,6 +785,7 @@
             year = parseInt(year);
             if ($.inArray(year, this.years) == -1) year = o.showAllYears ? -1 : this.years[0];
 
+            this.activeYear = year;
             this._updateYearControls(year);
 
             // display loading message
@@ -908,8 +910,7 @@
                     return {
                         eventSelection: o.showFuture && !o.showPast ? 1 : (o.showPast && !o.showFuture ? 0 : 3),
                         includePresentations: true,
-                        includePressReleases: true,
-                        sortOperator: o.sortAscending ? 0 : 1
+                        includePressReleases: true
                     };
                 },
 

@@ -25,7 +25,7 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.1.1.0.min.js' target='_blank'>q4.pager.1.1.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.pager.1.2.0.min.js' target='_blank'>q4.pager.1.2.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
         <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.pager.js#L2' target='_blank'>q4.pager.js</a>, line 2</dd>
@@ -136,7 +136,7 @@ by the number of elements in that jQuery object.</p>
             </dt>
             <dd>
                 <p>A list of page numbers or labels. If this is empty, page numbers
-will be generated from <code>count</code> and <code>perPage</code>.</p>
+will be generated using <code>perPage</code> and either <code>content</code> or <code>count</code>.</p>
                 <dl>
 
 
@@ -267,6 +267,38 @@ or replace the container's contents entirely.</p>
                 <dl>
 
 
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-pageMessageContainer'>
+            <dt>
+                <strong>pageMessageContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for a message saying which pages or items are being displayed.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-pageMessageTemplate'>
+            <dt>
+                <strong>pageMessageTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template for the pagination message.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code> <span class="hljs-string">'Showing items {{startItem}} to {{lastItem}} of {{itemCount}}.'</span></code></dd>
+                    <dt>Example</dt>
+                    <dd><code> <span class="hljs-string">'Showing page {{page}} of {{pageCount}}.'</span></code></dd>
 
                 </dl>
             </dd>

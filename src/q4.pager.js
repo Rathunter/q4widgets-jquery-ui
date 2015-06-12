@@ -2,7 +2,7 @@
     /**
      * A navigator for any kind of paginated content.
      * @class q4.pager
-     * @version 1.1.0
+     * @version 1.2.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @example
@@ -64,7 +64,7 @@
             perPage: 1,
             /**
              * A list of page numbers or labels. If this is empty, page numbers
-             * will be generated from `count` and `perPage`.
+             * will be generated using `perPage` and either `content` or `count`.
              * @type {(Array<string>|Array<number>)}
              */
             pages: [],
@@ -125,6 +125,19 @@
                 next: '>',
                 last: '»'
             },
+            /**
+             * A selector for a message saying which pages or items are being displayed.
+             * @type {string}
+             */
+            pageMessageContainer: null,
+            /**
+             * A Mustache template for the pagination message.
+             * @type {string}
+             * @example 'Showing items {{startItem}} to {{lastItem}} of {{itemCount}}.'
+             * @example 'Showing page {{page}} of {{pageCount}}.'
+             * @default
+             */
+            pageMessageTemplate: '',
             /**
              * A callback fired after a trigger is clicked.
              * @type {function}
@@ -201,19 +214,19 @@
             if (typeof o.content == 'string') this.$items = $(o.content);
             else if (o.content instanceof jQuery) this.$items = o.content;
 
+            this.pages = [];
             if ($.isArray(o.pages) && o.pages.length) {
                 // initialize pages from a fixed list
                 this.pages = o.pages;
                 pageCount = this.pages.length;
                 if (o.startPage && $.inArray(o.startPage, this.pages) > -1) startPage = o.startPage;
-
-            } else {
+            }
+            else if (this.$items || o.count) {
                 // initialize pages by number of elements, or count option
                 pageCount = Math.ceil((this.$items ? this.$items.length : o.count) / (o.perPage || 1));
 
-                this.pages = [];
                 for (var page = 1; page <= pageCount; page++) {
-                    this.pages.push(page)
+                    this.pages.push(page);
                 };
                 if (o.startPage) startPage = Math.max(1, Math.min(pageCount + 1, o.startPage));
             }
@@ -235,7 +248,7 @@
             if (pageCount == 1) $('.pager-page', $e).addClass('pager-disabled');
 
             // go to start page if possible
-            if (startPage !== null) this._setPage(startPage);
+            if (startPage !== null) this.changePage(startPage);
         },
 
         _setPage: function (page) {
@@ -263,6 +276,18 @@
             if (this.$items) {
                 var skip = index * o.perPage;
                 this.$items.hide().slice(skip, skip + o.perPage).show();
+            }
+
+            // render pagination message if applicable
+            if (o.pageMessageContainer && o.pageMessageTemplate) {
+                var itemCount = this.$items ? this.$items.length : o.count;
+                $(o.pageMessageContainer).html(Mustache.render(o.pageMessageTemplate, {
+                    page: page,
+                    pageCount: this.pages.length,
+                    firstItem: index * o.perPage + 1,
+                    lastItem: Math.min(itemCount, (index + 1) * o.perPage),
+                    itemCount: itemCount
+                }));
             }
 
             // store current page

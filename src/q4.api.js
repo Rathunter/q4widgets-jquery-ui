@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.5.1
+     * @version 1.6.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -13,7 +13,7 @@
      * - It uses multiple date formats, and the Moment.js library instead of Datepicker.
      * - Since it is a Past Events widget, `showFuture` is set to `false`.
      *   However, `showAllYears` is `true` so that users can choose to see all past events at once.
-     * - It also uses the `sortAscending` option, which is exclusive to the events widget.
+     * - It also uses the `sortAscending` option.
      * ---
      * <div id='events'></div>
      *
@@ -192,6 +192,12 @@
              * @default
              */
             useMoment: false,
+            /**
+             * Whether to sort items in ascending chronological order.
+             * @type {boolean}
+             * @default
+             */
+            sortAscending: false,
             /**
              * An array of years to filter by. If passed, no items will
              * be displayed unless they are dated to a year in this list.
@@ -576,9 +582,13 @@
                 },
                 year: year
             })).done(function (data) {
-                gotItems.resolve($.map(data[_.itemsResultField], function (rawItem) {
+                var items = $.map(data[_.itemsResultField], function (rawItem) {
                     return _._parseItem(rawItem);
-                }));
+                });
+                items.sort(function (a, b) {
+                    return (b.dateObj - a.dateObj) * (o.sortAscending ? -1 : 1);
+                });
+                gotItems.resolve(items);
             });
 
             return gotItems;
@@ -805,12 +815,6 @@
     $.widget('q4.events', $.q4.api, /** @lends q4.events */ {
         options: {
             /**
-             * Whether to sort the events in ascending chronological order.
-             * @type {boolean}
-             * @default
-             */
-            sortAscending: false,
-            /**
              * A Mustache.js template for the overall widget.
              * All the tags documented in the [q4.api](q4.api.html#option-template)
              * parent widget are available here.
@@ -858,6 +862,7 @@
             var item = {
                 title: this._truncate(result.Title, o.titleLength),
                 url: result.LinkToDetailPage,
+                dateObj: new Date(result.StartDate),
                 year: new Date(result.StartDate).getFullYear(),
                 date: this._formatDate(result.StartDate),
                 endDate: this._formatDate(result.EndDate),
@@ -1050,6 +1055,7 @@
                 coverUrl: result.CoverImagePath,
                 title: result.ReportTitle,
                 fiscalYear: result.ReportYear,
+                dateObj: new Date(result.ReportDate),
                 year: new Date(result.ReportDate).getFullYear(),
                 date: this._formatDate(result.ReportDate),
                 type: result.ReportSubType,
@@ -1156,6 +1162,7 @@
             return {
                 title: this._truncate(result.Title, o.titleLength),
                 url: result.LinkToDetailPage,
+                dateObj: new Date(result.PresentationDate),
                 year: new Date(result.PresentationDate).getFullYear(),
                 date: this._formatDate(result.PresentationDate),
                 tags: result.TagsList,
@@ -1248,6 +1255,7 @@
             return {
                 title: this._truncate(result.Headline, o.titleLength),
                 url: result.LinkToDetailPage,
+                dateObj: new Date(result.PressReleaseDate),
                 year: new Date(result.PressReleaseDate).getFullYear(),
                 date: this._formatDate(result.PressReleaseDate),
                 tags: result.TagsList,
@@ -1328,6 +1336,7 @@
             return {
                 title: this._truncate(result.FilingDescription, o.titleLength),
                 url: result.LinkToDetailPage,
+                dateObj: new Date(result.FilingDate),
                 year: new Date(result.FilingDate).getFullYear(),
                 date: this._formatDate(result.FilingDate),
                 agent: result.FilingAgentName

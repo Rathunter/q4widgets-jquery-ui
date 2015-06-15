@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.2.1
+     * @version 1.3.0
      * @author marcusk@q4websystems.com
      * @requires [Moment.js](lib/moment.min.js)
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -22,11 +22,11 @@
              */
             dateFormat: 'MMM D, YYYY h:mm A',
             /**
-             * Whether to display dates using Moment's fromNow function.
+             * Whether to sort items in ascending chronological order.
              * @type {boolean}
              * @default
              */
-            fromNow: false,
+            sortAscending: false,
             /**
              * The maximum character length of a title, or zero for unlimited.
              * @type {number}
@@ -338,7 +338,7 @@
 
                 // sort aggregated items chronologically
                 _.items.sort(function (a, b) {
-                    return b.date.diff(a.date);
+                    return b.date.diff(a.date) * (o.sortAscending ? -1 : 1);
                 });
             });
         },
@@ -368,7 +368,8 @@
                     formatted.title = truncate(item.title, item._feed.titleLength || o.titleLength);
                 }
                 if ('date' in item) {
-                    formatted.date = o.fromNow ? item.date.fromNow() : item.date.format(o.dateFormat);
+                    formatted.date = item.date.format(o.dateFormat);
+                    formatted.from_now = item.date.fromNow();
                 }
                 if ('content' in item) {
                     var text = $.trim($('<div>').html(item.content).text());

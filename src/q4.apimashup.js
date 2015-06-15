@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.5.4
+     * @version 1.6.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -130,6 +130,12 @@
              * @default
              */
             useMoment: false,
+            /**
+             * Whether to sort items in ascending chronological order.
+             * @type {boolean}
+             * @default
+             */
+            sortAscending: false,
             /**
              * An array of years to filter by. If passed, no items will
              * be displayed unless they are dated to a year in this list.
@@ -436,7 +442,7 @@
                     // merge item arrays, sort by date and slice to global limit
                     var items = Array.prototype.concat.apply([], arguments);
                     items.sort(function (a, b) {
-                        return b.dateObj - a.dateObj;
+                        return (b.dateObj - a.dateObj) * (o.sortAscending ? -1 : 1);
                     });
                     if (o.limit) items = items.slice(0, o.limit);
 
@@ -560,7 +566,7 @@
                 // merge item arrays, sort by date and slice to global limit
                 var items = Array.prototype.concat.apply([], arguments);
                 items.sort(function (a, b) {
-                    return b.dateObj - a.dateObj;
+                    return (b.dateObj - a.dateObj) * (o.sortAscending ? -1 : 1);
                 });
                 if (o.limit) items = items.slice(0, o.limit);
                 gotItems.resolve(items);
@@ -910,7 +916,8 @@
                     return {
                         eventSelection: o.showFuture && !o.showPast ? 1 : (o.showPast && !o.showFuture ? 0 : 3),
                         includePresentations: true,
-                        includePressReleases: true
+                        includePressReleases: true,
+                        sortOperator: o.sortAscending ? 0 : 1
                     };
                 },
 

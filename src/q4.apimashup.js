@@ -2,7 +2,7 @@
     /**
      * Widget for aggregating multiple types of Q4 private API data.
      * @class q4.apiMashup
-     * @version 1.6.0
+     * @version 1.7.0
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
      * @requires [Moment.js_(optional)](lib/moment.min.js)
@@ -16,9 +16,10 @@
              * plus any additional options made available by the specific content type.
              * These are listed at the end of the file.
              * @type {Array<Object>}
-             * @prop type    {string} The content type of this source (required).
+             * @prop type  {string}  The content type of this source (required).
              *    Can be "downloads", "events", "presentations", or "news".
-             * @prop limit   {number} The maximum number of items to fetch for this source.
+             * @prop limit {number}  The maximum number of items to fetch for this source.
+             * @prop label {?string} A label to use in the template.
              */
             contentSources: {},
             /**
@@ -165,7 +166,10 @@
              *
              * The following tags are available:
              *
-             * - `{{#contentSources}}` An array of content source IDs.
+             * - `{{#contentSources}}` An array of content sources, each with these subtags:
+             *
+             *   - `{{id}}`    The ID string for this content source.
+             *   - `{{label}}` The label for this content source.
              * - `{{#years}}` An array of years for the navigation. Each year has these subtags:
              *
              *   - `{{year}}`   The display label of the year (e.g. `"2015"`, `"All Years"`)
@@ -246,6 +250,55 @@
              */
             yearSelect: null,
             /**
+             * A selector for a content source navigation container.
+             * Use this if you don't want to use the `template` option to draw the widget,
+             * but you still want to generate a list of content sources.
+             * You must also pass `sourceTemplate` for this to have any effect.
+             * @type {?string}
+             */
+            contentSourceContainer: null,
+            /**
+             * A Mustache.js template for a single content source.
+             * If this and `sourceContainer` are passed, this will be used to render each option in
+             * the source navigation, which will be attached to the widget at `sourceContainer`.
+             * See the `template` option for available tags.
+             * @type {?string}
+             * @example '<li>{{label}}</li>'
+             * @example '<option value="{{id}}">{{label}}</option>'
+             */
+            contentSourceTemplate: null,
+            /**
+             * A CSS selector for content source trigger links.
+             * If passed, any elements in the widget matching this selector will
+             * become clickable links that filter the displayed items by source.
+             * Usually you'll want to point this to an element in the template's `{{sources}}` loop.
+             *
+             * Note that this doesn't automatically generate the content source links;
+             * you can do that in the template.
+             * @example 'a.sourceLink'
+             * @type {?string}
+             */
+            contentSourceTrigger: null,
+            /**
+             * A CSS selector for a content source selectbox or text input.
+             * This should point to a `<select>` or similar form element.
+             * When the element's value changes, the value will be used
+             * as a space- or comma-separated list of tags to filter the items by.
+             * @example 'select.sourceDropdown'
+             * @type {?string}
+             */
+            contentSourceSelect: null,
+            /**
+             * A CSS selector for a tag selectbox or text input.
+             * This should point to a `<select>`, `<input>` or similar form element.
+             * When the element's value changes, the value will be used
+             * as a space- or comma-separated list of tags to filter the items by.
+             * @example 'select.tagDropdown'
+             * @example 'input.tagList'
+             * @type {?string}
+             */
+            tagSelect: null,
+            /**
              * The CSS class to add to a selected year trigger.
              * @type {string}
              * @default
@@ -292,17 +345,29 @@
              */
             itemNotFoundMessage: 'No items found.',
             /**
-             * A callback that fires when the active year changes.
+             * A callback that fires when the display year changes.
              * @type {function}
-             * @param {Event} [event] The triggering event object.
+             * @param {Event}  [event] The triggering event object.
+             * @param {Object} [data]  A data object with these properties:
+             * - `year` The year to be displayed.
              */
-            onYearChange: function (e) {},
+            onYearChange: function (e, data) {},
+            /**
+             * A callback that fires when the list of tags to display changes.
+             * @type {function}
+             * @param {Event}  [event] The triggering event object.
+             * @param {Object} [data]  A data object with these properties:
+             * - `tags` The array of tags to filter by.
+             */
+            onTagChange: function (e, data) {},
             /**
              * A callback that fires when the active content source changes.
              * @type {function}
-             * @param {Event} [event] The triggering event object.
+             * @param {Event}  [event] The triggering event object.
+             * @param {Object} [data]  A data object with these properties:
+             * - `contentSources` An array of IDs of currently displayed content sources.
              */
-            onContentSourceChange: function (e) {},
+            onContentSourceChange: function (e, data) {},
             /**
              * A callback that fires before the full widget is rendered.
              * @type {function}
@@ -333,28 +398,26 @@
             complete: function (e) {}
         },
 
-        years: null,
         $widget: null,
-        activeSource: null,
-        activeYear: null,
 
-        _init: function () {
-            var o = this.options,
-                $e = this.element;
+        contentSourceIDs: [],
+        years: null,
 
-            this._normalizeOptions();
-
-            // clear the element if applicable
-            if (!o.append) $e.empty();
-            // save a reference to the widget and append the loading message
-            this.$widget = $(o.loadingMessage || '').appendTo($e);
-
-            this._initWidget(o.startSource);
-        },
+        currentSourceIDs: [],
+        currentYear: -1,
+        currentTags: [],
 
         _setOption: function (key, value) {
             this._super(key, value);
             this._normalizeOptions();
+        },
+
+        _convertToArray: function (value) {
+            // treat a string like a space-, pipe- or comma-separated list
+            if (typeof value == 'string') {
+                value = $.trim(value.split(/[\s,|]+/));
+            }
+            return $.isArray(value) ? value : [];
         },
 
         _normalizeOptions: function () {
@@ -364,8 +427,8 @@
             o.url = o.url.replace(/\/$/, '');
 
             // convert strings to arrays
-            o.years = o.years ? [].concat(o.years).sort(function (a, b) { return b - a; }) : [];
-            o.tags = o.tags ? [].concat(o.tags) : [];
+            o.years = this._convertToArray(o.years).sort(function (a, b) { return b - a; });
+            o.tags = this._convertToArray(o.tags);
 
             // ensure starting content source ID is in the list of content sources
             if (o.startSource && !(o.startSource in o.contentSources)) o.startSource = null;
@@ -387,24 +450,28 @@
             if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
         },
 
-        _initWidget: function (contentSourceID) {
-            var _ = this,
-                o = this.options;
+        _init: function () {
+            var o = this.options,
+                $e = this.element;
 
-            // store the active source for later re-renders when year is changed
-            this.activeSource = contentSourceID;
+            this._normalizeOptions();
 
-            var sourceList = [],
-                yearPromises = [];
+            // clear the element if applicable
+            if (!o.append) $e.empty();
+            // save a reference to the widget and append the loading message
+            this.$widget = $(o.loadingMessage || '').appendTo($e);
+
+            // build a list of source IDs to use
+            this.contentSourceIDs = $.map(o.contentSources, function (source, id) {
+                return id;
+            });
+
+            this.currentSourceIDs = (o.startSource in this.contentSourceIDs) ? [o.startSource] : this.contentSourceIDs;
+            this.currentTags = o.tags;
+
             // get years (and possibly items at the same time) for each content source
-            $.each(o.contentSources, function (id) {
-                // if a source ID was passed, filter sources
-                if (contentSourceID && contentSourceID != id) return true;
-
-                // save an ordered list of sources for reference as promises are resolved
-                sourceList.push(id);
-
-                yearPromises.push(_._getYears(id));
+            var yearPromises = $.map(this.currentSourceIDs, function (id) {
+                return _._getYears(id);
             });
 
             $.when.apply(null, yearPromises).done(function () {
@@ -415,28 +482,17 @@
                         if ($.inArray(year, years) == -1) years.push(year);
                     });
                 });
+                // filter years and get the active year
                 _.years = _._filterYears(years);
-
-                // figure out the starting year to display
-                var activeYear = -1;
-                if (_.years.length) {
-                    // if the previously selected year exists for this source, use it
-                    if ($.inArray(_.activeYear, _.years) > -1) activeYear = _.activeYear;
-                    // if o.startYear is specified and it exists for this source, use it
-                    if ($.inArray(o.startYear, _.years) > -1) activeYear = o.startYear;
-                    // otherwise if "all" is not enabled, use the most recent
-                    else if (!o.showAllYears) activeYear = _.years[0];
-                }
-                // store the active year for later re-renders
-                _.activeYear = activeYear;
+                _.currentYear = _._getCurrentYear(_.years);
 
                 // fetch items for each content source
                 var itemPromises = [];
                 $.each(arguments, function (i, result) {
                     // if items were returned, add them as a resolved promise
-                    // otherwise add a promise from fetchItems
+                    // otherwise add a promise from fetchSourceItems
                     itemPromises.push(result.items !== null ? result.items :
-                        _._fetchItems(sourceList[i], o.fetchAllYears ? -1 : activeYear));
+                        _._fetchSourceItems(this.currentSourceIDs[i]));
                 });
 
                 $.when.apply(null, itemPromises).done(function () {
@@ -447,7 +503,7 @@
                     });
                     if (o.limit) items = items.slice(0, o.limit);
 
-                    _._renderWidget(items, activeYear);
+                    _._renderWidget(items);
                 });
             });
         },
@@ -460,7 +516,7 @@
             // also skip the year list if this source has a limit on item count
             if ((o.fetchAllYears && !o.limit) || o.contentSources[contentSourceID].limit) {
                 // get items for all years
-                this._fetchItems(contentSourceID, -1).done(function (items) {
+                this._fetchSourceItems(contentSourceID, true).done(function (items) {
                     // get list of years from items
                     var years = [];
                     $.each(items, function (i, item) {
@@ -500,6 +556,18 @@
             years.sort(function (a, b) { return b - a });
 
             return years;
+        },
+
+        _getCurrentYear: function (years) {
+            var o = this.options;
+
+            if (years.length) {
+                // if o.startYear is specified and it exists for this source, use it
+                if ($.inArray(o.startYear, years) > -1) return o.startYear;
+                // otherwise if "all" is not enabled, use the most recent
+                if (!o.showAllYears) return years[0];
+            }
+            return -1;
         },
 
         _buildParams: function () {
@@ -549,18 +617,14 @@
             return gotYears;
         },
 
-        _fetchAllItems: function (year, contentSourceID) {
+        _fetchAllItems: function () {
             var _ = this,
                 o = this.options,
                 gotItems = $.Deferred();
 
             // fetch items for each content source
-            var itemPromises = [];
-            $.each(o.contentSources, function (id) {
-                // if a source ID was passed, filter sources
-                if (contentSourceID && contentSourceID != id) return true;
-
-                itemPromises.push(_._fetchItems(id, year));
+            var itemPromises = $.map(this.currentSourceIDs, function (id) {
+                return _._fetchSourceItems(id, year);
             });
 
             $.when.apply(null, itemPromises).done(function () {
@@ -576,7 +640,7 @@
             return gotItems;
         },
 
-        _fetchItems: function (contentSourceID, year) {
+        _fetchSourceItems: function (contentSourceID, allYears) {
             var _ = this,
                 o = this.options,
                 contentSource = o.contentSources[contentSourceID],
@@ -591,10 +655,10 @@
                     serviceDto: {
                         ItemCount: contentSource.limit || -1,
                         StartIndex: o.skip,
-                        TagList: !o.tags.length ? null : o.tags,
+                        TagList: !this.currentTags.length ? null : this.currentTags,
                         IncludeTags: true
                     },
-                    year: year
+                    year: (this.currentYear && !o.fetchAllYears && !allYears) ? this.currentYear : -1
                 }
             )).done(function (data) {
                 gotItems.resolve($.map(data[contentType.itemsResultField], function (rawItem) {
@@ -638,33 +702,32 @@
             var _ = this,
                 o = this.options,
                 itemsByYear = {},
+                itemsBySource = {},
                 tplData = {
-                    items: [],
-                    years: [],
-                    contentSources: $.map(o.contentSources, function (source, id) {
-                        return id;
-                    })
+                    items: []
                 };
 
             $.each(items, function (i, item) {
                 // only save items that are in the years array
                 if ($.inArray(item.year, _.years) == -1) return true;
+
                 if (!(item.year in itemsByYear)) itemsByYear[item.year] = [];
+                if (!(item.contentSourceID in itemsBySource)) itemsBySource[item.contentSourceID] = [];
 
                 // add item to template data
                 tplData.items.push(item);
                 itemsByYear[item.year].push(item);
+                itemsBySource[item.contentSourceID].push(item);
             });
 
             // build per-year data for template
-            $.each(this.years, function (i, year) {
-                tplData.years.push({
+            tplData.years = $.map(this.years, function (year) {
+                return {
                     year: year,
                     value: year,
                     items: itemsByYear[year] || []
-                });
+                };
             });
-
             // add "all years" option, if there are years to show
             if (o.showAllYears && this.years.length) {
                 tplData.years.unshift({
@@ -673,6 +736,15 @@
                     items: tplData.items
                 });
             }
+
+            // build per-source data for template
+            tplData.contentSources = $.map(o.contentSources, function (source, id) {
+                return {
+                    id: id,
+                    label: source.label,
+                    items: itemsBySource[id] || []
+                };
+            });
 
             return tplData;
         },
@@ -697,7 +769,7 @@
             this._trigger('itemsComplete');
         },
 
-        _renderWidget: function (items, activeYear) {
+        _renderWidget: function (items) {
             var _ = this,
                 o = this.options,
                 $e = this.element;
@@ -707,7 +779,7 @@
 
             var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
-                if (tplYear.value == activeYear) {
+                if (tplYear.value == _.currentYear) {
                     // set the active year in the template data
                     tplYear.active = true;
                     // save this year's items for separate item rendering
@@ -728,12 +800,6 @@
                     $(o.yearContainer, $e).append(Mustache.render(o.yearTemplate, tplYear));
                 });
             }
-
-            // render items separately
-            if (o.itemContainer) {
-                this._renderItems(yearItems);
-            }
-
             // bind events to year triggers/selectbox
             if (o.yearTrigger) {
                 // add year data to each trigger and bind click event
@@ -754,8 +820,40 @@
                 });
             }
 
+            // render sources separately if applicable
+            if (o.contentSourceContainer && o.contentSourceTemplate) {
+                $(o.contentSourceContainer, $e).empty();
+                $.each(tplData.contentSources, function (i, tplSource) {
+                    $(o.contentSourceContainer, $e).append(Mustache.render(o.contentSourceTemplate, tplSource));
+                });
+            }
+            // bind events to source triggers/selectbox
+            if (o.contentSourceTrigger) {
+                // add source data to each trigger and bind click event
+                $(o.contentSourceTrigger, $e).each(function (i) {
+                    var contentSourceID = tplData.contentSources[i].id;
+                    $(this).data('id', contentSourceID);
+
+                    $(this).click(function (e) {
+                        e.preventDefault();
+                        if (!$(this).hasClass(o.activeClass)) _.setContentSource(contentSourceID, e);
+                    });
+                });
+            }
+            if (o.contentSourceSelect) {
+                // bind change event to selectbox
+                $(o.contentSourceSelect, $e).change(function (e) {
+                    _.setContentSource($(this).val(), e);
+                });
+            }
+
+            // render items separately
+            if (o.itemContainer) {
+                this._renderItems(yearItems);
+            }
+
             // set triggers/selectbox to show active year
-            this._updateYearControls(activeYear);
+            this._updateYearControls(this.currentYear);
 
             // fire callback
             this._trigger('complete');
@@ -775,58 +873,74 @@
             }
         },
 
-        /**
-         * Display items from a particular year. This will refetch the list of items if necessary.
-         * @param {number} year    The year to display, or -1 for all years.
-         * @param {Event}  [event] The triggering event, if any.
-         */
-        setYear: function (year, e) {
-            var _ = this,
-                o = this.options,
-                $e = this.element;
-
-            // fire callback, cancel event if default action is prevented
-            if (!this._trigger('onYearChange', e)) return;
-
-            // default value if year is invalid
-            year = parseInt(year);
-            if ($.inArray(year, this.years) == -1) year = o.showAllYears ? -1 : this.years[0];
-
-            this.activeYear = year;
-            this._updateYearControls(year);
-
+        _updateWidget: function () {
             // display loading message
             if (o.itemContainer) {
-                if (o.itemLoadingMessage !== false) $(o.itemContainer, $e).html(o.itemLoadingMessage);
+                if (o.itemLoadingMessage !== false) {
+                    $(o.itemContainer, $e).html(o.itemLoadingMessage);
+                }
             }
             else if (o.loadingMessage !== false) {
                 this.$widget.remove();
                 this.$widget = $(o.loadingMessage).appendTo($e);
             }
 
-            // get items for selected year
-            this._fetchAllItems(year, this.activeSource).done(function (items) {
+            // fetch and display items
+            this._fetchAllItems().done(function (items) {
                 if (o.itemContainer) {
                     // rerender item section
                     _._renderItems(items);
                 }
                 else {
                     // rerender entire widget
-                    _._renderWidget(items, year);
+                    _._renderWidget(items);
                 }
             });
         },
 
         setContentSource: function (contentSourceID, e) {
-            var _ = this,
-                o = this.options,
-                $e = this.element;
+            var currentSourceIDs = (contentSourceID in this.contentSourceIDs) ? [contentSourceID] : this.contentSourceIDs;
 
             // fire callback, cancel event if default action is prevented
-            if (!this._trigger('onContentSourceChange', e)) return;
+            if (!this._trigger('onContentSourceChange', e, {contentSources: currentSourceIDs})) return;
 
-            this.activeSource = contentSourceID;
-            this._initWidget(contentSourceID);
+            this.currentSourceIDs = currentSourceIDs;
+
+            this._updateWidget();
+        },
+
+        /**
+         * Display items from a particular year. This will refetch the list of items if necessary.
+         * @param {number} year    The year to display, or -1 for all years.
+         * @param {Event}  [event] The triggering event, if any.
+         */
+        setYear: function (year, e) {
+            var o = this.options;
+
+            // default value if year is invalid
+            var currentYear = parseInt(year);
+            if ($.inArray(currentYear, this.years) == -1) {
+                currentYear = o.showAllYears ? -1 : this.years[0];
+            }
+
+            // fire callback, cancel event if default action is prevented
+            if (!this._trigger('onYearChange', e, {year: currentYear})) return;
+
+            this.currentYear = currentYear;
+            this._updateYearControls(this.currentYear);
+
+            this._updateWidget();
+        },
+
+        setTags: function (tags, e) {
+            tags = this._convertToArray(tags);
+
+            // fire callback, cancel event if default action is prevented
+            if (!this._trigger('onTagChange', e, {tags: tags})) return;
+
+            this.currentTags = tags;
+
+            this._updateWidget();
         },
 
         contentTypes: {

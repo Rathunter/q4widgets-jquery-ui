@@ -2,7 +2,7 @@
     /**
      * Base widget for accessing Q4 private API data.
      * @class q4.api
-     * @version 1.6.0
+     * @version 1.7.0
      * @abstract
      * @author marcusk@q4websystems.com
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -311,6 +311,16 @@
              */
             yearSelect: null,
             /**
+             * A CSS selector for a tag selectbox or text input.
+             * This should point to a `<select>`, `<input>` or similar form element.
+             * When the element's value changes, the value will be used
+             * as a space- or comma-separated list of tags to filter the items by.
+             * @example 'select.tagDropdown'
+             * @example 'input.tagList'
+             * @type {?string}
+             */
+            tagSelect: null,
+            /**
              * The CSS class to add to a selected year trigger.
              * @type {string}
              * @default
@@ -355,15 +365,25 @@
              */
             itemNotFoundMessage: 'No items found.',
             /**
-             * A callback that fires when the active year changes.
+             * A callback that fires when the display year changes.
              * @type {function}
-             * @param {Event} [event] The triggering event object.
+             * @param {Event}  [event] The triggering event object.
+             * @param {Object} [data]  A data object with these properties:
+             * - `year` The year to be displayed.
              */
-            onYearChange: function (e) {},
+            onYearChange: function (e, data) {},
+            /**
+             * A callback that fires when the list of tags to display changes.
+             * @type {function}
+             * @param {Event}  [event] The triggering event object.
+             * @param {Object} [data]  A data object with these properties:
+             * - `tags` The array of tags to filter by.
+             */
+            onTagChange: function (e, data) {},
             /**
              * A callback that fires before the full widget is rendered.
              * @type {function}
-             * @param {Event} [event] The event object.
+             * @param {Event}  [event]        The event object.
              * @param {Object} [templateData] The complete template data.
              */
             beforeRender: function (e, tplData) {},
@@ -371,7 +391,7 @@
              * A callback that fires before the items list is rendered.
              * This only fires if `itemContainer` and `itemTemplate` are set.
              * @type {function}
-             * @param {Event} [event] The event object.
+             * @param {Event}  [event]        The event object.
              * @param {Object} [templateData] Template data for the items list.
              */
             beforeRenderItems: function (e, tplData) {},
@@ -390,13 +410,67 @@
             complete: function (e) {}
         },
 
-        years: null,
         $widget: null,
+
+        years: null,
+
+        currentYear: -1,
+        currentTags: [],
 
         itemsUrl: '',
         yearsUrl: '',
         itemsResultField: '',
         yearsResultField: '',
+
+        _setOption: function (key, value) {
+            this._super(key, value);
+            this._normalizeOptions();
+        },
+
+        _convertToArray: function (value) {
+            // treat a string like a space-, pipe- or comma-separated list
+            if (typeof value == 'string') {
+                value = $.trim(value.split(/[\s,|]+/));
+            }
+            return $.isArray(value) ? value : [];
+        },
+
+        _normalizeOptions: function () {
+            var o = this.options;
+
+            // strip trailing slash from domain
+            o.url = o.url.replace(/\/$/, '');
+
+            // convert strings to arrays
+            o.years = this._convertToArray(o.years).sort(function (a, b) { return b - a; });
+            o.tags = this._convertToArray(o.tags);
+
+            // convert strings to ints
+            if (typeof o.startYear == 'string' && o.startYear.length) o.startYear = parseInt(o.startYear);
+
+            // if item loading message is unset, set to match loading message
+            if (o.itemLoadingMessage === null) o.itemLoadingMessage = o.loadingMessage;
+
+            // if appending, make sure template and loading message are HTML
+            // so they can be stored properly in $widget
+            if (o.append) {
+                if (!/<|>/.test(o.template)) o.template = '<div>' + o.template + '</div>';
+                if (!/<|>/.test(o.loadingMessage)) o.loadingMessage = '<div>' + o.loadingMessage + '</div>';
+            }
+
+            // GetEventYearList doesn't accept EventSelection for some reason
+            // so we need this as a workaround
+            var thisYear = new Date().getFullYear();
+            if (o.showPast && !o.showFuture) {
+                o.maxYear = Math.min(thisYear, o.maxYear || thisYear);
+            }
+            else if (o.showFuture && !o.showPast) {
+                o.minYear = Math.max(thisYear, o.minYear || thisYear);
+            }
+
+            // if "all years" is enabled and it's the default, fetch all years
+            if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
+        },
 
         _init: function () {
             var _ = this,
@@ -410,19 +484,21 @@
             // save a reference to the widget and append the loading message
             this.$widget = $(o.loadingMessage || '').appendTo($e);
 
+            this.currentTags = o.tags;
+
             // get years (and possibly items at the same time)
             this._getYears().done(function (years, items) {
                 // filter years and get the active year
                 _.years = _._filterYears(years);
-                var activeYear = _._getActiveYear(_.years);
+                _.currentYear = _._getCurrentYear(_.years);
 
                 // if we got items as side-effect of getting years, skip straight to rendering
                 if (items !== undefined) {
-                    _._renderWidget(items, activeYear);
+                    _._renderWidget(items);
                 }
                 else {
-                    _._fetchItems(o.fetchAllYears ? -1 : activeYear).done(function (items) {
-                        _._renderWidget(items, activeYear);
+                    _._fetchItems().done(function (items) {
+                        _._renderWidget(items);
                     });
                 }
             });
@@ -436,7 +512,7 @@
                 var gotYears = $.Deferred();
 
                 // get items for all years
-                this._fetchItems(-1).done(function (items) {
+                this._fetchItems(true).done(function (items) {
                     // get list of years from items
                     var years = [];
                     $.each(items, function (i, item) {
@@ -474,58 +550,16 @@
             return years;
         },
 
-        _getActiveYear: function (years) {
+        _getCurrentYear: function (years) {
             var o = this.options;
 
             if (years.length) {
                 // if o.startYear is specified and it exists, use it
                 if ($.inArray(o.startYear, years) > -1) return o.startYear;
                 // otherwise if "all" is not enabled, use the most recent
-                else if (!o.showAllYears) return years[0];
+                if (!o.showAllYears) return years[0];
             }
             return -1;
-        },
-
-        _setOption: function (key, value) {
-            this._super(key, value);
-            this._normalizeOptions();
-        },
-
-        _normalizeOptions: function () {
-            var o = this.options;
-
-            // strip trailing slash from domain
-            o.url = o.url.replace(/\/$/, '');
-
-            // convert strings to arrays
-            o.years = o.years ? [].concat(o.years).sort(function (a, b) { return b - a; }) : [];
-            o.tags = o.tags ? [].concat(o.tags) : [];
-
-            // convert strings to ints
-            if (typeof o.startYear == 'string' && o.startYear.length) o.startYear = parseInt(o.startYear);
-
-            // if item loading message is unset, set to match loading message
-            if (o.itemLoadingMessage === null) o.itemLoadingMessage = o.loadingMessage;
-
-            // if appending, make sure template and loading message are HTML
-            // so they can be stored properly in $widget
-            if (o.append) {
-                if (!/<|>/.test(o.template)) o.template = '<div>' + o.template + '</div>';
-                if (!/<|>/.test(o.loadingMessage)) o.loadingMessage = '<div>' + o.loadingMessage + '</div>';
-            }
-
-            // GetEventYearList doesn't accept EventSelection for some reason
-            // so we need this as a workaround
-            var thisYear = new Date().getFullYear();
-            if (o.showPast && !o.showFuture) {
-                o.maxYear = Math.min(thisYear, o.maxYear || thisYear);
-            }
-            else if (o.showFuture && !o.showPast) {
-                o.minYear = Math.max(thisYear, o.minYear || thisYear);
-            }
-
-            // if "all years" is enabled and it's the default, fetch all years
-            if (o.showAllYears && !o.startYear) o.fetchAllYears = true;
         },
 
         _buildParams: function () {
@@ -568,7 +602,7 @@
             return gotYears;
         },
 
-        _fetchItems: function (year) {
+        _fetchItems: function (allYears) {
             var _ = this,
                 o = this.options,
                 gotItems = $.Deferred();
@@ -577,10 +611,10 @@
                 serviceDto: {
                     ItemCount: o.limit || -1,
                     StartIndex: o.skip,
-                    TagList: !o.tags.length ? null : o.tags,
+                    TagList: !this.currentTags.length ? null : this.currentTags,
                     IncludeTags: true
                 },
-                year: year
+                year: (this.currentYear && !o.fetchAllYears && !allYears) ? this.currentYear : -1
             })).done(function (data) {
                 var items = $.map(data[_.itemsResultField], function (rawItem) {
                     return _._parseItem(rawItem);
@@ -684,7 +718,7 @@
             this._trigger('itemsComplete');
         },
 
-        _renderWidget: function (items, activeYear) {
+        _renderWidget: function (items) {
             var _ = this,
                 o = this.options,
                 $e = this.element;
@@ -694,7 +728,7 @@
 
             var yearItems = [];
             $.each(tplData.years, function (i, tplYear) {
-                if (tplYear.value == activeYear) {
+                if (tplYear.value == _.currentYear) {
                     // set the active year in the template data
                     tplYear.active = true;
                     // save this year's items for separate item rendering
@@ -741,8 +775,15 @@
                 });
             }
 
+            // bind events to tag selectbox/input
+            if (o.tagSelect) {
+                $(o.tagSelect, $e).change(function (e) {
+                    _.setTags($(this).val(), e);
+                });
+            }
+
             // set triggers/selectbox to show active year
-            this._updateYearControls(activeYear);
+            this._updateYearControls(this.currentYear);
 
             // fire callback
             this._trigger('complete');
@@ -762,45 +803,67 @@
             }
         },
 
-        /**
-         * Display items from a particular year. This will refetch the list of items if necessary.
-         * @param {number} year    The year to display, or -1 for all years.
-         * @param {Event}  [event] The triggering event, if any.
-         */
-        setYear: function (year, e) {
+        _updateWidget: function () {
             var _ = this,
                 o = this.options,
                 $e = this.element;
 
-            // fire callback, cancel event if default action is prevented
-            if (!this._trigger('onYearChange', e)) return;
-
-            // default value if year is invalid
-            year = parseInt(year);
-            if ($.inArray(year, this.years) == -1) year = o.showAllYears ? -1 : this.years[0];
-
-            this._updateYearControls(year);
-
             // display loading message
             if (o.itemContainer && o.itemTemplate) {
-                if (o.itemLoadingMessage !== false) $(o.itemContainer, $e).html(o.itemLoadingMessage);
+                if (o.itemLoadingMessage !== false) {
+                    $(o.itemContainer, $e).html(o.itemLoadingMessage);
+                }
             }
             else if (o.loadingMessage !== false) {
                 this.$widget.remove();
                 this.$widget = $(o.loadingMessage).appendTo($e);
             }
 
-            // get items for selected year
-            this._fetchItems(year).done(function (items) {
+            // fetch and display items
+            this._fetchItems().done(function (items) {
                 if (o.itemContainer && o.itemTemplate) {
                     // rerender item section
                     _._renderItems(items);
                 }
                 else {
                     // rerender entire widget
-                    _._renderWidget(items, year);
+                    _._renderWidget(items);
                 }
             });
+        },
+
+        /**
+         * Display items from a particular year. This will refetch the list of items if necessary.
+         * @param {number} year    The year to display, or -1 for all years.
+         * @param {Event}  [event] The triggering event, if any.
+         */
+        setYear: function (year, e) {
+            var o = this.options;
+
+            // default value if year is invalid
+            var currentYear = parseInt(year);
+            if ($.inArray(currentYear, this.years) == -1) {
+                currentYear = o.showAllYears ? -1 : this.years[0];
+            }
+
+            // fire callback, cancel event if default action is prevented
+            if (!this._trigger('onYearChange', e, {year: currentYear})) return;
+
+            this.currentYear = currentYear;
+            this._updateYearControls(this.currentYear);
+
+            this._updateWidget();
+        },
+
+        setTags: function (tags, e) {
+            tags = this._convertToArray(tags);
+
+            // fire callback, cancel event if default action is prevented
+            if (!this._trigger('onTagChange', e, {tags: tags})) return;
+
+            this.currentTags = tags;
+
+            this._updateWidget();
         }
     });
 
@@ -1058,6 +1121,7 @@
                 dateObj: new Date(result.ReportDate),
                 year: new Date(result.ReportDate).getFullYear(),
                 date: this._formatDate(result.ReportDate),
+                tags: result.TagsList,
                 type: result.ReportSubType,
                 shortType: o.shortTypes[result.ReportSubType],
                 docs: $.map(result.Documents, function (doc) {

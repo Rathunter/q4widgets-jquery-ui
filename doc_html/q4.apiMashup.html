@@ -25,7 +25,7 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.apimashup.1.6.0.min.js' target='_blank'>q4.apimashup.1.6.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.apimashup.1.7.0.min.js' target='_blank'>q4.apimashup.1.7.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
         <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.apimashup.js#L2' target='_blank'>q4.apimashup.js</a>, line 2</dd>
@@ -403,7 +403,12 @@ This option is not required; you can also use <code>yearTemplate</code> and item
 to build the widget on top of existing layout.</p>
 <p>The following tags are available:</p>
 <ul>
-<li><code>{{#contentSources}}</code> An array of content source IDs.</li>
+<li><p><code>{{#contentSources}}</code> An array of content sources, each with these subtags:</p>
+<ul>
+<li><code>{{id}}</code>    The ID string for this content source.</li>
+<li><code>{{label}}</code> The label for this content source.</li>
+</ul>
+</li>
 <li><p><code>{{#years}}</code> An array of years for the navigation. Each year has these subtags:</p>
 <ul>
 <li><code>{{year}}</code>   The display label of the year (e.g. <code>&quot;2015&quot;</code>, <code>&quot;All Years&quot;</code>)</li>
@@ -547,6 +552,105 @@ you can do that in the template.</p>
                 </dl>
             </dd>
         </div>
+        <div id='option-contentSourceContainer'>
+            <dt>
+                <strong>contentSourceContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for a content source navigation container.
+Use this if you don't want to use the <code>template</code> option to draw the widget,
+but you still want to generate a list of content sources.
+You must also pass <code>sourceTemplate</code> for this to have any effect.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-contentSourceTemplate'>
+            <dt>
+                <strong>contentSourceTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache.js template for a single content source.
+If this and <code>sourceContainer</code> are passed, this will be used to render each option in
+the source navigation, which will be attached to the widget at <code>sourceContainer</code>.
+See the <code>template</code> option for available tags.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'&lt;li&gt;{{label}}&lt;/li&gt;'</span></code></dd>
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'&lt;option value="{{id}}"&gt;{{label}}&lt;/option&gt;'</span></code></dd>
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-contentSourceTrigger'>
+            <dt>
+                <strong>contentSourceTrigger</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A CSS selector for content source trigger links.
+If passed, any elements in the widget matching this selector will
+become clickable links that filter the displayed items by source.
+Usually you'll want to point this to an element in the template's <code>{{sources}}</code> loop.</p>
+<p>Note that this doesn't automatically generate the content source links;
+you can do that in the template.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'a.sourceLink'</span></code></dd>
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-contentSourceSelect'>
+            <dt>
+                <strong>contentSourceSelect</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A CSS selector for a content source selectbox or text input.
+This should point to a <code>&lt;select&gt;</code> or similar form element.
+When the element's value changes, the value will be used
+as a space- or comma-separated list of tags to filter the items by.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'select.sourceDropdown'</span></code></dd>
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-tagSelect'>
+            <dt>
+                <strong>tagSelect</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A CSS selector for a tag selectbox or text input.
+This should point to a <code>&lt;select&gt;</code>, <code>&lt;input&gt;</code> or similar form element.
+When the element's value changes, the value will be used
+as a space- or comma-separated list of tags to filter the items by.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'select.tagDropdown'</span></code></dd>
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'input.tagList'</span></code></dd>
+
+                </dl>
+            </dd>
+        </div>
         <div id='option-activeClass'>
             <dt>
                 <strong>activeClass</strong>
@@ -646,7 +750,7 @@ Set to <code>false</code> to disable this feature.</p>
                 <span>function</span>
             </dt>
             <dd>
-                <p>A callback that fires when the active year changes.</p>
+                <p>A callback that fires when the display year changes.</p>
                 <dl>
 
                     <dt>Parameters</dt>
@@ -656,6 +760,44 @@ Set to <code>false</code> to disable this feature.</p>
                             <span>Event</span>
                         </dt>
                         <dd><p>The triggering event object.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>year</code> The year to be displayed.</li>
+</ul></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-onTagChange'>
+            <dt>
+                <strong>onTagChange</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback that fires when the list of tags to display changes.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event object.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>tags</code> The array of tags to filter by.</li>
+</ul></dd>
                     </dl></dd>
 
 
@@ -678,6 +820,14 @@ Set to <code>false</code> to disable this feature.</p>
                             <span>Event</span>
                         </dt>
                         <dd><p>The triggering event object.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>contentSources</code> An array of IDs of currently displayed content sources.</li>
+</ul></dd>
                     </dl></dd>
 
 

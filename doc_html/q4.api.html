@@ -25,7 +25,7 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.6.0.min.js' target='_blank'>q4.api.1.6.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.api.1.7.0.min.js' target='_blank'>q4.api.1.7.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
         <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.api.js#L2' target='_blank'>q4.api.js</a>, line 2</dd>
@@ -623,6 +623,27 @@ you can do that in the template.</p>
                 </dl>
             </dd>
         </div>
+        <div id='option-tagSelect'>
+            <dt>
+                <strong>tagSelect</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A CSS selector for a tag selectbox or text input.
+This should point to a <code>&lt;select&gt;</code>, <code>&lt;input&gt;</code> or similar form element.
+When the element's value changes, the value will be used
+as a space- or comma-separated list of tags to filter the items by.</p>
+                <dl>
+
+
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'select.tagDropdown'</span></code></dd>
+                    <dt>Example</dt>
+                    <dd><code><span class="hljs-string">'input.tagList'</span></code></dd>
+
+                </dl>
+            </dd>
+        </div>
         <div id='option-activeClass'>
             <dt>
                 <strong>activeClass</strong>
@@ -720,7 +741,7 @@ Set to <code>false</code> to disable this feature.</p>
                 <span>function</span>
             </dt>
             <dd>
-                <p>A callback that fires when the active year changes.</p>
+                <p>A callback that fires when the display year changes.</p>
                 <dl>
 
                     <dt>Parameters</dt>
@@ -730,6 +751,44 @@ Set to <code>false</code> to disable this feature.</p>
                             <span>Event</span>
                         </dt>
                         <dd><p>The triggering event object.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>year</code> The year to be displayed.</li>
+</ul></dd>
+                    </dl></dd>
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-onTagChange'>
+            <dt>
+                <strong>onTagChange</strong>
+                <span>function</span>
+            </dt>
+            <dd>
+                <p>A callback that fires when the list of tags to display changes.</p>
+                <dl>
+
+                    <dt>Parameters</dt>
+                    <dd><dl>
+                        <dt>
+                            <strong>event</strong>
+                            <span>Event</span>
+                        </dt>
+                        <dd><p>The triggering event object.</p></dd>
+                        <dt>
+                            <strong>data</strong>
+                            <span>Object</span>
+                        </dt>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>tags</code> The array of tags to filter by.</li>
+</ul></dd>
                     </dl></dd>
 
 

@@ -79,7 +79,8 @@
              * @type {Array<Object>}
              * @prop {string}  title   The title to display in the header.
              * @prop {string}  content The content to display in the body.
-             * @prop {boolean} open    Whether to show or hide the section initially. */
+             * @prop {boolean} open    Whether to show or hide the section initially.
+             */
             content: [
                 {
                     title: 'Title 1',

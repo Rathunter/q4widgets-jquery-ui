@@ -71,37 +71,37 @@ However, <code>showAllYears</code> is <code>true</code> so that users can choose
 
         <pre><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'events'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
-$(<span class="hljs-string">'#events'</span>).events({
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="handlebars"><span class="xml">
+$('#events').events({
     dateFormat: {
-        date: <span class="hljs-string">'MMMM Do, YYYY'</span>,
-        time: <span class="hljs-string">'h:mm:ss A'</span>
+        date: 'MMMM Do, YYYY',
+        time: 'h:mm:ss A'
     },
-    useMoment: <span class="hljs-literal">true</span>,
-    showAllYears: <span class="hljs-literal">true</span>,
-    showFuture: <span class="hljs-literal">false</span>,
-    sortAscending: <span class="hljs-literal">true</span>,
-    yearTrigger: <span class="hljs-string">'.years li'</span>,
+    useMoment: true,
+    showAllYears: true,
+    showFuture: false,
+    sortAscending: true,
+    yearTrigger: '.years li',
     template: (
-        <span class="hljs-string">'&lt;h1&gt;Past Events&lt;/h1&gt;'</span> +
-        <span class="hljs-string">'&lt;ul class="years"&gt;{{#years}}&lt;li&gt;{{year}}&lt;/li&gt;{{/years}}&lt;/ul&gt;'</span> +
-        <span class="hljs-string">'&lt;ul class="items"&gt;'</span> +
-            <span class="hljs-string">'{{#items}}'</span> +
-            <span class="hljs-string">'&lt;li&gt;'</span> +
-                <span class="hljs-string">'&lt;a href="{{url}}"&gt;{{title}}&lt;/a&gt;'</span> +
-                <span class="hljs-string">'&lt;span class="date"&gt;{{date.date}}&lt;/span&gt;'</span> +
-                <span class="hljs-string">'&lt;span class="time"&gt;{{date.time}}&lt;/span&gt;'</span> +
-                <span class="hljs-string">'&lt;ul class="docs"&gt;'</span> +
-                <span class="hljs-string">'{{#docs}}'</span> +
-                    <span class="hljs-string">'&lt;a href="{{url}}"&gt;{{title}}&lt;/a&gt;'</span> +
-                <span class="hljs-string">'{{/docs}}'</span> +
-                <span class="hljs-string">'&lt;/ul&gt;'</span> +
-            <span class="hljs-string">'&lt;/li&gt;'</span> +
-            <span class="hljs-string">'{{/items}}'</span> +
-        <span class="hljs-string">'&lt;/ul&gt;'</span>
+        '<span class="hljs-tag">&lt;<span class="hljs-title">h1</span>&gt;</span>Past Events<span class="hljs-tag">&lt;/<span class="hljs-title">h1</span>&gt;</span>' +
+        '<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"years"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-begin-block">#years</span>}}</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">year</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-end-block">/years</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>' +
+        '<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"items"</span>&gt;</span>' +
+            '</span><span class="hljs-expression">{{<span class="hljs-begin-block">#items</span>}}</span><span class="xml">' +
+            '<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">url</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">title</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"date"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">date.date</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"time"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">date.time</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"docs"</span>&gt;</span>' +
+                '</span><span class="hljs-expression">{{<span class="hljs-begin-block">#docs</span>}}</span><span class="xml">' +
+                    '<span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">url</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">title</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>' +
+                '</span><span class="hljs-expression">{{<span class="hljs-end-block">/docs</span>}}</span><span class="xml">' +
+                '<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>' +
+            '<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>' +
+            '</span><span class="hljs-expression">{{<span class="hljs-end-block">/items</span>}}</span><span class="xml">' +
+        '<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>'
     )
 });
-</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
     </div>
     <div>
         <p>This example uses the year and item templates instead of the main template.</p>
@@ -117,30 +117,30 @@ $(<span class="hljs-string">'#events'</span>).events({
     <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"items"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">select</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
-$(<span class="hljs-string">'#financials'</span>).financials({
-    minYear: (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()).getFullYear() - <span class="hljs-number">4</span>,
-    dateFormat: <span class="hljs-string">'M d, yy'</span>,
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="handlebars"><span class="xml">
+$('#financials').financials({
+    minYear: (new Date()).getFullYear() - 4,
+    dateFormat: 'M d, yy',
     shortTypes: {
-        <span class="hljs-string">'Annual Report'</span>: <span class="hljs-string">'FY'</span>
+        'Annual Report': 'FY'
     },
-    yearSelect: <span class="hljs-string">'.years'</span>,
-    yearContainer: <span class="hljs-string">'.years'</span>,
-    yearTemplate: <span class="hljs-string">'&lt;option value="{{value}}"&gt;{{year}}&lt;/option&gt;'</span> +
-    itemContainer: <span class="hljs-string">'.items'</span>,
-    itemLoadingMessage: <span class="hljs-string">'&lt;p class="loading"&gt;Loading financial reports for the selected year...&lt;/p&gt;'</span>,
+    yearSelect: '.years',
+    yearContainer: '.years',
+    yearTemplate: '<span class="hljs-tag">&lt;<span class="hljs-title">option</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">value</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">year</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">option</span>&gt;</span>' +
+    itemContainer: '.items',
+    itemLoadingMessage: '<span class="hljs-tag">&lt;<span class="hljs-title">p</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"loading"</span>&gt;</span>Loading financial reports for the selected year...<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>',
     itemTemplate: (
-        <span class="hljs-string">'&lt;li&gt;'</span> +
-            <span class="hljs-string">'&lt;h2&gt;{{shortType}} {{year}}&lt;/h2&gt;'</span> +
-            <span class="hljs-string">'&lt;ul class="docs"&gt;'</span> +
-            <span class="hljs-string">'{{#docs}}'</span> +
-                <span class="hljs-string">'&lt;li&gt;&lt;a href="{{docUrl}}" class="{{docType}}"&gt;{{docTitle}}&lt;/a&gt;&lt;/li&gt;'</span> +
-            <span class="hljs-string">'{{/docs}}'</span> +
-            <span class="hljs-string">'&lt;/ul&gt;'</span> +
-        <span class="hljs-string">'&lt;/li&gt;'</span>
+        '<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>' +
+            '<span class="hljs-tag">&lt;<span class="hljs-title">h2</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">shortType</span>}}</span><span class="xml"> </span><span class="hljs-expression">{{<span class="hljs-variable">year</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">h2</span>&gt;</span>' +
+            '<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"docs"</span>&gt;</span>' +
+            '</span><span class="hljs-expression">{{<span class="hljs-begin-block">#docs</span>}}</span><span class="xml">' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">docUrl</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">"</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">docType</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">docTitle</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>' +
+            '</span><span class="hljs-expression">{{<span class="hljs-end-block">/docs</span>}}</span><span class="xml">' +
+            '<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>' +
+        '<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>'
     )
 });
-</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
     </div>
 </section>
 
@@ -240,7 +240,7 @@ otherwise it will start with data from the most recent year.</p>
                 <p>The text to use for the &quot;all years&quot; option.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'All'</span></code></dd>
+                    <dd><code>All</code></dd>
 
 
 
@@ -316,7 +316,7 @@ which will display items from the current calendar year.</p>
         <div id='option-tags'>
             <dt>
                 <strong>tags</strong>
-                <span>Array&lt;string&gt;</span>
+                <span>Array.&lt;string&gt;</span>
             </dt>
             <dd>
                 <p>A list of tags to filter by.</p>
@@ -356,11 +356,11 @@ object key corresponding to the string you want to use).
 By default, dates are formatted using jQuery UI's datepicker.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'mm/dd/yy'</span></code></dd>
+                    <dd><code>mm/dd/yy</code></dd>
 
 
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'MM d, yy'</span></code></dd>
+                    <dd><code><span class="hljs-string">'MM d, yy'</span></code></dd>
 
                     <dt>Example</dt>
                         <dd><pre>{
@@ -408,7 +408,7 @@ Only takes effect if the Moment.js library has been included.</p>
         <div id='option-years'>
             <dt>
                 <strong>years</strong>
-                <span>Array&lt;number&gt;</span>
+                <span>Array.&lt;number&gt;</span>
             </dt>
             <dd>
                 <p>An array of years to filter by. If passed, no items will
@@ -537,7 +537,7 @@ or replace the widget's contents entirely.</p>
 Set to <code>false</code> to disable this feature. See also <code>itemLoadingMessage</code>.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'Loading...'</span></code></dd>
+                    <dd><code>Loading...</code></dd>
 
 
 
@@ -575,9 +575,9 @@ See the <code>template</code> option for available tags.</p>
 
 
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'&lt;li&gt;{{year}}&lt;/li&gt;'</span></code></dd>
+                    <dd><code><span class="hljs-string">'&lt;li&gt;{{year}}&lt;/li&gt;'</span></code></dd>
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'&lt;option value="{{value}}"&gt;{{year}}&lt;/option&gt;'</span></code></dd>
+                    <dd><code><span class="hljs-string">'&lt;option value="{{value}}"&gt;{{year}}&lt;/option&gt;'</span></code></dd>
 
                 </dl>
             </dd>
@@ -598,7 +598,7 @@ you can do that in the template.</p>
 
 
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'a.yearLink'</span></code></dd>
+                    <dd><code><span class="hljs-string">'a.yearLink'</span></code></dd>
 
                 </dl>
             </dd>
@@ -618,7 +618,7 @@ you can do that in the template.</p>
 
 
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'select.yearsDropdown'</span></code></dd>
+                    <dd><code><span class="hljs-string">'select.yearsDropdown'</span></code></dd>
 
                 </dl>
             </dd>
@@ -632,7 +632,7 @@ you can do that in the template.</p>
                 <p>The CSS class to add to a selected year trigger.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'active'</span></code></dd>
+                    <dd><code>active</code></dd>
 
 
 
@@ -707,7 +707,7 @@ Set to <code>false</code> to disable this feature.</p>
                 <p>A message or HTML string to display in the items container if no items are found.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'No items found.'</span></code></dd>
+                    <dd><code>No items found.</code></dd>
 
 
 

@@ -15,6 +15,7 @@
              * Each content source object consists of the following options,
              * plus any additional options made available by the specific content type.
              * These are listed at the end of the file.
+             * @type {Array<Object>}
              * @prop type    {string} The content type of this source (required).
              *    Can be "downloads", "events", "presentations", or "news".
              * @prop limit   {number} The maximum number of items to fetch for this source.

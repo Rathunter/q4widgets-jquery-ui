@@ -11,8 +11,10 @@ function parse_markdown_link(link) {
     };
 }
 
-function single_quote(code) {
-    return code.replace(/^"|"$/g, "'");
+function format_value(value) {
+    if (typeof value == 'string') return value;
+    if (typeof value == 'boolean' || typeof value == 'number') return value.toString();
+    return value;
 }
 
 function highlight_js(code) {
@@ -81,7 +83,8 @@ exports.publish = function (data, opts) {
                 line: doclet.meta.lineno,
                 type: 'type' in doclet ? doclet.type.names : [],
                 params: (doclet.params || []).map(stringify_type),
-                defaultval: highlight_js(single_quote(doclet.defaultvalue || '')),
+                defaultval: (doclet.defaultvalue !== undefined && doclet.defaultvalue !== null ?
+                    highlight_js(format_value(doclet.defaultvalue)) : doclet.defaultValue),
                 examples: (doclet.examples || []).filter(single_line).map(highlight_js),
                 exblocks: (doclet.examples || []).filter(multi_line).map(highlight_js)
             });
@@ -119,19 +122,15 @@ exports.publish = function (data, opts) {
         indexTemplate = fs.readFileSync('jsdoc_template/index.html.mustache', 'utf-8'),
         pageTemplate = fs.readFileSync('jsdoc_template/doc.html.mustache', 'utf-8');
 
-    fs.writeFile('doc_html/index.html', mustache.render(layoutTemplate, {
+    fs.writeFileSync('doc_html/index.html', mustache.render(layoutTemplate, {
         classes: classlist,
         content: mustache.render(indexTemplate, {classes: classlist})
-    }), 'utf8', function (err) {
-        if (err) throw err;
-    });
+    }), 'utf8');
 
     classlist.forEach(function (clss) {
-        fs.writeFile('doc_html/' + clss.name + '.html', mustache.render(layoutTemplate, {
+        fs.writeFileSync('doc_html/' + clss.name + '.html', mustache.render(layoutTemplate, {
             classes: classlist,
             content: mustache.render(pageTemplate, clss)
-        }), 'utf8', function (err) {
-            if (err) throw err;
-        });
+        }), 'utf8');
     });
 };

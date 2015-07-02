@@ -1281,11 +1281,13 @@
         options: {
             /**
              * The exchange of the stock symbol to look up.
+             * If you are looking up the company by CIK, enter `CIK`.
              * @type {string}
              */
             exchange: '',
             /**
              * The stock symbol to look up.
+             * If you are looking up the company by CIK, enter the CIK number here.
              * @type {string}
              */
             symbol: '',

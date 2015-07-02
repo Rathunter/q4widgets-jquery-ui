@@ -275,7 +275,7 @@
              * If `tagOptions.input` is `trigger` or `select`, an array of
              * preset tags to offer as filter options.
              * Tags can be either strings or {name, value} objects.
-             * @type {(Array<string>|Array<object>)}}
+             * @type {(Array<string>|Array<object>)}
              */
             tags: [],
             /**

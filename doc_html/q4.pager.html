@@ -50,33 +50,33 @@ It uses the <code>content</code> option to automatically show and hide each page
         <pre><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'#events'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'#pager'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
-$(<span class="hljs-string">'#events'</span>).events({
+<span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="handlebars"><span class="xml">
+$('#events').events({
     template: (
-        <span class="hljs-string">'&lt;ul class="years"&gt;{{#years}}&lt;li&gt;{{year}}&lt;/li&gt;{{/years}}&lt;/ul&gt;'</span> +
-        <span class="hljs-string">'&lt;ul class="items"&gt;'</span> +
-            <span class="hljs-string">'{{#items}}'</span> +
-            <span class="hljs-string">'&lt;li&gt;'</span> +
-                <span class="hljs-string">'&lt;span class="date"&gt;{{date}}&lt;/span&gt;'</span> +
-                <span class="hljs-string">'&lt;a href="{{url}}"&gt;{{title}}&lt;/a&gt;'</span> +
-            <span class="hljs-string">'&lt;/li&gt;'</span> +
-            <span class="hljs-string">'{{/items}}'</span> +
-        <span class="hljs-string">'&lt;/ul&gt;'</span>
+        '<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"years"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-begin-block">#years</span>}}</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">year</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-end-block">/years</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>' +
+        '<span class="hljs-tag">&lt;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"items"</span>&gt;</span>' +
+            '</span><span class="hljs-expression">{{<span class="hljs-begin-block">#items</span>}}</span><span class="xml">' +
+            '<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span>' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"date"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">date</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>' +
+                '<span class="hljs-tag">&lt;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">url</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">"</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">title</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">a</span>&gt;</span>' +
+            '<span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>' +
+            '</span><span class="hljs-expression">{{<span class="hljs-end-block">/items</span>}}</span><span class="xml">' +
+        '<span class="hljs-tag">&lt;/<span class="hljs-title">ul</span>&gt;</span>'
     ),
-    yearTrigger: <span class="hljs-string">'.years li'</span>,
-    complete: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        $(<span class="hljs-string">'#pager'</span>).pager({
-            content: $(<span class="hljs-string">'#events .items li'</span>),
-            perPage: <span class="hljs-number">10</span>,
+    yearTrigger: '.years li',
+    complete: function () {
+        $('#pager').pager({
+            content: $('#events .items li'),
+            perPage: 10,
             template: (
-                <span class="hljs-string">'&lt;li&gt;{{page}}&lt;/li&gt;'</span>
+                '<span class="hljs-tag">&lt;<span class="hljs-title">li</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">page</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">li</span>&gt;</span>'
             ),
-            append: <span class="hljs-literal">false</span>,
-            trigger: <span class="hljs-string">'li'</span>
+            append: false,
+            trigger: 'li'
         });
     }
 });
-</span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
     </div>
 </section>
 
@@ -217,7 +217,7 @@ will be generated using <code>perPage</code> and either <code>content</code> or 
                 <p>A selector for each trigger.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'&gt; *'</span></code></dd>
+                    <dd><code>&gt; *</code></dd>
 
 
 
@@ -233,7 +233,7 @@ will be generated using <code>perPage</code> and either <code>content</code> or 
                 <p>A template for each trigger. Use {{page}} for the page number or label.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-string">'&lt;span&gt;{{page}}&lt;/span&gt;'</span></code></dd>
+                    <dd><code>&lt;span&gt;{{page}}&lt;<span class="hljs-regexp">/span&gt;</span></code></dd>
 
 
 
@@ -296,9 +296,9 @@ or replace the container's contents entirely.</p>
 
 
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'Showing items {{startItem}} to {{lastItem}} of {{itemCount}}.'</span></code></dd>
+                    <dd><code><span class="hljs-string">'Showing items {{startItem}} to {{lastItem}} of {{itemCount}}.'</span></code></dd>
                     <dt>Example</dt>
-                    <dd><code> <span class="hljs-string">'Showing page {{page}} of {{pageCount}}.'</span></code></dd>
+                    <dd><code><span class="hljs-string">'Showing page {{page}} of {{pageCount}}.'</span></code></dd>
 
                 </dl>
             </dd>
@@ -323,9 +323,11 @@ or replace the container's contents entirely.</p>
                             <strong>data</strong>
                             <span>Object</span>
                         </dt>
-                        <dd><p>A data object with these properties:
-- <code>page</code>     The page we are changing to.
-- <code>prevPage</code> The page we are changing from.</p></dd>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>page</code>     The page we are changing to.</li>
+<li><code>prevPage</code> The page we are changing from.</li>
+</ul></dd>
                     </dl></dd>
 
 
@@ -352,9 +354,11 @@ or replace the container's contents entirely.</p>
                             <strong>data</strong>
                             <span>Object</span>
                         </dt>
-                        <dd><p>A data object with these properties:
-- <code>page</code>     The page we are changing to.
-- <code>prevPage</code> The page we are changing from.</p></dd>
+                        <dd><p>A data object with these properties:</p>
+<ul>
+<li><code>page</code>     The page we are changing to.</li>
+<li><code>prevPage</code> The page we are changing from.</li>
+</ul></dd>
                     </dl></dd>
 
 

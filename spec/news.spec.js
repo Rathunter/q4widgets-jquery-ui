@@ -9,19 +9,18 @@ describe('news', function () {
     GetSignature = jasmine.createSpy();
 
     // data fixtures
-    jasmine.getJSONFixtures().fixturesPath = '';
-    var fakePress = getJSONFixture('spec/fixtures/news.json'),
+    jasmine.getJSONFixtures().fixturesPath = 'base/spec/fixtures';
+    var fakePress = getJSONFixture('news.json'),
         fakeYears = {GetPressReleaseYearListResult: [2014, 2013, 2012]};
 
     beforeEach(function (done) {
         // return fake data on jquery ajax requests
         spyOn($, 'ajax').and.callFake(function (opts) {
-            if (opts.url.indexOf('GetPressReleaseYearList') > -1) {
-                opts.success(fakeYears);
+            var result;
+            if (opts.url.indexOf('GetPressReleaseYearList') > -1) result = fakeYears;
+            else if (opts.url.indexOf('GetPressReleaseList') > -1) result = fakePress;
 
-            } else if (opts.url.indexOf('GetPressReleaseList') > -1) {
-                opts.success(fakePress);
-            }
+            return $.Deferred().resolve(result);
         });
 
         // create widget in sandbox

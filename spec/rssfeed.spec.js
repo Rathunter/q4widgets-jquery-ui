@@ -1,13 +1,17 @@
 describe('rssfeed', function () {
     var $rss;
 
-    jasmine.getFixtures().fixturesPath = '';
-    var fakeXML = readFixtures('spec/fixtures/hilton.rss');
+    jasmine.getFixtures().fixturesPath = 'base/spec/fixtures';
+    var fakeXML = readFixtures('hilton.rss');
 
     beforeEach(function (done) {
         // return hilton.rss on all $.get requests
-        spyOn($, 'get').and.callFake(function(url, callback) {
-            callback(fakeXML);
+        spyOn($, 'get').and.callFake(function (url) {
+            return $.Deferred().resolve(fakeXML);
+        });
+
+        spyOn($, 'ajax').and.callFake(function (opts) {
+            return $.Deferred().resolve(fakeXML);
         });
 
         // create widget in sandbox

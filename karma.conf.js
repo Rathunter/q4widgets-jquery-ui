@@ -12,11 +12,19 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'node_modules/jasmine-jquery/vendor/jquery/jquery.js',
+            'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/jquery-ui/jquery-ui.min.js',
+            'bower_components/mustache/mustache.min.js',
+            'bower_components/moment/min/moment-with-locales.min.js',
             'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
-            'spec/fixtures/*',
+            {
+                pattern: 'spec/fixtures/*',
+                watched: true,
+                served: true,
+                included: false,
+            },
             'spec/*spec.js',
-            'src/*.js'
+            'src/*.js',
         ],
 
         // list of files to exclude

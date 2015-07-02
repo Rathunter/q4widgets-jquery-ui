@@ -1,0 +1,14 @@
+{
+  "name": "q4widgets-jquery-ui",
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "mustache": "~2.1.2",
+    "moment": "~2.10.3",
+    "highstock": "~3.0.1",
+    "underscore": "~1.8.3",
+    "slick": "*",
+    "jvectormap": "~2.0.2",
+    "clndr": "~1.2.12"
+  }
+}

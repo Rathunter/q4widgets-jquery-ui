@@ -1,10 +1,5 @@
 {
   "name": "q4widgets-jquery-ui",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/saltire/q4widgets-jquery-ui"
-  },
   "devDependencies": {
     "bootstrap": "^3.3.4",
     "grunt": "^0.4.5",

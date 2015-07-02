@@ -120,7 +120,7 @@
                 title: $channel.children('title').text(),
                 url: $channel.children('link').text(),
                 date: moment($channel.children('lastBuildDate').text(), 'DD MMM YYYY hh:mm:ss').format(o.dateFormat),
-                items: $.map(this.sliceItems($channel.children('item')), function (item, i) {
+                items: $.map(this._sliceItems($channel.children('item')), function (item, i) {
                     var $item = $(item),
                         // body may be HTML or text, depending on the feed
                         body = $.trim($item.children('description').text()),

@@ -2,7 +2,7 @@
     /**
      * Grab a number of content feeds and mix them together into a single chronological list.
      * @class q4.mashfeed
-     * @version 1.3.0
+     * @version 1.3.1
      * @author marcusk@q4websystems.com
      * @requires [Moment.js](lib/moment.min.js)
      * @requires [Mustache.js](lib/mustache.min.js)
@@ -232,6 +232,35 @@
             },
 
             /**
+             * Options for socialstream:
+             * - client: The client ID.
+             * - channel: An optional channel ID (facebook, twitter, etc.)
+             * - feed: An optional feed ID (requires a channel).
+             */
+            socialstream: {
+                fetch: function (feed) {
+                    var url = 'https://q4modules.herokuapp.com/social/stream/' + feed.client;
+                    if (feed.channel) {
+                        url += '/' + feed.channel;
+                        if (feed.feed) {
+                            url += '/' + feed.feed;
+                        }
+                    }
+
+                    return $.ajax({
+                        url: url,
+                        dataType: 'jsonp'
+                    });
+                },
+                getItems: function (data) {
+                    return data;
+                },
+                parseItem: function (item) {
+                    return item;
+                }
+            },
+
+            /**
              * This is a very basic feed type; the methods are meant to be
              * overridden with custom functions.
              * Options for custom_jsonp:
@@ -368,8 +397,9 @@
                     formatted.title = truncate(item.title, item._feed.titleLength || o.titleLength);
                 }
                 if ('date' in item) {
-                    formatted.date = item.date.format(o.dateFormat);
-                    formatted.from_now = item.date.fromNow();
+                    var date = (typeof date == 'string') ? moment(item.date) : item.date;
+                    formatted.date = date.format(o.dateFormat);
+                    formatted.from_now = date.fromNow();
                 }
                 if ('content' in item) {
                     var text = $.trim($('<div>').html(item.content).text());

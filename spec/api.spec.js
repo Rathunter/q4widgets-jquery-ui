@@ -1,6 +1,7 @@
 describe('api', function () {
+    console.log(__dirname);
     // data fixtures
-    jasmine.getJSONFixtures().fixturesPath = '.';
+    jasmine.getJSONFixtures().fixturesPath = '';
 
     // dummy functions
     GetViewType = jasmine.createSpy();
@@ -17,7 +18,7 @@ describe('api', function () {
     });
 
     describe('news', function () {
-        var fakePress = getJSONFixture('news.json'),
+        var fakePress = getJSONFixture('spec/fixtures/news.json'),
             fakeYears = {GetPressReleaseYearListResult: [2014, 2013, 2012]};
 
         beforeEach(function (done) {

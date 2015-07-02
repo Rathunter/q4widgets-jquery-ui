@@ -9,8 +9,8 @@ describe('news', function () {
     GetSignature = jasmine.createSpy();
 
     // data fixtures
-    jasmine.getJSONFixtures().fixturesPath = '.';
-    var fakePress = getJSONFixture('news.json'),
+    jasmine.getJSONFixtures().fixturesPath = '';
+    var fakePress = getJSONFixture('spec/fixtures/news.json'),
         fakeYears = {GetPressReleaseYearListResult: [2014, 2013, 2012]};
 
     beforeEach(function (done) {

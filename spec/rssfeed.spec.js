@@ -1,8 +1,8 @@
 describe('rssfeed', function () {
     var $rss;
 
-    jasmine.getFixtures().fixturesPath = '.';
-    var fakeXML = readFixtures('hilton.rss');
+    jasmine.getFixtures().fixturesPath = '';
+    var fakeXML = readFixtures('spec/fixtures/hilton.rss');
 
     beforeEach(function (done) {
         // return hilton.rss on all $.get requests

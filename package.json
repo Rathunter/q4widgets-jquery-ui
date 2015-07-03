@@ -1,10 +1,5 @@
 {
   "name": "q4widgets-jquery-ui",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/saltire/q4widgets-jquery-ui"
-  },
   "devDependencies": {
     "bootstrap": "^3.3.4",
     "grunt": "^0.4.5",
@@ -15,6 +10,9 @@
     "grunt-jsdoc": "^0.6.7",
     "grunt-newer": "^1.1.0",
     "highlight.js": "^8.6.0",
+    "jasmine-core": "^2.3.4",
+    "jasmine-jquery": "^2.1.0",
+    "karma-jasmine": "^0.3.6",
     "mustache": "^2.1.2"
   }
 }

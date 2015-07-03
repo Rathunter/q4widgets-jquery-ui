@@ -4,6 +4,13 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        karma: {
+            run: {
+                configFile: 'karma.conf.js',
+                singleRun: true
+            }
+        },
+
         uglify_newer: {
             default: {
                 files: [{
@@ -45,6 +52,10 @@ module.exports = function (grunt) {
         },
 
         watch: {
+            karma: {
+                files: ['spec/*.spec.js'],
+                tasks: ['karma']
+            },
             min: {
                 files: ['src/*.js'],
                 tasks: ['min']
@@ -60,12 +71,13 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-newer');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-karma');
+    grunt.loadNpmTasks('grunt-newer');
 
     grunt.registerMultiTask('uglify_newer', function () {
         // generate target filenames based on version numbers
@@ -106,8 +118,10 @@ module.exports = function (grunt) {
         });
     });
 
+    grunt.registerTask('test', ['karma']);
     grunt.registerTask('min', ['uglify_newer']);
     grunt.registerTask('doc', ['newer:less', 'newer:jsdoc']);
 
-    grunt.registerTask('default', ['min', 'doc']);
+    grunt.registerTask('compile', ['min', 'doc']);
+    grunt.registerTask('default', ['test', 'compile']);
 };

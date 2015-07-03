@@ -8,11 +8,15 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-jsdoc": "^0.6.7",
+    "grunt-karma": "^0.11.2",
     "grunt-newer": "^1.1.0",
     "highlight.js": "^8.6.0",
     "jasmine-core": "^2.3.4",
     "jasmine-jquery": "^2.1.0",
+    "karma": "^0.12.37",
     "karma-jasmine": "^0.3.6",
-    "mustache": "^2.1.2"
+    "karma-phantomjs-launcher": "^0.2.0",
+    "mustache": "^2.1.2",
+    "phantomjs": "^1.9.17"
   }
 }

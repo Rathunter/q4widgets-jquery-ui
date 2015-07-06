@@ -13,8 +13,8 @@
     <div>
         <main>
     <header>
-    <h1>q4.historical</h1>
-    <p>Retrieves price and volume information for a stock on a specific date.</p>
+    <h1>q4.calculator</h1>
+    <p>Calculates the growth of an investment in a company's stock.</p>
     <ul>
         
         <li><a href='#options'>Options</a></li>
@@ -25,16 +25,16 @@
 <section id='details'>
     <dl>
         <dt><strong>Script link</strong></dt>
-        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.historical.2.2.0.min.js' target='_blank'>q4.historical.2.2.0.min.js</a></dd>
+        <dd><a href='https://q4widgets.q4web.com/q4widgets/q4.calculator.1.0.0.min.js' target='_blank'>q4.calculator.1.0.0.min.js</a></dd>
 
         <dt><strong>Source file</strong></dt>
-        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.historical.js#L2' target='_blank'>q4.historical.js</a>, line 2</dd>
+        <dd><a href='https://github.com/saltire/q4widgets-jquery-ui/blob/master/src/q4.calculator.js#L2' target='_blank'>q4.calculator.js</a>, line 2</dd>
 
         <dt><strong>Author(s)</strong></dt>
         <dd><ul class='plain'><li>marcusk@q4websystems.com</li></ul></dd>
 
         <dt><strong>Requires</strong></dt>
-        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
+        <dd><ul class='plain'><li><a href='https://q4widgets.q4web.com/q4widgets/lib/highstock.js' target='_blank'>Highstock</a></li><li><a href='https://q4widgets.q4web.com/q4widgets/lib/mustache.min.js' target='_blank'>Mustache.js</a></li></ul></dd>
     </dl>
 
 
@@ -69,6 +69,8 @@
             <dd>
                 <p>Whether to use public feeds for data. This requires the <code>apiKey</code> option.</p>
                 <dl>
+                    <dt>Default value</dt>
+                    <dd><code><span class="hljs-literal">false</span></code></dd>
 
 
 
@@ -135,9 +137,9 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
                 </dl>
             </dd>
         </div>
-        <div id='option-startDate'>
+        <div id='option-minDate'>
             <dt>
-                <strong>startDate</strong>
+                <strong>minDate</strong>
                 <span>Date</span>
             </dt>
             <dd>
@@ -149,9 +151,9 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
                 </dl>
             </dd>
         </div>
-        <div id='option-endDate'>
+        <div id='option-maxDate'>
             <dt>
-                <strong>endDate</strong>
+                <strong>maxDate</strong>
                 <span>Date</span>
             </dt>
             <dd>
@@ -163,16 +165,32 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
                 </dl>
             </dd>
         </div>
-        <div id='option-datepicker'>
+        <div id='option-startDatepicker'>
             <dt>
-                <strong>datepicker</strong>
+                <strong>startDatepicker</strong>
                 <span>string</span>
             </dt>
             <dd>
-                <p>A selector for the element to use as a datepicker. Usually an <code>&lt;input&gt;</code>.</p>
+                <p>A selector for the element to use as the start date picker. Usually an <code>&lt;input&gt;</code>.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code>input:first</code></dd>
+                    <dd><code>.startDate</code></dd>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-endDatepicker'>
+            <dt>
+                <strong>endDatepicker</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the element to use as the end date picker. Usually an <code>&lt;input&gt;</code>.</p>
+                <dl>
+                    <dt>Default value</dt>
+                    <dd><code>.endDate</code></dd>
 
 
 
@@ -193,33 +211,33 @@ If this is not specified, the widget will look for <code>?Indice=EXCH:SYM</code>
                 </dl>
             </dd>
         </div>
-        <div id='option-updateDatepicker'>
+        <div id='option-amountInput'>
             <dt>
-                <strong>updateDatepicker</strong>
-                <span>boolean</span>
+                <strong>amountInput</strong>
+                <span>string</span>
             </dt>
             <dd>
-                <p>Whether to update the datepicker field after fetching the stock quote.
-If there is no data for the selected date, this option will clear the field.</p>
+                <p>A selector for an input element for the investment amount.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-literal">true</span></code></dd>
+                    <dd><code>.amount</code></dd>
 
 
 
                 </dl>
             </dd>
         </div>
-        <div id='option-fetchOnInit'>
+        <div id='option-defaultAmount'>
             <dt>
-                <strong>fetchOnInit</strong>
-                <span>boolean</span>
+                <strong>defaultAmount</strong>
+                <span>number</span>
             </dt>
             <dd>
-                <p>Whether to fetch today's stock quote when the table is initialized.</p>
+                <p>The default amount to use in case no valid amount is submitted.
+If set to a falsy value, prevent calculating without a valid amount.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code><span class="hljs-literal">true</span></code></dd>
+                    <dd><code><span class="hljs-number">10000</span></code></dd>
 
 
 
@@ -232,72 +250,10 @@ If there is no data for the selected date, this option will clear the field.</p>
                 <span>string</span>
             </dt>
             <dd>
-                <p>A selector for a trigger element that will perform the lookup when clicked.
-If this is not specified, the lookup will occur when the <code>datepicker</code> element's
-value changes.</p>
-                <dl>
-
-
-
-                </dl>
-            </dd>
-        </div>
-        <div id='option-quoteContainer'>
-            <dt>
-                <strong>quoteContainer</strong>
-                <span>string</span>
-            </dt>
-            <dd>
-                <p>A selector for the container that will be filled with the lookup results.</p>
+                <p>A selector for a trigger element that will perform the lookup when clicked.</p>
                 <dl>
                     <dt>Default value</dt>
-                    <dd><code>.quote</code></dd>
-
-
-
-                </dl>
-            </dd>
-        </div>
-        <div id='option-quoteTemplate'>
-            <dt>
-                <strong>quoteTemplate</strong>
-                <span>string</span>
-            </dt>
-            <dd>
-                <p>A Mustache template used to render the lookup results in the quote container.
-The following tags are available:</p>
-<ul>
-<li><code>{{date}}</code>   The date of the historical stock quote.</li>
-<li><code>{{volume}}</code> The trading volume of the stock on that date.</li>
-<li><code>{{open}}</code>   The opening stock price on that date.</li>
-<li><code>{{close}}</code>  The closing stock price on that date.</li>
-<li><code>{{high}}</code>   The stock's highest trading price on that date.</li>
-<li><code>{{low}}</code>    The stock's lowest trading price on that date.</li>
-</ul>
-                <dl>
-
-
-
-                    <dt>Example</dt>
-                        <dd><pre><span class="hljs-string">'Date: {{date}}&lt;br&gt;'</span> +
-<span class="hljs-string">'Volume: {{volume}}&lt;br&gt;'</span> +
-<span class="hljs-string">'Open: {{open}}&lt;br&gt;'</span> +
-<span class="hljs-string">'Close: {{close}}&lt;br&gt;'</span> +
-<span class="hljs-string">'High: {{high}}&lt;br&gt;'</span> +
-<span class="hljs-string">'Low: {{low}}'</span></pre></dd>
-                </dl>
-            </dd>
-        </div>
-        <div id='option-notFoundMessage'>
-            <dt>
-                <strong>notFoundMessage</strong>
-                <span>string</span>
-            </dt>
-            <dd>
-                <p>A message to display in the quote container in case no results were found.</p>
-                <dl>
-                    <dt>Default value</dt>
-                    <dd><code>No stock data is available <span class="hljs-keyword">for</span> <span class="hljs-keyword">this</span> date.</code></dd>
+                    <dd><code>.calculate</code></dd>
 
 
 
@@ -312,6 +268,89 @@ The following tags are available:</p>
             <dd>
                 <p>A CSS class to add to the widget while data is loading.
 This can be used to show and hide elements within the widget.</p>
+                <dl>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-infoContainer'>
+            <dt>
+                <strong>infoContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the container that will be filled with the investment results.</p>
+                <dl>
+                    <dt>Default value</dt>
+                    <dd><code>.info</code></dd>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-infoTemplate'>
+            <dt>
+                <strong>infoTemplate</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A Mustache template used to render the investment results in the quote container.
+The following tags are available:</p>
+<ul>
+<li><code>{{startDate}}</code>   The date of the initial investment.</li>
+<li><code>{{endDate}}</code>     The date of the final investment amount.</li>
+<li><code>{{startPrice}}</code>  The price per share at time of investment.</li>
+<li><code>{{endPrice}}</code>    The final price per share.</li>
+<li><code>{{totalReturn}}</code> The total gain as a percentage of the initial investment.</li>
+<li><code>{{cagr}}</code>        The compounded annual growth rate.</li>
+<li><code>{{startAmount}}</code> The initial investment amount.</li>
+<li><code>{{endAmount}}</code>   The final amount of the investment.</li>
+<li><code>{{shares}}</code>      The number of shares purchased.</li>
+<li><code>{{years}}</code>       The number of years invested.</li>
+</ul>
+                <dl>
+
+
+
+                    <dt>Example</dt>
+                        <dd><pre><span class="hljs-string">'Starting date: {{startDate}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Ending date: {{endDate}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Starting price/share: ${{startPrice}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Ending price/share: ${{endPrice}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Total return: {{totalReturn}}%&lt;br&gt;'</span> +
+<span class="hljs-string">'Compound annual growth rate: {{cagr}}%&lt;br&gt;'</span> +
+<span class="hljs-string">'Starting investment: ${{startAmount}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Ending investment: ${{endAmount}}&lt;br&gt;'</span> +
+<span class="hljs-string">'Years: {{years}}&lt;br&gt;'</span></pre></dd>
+                </dl>
+            </dd>
+        </div>
+        <div id='option-chartContainer'>
+            <dt>
+                <strong>chartContainer</strong>
+                <span>string</span>
+            </dt>
+            <dd>
+                <p>A selector for the stock chart.</p>
+                <dl>
+                    <dt>Default value</dt>
+                    <dd><code>.chart</code></dd>
+
+
+
+                </dl>
+            </dd>
+        </div>
+        <div id='option-highstockOpts'>
+            <dt>
+                <strong>highstockOpts</strong>
+                <span>Object</span>
+            </dt>
+            <dd>
+                <p>A set of options to pass directly to Highcharts.</p>
                 <dl>
 
 

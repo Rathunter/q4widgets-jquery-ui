@@ -430,7 +430,7 @@
         _convertToArray: function (value) {
             // treat a string like a space-, pipe- or comma-separated list
             if (typeof value == 'string') {
-                value = $.trim(value.split(/[\s,|]+/));
+                value = $.trim(value).split(/[\s,|]+/);
             }
             return $.isArray(value) ? value : [];
         },
@@ -847,7 +847,8 @@
             }
 
             // fire callback, cancel event if default action is prevented
-            if (!this._trigger('onYearChange', e, {year: currentYear})) return;
+            this._trigger('onYearChange', e, {year: currentYear});
+            if (e.isDefaultPrevented()) return;
 
             this.currentYear = currentYear;
             this._updateYearControls(this.currentYear);
@@ -859,7 +860,8 @@
             tags = this._convertToArray(tags);
 
             // fire callback, cancel event if default action is prevented
-            if (!this._trigger('onTagChange', e, {tags: tags})) return;
+            this._trigger('onTagChange', e, {tags: tags});
+            if (e.isDefaultPrevented()) return;
 
             this.currentTags = tags;
 

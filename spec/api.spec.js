@@ -17,7 +17,8 @@ describe('api', function () {
         GetLanguageId = jasmine.createSpy();
         GetSignature = jasmine.createSpy();
 
-        spyOn($.q4.api.prototype, '_create');
+        spyOn($.q4.api.prototype, '_create').and.callThrough();
+        spyOn($.q4.api.prototype, '_init').and.callThrough();
 
         // return fake data on jquery ajax requests
         spyOn($, 'ajax').and.callFake(function (opts) {
@@ -45,20 +46,30 @@ describe('api', function () {
         );
 
         describe('basic options', function () {
-            var beforeRender = jasmine.createSpy(),
-                onTagChange = jasmine.createSpy();
-
             beforeEach(function (done) {
+                // spies for callbacks
+                this.onTagChange = jasmine.createSpy();
+                this.onYearChange = jasmine.createSpy();
+                this.beforeRender = jasmine.createSpy();
+                this.beforeRenderItems = jasmine.createSpy();
+
+                // initialize widget
                 $widget.news({
                     template: template,
                     tagSelect: 'input',
-                    onTagChange: onTagChange,
+                    yearTrigger: 'ul li',
+                    yearSelect: 'select',
+                    onTagChange: this.onTagChange,
+                    onYearChange: this.onYearChange,
+                    beforeRender: this.beforeRender,
+                    beforeRenderItems: this.beforeRenderItems,
                     complete: done
                 });
             });
 
-            it('should call the api constructor', function () {
+            it('should call the api constructors', function () {
                 expect($.q4.api.prototype._create).toHaveBeenCalled();
+                expect($.q4.api.prototype._init).toHaveBeenCalled();
             });
 
             it('should append the template', function () {
@@ -75,8 +86,29 @@ describe('api', function () {
             });
 
             it('should call onTagChange when a tag input is changed', function () {
-                $('input', $widget).trigger('change');
-                expect(onTagChange).toHaveBeenCalled();
+                $('input', $widget).val('test').change();
+                expect(this.onTagChange).toHaveBeenCalledWith(jasmine.any(Object), {
+                    tags: ['test']
+                });
+            });
+
+            it('should not call onYearChange or change the year when the active trigger is clicked', function () {
+                $('ul li:first', $widget).click();
+                expect(this.onYearChange).not.toHaveBeenCalled();
+            });
+
+            it('should call onYearChange when a year trigger is clicked', function () {
+                $('ul li:eq(1)', $widget).click();
+                expect(this.onYearChange).toHaveBeenCalledWith(jasmine.any(Object), {
+                    year: 2013
+                });
+            });
+
+            it('should call onYearChange when a year select is changed', function () {
+                $('select', $widget).val('2013').change();
+                expect(this.onYearChange).toHaveBeenCalledWith(jasmine.any(Object), {
+                    year: 2013
+                });
             });
         });
 

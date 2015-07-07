@@ -1,15 +1,15 @@
 describe('rssfeed', function () {
     var $rss;
 
+    // data fixtures
     jasmine.getFixtures().fixturesPath = 'base/spec/fixtures';
     var fakeXML = readFixtures('hilton.rss');
 
     beforeEach(function (done) {
-        // return hilton.rss on all $.get requests
+        // return hilton.rss on all ajax requests
         spyOn($, 'get').and.callFake(function (url) {
             return $.Deferred().resolve(fakeXML);
         });
-
         spyOn($, 'ajax').and.callFake(function (opts) {
             return $.Deferred().resolve(fakeXML);
         });
